@@ -1,92 +1,88 @@
-# Promise
+# Va'da (Promise)
 
-Imagine that you're a top singer, and fans ask day and night for your upcoming song.
+O'zingizni eng yaxshi qo'shiqchi deb tasavvur qiling va muxlislar kechayu kunduz yaqinlashib kelayotgan  qo'shig'ingizni so'rashadi.
 
-To get some relief, you promise to send it to them when it's published. You give your fans a list. They can fill in their email addresses, so that when the song becomes available, all subscribed parties instantly receive it. And even if something goes very wrong, say, a fire in the studio, so that you can't publish the song, they will still be notified.
+Biroz yengil tortish uchun, u nashr qilinganda, ularga yuborishga va'da berasiz. Siz muxlislaringizga yangilanishlar uchun obuna bo'lishlari mumkin bo'lgan ro'yxatni berasiz. Ular elektron pochta manzillarini to'ldirishlari mumkin, shunda qo'shiq paydo bo'lganda, obuna bo'lgan barcha partiyalar uni darhol qabul qilishadi. Hatto biron bir narsa noto'g'ri bo'lsa ham, aytaylik, agar qo'shiqni nashr etish rejalari bekor qilinsa, ular bundan xabardor bo'lishadi.
 
-Everyone is happy: you, because the people don't crowd you anymore, and fans, because they won't miss the song.
+Har bir inson baxtlidir! Siz baxtlisiz, chunki siz endi muxlislar tomonidan ta'qib qilinmaysiz va muxlislar endi yangi qo'shiqni sog'inishdan tashvishlanmasligi mumkin.
 
-This is a real-life analogy for things we often have in programming:
+Bu biz dasturlashda tez-tez uchraydigan narsalar uchun haqiqiy hayotdagi o'xshashlik:
 
-1. A "producing code" that does something and takes time. For instance, some code that loads the data over a network. That's a "singer".
-2. A "consuming code" that wants the result of the "producing code" once it's ready. Many functions  may need that result. These are the "fans".
-3. A *promise* is a special JavaScript object that links the "producing code" and the "consuming code" together. In terms of our analogy: this is the "subscription list". The "producing code" takes whatever time it needs to produce the promised result, and the "promise" makes that result available to all of the subscribed code when it's ready.
+1. Biror narsani qiladigan va vaqt talab qiladigan "ishlab chiqaruvchi kod". Masalan, kod masofaviy skriptni yuklaydi. Bu "qo'shiqchi".
+2. Tayyor bo'lgandan keyin "ishlab chiqarish kodi" natijasini istaydigan "iste'mol kod". Ko'pgina funktsiyalar ushbu natijaga muhtoj bo'lishi mumkin. Bular "muxlislar".
+3. *Va'da* - bu "ishlab chiqaruvchi kod" va "iste'molchi kodi" ni bir-biriga bog'laydigan maxsus JavaScript obyekti. Analogiya nuqtai nazaridan: bu "obuna ro'yxati". "Ishlab chiqarish kodi" va'da qilingan natijani olish uchun zarur bo'lgan har qanday vaqtni oladi va "va'da" ushbu natijani obuna bo'lgan barcha kodlarga tayyor bo'lgandan keyin taqdim etadi.
 
-The analogy isn't terribly accurate, because JavaScript promises are more complex than a simple subscription list: they have additional features and limitations. But it's fine to begin with.
+Analogiya juda aniq emas, chunki JavaScript-ning va'dalari oddiy obuna ro'yxatiga qaraganda ancha murakkab: ular qo'shimcha funktsiyalar va cheklovlarga ega. Ammo bu boshlashga yaxshidir.
 
-The constructor syntax for a promise object is:
+Va'da obyekti uchun konstruktor sintaksisi:
 
 ```js
 let promise = new Promise(function(resolve, reject) {
-  // executor (the producing code, "singer")
+  // ijrochi (ishlab chiqaruvchi kod, "qo'shiqchi")
 });
 ```
 
-The function passed to `new Promise` is called the *executor*. When `new Promise` is created, the executor runs automatically. It contains the producing code which should eventually produce the result. In terms of the analogy above: the executor is the "singer".
+`new Promise` ga berilgan funktsiya *bajaruvchi* deb nomlanadi. Va'da yaratilganda, ushbu ijrochi funktsiya avtomatik ravishda ishlaydi. U natija berishi kerak bo'lgan ishlab chiqarish kodini o'z ichiga oladi. Yuqoridagi analogiya nuqtai nazaridan: ijrochi "qo'shiqchi".
 
-Its arguments `resolve` and `reject` are callbacks provided by JavaScript itself. Our code is only inside the executor.
+Natijada `promise` obyekti ichki xususiyatlarga ega:
 
-When the executor obtains the result, be it soon or late, doesn't matter, it should call one of these callbacks:
+- `state` — dastlab "pending", keyin "fulfilled" yoki "rejected" ga o'zgartiriladi,
+- `result` — o'zingiz belgilagan ixtiyoriy qiymat, dastlab `undefined`.
 
-- `resolve(value)` — if the job is finished successfully, with result `value`.
-- `reject(error)` — if an error has occurred, `error` is the error object.
+Ijrochi ishni tugatgandan so'ng, u argument sifatida qabul qilingan funktsiyalardan birini chaqirishi kerak:
 
-So to summarize: the executor runs automatically and attempts to perform a job. When it is finished with the attempt, it calls `resolve` if it was successful or `reject` if there was an error.
-
-The `promise` object returned by the `new Promise` constructor has these internal properties:
-
-- `state` — initially `"pending"`, then changes to either `"fulfilled"` when `resolve` is called or `"rejected"` when `reject` is called.
-- `result` — initially `undefined`, then changes to `value` when `resolve(value)` called or `error` when `reject(error)` is called.
-
-So the executor eventually moves `promise` to one of these states:
+- `resolve(value)` — ish muvaffaqiyatli tugaganligini ko'rsatish uchun:
+    - `state` ni `"fulfilled"` ga o'rnatadi,
+    - `result` ni `value` ga o'rnatadi.
+- `reject(error)` — xato sodir bo'lganligini ko'rsatish uchun:
+    - `state` ni `"rejected"` ga o'rnatadi,
+    - `result` ni `error` ga o'rnatadi.
 
 ![](promise-resolve-reject.svg)
 
-Later we'll see how "fans" can subscribe to these changes.
+Keyinchalik ushbu o'zgarishlar qanday qilib "muxlislar" ga ma'lum bo'lishini ko'ramiz.
 
-Here's an example of a promise constructor and a simple executor function with  "producing code" that takes time (via `setTimeout`):
+Va'da konstruktori va "ishlab chiqaruvchi kod" (`setTimeout`) bilan sodda ijrochi funktsiyasiga misol:
 
 ```js run
 let promise = new Promise(function(resolve, reject) {
-  // the function is executed automatically when the promise is constructed
+  // va'da tuzilganda funktsiya avtomatik ravishda bajariladi
 
-  // after 1 second signal that the job is done with the result "done"
+  // 1 soniya ichida "bajarilgan" natija bilan ish bajarilganligi to'g'risida signal
   setTimeout(() => *!*resolve("done")*/!*, 1000);
 });
 ```
 
-We can see two things by running the code above:
+Yuqoridagi kodni ishga tushirish orqali biz ikkita narsani ko'rishimiz mumkin:
 
-1. The executor is called automatically and immediately (by `new Promise`).
-2. The executor receives two arguments: `resolve` and `reject`. These functions are pre-defined by the JavaScript engine, so we don't need to create them. We should only call one of them when ready.
+1. Ijrochi avtomatik va darhol chaqiriladi ( `new Promise` tomonidan).
+2. Ijrochi ikkita argumentni oladi: `resolve` va `reject` - bu funktsiyalar JavaScript interpretator tomonidan oldindan belgilanadi. Shunday qilib, biz ularni yaratishga hojat yo'q. Buning o'rniga biz tayyor bo'lgandan keyin ularni chaqirish uchun ijrochini yozishimiz kerak.
 
-    After one second of "processing" the executor calls `resolve("done")` to produce the result. This changes the state of the `promise` object:
+"Ishlov berish" ning bir soniyasidan so'ng ijrochi natija berish uchun `resolve("done")` ni chaqiradi:
 
-    ![](promise-resolve-1.svg)
+![](promise-resolve-1.svg)
 
-That was an example of a successful job completion, a "fulfilled promise".
+Bu ishni muvaffaqiyatli yakunlashning misoli, "bajarilgan va'da" edi.
 
-And now an example of the executor rejecting the promise with an error:
+Va endi ijrochining va'dani xato bilan rad etishiga misol:
 
 ```js
 let promise = new Promise(function(resolve, reject) {
-  // after 1 second signal that the job is finished with an error
+  // 1 soniya ish xato bilan tugaganligini bildirgan signaldan keyin
   setTimeout(() => *!*reject(new Error("Whoops!"))*/!*, 1000);
 });
 ```
 
-The call to `reject(...)` moves the promise object to `"rejected"` state:
-
 ![](promise-reject-1.svg)
 
-To summarize, the executor should perform a job (usually something that takes time) and then call `resolve` or `reject` to change the state of the corresponding promise object.
+Xulosa qilib aytganda, ijrochi ishni bajarishi kerak (odatda vaqt talab qiladigan narsa), so'ngra tegishli "Promise" obyektining holatini o'zgartirish uchun `resolve` yoki `reject` ni chaqirish kerak.
 
-A promise that is either resolved or rejected is called "settled", as opposed to an initially "pending" promise.
+Yo'q qilingan yoki rad qilingan va'da, "pending" va'dadan farqli o'laroq, "settled" deb nomlanadi.
 
-````smart header="There can be only a single result or an error"
-The executor should call only one `resolve` or one `reject`. Any state change is final.
+````smart header="Faqat bitta natija yoki xato bo'lishi mumkin"
+Ijrochi faqat bitta `resolve` yoki bitta `reject` ni chaqirishi kerak. Va'daning o'zgarishi yakuniy hisoblanadi.
 
-All further calls of `resolve` and `reject` are ignored:
+Boshqa barcha `resolve` va `reject` chaqiruvlari inobatga olinmaydi:
 
 ```js
 let promise = new Promise(function(resolve, reject) {
@@ -94,22 +90,22 @@ let promise = new Promise(function(resolve, reject) {
   resolve("done");
 */!*
 
-  reject(new Error("…")); // ignored
-  setTimeout(() => resolve("…")); // ignored
+  reject(new Error("…")); // inobatga olinmaydi
+  setTimeout(() => resolve("…")); // inobatga olinmaydi
 });
 ```
 
-The idea is that a job done by the executor may have only one result or an error.
+G'oya shundan iboratki, ijrochi tomonidan bajarilgan ishda faqat bitta natija yoki xato bo'lishi mumkin.
 
-Also, `resolve`/`reject` expect only one argument (or none) and will ignore additional arguments.
+Bundan tashqari,  `resolve`/`reject` faqat bitta argumentni kutadi (yoki yo'q) va qo'shimcha argumentlarni e'tiborsiz qoldiradi.
 ````
 
-```smart header="Reject with `Error` objects"
-In case something goes wrong, the executor should call `reject`. That can be done with any type of argument (just like `resolve`). But it is recommended to use `Error` objects (or objects that inherit from `Error`). The reasoning for that will soon become apparent.
+```smart header="`Error` obyektlari bilan rad etish"
+Agar biror narsa noto'g'ri bo'lsa, biz `reject` ni har qanday argument turi bilan chaqiramiz (xuddi `resolve` singari). Ammo `Error` obyektlaridan (yoki `Error` dan meros bo'lib o'tgan obyektlardan) foydalanish tavsiya etiladi. Buning sababi tez orada aniq bo'ladi.
 ```
 
-````smart header="Immediately calling `resolve`/`reject`"
-In practice, an executor usually does something asynchronously and calls `resolve`/`reject` after some time, but it doesn't have to. We also can call `resolve` or `reject` immediately, like this:
+````smart header="Darhol chaqirish `resolve`/`reject`"
+Amalda, ijrochi odatda biron bir narsani asinxron tarzda bajaradi va bir muncha vaqt o'tgach `resolve`/`reject` ni chaqiradi, ammo bunga majbur emas. Shuningdek, biz darhol `resolve` yoki `reject` ni chaqirishimiz mumkin:
 
 ```js
 let promise = new Promise(function(resolve, reject) {
@@ -118,71 +114,77 @@ let promise = new Promise(function(resolve, reject) {
 });
 ```
 
-For instance, this might happen when we start to do a job but then see that everything has already been completed and cached.
+Masalan, bu ishni boshlashni boshlaganimizda, lekin keyin hamma narsa tugallanganligini ko'rganimizda yuz berishi mumkin.
 
-That's fine. We immediately have a resolved promise.
+Juda soz. Bizda darhol va'da hal qilingan, bunda hech qanday yomon narsa yo'q.
 ````
 
-```smart header="The `state` and `result` are internal"
-The properties `state` and `result` of the Promise object are internal. We can't directly access them. We can use the methods `.then`/`.catch`/`.finally` for that. They are described below.
+```smart header="`state` va `result` ichki"
+"Promise" obyektining `state` va `result` ichki xususiyatlarga ega. Biz ularga "iste'mol kodimiz" dan to'g'ridan-to'g'ri kira olmaymiz. Buning uchun `.then`/`.catch`/`.finally` usullaridan foydalanishimiz mumkin. Ular quyida tavsiflangan.
 ```
 
-## Consumers: then, catch, finally
+## Iste'molchilar: then, catch, finally
 
-A Promise object serves as a link between the executor (the "producing code" or "singer") and the consuming functions (the "fans"), which will receive the result or error. Consuming functions can be registered (subscribed) using methods `.then`, `.catch` and `.finally`.
+"Promise" obyekti ijrochi ("ishlab chiqaruvchi kod" yoki "qo'shiqchi") bilan iste'molchi funktsiyalari ("muxlislar") o'rtasida bog'liqlik bo'lib xizmat qiladi, natijada natija yoki xato qabul qiladi. Iste'mol funktsiyalarini `.then`,`.catch` va `.finally` usullaridan foydalangan holda ro'yxatdan o'tkazish (obuna bo'lish) mumkin.
 
 ### then
 
-The most important, fundamental one is `.then`.
+Eng muhimi, asosiysi `.then`.
 
-The syntax is:
+Sintaksis:
 
 ```js
 promise.then(
-  function(result) { *!*/* handle a successful result */*/!* },
-  function(error) { *!*/* handle an error */*/!* }
+  function(result) { *!*/* muvaffaqiyatli natijaga erishish */*/!* },
+  function(error) { *!*/* xatoga yo'l qo'yish */*/!* }
 );
 ```
 
-The first argument of `.then` is a function that runs when the promise is resolved, and receives the result.
+`.then` ning birinchi argumenti quyidagicha funktsiya:
 
-The second argument of `.then` is a function that runs when the promise is rejected, and receives the error.
+1. va'da bajarilganda ishlaydi va
+2. natijani oladi.
 
-For instance, here's a reaction to a successfully resolved promise:
+`.then` ning ikkinchi argumenti:
+
+1. va'da rad etilganda ishlaydi va
+2. natijani oladi.
+
+Masalan, muvaffaqiyatli hal qilingan va'daga munosabat:
 
 ```js run
 let promise = new Promise(function(resolve, reject) {
   setTimeout(() => resolve("done!"), 1000);
 });
 
-// resolve runs the first function in .then
+// .then ning birinchi funktsiyasini bajaradi
 promise.then(
 *!*
-  result => alert(result), // shows "done!" after 1 second
+  result => alert(result), // "done!" ko'rsatiladi 1 soniyadan keyin
 */!*
-  error => alert(error) // doesn't run
+  error => alert(error) // bajarilmaydi
 );
 ```
 
-The first function was executed.
+Birinchi funktsiya bajarildi.
 
-And in the case of a rejection, the second one:
+Va rad etish holatida - ikkinchisi:
 
 ```js run
 let promise = new Promise(function(resolve, reject) {
   setTimeout(() => reject(new Error("Whoops!")), 1000);
 });
 
-// reject runs the second function in .then
+// rad etish .then ning ikkinchi funktsiyasini bajaradi
 promise.then(
-  result => alert(result), // doesn't run
+  result => alert(result), // bajarilmaydi
 *!*
-  error => alert(error) // shows "Error: Whoops!" after 1 second
+  error => alert(error) // "Error: Whoops!" ko'rsatiladi 1 soniyadan keyin
 */!*
 );
 ```
 
-If we're interested only in successful completions, then we can provide only one function argument to `.then`:
+Agar bizni faqat muvaffaqiyatli bajarishlar qiziqtirsa, unda `.then` uchun bitta funktsiya argumentini taqdim etamiz:
 
 ```js run
 let promise = new Promise(resolve => {
@@ -190,13 +192,13 @@ let promise = new Promise(resolve => {
 });
 
 *!*
-promise.then(alert); // shows "done!" after 1 second
+promise.then(alert); // "done!" ko'rsatiladi 1 soniyadan keyin
 */!*
 ```
 
 ### catch
 
-If we're interested only in errors, then we can use `null` as the first argument: `.then(null, errorHandlingFunction)`. Or we can use `.catch(errorHandlingFunction)`, which is exactly the same:
+Agar bizni faqat xatolar qiziqtiradigan bo'lsa, unda birinchi argument sifatida `null` dan foydalanishimiz mumkin: `.then(null, errorHandlingFunction)`. Yoki `.catch(errorHandlingFunction)` dan foydalanishimiz mumkin, bular bir xil:
 
 
 ```js run
@@ -206,85 +208,84 @@ let promise = new Promise((resolve, reject) => {
 
 *!*
 // .catch(f) is the same as promise.then(null, f)
-promise.catch(alert); // shows "Error: Whoops!" after 1 second
+promise.catch(alert); // "Error: Whoops!" ko'rsatiladi 1 soniyadan keyin
 */!*
 ```
 
-The call `.catch(f)` is a complete analog of `.then(null, f)`, it's just a shorthand.
+`.catch(f)` chaqiruvi `.then(null, f)` ning to'liq analogidir, bu shunchaki stenografiya.
 
 ### finally
 
-Just like there's a `finally` clause in a regular `try {...} catch {...}`, there's `finally` in promises.
+Oddiy `try {...} catch {...}` da `finally` bandi bo'lgani kabi, va'da da ham `finally` bor.
 
-The call `.finally(f)` is similar to `.then(f, f)` in the sense that `f` always runs when the promise is settled: be it resolve or reject.
+`.finally(f)` chaqiruvi `.then(f, f)` ga o'xshaydi, chunki u har doim va'da bajarilganda ishlaydi: xoh qaror qabul qilinsin yoki rad etilsin.
 
-`finally` is a good handler for performing cleanup, e.g. stopping our loading indicators, as they are not needed anymore, no matter what the outcome is.
+`finally` tozalashni amalga oshirish uchun yaxshi ishlov beradi, masalan, bizning yuklash ko'rsatkichlarimizni to'xtatish, chunki natija qanday bo'lishidan qat'i nazar, endi ular kerak emas.
 
-Like this:
+Shunga o'xshash:
 
 ```js
 new Promise((resolve, reject) => {
-  /* do something that takes time, and then call resolve/reject */
+  /* vaqt talab qiladigan narsani qilish va keyin resolve/reject ni chaqirish */
 })
 *!*
-  // runs when the promise is settled, doesn't matter successfully or not
+  // va'da qilinganidan keyin ishlaydi, muvaffaqiyatli yoki yo'q muhim emas
   .finally(() => stop loading indicator)
   // so the loading indicator is always stopped before we process the result/error
 */!*
   .then(result => show result, err => show error)
 ```
 
-That said, `finally(f)` isn't exactly an alias of `then(f,f)` though. There are few subtle differences:
+Bu aniq taxallus emas. Bir nechta muhim farqlar mavjud:
 
-1. A `finally` handler has no arguments. In `finally` we don't know whether the promise is successful or not. That's all right, as our task is usually to perform "general" finalizing procedures.
-2. A `finally` handler passes through results and errors to the next handler.
+1. `finally` ishlov beruvchida argumentlar yo'q. `finally` da biz va'da muvaffaqiyatli yoki yo'qligini bilmaymiz. Hammasi yaxshi, chunki bizning vazifamiz odatda "umumiy" yakunlovchi protseduralarni bajarishdir.
+2. Nihoyat, natijalar va xatolar orqali keyingi ishlov beruvchiga o'tadi.
 
-    For instance, here the result is passed through `finally` to `then`:
+    Masalan, bu yerda natija `finally` dan `then` ga uzatiladi:
     ```js run
     new Promise((resolve, reject) => {
       setTimeout(() => resolve("result"), 2000)
     })
       .finally(() => alert("Promise ready"))
-      .then(result => alert(result)); // <-- .then handles the result
+      .then(result => alert(result)); // <-- .then natijani boshqaradi
     ```
 
-    And here there's an error in the promise, passed through `finally` to `catch`:
+    Va bu yerda `finally` dan `catch` ga o'tgan va'dada xato bor:
 
     ```js run
     new Promise((resolve, reject) => {
       throw new Error("error");
     })
       .finally(() => alert("Promise ready"))
-      .catch(err => alert(err));  // <-- .catch handles the error object
-    ```
+      .catch(err => alert(err));  // <-- .catch xato obyektini boshqaradi
+    ```  
 
-That's very convenient, because `finally` is not meant to process a promise result. So it passes it through.
+    Bu juda qulay, chunki "finally" va'da qilingan natijalarni qayta ishlashga mo'ljallanmagan. Shunday qilib, bu ulardan o'tib ketadi.
 
-We'll talk more about promise chaining and result-passing between handlers in the next chapter.
+    Va'da zanjiri va ishlovchilar o'rtasida natijalarni uzatish haqida keyingi bobda gaplashamiz.
 
+3. So'nggi, lekin eng muhimi, `.finally(f)` - `.then(f, f)` dan ko'ra qulayroq sintaksis: funktsiyani takrorlashning hojati yo'q.
 
-````smart header="We can attach handlers to settled promises"
-If a promise is pending, `.then/catch/finally` handlers wait for it. Otherwise, if a promise has already settled, they just run:
+````smart header="Qabul qilingan va'dalar bo'yicha ishlovchilar darhol ishlaydi"
+Agar va'da kutilayotgan bo'lsa, `.then/catch/finally` ishlovchilar natijani kutishadi. Aks holda, agar va'da allaqachon o'rnatilgan bo'lsa, darhol bajaradilar:
 
 ```js run
-// the promise becomes resolved immediately upon creation
+// darhol hal qilingan va'da
 let promise = new Promise(resolve => resolve("done!"));
 
-promise.then(alert); // done! (shows up right now)
+promise.then(alert); // done! (hozir paydo bo'ladi)
 ```
 
-Note that this makes promises more powerful than the real life "subscription list" scenario. If the singer has already released their song and then a person signs up on the subscription list, they probably won't receive that song. Subscriptions in real life must be done prior to the event.
-
-Promises are more flexible. We can add handlers any time: if the result is already there, they just execute.
+Yaxshi tomoni shundaki, `.then` ishlov beruvchisi va'da vaqtni oladimi yoki darhol hal qiladimi, ishlashiga kafolat beradi.
 ````
 
-Next, let's see more practical examples of how promises can help us write asynchronous code.
+Keling, va'dalar asinxron kod yozishda qanday yordam berishi haqida ko'proq amaliy misollarni ko'rib chiqamiz.
 
-## Example: loadScript [#loadscript]
+## Misol: loadScript
 
-We've got the `loadScript` function for loading a script from the previous chapter.
+Oldingi bobdan skriptni yuklash uchun bizda `loadScript` funktsiyasi mavjud.
 
-Here's the callback-based variant, just to remind us of it:
+Shuni eslatish uchun chaqiruvni qayta tiklashga asoslangan variant:
 
 ```js
 function loadScript(src, callback) {
@@ -298,9 +299,9 @@ function loadScript(src, callback) {
 }
 ```
 
-Let's rewrite it using Promises.
+Keling, uni va'dalar yordamida qayta yozaylik.
 
-The new function `loadScript` will not require a callback. Instead, it will create and return a Promise object that resolves when the loading is complete. The outer code can add handlers (subscribing functions) to it using `.then`:
+`loadScript` yangi funktsiyasi qayta chaqiruvni talab qilmaydi. Buning o'rniga, u yuklash tugagandan so'ng hal qilinadigan "Promise" obyektini yaratadi va qaytaradi. Tashqi kod unga `.then` yordamida ishlov beruvchilarni (obuna funktsiyalarni) qo'shishi mumkin:
 
 ```js run
 function loadScript(src) {
@@ -309,32 +310,33 @@ function loadScript(src) {
     script.src = src;
 
     script.onload = () => resolve(script);
-    script.onerror = () => reject(new Error(`Script load error for ${src}`));
+    script.onerror = () => reject(new Error("Skriptni yuklashda xato: " + src));
 
     document.head.append(script);
   });
 }
 ```
 
-Usage:
+Foydalanish:
 
 ```js run
 let promise = loadScript("https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.js");
 
 promise.then(
-  script => alert(`${script.src} is loaded!`),
+  script => alert(`${script.src} yuklandi!`),
   error => alert(`Error: ${error.message}`)
 );
 
-promise.then(script => alert('Another handler...'));
+promise.then(script => alert('Boshqa bir narsa qilish uchun yana bitta ishlov beruvchi!'));
 ```
 
-We can immediately see a few benefits over the callback-based pattern:
+Qayta chaqiruvga asoslangan shablondan darhol bir nechta afzalliklarni ko'rishimiz mumkin:
 
 
 | Promises | Callbacks |
 |----------|-----------|
-| Promises allow us to do things in the natural order. First, we run `loadScript(script)`, and `.then` we write what to do with the result. | We must have a `callback` function at our disposal when calling `loadScript(script, callback)`. In other words, we must know what to do with the result *before* `loadScript` is called. |
-| We can call `.then` on a Promise as many times as we want. Each time, we're adding a new "fan", a new subscribing function, to the "subscription list". More about this in the next chapter: [](info:promise-chaining). | There can be only one callback. |
+| Va'dalar bizni narsalarni tabiiy tartibda bajarishga imkon beradi. Birinchidan, biz `loadScript(script)` ni ishga tushiramiz va keyin `result` bilan nima qilishni yozamiz. | `LoadScript(script, callback)` ni chaqirishda bizda `callback` funktsiyasi bo'lishi kerak. Boshqacha qilib aytganda,  `loadScript` chaqirilishidan *oldin* natija bilan nima qilishni bilamiz. |
+| Biz `.then` ni xohlagancha chaqirishimiz mumkin. Har safar biz "obuna ro'yxatiga" yangi "fanat", yangi obuna funktsiyasini qo'shmoqdamiz. Bu haqda keyingi bobda batafsil ma'lumot beramiz: [](info:promise-chaining). | Faqat bitta qayta chaqiruv bo'lishi mumkin. |
 
-So promises give us better code flow and flexibility. But there's more. We'll see that in the next chapters.
+Shunday qilib, va'dalar bizga kod oqimini va moslashuvchanlikni beradi. Ammo yana ko'p narsalar mavjud. Buni keyingi boblarda ko'ramiz.
+
