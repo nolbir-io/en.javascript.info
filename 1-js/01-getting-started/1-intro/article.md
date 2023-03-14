@@ -1,10 +1,10 @@
-# An Introduction to JavaScript
+# JavaScriptga haqida
 
 Let's see what's so special about JavaScript, what we can achieve with it, and what other technologies play well with it.
 
-## What is JavaScript?
+## Javascript nimma
 
-*JavaScript* was initially created to "make web pages alive".
+*JavaScript* dastlab web sahifalarni jonli qilish maqsadida yaratilgan".
 
 The programs in this language are called *scripts*. They can be written right in a web page's HTML and run automatically as the page loads.
 
