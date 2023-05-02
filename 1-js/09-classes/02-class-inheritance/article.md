@@ -1,13 +1,13 @@
 
-# Class inheritance
+# Sinf merosi
 
-Class inheritance is a way for one class to extend another class.
+Sinf merosi - bu bir sinfning boshqa sinfni kengaytirish usuli.
 
-So we can create new functionality on top of the existing.
+Shunday qilib, biz mavjud funksiyalar ustiga yangi funksiyalarni yaratishimiz mumkin.
 
-## The "extends" keyword
+## "Uzaytiradi" kalit so'zi
 
-Let's say we have class `Animal`:
+Aytaylik, bizda `Animal`, ya'ni hayvon sinfi bor: 
 
 ```js
 class Animal {
@@ -28,21 +28,21 @@ class Animal {
 let animal = new Animal("My animal");
 ```
 
-Here's how we can represent `animal` object and `Animal` class graphically:
+Bu yerda `animal`obyekti va `Animal` sinfini grafik tarzda qanday ko‘rsatishimiz mumkinligi berilgan:
 
 ![](rabbit-animal-independent-animal.svg)
 
-...And we would like to create another `class Rabbit`.
+...Va endi biz boshqa `class Rabbit`, quyon sinfini yaratmoqchimiz
 
-As rabbits are animals, `Rabbit` class should be based on `Animal`, have access to animal methods, so that rabbits can do what "generic" animals can do.
+Quyonlar hayvon bo'lganligi sababli, `Rabbit` sinfi `Animal` sinfiga asoslangan bo'lishi va hayvonlar usullaridan foydalanish imkoniyatiga ega bo'lishi kerak, shunda quyonlar "umumiy" hayvonlar qila oladigan narsalarni qila oladi.
 
-The syntax to extend another class is: `class Child extends Parent`.
+Boshqa sinfni kengaytirish sintaksisi: `class Child extends Parent` , ( bolalar sinfi ota-ona sinfini kengaytiradi)
 
-Let's create `class Rabbit` that inherits from `Animal`:
+`Animal`, hayvondan meros oladigan `class Rabbit` (quyon sinfi)ni yaratamiz:
 
 ```js
 *!*
-class Rabbit extends Animal {
+class Rabbit Animal ni kengaytiradi {
 */!*
   hide() {
     alert(`${this.name} hides!`);
@@ -51,27 +51,27 @@ class Rabbit extends Animal {
 
 let rabbit = new Rabbit("White Rabbit");
 
-rabbit.run(5); // White Rabbit runs with speed 5.
-rabbit.hide(); // White Rabbit hides!
+rabbit.run(5); // Oq Quyon 5 tezlikda yuguradi.
+rabbit.hide(); // Oq quyon yashirinadi!
 ```
 
-Object of `Rabbit` class have access both to `Rabbit` methods, such as `rabbit.hide()`, and also to `Animal` methods, such as `rabbit.run()`.
+`Rabbit` sinfi obyekti `rabbit.hide()` kabi `Rabbit` usullariga, hamda `rabbit.run()` kabi `Animal` usullariga kirish huquqiga ega.
 
-Internally, `extends` keyword works using the good old prototype mechanics. It sets `Rabbit.prototype.[[Prototype]]` to `Animal.prototype`. So, if a method is not found in `Rabbit.prototype`, JavaScript takes it from `Animal.prototype`.
+Ichkarida, `extends` kalit so'zi yaxshi eski prototip mexanikasi yordamida ishlaydi. U `Rabbit.prototype.[[Prototype]]` ni `Animal.prototype`ga o'rnatadi. Shunday qilib, agar `Rabbit.prototype` da usul topilmasa, JavaScript uni `Animal.prototype` dan oladi.
 
 ![](animal-rabbit-extends.svg)
 
-For instance, to find `rabbit.run` method, the engine checks (bottom-up on the picture):
-1. The `rabbit` object (has no `run`).
-2. Its prototype, that is `Rabbit.prototype` (has `hide`, but not `run`).
-3. Its prototype, that is (due to `extends`) `Animal.prototype`, that finally has the `run` method.
+Masalan, `rabbit.run` usulini topish uchun qurilma tekshiradi (rasmda pastdan yuqoriga):
+1. `rabbit` obyekti (`run` xususiyati mavjud emas).
+2. Uning prototipi, ya'ni `Rabbit.prototype` ( `hide` xususiyatiga ega, ammo `run` xususiyati yo'q).
+3. Uning prototipi, ya'ni ( `extends` bilan bog'liq) , `Animal.prototype` nihoyat `run` usuliga ega.
 
-As we can recall from the chapter <info:native-prototypes>, JavaScript itself uses prototypal inheritance for built-in objects. E.g. `Date.prototype.[[Prototype]]` is `Object.prototype`. That's why dates have access to generic object methods.
+<info:native-prototypes> bo'limidan yodga olishimiz mumkinki, JavaScript-ning o'zi o'rnatilgan obyektlar uchun prototip merosidan foydalanadi. Masalan, `Data.prototype.[[Prototip]]` , sana prototipi `Object.prototype` hisoblanadi. Shuning uchun sanalar umumiy obyekt usullariga kirish huquqiga ega.
 
-````smart header="Any expression is allowed after `extends`"
-Class syntax allows to specify not just a class, but any expression after `extends`.
+````aqlli sarlavha=extends` dan keyin har qanday iboraga ruxsat beriladi.
+Sinf sintaksisi nafaqat sinfni, balki `extends` (kengaytirish) dan keyin istalgan ifodani belgilash imkonini beradi.
 
-For instance, a function call that generates the parent class:
+Masalan, asosiy sinfni yaratadigan funksiya chaqiruvi:
 
 ```js run
 function f(phrase) {
@@ -86,34 +86,34 @@ class User extends f("Hello") {}
 
 new User().sayHi(); // Hello
 ```
-Here `class User` inherits from the result of `f("Hello")`.
+Bu yerda `class User`, sinf foydalanuvchisi `f("Hello")` ning natijasidan meros oladi.
 
-That may be useful for advanced programming patterns when we use functions to generate classes depending on many conditions and can inherit from them.
+Bu ko'plab shartlarga qarab sinflarni yaratish va ulardan meros bo'lishi mumkin bo'lgan funksiyalardan foydalanganda ilg'or dasturlash naqshlari uchun foydali bo'lishi mumkin.
 ````
 
-## Overriding a method
+## Usulni bekor qilish
 
-Now let's move forward and override a method. By default, all methods that are not specified in `class Rabbit` are taken directly "as is" from `class Animal`.
+Endi biroz oldinga harakat qilamiz va usulni bekor qilamiz. Odatda, `class Rabbit`, 'sinf quyon'ida ko'rsatilmagan barcha usullar to'g'ridan-to'g'ri `class Animal`, 'Hayvonlar sinfidan' "as is", "xuddi shunday" olinadi.
 
-But if we specify our own method in `Rabbit`, such as `stop()` then it will be used instead:
+Ammo agar biz `Rabbit`, quyonda da `stop()` kabi o‘z uslubimizni belgilasak, bunday holda uning o‘rniga ishlatiladi:
 
 ```js
-class Rabbit extends Animal {
+quyon sinfi hayvon sinfini kengaytiradi {
   stop() {
-    // ...now this will be used for rabbit.stop()
-    // instead of stop() from class Animal
+    // ...endi bu rabbit.stop() uchun ishlatiladi
+    // Animal sinfidagi stop() o'rniga
   }
 }
 ```
 
-Usually, however, we don't want to totally replace a parent method, but rather to build on top of it to tweak or extend its functionality. We do something in our method, but call the parent method before/after it or in the process.
+Odatda, biz ota-ona usulini to'liq almashtirishni emas, balki uning funksiyasini sozlash yoki kengaytirish uchun uning ustiga qurishni xohlaymiz. Biz usulimizda biror narsa qilamiz, lekin undan oldin/keyin yoki jarayonda ota-ona usulini chaqiramiz.
 
-Classes provide `"super"` keyword for that.
+Sinflar buning uchun `"super"` kalitso'zini ta'minlaydi.
 
-- `super.method(...)` to call a parent method.
-- `super(...)` to call a parent constructor (inside our constructor only).
+- `super.method(...)` ota-ona usulini chaqiradi. 
+- `super(...)` ota-ona konstruktorini chaqiradi (faqat o'zimizning konstruktorimizning ichida) 
 
-For instance, let our rabbit autohide when stopped:
+Misol uchun, bizning quyon to'xtatilganda avtomatik ravishda yashirilsin:
 
 ```js run
 class Animal {
@@ -135,59 +135,59 @@ class Animal {
 
 }
 
-class Rabbit extends Animal {
+Quyon sinfi Hayvon sinfini kengaytiradi {
   hide() {
     alert(`${this.name} hides!`);
   }
 
 *!*
   stop() {
-    super.stop(); // call parent stop
-    this.hide(); // and then hide
+    super.stop(); // parent stopni chaqiradi
+    this.hide(); // va keyin yashirinadi
   }
 */!*
 }
 
 let rabbit = new Rabbit("White Rabbit");
 
-rabbit.run(5); // White Rabbit runs with speed 5.
-rabbit.stop(); // White Rabbit stands still. White Rabbit hides!
+rabbit.run(5); // Oq Quyon 5 tezlikda yuguradi.
+rabbit.stop(); // Oq Quyon haliyam joyida turadi. Oq quyon yashirinadi!
 ```
 
-Now `Rabbit` has the `stop` method that calls the parent `super.stop()` in the process.
+Endi jarayon davomida `Rabbit` da  ota-onani `super.stop()`orqali chaqiradigan `stop` usuli mavjud.
 
-````smart header="Arrow functions have no `super`"
-As was mentioned in the chapter <info:arrow-functions>, arrow functions do not have `super`.
+````aqlli sarlavha="Strelka funksiyalarida `super`" yo'q
+ <info:arrow-functions> bobida ta'kidlanganidek, strelka funksiyalarida `super` mavjud emas.
 
-If accessed, it's taken from the outer function. For instance:
+Agar kirish bo'lsa, u tashqi funksiyadan olingan. Masalan:
 
 ```js
-class Rabbit extends Animal {
+Quyon sinfi Hayvon sinfini kengaytiradi {
   stop() {
-    setTimeout(() => super.stop(), 1000); // call parent stop after 1sec
+    setTimeout(() => super.stop(), 1000); // 1 sekunddan keyin parent stop ni chaqiradi
   }
 }
 ```
 
-The `super` in the arrow function is the same as in `stop()`, so it works as intended. If we specified a "regular" function here, there would be an error:
+The `super` in the arrow function is the same as in `stop()`, so it works as intended. If we specified a "regular" function here, there would be an error: Strelka funksiyasidagi `super` deyarli `stop()` funksiyasi bilan bir xil, shuning uchun u mo'ljallangandek ishlaydi. Agar biz bu yerda "muntazam" funksiyani belgilasak, xato bo'ladi:
 
 ```js
-// Unexpected super
+// kutilmagan super
 setTimeout(function() { super.stop() }, 1000);
 ```
 ````
 
-## Overriding constructor
+## Konstruktorni bekor qilish
 
-With constructors it gets a little bit tricky.
+Konstruktorlar bilan ish biroz shubhali kechishi mumkin.
 
-Until now, `Rabbit` did not have its own `constructor`.
+Hozirgacha `Rabbit` o'zining shaxsiy `constructor` iga ega emasdi.
 
-According to the [specification](https://tc39.github.io/ecma262/#sec-runtime-semantics-classdefinitionevaluation), if a class extends another class and has no `constructor`, then the following "empty" `constructor` is generated:
+[specification](https://tc39.github.io/ecma262/#sec-runtime-semantics-classdefinitionevaluation) ga ko'ra, agar sinf boshqa sinfni kengaytirsa va `constructor` bo'lmasa, quyidagi "bo'sh" 'konstruktor' hosil bo'ladi:
 
 ```js
 class Rabbit extends Animal {
-  // generated for extending classes without own constructors
+  // sinflarni kengaytirish uchun shaxsiy konstruktorlarsiz yaratildi
 *!*
   constructor(...args) {
     super(...args);
@@ -196,9 +196,9 @@ class Rabbit extends Animal {
 }
 ```
 
-As we can see, it basically calls the parent `constructor` passing it all the arguments. That happens if we don't write a constructor of our own.
+ Ko'rib turganimizdek, u asosan barcha argumentlarni o'tkazib, ota-ona `constructor` ni chaqiradi. Agar biz o'zimizning konstruktorni yozmasak, bu holat sodir bo'ladi.
 
-Now let's add a custom constructor to `Rabbit`. It will specify the `earLength` in addition to `name`:
+Endi `Rabbit` ga maxsus konstruktor qo‘shamiz. U `name`ga qo'shimcha ravishda `earLength` ni ham belgilaydi:
 
 ```js run
 class Animal {
@@ -209,7 +209,7 @@ class Animal {
   // ...
 }
 
-class Rabbit extends Animal {
+Quyon sinfi Hayvonni kengaytiradi {
 
 *!*
   constructor(name, earLength) {
@@ -223,31 +223,31 @@ class Rabbit extends Animal {
 }
 
 *!*
-// Doesn't work!
-let rabbit = new Rabbit("White Rabbit", 10); // Error: this is not defined.
+// Ishlamaydi!
+let rabbit = new Rabbit("White Rabbit", 10); // Xato: bu aniqlanmagan.
 */!*
 ```
 
-Whoops! We've got an error. Now we can't create rabbits. What went wrong?
+Obbo, bizda xato bor. Endi quyonlarni yarata olmaymiz. Qanday muammo yuz berdi?
 
-The short answer is:
+Qisqa javob
 
-- **Constructors in inheriting classes must call `super(...)`, and (!) do it before using `this`.**
+- **Sinflarni meros qilib olgan konstruktorlar `super(...)` ni chaqirishi va (!) `this` dan foydalanishdan oldin buni bajarishi kerak.**
 
-...But why? What's going on here? Indeed, the requirement seems strange.
+...Ammo nega? Bu yerda nima sodir bo'lyapti? Qaytaga qo'yilgan talab shubhali ko'rinyapti. 
 
-Of course, there's an explanation. Let's get into details, so you'll really understand what's going on.
+Albatta, tushuntirishlar mavjud. Keling, tafsilotlarga to'xtalib o'tamiz, shunda siz haqiqatan ham nima bo'layotganini tushunasiz.
 
-In JavaScript, there's a distinction between a constructor function of an inheriting class (so-called "derived constructor") and other functions. A derived constructor has a special internal property `[[ConstructorKind]]:"derived"`. That's a special internal label.
+JavaScriptda meros qilib olingan sinfning konstruktor funktsiyasi ("hosila konstruktor" deb ataladi) va boshqa funktsiyalar o'rtasida farq mavjud. Olingan konstruktor `[[ConstructorKind]]:"derived"` maxsus ichki xususiyatiga ega. Bu maxsus ichki yorliq hisoblanadi.
 
-That label affects its behavior with `new`.
+Bu yorliq uning xatti-harakatlariga `new` bilan taʼsir qiladi.
 
-- When a regular function is executed with `new`, it creates an empty object and assigns it to `this`.
-- But when a derived constructor runs, it doesn't do this. It expects the parent constructor to do this job.
+- Muntazam funksiya `new` bilan bajarilganda, u bo'sh obyektni yaratadi va uni `this` ga tayinlaydi.
+- Lekin olingan konstruktor ishlaganda, u buni bajarmaydi. Bu ishni ota-konstruktor bajarishini kutadi.
 
-So a derived constructor must call `super` in order to execute its parent (base) constructor, otherwise the object for `this` won't be created. And we'll get an error.
+Shunday qilib, olingan konstruktor o'zining ota-ona (asosiy) konstruktorini bajarish uchun `super` ni chaqirishi kerak, aks holda `this` uchun obyekt yaratilmaydi. Va biz xatoga duch kelamiz.
 
-For the `Rabbit` constructor to work, it needs to call `super()` before using `this`, like here:
+`Rabbit` konstruktori ishlashi uchun `this` dan foydalanishdan oldin `super()` ni chaqirishi kerak, masalan:
 
 ```js run
 class Animal {
@@ -260,7 +260,7 @@ class Animal {
   // ...
 }
 
-class Rabbit extends Animal {
+Quyon sinfi Hayvon sinfini kengaytiradi {
 
   constructor(name, earLength) {
 *!*
@@ -280,121 +280,121 @@ alert(rabbit.earLength); // 10
 */!*
 ```
 
-### Overriding class fields: a tricky note
+### Sinf maydonlarini bekor qilish: murakkab eslatma
 
-```warn header="Advanced note"
-This note assumes you have a certain experience with classes, maybe in other programming languages.
+```ogohlantiruvchi sarlavha="rivojlangan eslatma"
+Ushbu eslatmada siz boshqa dasturlash tillarida darslar bilan ma'lum tajribaga ega bo'lishingizni nazarda tutadi.
 
-It provides better insight into the language and also explains the behavior that might be a source of bugs (but not very often).
+Bu tilni yaxshiroq tushunish imkonini beradi va xatolar manbayi bo'lishi mumkin bo'lgan xatti-harakatlarni izohlab beradi (lekin tez-tez emas).
 
-If you find it difficult to understand, just go on, continue reading, then return to it some time later.
+Agar tushunish qiyin bo'lsa, shunchaki to'xtab qolmasdan o'qishda davom eting, keyin biroz vaqt o'tgach unga qayting.
 ```
 
-We can override not only methods, but also class fields.
+Biz nafaqat usullarni, balki sinf maydonlarini ham bekor qilishimiz mumkin.
 
-Although, there's a tricky behavior when we access an overridden field in parent constructor, quite different from most other programming languages.
+Garchi ota-ona konstruktorda bekor qilingan maydonga kirganimizda, boshqa dasturlash tillaridan ancha farq qiladigan qiyin xatti-harakatlar mavjud.
 
-Consider this example:
+Ushbu misolni ko'rib chiqing:
 
 ```js run
-class Animal {
-  name = 'animal';
+sinf Hayvon {
+  name = 'hayvon';
 
   constructor() {
     alert(this.name); // (*)
   }
 }
 
-class Rabbit extends Animal {
-  name = 'rabbit';
+Quyon sinfi Hayvon sinfini kengaytiradi {
+  name = 'quyon';
 }
 
-new Animal(); // animal
+yangi Hayvon(); // hayvon
 *!*
-new Rabbit(); // animal
+yangi Quyon(); // hayvon
 */!*
 ```
 
-Here, class `Rabbit` extends `Animal` and overrides the `name` field with its own value.
+Bu yerda `Rabbit` sinfi `Animal`ni kengaytiradi va `name` maydonini o‘z qiymati bilan bekor qiladi.
 
-There's no own constructor in `Rabbit`, so `Animal` constructor is called.
+`Rabbit` da shaxsiy konstruktor yo'q, shuning uchun `Animal` konstruktori deyiladi.
 
-What's interesting is that in both cases: `new Animal()` and `new Rabbit()`, the `alert` in the line `(*)` shows `animal`.
+Qizig'i shundaki, ikkala holatda ham: `yangi hayvon()` va `yangi quyon()`, `(*)` qatoridagi `ogohlantirish` `hayvon`ni ko'rsatadi.
 
-**In other words, the parent constructor always uses its own field value, not the overridden one.**
+ **Boshqacha so'z bilan aytganda, ota-ona konstruktori har doim bekor qilingan qiymatdan emas, balki o‘zining maydon qiymatidan foydalanadi.**
 
-What's odd about it?
+Buning nimasi g'alati?
 
-If it's not clear yet, please compare with methods.
+Agar u hali aniq bo'lmasa, iltimos, usullar bilan solishtirib ko'ring.
 
-Here's the same code, but instead of `this.name` field we call `this.showName()` method:
+Mana bir xil kod, lekin `this.name` maydoni o‘rniga `this.showName()` usulini chaqiramiz:
 
 ```js run
 class Animal {
-  showName() {  // instead of this.name = 'animal'
+  showName() {  // this.name ning o'rniga = 'hayvon'
     alert('animal');
   }
 
   constructor() {
-    this.showName(); // instead of alert(this.name);
+    this.showName(); // ogohlantirish o'rniga (this.name);
   }
 }
 
-class Rabbit extends Animal {
+Quyon sinfi hayvon sinfini kengaytiradi {
   showName() {
-    alert('rabbit');
+    alert('quyon');
   }
 }
 
-new Animal(); // animal
+yangi Hayvon(); // hayvon
 *!*
-new Rabbit(); // rabbit
+yangi Quyon(); // quyon
 */!*
 ```
 
-Please note: now the output is different.
+Iltimos, diqqat qiling: endi natija biroz boshqacha.
 
-And that's what we naturally expect. When the parent constructor is called in the derived class, it uses the overridden method.
+Va bu holat biz tabiiy ravishda kutgan narsadir. Ota-ona konstruktor ajratib olingan sinfda chaqirilganda, u bekor qilingan usuldan foydalanadi.
 
-...But for class fields it's not so. As said, the parent constructor always uses the parent field.
+...Ammo sinf maydonlari uchun bunday emas. Aytganimizdek, ota-ona konstruktor har doim ota-ona maydondan foydalanadi.
 
-Why is there a difference?
+Nimaga bu yerda farq mavjud?
 
-Well, the reason is the field initialization order. The class field is initialized:
-- Before constructor for the base class (that doesn't extend anything),
-- Immediately after `super()` for the derived class.
+Xo'sh, bunga sabab maydonni ishga tushirish tartibidir. Sinf maydoni ishga tushirildi:
+- Asosiy sinf uchun konstruktordan oldin (bu hech narsani kengaytirmaydi),
+- Olingan sinf uchun `super()` dan keyin darhol.
 
-In our case, `Rabbit` is the derived class. There's no `constructor()` in it. As said previously, that's the same as if there was an empty constructor with only `super(...args)`.
+Bizning holatda, `Rabbit` hosila sinfdir. Unda `constructor()` yo'q. Avval aytib o'tganimizdek, bu xuddi `super(...args)` bo'lgan bo'sh konstruktorga o'xshaydi.
 
-So, `new Rabbit()` calls `super()`, thus executing the parent constructor, and (per the rule for derived classes) only after that its class fields are initialized. At the time of the parent constructor execution, there are no `Rabbit` class fields yet, that's why `Animal` fields are used.
+Shunday qilib, `new Rabbit()` `super()` ni chaqiradi, shu bilan ota-ona konstruktorni ishga tushiradi va (oluvchi sinflar uchun qoida bo'yicha) shundan keyingina uning sinf maydonlari ishga tushiriladi. Ota-ona konstruktorni bajarish vaqtida hali `Rabbit` sinf maydonlari mavjud emas, shuning uchun `Animal` maydonlari ishlatiladi.
 
-This subtle difference between fields and methods is specific to JavaScript.
+Maydonlar va usullar o'rtasidagi bu nozik farq JavaScript-ga xosdir.
 
-Luckily, this behavior only reveals itself if an overridden field is used in the parent constructor. Then it may be difficult to understand what's going on, so we're explaining it here.
+Yaxshiyamki, bu xatti-harakat faqat ota-ona konstruktorida bekor qilingan maydon ishlatilsa, o'zini namoyon qiladi. Keyin nima bo'layotganini tushunish qiyin bo'lishi mumkin, shuning uchun biz buni bu yerda tushuntiramiz.
 
-If it becomes a problem, one can fix it by using methods or getters/setters instead of fields.
+Agar muammo yuzaga kelsa, uni maydonlar o'rniga usullar yoki oluvchilar/o'rnatuvchilar yordamida tuzatish mumkin.
 
-## Super: internals, [[HomeObject]]
+## Super: ichki qismlar, [[HomeObject]]
 
-```warn header="Advanced information"
-If you're reading the tutorial for the first time - this section may be skipped.
+```ogohlantiruvchi sarlavha="Rivojlantirilgan ma'lumot"
+Agar siz o'quv qo'llanmasini birinchi marta o'qiyotgan bo'lsangiz - bu bo'lim o'tkazib yuborilishi mumkin.
 
-It's about the internal mechanisms behind inheritance and `super`.
+Bu meros va `super` ortidagi ichki mexanizmlar haqida.
 ```
 
-Let's get a little deeper under the hood of `super`. We'll see some interesting things along the way.
+Keling, `super` atamasiga biroz chuqurroq kiraylik. Yo'lda biz qiziqarli narsalarni ko'ramiz.
 
-First to say, from all that we've learned till now, it's impossible for `super` to work at all!
+Birinchidan, shuni aytish kerakki, biz hozirgacha o'rgangan narsalarimizdan `super` umuman ishlashi mumkin emas!
 
-Yeah, indeed, let's ask ourselves, how it should technically work? When an object method runs, it gets the current object as `this`. If we call `super.method()` then, the engine needs to get the `method` from the prototype of the current object. But how?
+Ha, haqiqatan ham, keling, o'zimizga savol beraylik, bu texnik jihatdan qanday ishlashi kerak? Obyekt usuli ishga tushganda, u joriy obyektni `this` sifatida oladi. Agar biz `super.method()` deb chaqirsak, dvigatel joriy obyekt prototipidan `method` olishi kerak. Lekin qanday qilib?
 
-The task may seem simple, but it isn't. The engine knows the current object `this`, so it could get the parent `method` as `this.__proto__.method`. Unfortunately, such a "naive" solution won't work.
+Vazifa oddiy ko'rinishi mumkin, ammo unday emas. Dvigatel joriy obyekt `this` ni biladi, shuning uchun u asosiy `method` ni `this.__proto__.method` sifatida olishi mumkin. Afsuski, bunday “sodda” yechim ishlamaydi.
 
-Let's demonstrate the problem. Without classes, using plain objects for the sake of simplicity.
+Keling, muammoni ko'rib chiqaylik. Sinflarsiz, oddiylik uchun oddiy obyektlardan foydalanamiz
 
-You may skip this part and go below to the `[[HomeObject]]` subsection if you don't want to know the details. That won't harm. Or read on if you're interested in understanding things in-depth.
+Tafsilotlarni bilishni istamasangiz, bu qismni o'tkazib yuborishingiz va quyida `[[HomeObject]]` bo'limiga o'tishingiz mumkin. Bu zarar qilmaydi. Yoki narsalarni chuqur tushunishga qiziqsangiz, o'qing.
 
-In the example below, `rabbit.__proto__ = animal`. Now let's try: in `rabbit.eat()` we'll call `animal.eat()`, using `this.__proto__`:
+Quyida shunday misol berilgan, `rabbit.__proto__ = animal`. Keling harakat qilib ko'ramiz: `rabbit.eat()`, quyon yeydi da `this.__proto__` dan foydalangan holda `animal.eat()`, hayvon yeydi ni chaqiramiz:
 
 ```js run
 let animal = {
@@ -409,7 +409,7 @@ let rabbit = {
   name: "Rabbit",
   eat() {
 *!*
-    // that's how super.eat() could presumably work
+    // super.eat() shunday ishlashi mumkin
     this.__proto__.eat.call(this); // (*)
 */!*
   }
@@ -418,11 +418,11 @@ let rabbit = {
 rabbit.eat(); // Rabbit eats.
 ```
 
-At the line `(*)` we take `eat` from the prototype (`animal`) and call it in the context of the current object. Please note that `.call(this)` is important here, because a simple `this.__proto__.eat()` would execute parent `eat` in the context of the prototype, not the current object.
+`(*)` qatorida biz prototipdan (`animal`) `eat` ni olamiz va uni joriy obyekt kontekstida chaqiramiz. Esda tutingki, `.call(this)` bu yerda muhim, chunki ushbu `this.__proto__.eat()` obyekti oddiy obyekt emas, balki prototip kontekstida `eat` ota-ona rolini bajaradi.
 
-And in the code above it actually works as intended: we have the correct `alert`.
+Va yuqoridagi kod mo'ljallangandek ishlaydi: bizda to'g'ri `alert`, ogohlantirish mavjud.
 
-Now let's add one more object to the chain. We'll see how things break:
+Endi zanjirga yana bitta obyektni qo'shamiz. Vaziyat qanday buzilishini ko'ramiz:
 
 ```js run
 let animal = {
@@ -435,7 +435,7 @@ let animal = {
 let rabbit = {
   __proto__: animal,
   eat() {
-    // ...bounce around rabbit-style and call parent (animal) method
+    // ...quyon uslubi atrofida sakrang va ota-ona (hayvon) usulini chaqiring
     this.__proto__.eat.call(this); // (*)
   }
 };
@@ -443,39 +443,39 @@ let rabbit = {
 let longEar = {
   __proto__: rabbit,
   eat() {
-    // ...do something with long ears and call parent (rabbit) method
+    // ... uzun quloqlar bilan biror narsa qiling va ota-ona (quyon) usulini chaqiring
     this.__proto__.eat.call(this); // (**)
   }
 };
 
 *!*
-longEar.eat(); // Error: Maximum call stack size exceeded
+longEar.eat(); // Xato: qo'ng'iroqlar to'plamining maksimal hajmi oshib ketdi
 */!*
 ```
 
-The code doesn't work anymore! We can see the error trying to call `longEar.eat()`.
+Kod endi ishlamaydi! Error, ya'ni xatoning `longEar.eat()`ni chaqirishga urinayotganini ko'rishimiz mumkin.
 
-It may be not that obvious, but if we trace `longEar.eat()` call, then we can see why. In both lines `(*)` and `(**)` the value of `this` is the current object (`longEar`). That's essential: all object methods get the current object as `this`, not a prototype or something.
+Bu unchalik aniq bo'lmasligi mumkin, lekin biz `longEar.eat()` qo'ng'irog'ini kuzatsak, buning sababini bilib olamiz. `(*)` va `(**)` ikkala qatorida `this` ning qiymati joriy obyekt (`longEar`) dir. Bu juda muhim: barcha obyekt usullari joriy obyektni prototip yoki boshqa narsa emas, balki `this` sifatida oladi.
 
-So, in both lines `(*)` and `(**)` the value of `this.__proto__` is exactly the same: `rabbit`. They both call `rabbit.eat` without going up the chain in the endless loop.
+Demak, `(*)` va `(**)` ikkala qatorida `this.__proto__` ning qiymati aynan bir xil, ya'ni `quyon`. Ularning ikkalasi ham cheksiz aylanada zanjirni ko'tarmasdan `rabbit.eat` deb chaqiruvni amalga oshiradi.
 
-Here's the picture of what happens:
+Mana bu yerda sodir bo'layotgan vaziyatning suratini ko'rishimiz mumkin:
 
 ![](this-super-loop.svg)
 
-1. Inside `longEar.eat()`, the line `(**)` calls `rabbit.eat` providing it with `this=longEar`.
+1. `longEar.eat()`ning tarkibida `(**)` qatori `this=longEar` bilan ta'minlagan holda `rabbit.eat` ni chaqiradi. 
     ```js
-    // inside longEar.eat() we have this = longEar
+    // longEar.eat() ning tarkibida bizda = longEar mavjud
     this.__proto__.eat.call(this) // (**)
     // becomes
     longEar.__proto__.eat.call(this)
     // that is
     rabbit.eat.call(this);
     ```
-2. Then in the line `(*)` of `rabbit.eat`, we'd like to pass the call even higher in the chain, but `this=longEar`, so `this.__proto__.eat` is again `rabbit.eat`!
+2. Keyin `rabbit.eat` ning `(*)` qatorida biz qo'ng'iroqni zanjirda yanada yuqoriroqqa o'tkazmoqchimiz, lekin `this=longEar`, shuning uchun `this.__proto__.eat` yana `rabbit.eat` holicha qoladi!
 
     ```js
-    // inside rabbit.eat() we also have this = longEar
+    // rabbit.eat() ning tarkibida bizda yana = longEar mavjud
     this.__proto__.eat.call(this) // (*)
     // becomes
     longEar.__proto__.eat.call(this)
@@ -483,19 +483,19 @@ Here's the picture of what happens:
     rabbit.eat.call(this);
     ```
 
-3. ...So `rabbit.eat` calls itself in the endless loop, because it can't ascend any further.
+3. ...Shunday qilib, `rabbit.eat` o'zini cheksiz siklda chaqiradi, chunki u boshqa ko'tarila olmaydi.
 
-The problem can't be solved by using `this` alone.
+Muammoni faqatgina `this` dan foydalangan holda hal qilib bo'lmaydi.
 
-### `[[HomeObject]]`
+### `[[HomeObject]]` 'uy obyekti'
 
-To provide the solution, JavaScript adds one more special internal property for functions: `[[HomeObject]]`.
+Yechimni ta'minlash uchun JavaScript funksiyalar uchun yana bitta maxsus ichki xususiyat `[[HomeObject]]` ni qo'shadi.
 
-When a function is specified as a class or object method, its `[[HomeObject]]` property becomes that object.
+Agar funksiya sinf yoki obyekt usuli sifatida belgilangan bo'lsa, uning `[[HomeObject]]` xususiyati o'sha obyektga aylanadi.
 
-Then `super` uses it to resolve the parent prototype and its methods.
+Keyin `super`  uni asosiy prototip va uning usullarini hal qilish uchun ishlatadi.
 
-Let's see how it works, first with plain objects:
+Keling, avval oddiy obyektlar bilan qanday ishlashini ko'rib chiqaylik:
 
 ```js run
 let animal = {
@@ -522,22 +522,22 @@ let longEar = {
 };
 
 *!*
-// works correctly
+// to'g'ri ishlaydi
 longEar.eat();  // Long Ear eats.
 */!*
 ```
 
-It works as intended, due to `[[HomeObject]]` mechanics. A method, such as `longEar.eat`, knows its `[[HomeObject]]` and takes the parent method from its prototype. Without any use of `this`.
+ U `[[HomeObject]]` mexanikasi tufayli rejalashtirilganidek ishlaydi. `longEar.eat` kabi usul o'zining `[[HomeObject]]` ini taniydi va `this` dan foydalanmagan holda prototipidan asosiy usulni oladi.
 
-### Methods are not "free"
+###  Usullar "bepul" emas
 
-As we've known before, generally functions are "free", not bound to objects in JavaScript. So they can be copied between objects and called with another `this`.
+Bizga ilgari ma'lum bo'lganidek, odatda funktsiyalar "bepul" bo'lib, JavaScript-dagi obyektlar bilan bog'lanmagan. Shunday qilib, ularni obyektlar o'rtasida nusxalash va boshqa `this` bilan chaqirish mumkin.
 
-The very existence of `[[HomeObject]]` violates that principle, because methods remember their objects. `[[HomeObject]]` can't be changed, so this bond is forever.
+`[[HomeObject]]`ning mavjudligi bu tamoyilni buzadi, chunki usullar o'z obyektlarini eslab qoladi. `[[HomeObject]]`ni o'zgartirib bo'lmaydi, shuning uchun bu aloqa abadiydir.
 
-The only place in the language where `[[HomeObject]]` is used -- is `super`. So, if a method does not use `super`, then we can still consider it free and copy between objects. But with `super` things may go wrong.
+Dasturlash tilida `[[HomeObject]]` ishlatiladigan yagona joy -- `super`. Shunday qilib, agar usul `super` dan foydalanmasa, biz uni hali ham bepul deb hisoblashimiz va obyektlar o'rtasida nusxalashimiz mumkin. Ammo `super` bilan narsalar noto'g'ri ketishi mumkin.
 
-Here's the demo of a wrong `super` result after copying:
+ Nusxalashdan keyin noto'g'ri `super` natijaning namoyishi:
 
 ```js run
 let animal = {
@@ -546,7 +546,7 @@ let animal = {
   }
 };
 
-// rabbit inherits from animal
+// quyon hayvondan meros oladi
 let rabbit = {
   __proto__: animal,
   sayHi() {
@@ -560,7 +560,7 @@ let plant = {
   }
 };
 
-// tree inherits from plant
+// tree, daraxt plant, o'simlikdan meros oladi
 let tree = {
   __proto__: plant,
 *!*
@@ -573,28 +573,28 @@ tree.sayHi();  // I'm an animal (?!?)
 */!*
 ```
 
-A call to `tree.sayHi()` shows "I'm an animal". Definitely wrong.
+`tree.sayHi()` chaqiruvi "Men hayvonman" ni ko'rsatadi va bu albatta noto'g'ri.
 
-The reason is simple:
-- In the line `(*)`, the method `tree.sayHi` was copied from `rabbit`. Maybe we just wanted to avoid code duplication?
-- Its `[[HomeObject]]` is `rabbit`, as it was created in `rabbit`. There's no way to change `[[HomeObject]]`.
-- The code of `tree.sayHi()` has `super.sayHi()` inside. It goes up from `rabbit` and takes the method from `animal`.
+Sababi juda oddiy:
+- `(*)` qatorida, `tree.sayHi` usuli `rabbit` dan nusxalangan. Balki biz shunchaki kodni takrorlashning oldini olishni xohlagandirmiz?
+- Uning `[[HomeObject]]` , ya'ni uy obyekti `rabbit`hisoblanadi, chunki chaqiruvning o'zi ham `rabbit` da yaratilgan. `[[HomeObject]]` ni o'zgartirishning hech qanday iloji yo'q.
+- `tree.sayHi()` kodi tarkibida `super.sayHi()` mavjud. U `rabbit` dan yuqoriga ko‘tarilib, `animal` dan usulni oladi.
 
-Here's the diagram of what happens:
+Sodir bo'layotgan vaziyatning diagrammasi bilan tanishing:
 
 ![](super-homeobject-wrong.svg)
 
-### Methods, not function properties
+### Usullar funksiya xususiyatlari emas
 
-`[[HomeObject]]` is defined for methods both in classes and in plain objects. But for objects, methods must be specified exactly as `method()`, not as `"method: function()"`.
+`[[HomeObject]]` ham sinflardagi, ham oddiy obyektlardagi usullar uchun belgilangan. Ammo obyektlar uchun usullar `"method: function()"` sifatida emas, aynan `method()`sifatida ko'rsatilishi kerak.
 
-The difference may be non-essential for us, but it's important for JavaScript.
+Farqlar biz uchun katta ahamiyat kasb etmas, lekin bu jolat JavaScript uchun muhim hisoblanadi.
 
-In the example below a non-method syntax is used for comparison. `[[HomeObject]]` property is not set and the inheritance doesn't work:
+Quyidagi misolda taqqoslash uchun usul bo'lmagan sintaksis ishlatilgan. `[[HomeObject]]` xususiyati o'rnatilmagan va meros ishlamaydi:
 
 ```js run
 let animal = {
-  eat: function() { // intentionally writing like this instead of eat() {...
+  eat: function() { // eat() ning o'rniga atay shunday yoziladi {...
     // ...
   }
 };
@@ -607,21 +607,21 @@ let rabbit = {
 };
 
 *!*
-rabbit.eat();  // Error calling super (because there's no [[HomeObject]])
+rabbit.eat();  // Xato super ni chaqirmoqda (chunki bu yerda hech qanday [[HomeObject]] mavjud emas )
 */!*
 ```
 
-## Summary
+## Xulosa
 
-1. To extend a class: `class Child extends Parent`:
-    - That means `Child.prototype.__proto__` will be `Parent.prototype`, so methods are inherited.
-2. When overriding a constructor:
-    - We must call parent constructor as `super()` in `Child` constructor before using `this`.
-3. When overriding another method:
-    - We can use `super.method()` in a `Child` method to call `Parent` method.
-4. Internals:
-    - Methods remember their class/object in the internal `[[HomeObject]]` property. That's how `super` resolves parent methods.
-    - So it's not safe to copy a method with `super` from one object to another.
+1. Sinfni kengaytirish: `class Child extends Parent`, (sinf bolalari ota-ona xususiyatini kengaytiradi):
+   - Bu degani, `Child.prototype.__proto__` xususiyati `Parent.prototype` bo'ladi, shuning uchun usullar meros qilib olinadi.
+2. Konstruktorni bekor qilayotgan vaqtda:
+     - `this` dan foydalanishdan oldin `Child` konstruktorida ota-konstruktorni `super()` deb chaqirishimiz kerak.
+3. Boshqa usulni bekor qilayotgan vaqtda:
+    - `Parent` usulini chaqirish uchun `Child` usulida `super.method()`dan foydalanishimiz mumkin.
+4. Ichki qismlar:
+    - Usullar o'z sinfini/obyektini ichki `[[HomeObject]]` xususiyatida eslab qoladi. Shunday qilib, `super` ota-ona usullarini hal qiladi.
+    - Demak, `super` bilan usulni bir obyektdan ikkinchisiga nusxalash xavfsiz emas.
 
-Also:
-- Arrow functions don't have their own `this` or `super`, so they transparently fit into the surrounding context.
+Shuningdek:
+- Strelkali funksiyalarining oʻziga xos `this` yoki `super` funksiyalari yoʻq, shuning uchun ular atrofdagi kontekstga shaffof tarzda mos tushadi.

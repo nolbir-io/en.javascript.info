@@ -1,14 +1,13 @@
-# Error handling, "try...catch"
+# Xatolarni nazorat qilish, "try...catch" (sinab ko'rish...tutish)
+Biz dasturlashda qanchalik zo'r bo'lishimizdan qat'iy nazar, ba'zida skriptlarimizda xatolar bo'ladi. Ular bizning xatolarimiz, kutilmagan foydalanuvchi kiritilishi, serverning noto'g'ri javobi va boshqa minglab sabablarga ko'ra yuzaga kelishi mumkin.
 
-No matter how great we are at programming, sometimes our scripts have errors. They may occur because of our mistakes, an unexpected user input, an erroneous server response, and for a thousand other reasons.
+Odatda, skript xatolik yuz berganda uni konsolga chop etayotganda "o'ladi" (darhol to'xtaydi).
 
-Usually, a script "dies" (immediately stops) in case of an error, printing it to console.
+Ammo `try...catch` sintaksis konstruksiyasi mavjud bo'lib, u bizga xatolarni “tutib olish” imkonini beradi, shunda skript o'lish o'rniga yanada oqilona ishlay oladi.
 
-But there's a syntax construct `try...catch` that allows us to "catch" errors so the script can, instead of dying, do something more reasonable.
+## "try...catch" sintaksisi
 
-## The "try...catch" syntax
-
-The `try...catch` construct has two main blocks: `try`, and then `catch`:
+`try... catch` konstruktsiyasi ikkita asosiy blokdan iborat: `try` va `catch`:
 
 ```js
 try {
@@ -17,22 +16,22 @@ try {
 
 } catch (err) {
 
-  // error handling
+  // xatolarni nazorat qilish
 
 }
 ```
 
-It works like this:
+Bu shunday ishlaydi:
 
-1. First, the code in `try {...}` is executed.
-2. If there were no errors, then `catch (err)` is ignored: the execution reaches the end of `try` and goes on, skipping `catch`.
-3. If an error occurs, then the `try` execution is stopped, and control flows to the beginning of `catch (err)`. The `err` variable (we can use any name for it) will contain an error object with details about what happened.
+1. Birinchidan, `try {...}` dagi kod bajariladi.
+2. Agar xatoliklar bo'lmasa, `catch (err)` e'tiborga olinmaydi: `try` ni bajarish oxiriga yetib, `catch` ni o'tkazib yuborish bilan davom etadi.
+3. Agar xato ro'y bersa, u holda `try` ijrosi to'xtatiladi va boshqaruv `catch (err)` ning boshiga o'tadi. `err` o'zgaruvchisi (biz u uchun istalgan nomdan foydalanishimiz mumkin) nima sodir bo'lganligi haqidagi tafsilotlar bilan xato obyektini o'z ichiga oladi.
 
 ![](try-catch-flow.svg)
 
-So, an error inside the `try {...}` block does not kill the script -- we have a chance to handle it in `catch`.
+Shunday qilib, `try {...}` blokidagi xatolik skriptni o'ldirmaydi -- bizda uni `catch` da hal qilish imkoniyati mavjud.
 
-Let's look at some examples.
+Quyida bir nechta misollarni ko'rib chiqamiz.
 
 - An errorless example: shows `alert` `(1)` and `(2)`:
 
