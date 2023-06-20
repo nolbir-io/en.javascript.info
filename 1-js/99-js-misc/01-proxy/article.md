@@ -1,62 +1,62 @@
-# Proxy and Reflect
+# Proxy va Reflect
 
-A `Proxy` object wraps another object and intercepts operations, like reading/writing properties and others, optionally handling them on its own, or transparently allowing the object to handle them.
+`Proxy` obyekti boshqa obyektni o'rab oladi va o'qish/yozish xususiyatlari va boshqa operatsiyalarni to'xtatadi, ixtiyoriy ravishda ularni mustaqil ravishda boshqarish yoki obyektga ularni boshqarishga shaffof ruxsat beradi.
 
-Proxies are used in many libraries and some browser frameworks. We'll see many practical applications in this article.
+Proksi-serverlar ko'plab kutubxonalarda va ba'zi brauzer ramkalarida qo'llaniladi. Ushbu maqolada biz ko'plab amaliy dasturlarni ko'rib chiqamiz.
 
 ## Proxy
 
-The syntax:
+Sintaksis:
 
 ```js
 let proxy = new Proxy(target, handler)
 ```
 
-- `target` -- is an object to wrap, can be anything, including functions.
-- `handler` -- proxy configuration: an object with "traps", methods that intercept operations. - e.g. `get` trap for reading a property of `target`, `set` trap for writing a property into `target`, and so on.
+- `target` -- o'rash uchun obyekt boʻlib, har qanday narsa, jumladan, funksiyalar ham boʻlishi mumkin.
+- `handler` -- proksi-server konfiguratsiyasi: "tuzoqlarga" ega obyekt, operatsiyalarni to'xtatuvchi usullar. - masalan. `target` xususiyatini o'qish uchun `get` trap, `target`ga xususiyat yozish uchun `set` trap va hokazo.
 
-For operations on `proxy`, if there's a corresponding trap in `handler`, then it runs, and the proxy has a chance to handle it, otherwise the operation is performed on `target`.
+`Proxy` bo'yicha operatsiyalar uchun, agar `handler`da mos keladigan trap bo'lsa, u ishlaydi va proksi-server uni boshqarish imkoniyatiga ega bo'ladi, aks holda operatsiya `target` bo'yicha amalga oshiriladi.
 
-As a starting example, let's create a proxy without any traps:
+Boshlang'ich misol sifatida, keling, hech qanday tuzoqsiz proksi yarataylik:
 
 ```js run
 let target = {};
-let proxy = new Proxy(target, {}); // empty handler
+let proxy = new Proxy(target, {}); // bo'sh handler
 
-proxy.test = 5; // writing to proxy (1)
-alert(target.test); // 5, the property appeared in target!
+proxy.test = 5; // proxy yozish (1)
+alert(target.test); // 5, target da xususiyat paydo bo'ldi!
 
-alert(proxy.test); // 5, we can read it from proxy too (2)
+alert(proxy.test); // 5, biz uni proksi-serverdan ham o'qishimiz mumkin (2)
 
-for(let key in proxy) alert(key); // test, iteration works (3)
+for(let key in proxy) alert(key); // test, takrorlash ishlari (3)
 ```
 
-As there are no traps, all operations on `proxy` are forwarded to `target`.
+Hech qanday tuzoq yo'qligi sababli, `proxy` dagi barcha operatsiyalar `target` ga yo'naltiriladi.
 
-1. A writing operation `proxy.test=` sets the value on `target`.
-2. A reading operation `proxy.test` returns the value from `target`.
-3. Iteration over `proxy` returns values from `target`.
+1. `proxy.test=` yozish operatsiyasi `target` bo'yicha qiymatni o'rnatadi.
+2. `Proxy.test` o'qish operatsiyasi `target` qiymatini qaytaradi.
+3. `Proxy` ustidan takrorlash `target` dan qiymatlarni qaytaradi.
 
-As we can see, without any traps, `proxy` is a transparent wrapper around `target`.
+Ko'rib turganimizdek, hech qanday tuzoqsiz `proxy` `target` atrofida shaffof o'ramdir.
 
 ![](proxy.svg)
 
-`Proxy` is a special "exotic object". It doesn't have own properties. With an empty `handler` it transparently forwards operations to `target`.
+`Proxy` - bu maxsus "ekzotik obyekt". Uning o'ziga xos xususiyatlari yo'q. Bo'sh `handler` bilan operatsiyalarni shaffof tarzda `target` ga yo'naltiradi.
 
-To activate more capabilities, let's add traps.
+Qo'shimcha imkoniyatlarni faollashtirish uchun tuzoqlarni qo'shamiz.
 
-What can we intercept with them?
+Biz ular bilan nima qilishimiz mumkin?
 
-For most operations on objects, there's a so-called "internal method" in the JavaScript specification that describes how it works at the lowest level. For instance `[[Get]]`, the internal method to read a property, `[[Set]]`, the internal method to write a property, and so on. These methods are only used in the specification, we can't call them directly by name.
+Obyektlardagi ko'pgina operatsiyalar uchun JavaScript spetsifikatsiyasida uning eng past darajada qanday ishlashini tavsiflovchi "ichki usul" mavjud. Masalan, `[[Get]]`, xususiyatni o'qishning ichki usuli, `[[Set]]`, xususiyatni yozishning ichki usuli va boshqalar. Ushbu usullar faqat spetsifikatsiyada qo'llaniladi, biz ularni to'g'ridan-to'g'ri nom bilan chaqira olmaymiz.
 
-Proxy traps intercept invocations of these methods. They are listed in the [Proxy specification](https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots) and in the table below.
+Proksi tuzoqlari ushbu usullarning chaqiruvlarini to'xtatadi. Ular [Proksi spetsifikatsiyasi](https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots) va quyidagi jadvalda keltirilgan.
 
-For every internal method, there's a trap in this table: the name of the method that we can add to the `handler` parameter of `new Proxy` to intercept the operation:
+Har bir ichki usul uchun ushbu jadvalda tuzoq mavjud: operatsiyani to‘xtatish uchun biz `new proxy` ning `handler` parametriga qo‘shishimiz mumkin bo'lgan usulning nomi:
 
-| Internal Method | Handler Method | Triggers when... |
+| Ichki metod | Handler metodi | Harakatlanadi, qachonki... |
 |-----------------|----------------|-------------|
-| `[[Get]]` | `get` | reading a property |
-| `[[Set]]` | `set` | writing to a property |
+| `[[Get]]` | `get` | xususiyatni o'qish |
+| `[[Set]]` | `set` | xususiyatni yozish |
 | `[[HasProperty]]` | `has` | `in` operator |
 | `[[Delete]]` | `deleteProperty` | `delete` operator |
 | `[[Call]]` | `apply` | function call |
@@ -69,41 +69,42 @@ For every internal method, there's a trap in this table: the name of the method 
 | `[[GetOwnProperty]]` | `getOwnPropertyDescriptor` | [Object.getOwnPropertyDescriptor](mdn:/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor), `for..in`, `Object.keys/values/entries` |
 | `[[OwnPropertyKeys]]` | `ownKeys` | [Object.getOwnPropertyNames](mdn:/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames), [Object.getOwnPropertySymbols](mdn:/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols), `for..in`, `Object.keys/values/entries` |
 
-```warn header="Invariants"
-JavaScript enforces some invariants -- conditions that must be fulfilled by internal methods and traps.
+```ogohlantiruvchi sarlavha="Invariantlar"
+JavaScript ba'zi invariantlarni qo'llaydi -- shartlar ichki usullar va tuzoqlar bilan bajarilishi kerak.
 
-Most of them are for return values:
-- `[[Set]]` must return `true` if the value was written successfully, otherwise `false`.
-- `[[Delete]]` must return `true` if the value was deleted successfully, otherwise `false`.
-- ...and so on, we'll see more in examples below.
+Ularning aksariyati qaytarish qiymatlari uchundir:
+- `[[Set]]` Agar qiymat muvaffaqiyatli yozilgan bo'lsa, `true` ni, aks holda `false` ni qaytarishi kerak.
+- `[[Delete]]` Agar qiymat muvaffaqiyatli o'chirilgan bo'lsa, `true` ni, aks holda `false` ni qaytarishi kerak.
+- ...va hokazo, biz quyida keltirilgan misollarda ko'proq bilib olamiz.
 
-There are some other invariants, like:
-- `[[GetPrototypeOf]]`, applied to the proxy object must return the same value as `[[GetPrototypeOf]]` applied to the proxy object's target object. In other words, reading prototype of a proxy must always return the prototype of the target object.
+Boshqa invariantlar ham mavjud, masalan:
+- `[[GetPrototypeOf]]`, proksi obyektiga qo'llaniladigan 
+`[[GetPrototypeOf]]` proksi-obyektning maqsadli obyektiga qo'llaniladigan qiymatni qaytarishi kerak. Boshqacha qilib aytganda, proksi-serverning prototipini o'qish har doim maqsadli obyektning prototipini qaytarishi kerak.
 
-Traps can intercept these operations, but they must follow these rules.
+Tuzoqlar bu operatsiyalarni ushlab turishi mumkin, ammo ular ushbu qoidalarga rioya qilishlari kerak.
 
-Invariants ensure correct and consistent behavior of language features. The full invariants list is in [the specification](https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots). You probably won't violate them if you're not doing something weird.
+Invariantlar til xususiyatlarining to'g'ri va izchil harakatini ta'minlaydi. To'liq invariantlar ro'yxati [spetsifikatsiyada] (https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots) mavjud. Agar siz g'alati ish qilmasangiz, ehtimol siz ularni buzmaysiz.
 ```
 
-Let's see how that works in practical examples.
+Keling, bu qanday ishlashini amaliy misollarda ko'rib chiqaylik.
 
-## Default value with "get" trap
+## "Get" tuzog'i bilan standart qiymat
 
-The most common traps are for reading/writing properties.
+Eng keng tarqalgan tuzoqlar o'qish / yozish xususiyatlari uchundir.
 
-To intercept reading, the `handler` should have a method `get(target, property, receiver)`.
+O'qishni to'xtatish uchun `handler` `get (target, property, receiver)` usuliga ega bo'lishi kerak.
 
-It triggers when a property is read, with following arguments:
+Quyidagi argumentlar bilan xususiyat o'qilganda ishga tushadi:
 
-- `target` -- is the target object, the one passed as the first argument to `new Proxy`,
-- `property` -- property name,
-- `receiver` -- if the target property is a getter, then `receiver` is the object that's going to be used as `this` in its call. Usually that's the `proxy` object itself (or an object that inherits from it, if we inherit from proxy). Right now we don't need this argument, so it will be explained in more detail later.
+- `target` -- `new proxy` ga birinchi argument sifatida uzatiladigan maqsadli obyekt,
+- `property` -- xususiyat nomi,
+- `receiver` -- agar maqsadli xususiyat qabul qiluvchi bo'lsa, u holda `receiver` qo'ng'iroqda `this` sifatida foydalaniladigan obyektdir. Odatda bu `proxy` obyektining o'zi (yoki proksi-serverdan meros olsak, undan meros bo'lgan obyekt). Hozir bizga bu dalil kerak emas, shuning uchun keyinroq batafsilroq tushuntiriladi.
 
-Let's use `get` to implement default values for an object.
+Obyekt uchun standart qiymatlarni amalga oshirish uchun `get` dan foydalanamiz.
 
-We'll make a numeric array that returns `0` for nonexistent values.
+Biz mavjud bo'lmagan qiymatlar uchun `0` ni qaytaradigan raqamli massiv yaratamiz.
 
-Usually when one tries to get a non-existing array item, they get `undefined`, but we'll wrap a regular array into the proxy that traps reading and returns `0` if there's no such property:
+Odatda mavjud bo'lmagan massiv elementini olishga harakat qilganimizda, ular `undefined` bo'ladi, lekin biz o'qishni ushlab turuvchi proksi-serverga oddiy massivni o'rab olamiz va agar bunday xususiyat bo'lmasa, `0` ni qaytaramiz:
 
 ```js run
 let numbers = [0, 1, 2];
@@ -113,22 +114,22 @@ numbers = new Proxy(numbers, {
     if (prop in target) {
       return target[prop];
     } else {
-      return 0; // default value
+      return 0; // standart qiymat
     }
   }
 });
 
 *!*
 alert( numbers[1] ); // 1
-alert( numbers[123] ); // 0 (no such item)
+alert( numbers[123] ); // 0 (bunday element yo'q)
 */!*
 ```
 
-As we can see, it's quite easy to do with a `get` trap.
+Ko'rib turganimizdek, `get` tuzog'i bilan buni qilish juda oson.
 
-We can use `Proxy` to implement any logic for "default" values.
+Biz "default" qiymatlar uchun har qanday mantiqni amalga oshirish maqsadida `Proxy` dan foydalanishimiz mumkin.
 
-Imagine we have a dictionary, with phrases and their translations:
+Tasavvur qiling, bizda iboralar va ularning tarjimalari mavjud lug'at bor:
 
 ```js run
 let dictionary = {
@@ -140,9 +141,9 @@ alert( dictionary['Hello'] ); // Hola
 alert( dictionary['Welcome'] ); // undefined
 ```
 
-Right now, if there's no phrase, reading from `dictionary` returns `undefined`. But in practice, leaving a phrase untranslated is usually better than `undefined`. So let's make it return an untranslated phrase in that case instead of `undefined`.
+Hozirda, agar ibora bo'lmasa, `dictionary` dan o'qish `undefined`ni qaytaradi. Lekin amalda iborani tarjimasiz qoldirish odatda `undefined`dan ko'ra yaxshiroqdir. Shunday qilib, keling, u holda `undefined` o'rniga tarjima qilinmagan iborani qaytaraylik.
 
-To achieve that, we'll wrap `dictionary` in a proxy that intercepts reading operations:
+Bunga erishish uchun biz `dictionary`ni o'qish operatsiyalarini to'xtatuvchi proksi-serverga o'rab olamiz:
 
 ```js run
 let dictionary = {
@@ -152,58 +153,58 @@ let dictionary = {
 
 dictionary = new Proxy(dictionary, {
 *!*
-  get(target, phrase) { // intercept reading a property from dictionary
+  get(target, phrase) { // dictionarydan xususiyatni o'qishni to'xtating
 */!*
-    if (phrase in target) { // if we have it in the dictionary
-      return target[phrase]; // return the translation
+    if (phrase in target) { // agar u lug'atda bo'lsa
+      return target[phrase]; // tarjimani qaytaring
     } else {
-      // otherwise, return the non-translated phrase
+      // aks holda, tarjima qilinmagan iborani qaytaring
       return phrase;
     }
   }
 });
 
-// Look up arbitrary phrases in the dictionary!
-// At worst, they're not translated.
+// Lug'atdan ixtiyoriy iboralarni qidiring!
+// Eng yomoni, ular tarjima qilinmagan.
 alert( dictionary['Hello'] ); // Hola
 *!*
-alert( dictionary['Welcome to Proxy']); // Welcome to Proxy (no translation)
+alert( dictionary['Welcome to Proxy']); // Proksi-serverga xush kelibsiz (tarjimasiz)
 */!*
 ```
 
 ````smart
-Please note how the proxy overwrites the variable:
+Iltimos, proksi-server o'zgaruvchining ustiga qanday yozishiga e'tibor bering:
 
 ```js
 dictionary = new Proxy(dictionary, ...);
 ```
 
-The proxy should totally replace the target object everywhere. No one should ever reference the target object after it got proxied. Otherwise it's easy to mess up.
+Proksi-server hamma joyda maqsadli obyektni to'liq almashtirishi kerak. Proksi-serverdan keyin hech kim maqsadli obyektga murojaat qilmasligi lozim. Aks holda chalkashib ketish ehtimoli osonlashadi.
 ````
 
-## Validation with "set" trap
+## "Set" tuzog'i bilan tasdiqlash
 
-Let's say we want an array exclusively for numbers. If a value of another type is added, there should be an error.
+Aytaylik, biz faqat raqamlar uchun massivni xohlaymiz. Agar boshqa turdagi qiymat qo'shilsa, error bo'lishi kerak.
 
-The `set` trap triggers when a property is written.
+Xususiyat yozilganda `set` tuzog'i ishga tushadi.
 
 `set(target, property, value, receiver)`:
 
-- `target` -- is the target object, the one passed as the first argument to `new Proxy`,
-- `property` -- property name,
-- `value` -- property value,
-- `receiver` -- similar to `get` trap, matters only for setter properties.
+- `target` -- `new proxy` ga birinchi argument sifatida uzatiladigan maqsadli obyekt,
+- `property` -- xususiyat nomi,
+- `value` -- xususiyat qiymati,
+- `receiver` -- `get` tuzog'iga o'xshash, faqat setter xususiyatlariga tegishli.
 
-The `set` trap should return `true` if setting is successful, and `false` otherwise (triggers `TypeError`).
+`Set` tuzog'i, agar sozlash muvaffaqiyatli bo'lsa, `true` ni, aks holda `false` qiymatini qaytarishi kerak (`TypeError` ni ishga tushiradi).
 
-Let's use it to validate new values:
+Keling, undan yangi qiymatlarni tasdiqlash uchun foydalanamiz:
 
 ```js run
 let numbers = [];
 
 numbers = new Proxy(numbers, { // (*)
 *!*
-  set(target, prop, val) { // to intercept property writing
+  set(target, prop, val) { // xususiyatni yozishni to'xtatish
 */!*
     if (typeof val == 'number') {
       target[prop] = val;
@@ -214,44 +215,44 @@ numbers = new Proxy(numbers, { // (*)
   }
 });
 
-numbers.push(1); // added successfully
-numbers.push(2); // added successfully
+numbers.push(1); // muvaffaqiyatli qo'shildi
+numbers.push(2); // muvaffaqiyatli qo'shildi
 alert("Length is: " + numbers.length); // 2
 
 *!*
-numbers.push("test"); // TypeError ('set' on proxy returned false)
+numbers.push("test"); // TypeError (proksi-serverda "set" noto'g'ri chiqdi)
 */!*
 
-alert("This line is never reached (error in the line above)");
+alert("Bu qatorga hech qachon yetib bo'lmaydi (yuqoridagi satrda error mavjud)");
 ```
 
-Please note: the built-in functionality of arrays is still working! Values are added by `push`. The `length` property auto-increases when values are added. Our proxy doesn't break anything.
+E'tibor bering: massivlarning o'rnatilgan funksionalligi hali ham ishlamoqda! Qiymatlar `push` (surish) orqali qo'shiladi. Qiymatlar qo'shilganda `length` xususiyati avtomatik ravishda ortadi. Bizning proksi-serverimiz hech narsani buzmaydi.
 
-We don't have to override value-adding array methods like `push` and `unshift`, and so on, to add checks in there, because internally they use the `[[Set]]` operation that's intercepted by the proxy.
+Cheklarni qo'shish uchun `push` va `unshift` kabi qo'shimcha qiymatli massiv usullarini bekor qilishimiz shart emas, chunki ular ichkarida proksi-server tomonidan to'xtatilgan `[[Set]]` operatsiyasidan foydalanadi.
 
-So the code is clean and concise.
+Shunday qilib, kod aniq va qisqa.
 
-```warn header="Don't forget to return `true`"
-As said above, there are invariants to be held.
+```ogohlantiruvchi sarlavha = `true` ni qaytarishni unutmang`
+Yuqorida aytib o'tilganidek, o'zgarmaydigan invariant'lar mavjud.
 
-For `set`, it must return `true` for a successful write.
+Muvaffaqiyatli yozishda `set` uchun `true` qiymatini qaytarish kerak.
 
-If we forget to do it or return any falsy value, the operation triggers `TypeError`.
+Agar biz buni qilishni unutib qo'ysak yoki biron bir noto'g'ri qiymatni qaytarsak, operatsiya `TypeError` ni ishga tushiradi.
 ```
 
-## Iteration with "ownKeys" and "getOwnPropertyDescriptor"
+## "ownKeys" va "getOwnPropertyDescriptor" bilan iteratsiya
 
-`Object.keys`, `for..in` loop and most other methods that iterate over object properties use `[[OwnPropertyKeys]]` internal method (intercepted by `ownKeys` trap) to get a list of properties.
+`Object.keys`, `for..in` sikli va obyekt xususiyatlari bo'yicha takrorlanadigan boshqa ko'plab usullar xususiyatlarning ro'yxatini olish uchun `[[OwnPropertyKeys]]` ichki usulidan (`ownKeys` tuzog'i tomonidan tutiladi) foydalanadi.
 
-Such methods differ in details:
-- `Object.getOwnPropertyNames(obj)` returns non-symbol keys.
-- `Object.getOwnPropertySymbols(obj)` returns symbol keys.
-- `Object.keys/values()` returns non-symbol keys/values with `enumerable` flag (property flags were explained in the article <info:property-descriptors>).
-- `for..in` loops over non-symbol keys with `enumerable` flag, and also prototype keys.
+Bunday usullar tafsilotlarda farqlanadi:
+- `Object.getOwnPropertyNames(obj)` belgilarsiz kalitlarni qaytaradi.
+- `Object.getOwnPropertySymbols(obj)` belgili kalitlarni qaytaradi.
+- `Object.keys/values()` belgisi bo'lmagan kalitlarni/qiymatlarni `enumerable` (sonli) bayroq bilan qaytaradi (xususiyat bayroqlari <info:property-descriptors> maqolasida tushuntirilgan).
+- `for..in` `sonli` bayrog'i bo'lgan belgisiz tugmalar, shuningdek, prototipli kalitlar ustidan o`tadi.
 
-...But all of them start with that list.
+...Ammo ularning barchasi shu ro'yxat bilan boshlanadi.
 
-In the example below we use `ownKeys` trap to make `for..in` loop over `user`, and also `Object.keys` and `Object.values`, to skip properties starting with an underscore `_`:
+In the example below we use `ownKeys` trap to make `for..in` loop over `user`, and also `Object.keys` and `Object.values`, to skip properties starting with an underscore `_`: Quyidagi misolda biz `for..in` ni `user` ustidan aylanish uchun `ownKeys` tuzog'idan, shuningdek pastki chiziq `_` bilan boshlanadigan xususiyatlarni o'tkazib yuborish uchun `Object.keys` va `Object.values`dan foydalanamiz:
 
 ```js run
 let user = {
@@ -269,16 +270,16 @@ user = new Proxy(user, {
 });
 
 // "ownKeys" filters out _password
-for(let key in user) alert(key); // name, then: age
+for(let key in user) alert(key); // name, keyin: age
 
 // same effect on these methods:
 alert( Object.keys(user) ); // name,age
 alert( Object.values(user) ); // John,30
 ```
 
-So far, it works.
+Hozircha u ishlaydi.
 
-Although, if we return a key that doesn't exist in the object, `Object.keys` won't list it:
+Agar obyektda mavjud bo'lmagan kalitni qaytarsak, `Object.keys` uni ro'yxatga kiritmaydi:
 
 ```js run
 let user = { };
@@ -291,28 +292,28 @@ user = new Proxy(user, {
   }
 });
 
-alert( Object.keys(user) ); // <empty>
+alert( Object.keys(user) ); // <bo'sh>
 ```
 
-Why? The reason is simple: `Object.keys` returns only properties with the `enumerable` flag. To check for it, it calls the internal method `[[GetOwnProperty]]` for every property to get [its descriptor](info:property-descriptors). And here, as there's no property, its descriptor is empty, no `enumerable` flag, so it's skipped.
+Nega? Sababi oddiy: `Object.keys` faqat `enumerable` bayrog'i bilan xossalarni qaytaradi. Buni tekshirish uchun u har bir xususiyat [uning identifikatorini] olish uchun `[[GetOwnProperty]]` ichki usulini chaqiradi (info:property-descriptors). Va bu yerda, hech qanday xususiyat yo'qligi sababli, uning deskriptori bo'sh, `enumerable` bayrog'i yo'q, shuning uchun u o'tkazib yuborilgan.
 
-For `Object.keys` to return a property, we need it to either exist in the object, with the `enumerable` flag, or we can intercept calls to `[[GetOwnProperty]]` (the trap `getOwnPropertyDescriptor` does it), and return a descriptor with `enumerable: true`.
+`Object.keys` xususiyatini qaytarishi uchun u obyektda `enumerable` bayrog'i bilan mavjud bo'lishi kerak yoki biz `[[GetOwnProperty]]`ga qo'ng'iroqlarni to'xtata olamiz (`getOwnPropertyDescriptor` tuzog'i buni amalga oshiradi) , va `enumerable: true` bilan tavsiflovchini qaytaring.
 
-Here's an example of that:
+Quyida shunga doir misolni ko'rib chiqamiz:
 
 ```js run
 let user = { };
 
 user = new Proxy(user, {
-  ownKeys(target) { // called once to get a list of properties
+  ownKeys(target) { // mulklar ro'yxatini olish uchun bir marta chaqiriladi
     return ['a', 'b', 'c'];
   },
 
-  getOwnPropertyDescriptor(target, prop) { // called for every property
+  getOwnPropertyDescriptor(target, prop) { // har bir xususiyat uchun chaqirildi
     return {
       enumerable: true,
       configurable: true
-      /* ...other flags, probable "value:..." */
+      /* ...boshqa bayroqlar, ehtimoliy "qiymat:..." */
     };
   }
 
@@ -321,13 +322,13 @@ user = new Proxy(user, {
 alert( Object.keys(user) ); // a, b, c
 ```
 
-Let's note once again: we only need to intercept `[[GetOwnProperty]]` if the property is absent in the object.
+Yana bir bor eslatib o'tamiz: agar obyektda xususiyat mavjud bo'lmasa, biz faqat `[[GetOwnProperty]]`ni ushlab turishimiz kerak.
 
-## Protected properties with "deleteProperty" and other traps
+## "deleteProperty" va boshqa tuzoqlar bilan himoyalangan xususiyatlar
 
-There's a widespread convention that properties and methods prefixed by an underscore `_` are internal. They shouldn't be accessed from outside the object.
+Pastki chiziqli `_` prefiksli xususiyatlar va usullar ichki ekanligi haqida keng tarqalgan konventsiya mavjud. Ularga obyekt tashqarisidan kirish mumkin emas.
 
-Technically that's possible though:
+Texnik jihatdan bu mumkin:
 
 ```js run
 let user = {
@@ -338,15 +339,13 @@ let user = {
 alert(user._password); // secret
 ```
 
-Let's use proxies to prevent any access to properties starting with `_`.
+`_` bilan boshlanadigan xususiyatlarga kirishni oldini olish uchun proksi-serverlardan foydalanamiz.
 
-We'll need the traps:
-- `get` to throw an error when reading such property,
-- `set` to throw an error when writing,
-- `deleteProperty` to throw an error when deleting,
-- `ownKeys` to exclude properties starting with `_` from `for..in` and methods like `Object.keys`.
-
-Here's the code:
+Bizga quyidagi tuzoqlar kerak bo'ladi:
+- `get` - bunday xususiyatni o'qiyotganda xatoga yo'l qo'yish uchun;
+- `set`- yozishda xatolarni yo'qotish uchun,
+- `deleteProperty`- o'chirishda xatoliklarni yo'qo'tish,
+- `ownKeys`- `for..in` dan `_` bilan boshlanadigan xususiyatlarni va `Object.keys` kabi usullarni istisno qilish uchun
 
 ```js run
 let user = {
@@ -359,16 +358,16 @@ user = new Proxy(user, {
   get(target, prop) {
 */!*
     if (prop.startsWith('_')) {
-      throw new Error("Access denied");
+      throw new Error("Ruxsat berilmadi");
     }
     let value = target[prop];
     return (typeof value === 'function') ? value.bind(target) : value; // (*)
   },
 *!*
-  set(target, prop, val) { // to intercept property writing
+  set(target, prop, val) { // xususiyatni yozishni to'xtatish
 */!*
     if (prop.startsWith('_')) {
-      throw new Error("Access denied");
+      throw new Error("Ruxsat berilmadi");
     } else {
       target[prop] = val;
       return true;

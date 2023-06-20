@@ -1,50 +1,50 @@
-# Window sizes and scrolling
+# Oyna o'lchamlari va scrolling
 
-How do we find the width and height of the browser window? How do we get the full width and height of the document, including the scrolled out part? How do we scroll the page using JavaScript?
+Brauzer oynasining kengligi va balandligini qanday topamiz? Hujjatning to'liq kengligi va balandligini, shu jumladan aylantirilgan qismini qanday olamiz? JavaScript yordamida sahifani qanday aylantiramiz?
 
-For this type of information, we can use the root document element `document.documentElement`, that corresponds to the `<html>` tag. But there are additional methods and peculiarities to consider.
+Ushbu turdagi ma'lumotlar uchun biz `<html>` tegiga mos keladigan `document.documentElement` asosiy hujjat elementidan foydalanishimiz mumkin. Ammo e'tiborga olish kerak bo'lgan qo'shimcha usullar va o'ziga xosliklar mavjud.
 
-## Width/height of the window
+## Deraza kengligi/balandligi
 
-To get window width and height, we can use the `clientWidth/clientHeight` of `document.documentElement`:
+Oyna kengligi va balandligini olish uchun biz `document.documentElement` `clientWidth/clientHeight` dan foydalanishimiz mumkin:
 
 ![](document-client-width-height.svg)
 
 ```online
-For instance, this button shows the height of your window:
+Masalan, bu tugma oynangizning balandligini ko'rsatadi:
 
 <button onclick="alert(document.documentElement.clientHeight)">alert(document.documentElement.clientHeight)</button>
 ```
 
-````warn header="Not `window.innerWidth/innerHeight`"
-Browsers also support properties like `window.innerWidth/innerHeight`. They look like what we want, so why not to use them instead?
+````ogohlantiruvchi sarlavha ="Not `window.innerWidth/innerHeight`"
+Brauzerlar `window.innerWidth/innerHeight` kabi xususiyatlarni ham qo'llab-quvvatlaydi. Ular biz xohlagan narsaga o'xshaydi, shuning uchun nega ularni o'rniga ishlatmaslik kerak?
 
-If there exists a scrollbar, and it occupies some space, `clientWidth/clientHeight` provide the width/height without it (subtract it). In other words, they return the width/height of the visible part of the document, available for the content.
+Agar aylantirish paneli mavjud bo'lsa va u biroz bo'sh joy egallasa, `clientWidth/clientHeight` kenglik/balandlikni usiz taqdim etadi (uni ayiradi). Boshqacha qilib aytganda, ular hujjatning mazmuni uchun mavjud bo'lgan ko'rinadigan qismining kengligi/balandligini qaytaradi.
 
-`window.innerWidth/innerHeight` includes the scrollbar.
+`window.innerWidth/innerHeight` aylantirish panelini o'z ichiga oladi.
 
-If there's a scrollbar, and it occupies some space, then these two lines show different values:
+Agar aylantirish paneli mavjud bo'lsa va u biroz bo'sh joy egallasa, bu ikki satr turli qiymatlarni ko'rsatadi:
 ```js run
-alert( window.innerWidth ); // full window width
-alert( document.documentElement.clientWidth ); // window width minus the scrollbar
+alert( window.innerWidth ); // to'liq oyna kengligi
+alert( document.documentElement.clientWidth ); // oyna kengligi minus aylantirish paneli
 ```
 
-In most cases, we need the *available* window width in order to draw or position something within scrollbars (if there are any), so we should use `documentElement.clientHeight/clientWidth`.
+Ko'pgina hollarda, aylantirish panellari (agar mavjud bo'lsa) ichida biror narsani chizish yoki joylashtirish uchun bizga *mavjud* oyna kengligi kerak, shuning uchun biz `documentElement.clientHeight/clientWidth` dan foydalanishimiz lozim.
 ````
 
-```warn header="`DOCTYPE` is important"
-Please note: top-level geometry properties may work a little bit differently when there's no `<!DOCTYPE HTML>` in HTML. Odd things are possible.
+```ogohlantiruvchi sarlavha="`DOCTYPE` muhim"
+Iltimos, diqqat qiling: HTMLda `<!DOCTYPE HTML>` boʻlmasa, yuqori darajadagi geometriya xususiyatlari biroz boshqacha ishlashi va g'alati narsalar bo'lishi mumkin.
 
-In modern HTML we should always write `DOCTYPE`.
+Zamonaviy HTMLda biz doimo `DOCTYPE` ni yozishimiz kerak.
 ```
 
-## Width/height of the document
+## Hujjatning kengligi/balandligi
 
-Theoretically, as the root document element is `document.documentElement`, and it encloses all the content, we could measure the document's full size as `document.documentElement.scrollWidth/scrollHeight`.
+Nazariy jihatdan, hujjatning asosiy elementi `document.documentElement` bo'lib, u barcha tarkibni qamrab olganligi sababli, hujjatning to'liq hajmini `document.documentElement.scrollWidth/scrollHeight` sifatida o'lchashimiz mumkin.
 
-But on that element, for the whole page, these properties do not work as intended. In Chrome/Safari/Opera, if there's no scroll, then `documentElement.scrollHeight` may be even less than `documentElement.clientHeight`! Weird, right?
+Ammo bu elementda butun sahifa uchun bu xususiyatlar mo'ljallanganidek ishlamaydi. Chrome/Safari/Opera-da, agar aylantirish bo'lmasa, `documentElement.scrollHeight` hatto `documentElement.clientHeight`dan ham kamroq bo'lishi mumkin! G'alati, to'g'rimi?
 
-To reliably obtain the full document height, we should take the maximum of these properties:
+Hujjatning to'liq balandligini ishonchli tarzda olish uchun biz ushbu xususiyatlardan maksimal darajada foydalanishimiz kerak:
 
 ```js run
 let scrollHeight = Math.max(
@@ -53,110 +53,109 @@ let scrollHeight = Math.max(
   document.body.clientHeight, document.documentElement.clientHeight
 );
 
-alert('Full document height, with scrolled out part: ' + scrollHeight);
+alert('To'liq hujjat balandligi, aylantirilgan qismi bilan: ' + scrollHeight);
 ```
 
-Why so? Better don't ask. These inconsistencies come from ancient times, not a "smart" logic.
+Nega shunday? Yaxshisi, so'ramang. Bu nomuvofiqliklar "aqlli" mantiq emas, balki qadim zamonlardan kelib chiqqan.
 
-## Get the current scroll [#page-scroll]
+## Joriy sahifani oling [#page-scroll]
 
-DOM elements have their current scroll state in their `scrollLeft/scrollTop` properties.
+DOM elementlari `scrollLeft/scrollTop` xususiyatlarida joriy aylantirish holatiga ega.
 
-For document scroll, `document.documentElement.scrollLeft/scrollTop` works in most browsers, except older WebKit-based ones, like Safari (bug [5991](https://bugs.webkit.org/show_bug.cgi?id=5991)), where we should use `document.body` instead of `document.documentElement`.
+Hujjatni aylantirish uchun `document.documentElement.scrollLeft/scrollTop` ko'pgina brauzerlarda ishlaydi, Safari kabi WebKit-ga asoslangan eski brauzerlardan tashqari (bug [5991](https://bugs.webkit.org/show_bug.cgi?id=5991) ), bu yerda `document.documentElement` o'rniga `document.body` dan foydalanishimiz kerak.
 
-Luckily, we don't have to remember these peculiarities at all, because the scroll is available in the special properties, `window.pageXOffset/pageYOffset`:
+Yaxshiyamki, biz bu xususiyatlarni umuman eslab qolishimiz shart emas, chunki varaq `window.pageXOffset/pageYOffset` maxsus xususiyatlarida mavjud:
 
 ```js run
 alert('Current scroll from the top: ' + window.pageYOffset);
 alert('Current scroll from the left: ' + window.pageXOffset);
 ```
 
-These properties are read-only.
+Bu xususiyatlar faqat o'qish uchun mo'ljallangan.
 
-```smart header="Also available as `window` properties `scrollX` and `scrollY`"
-For historical reasons, both properties exist, but they are the same:
-- `window.pageXOffset` is an alias of `window.scrollX`.
-- `window.pageYOffset` is an alias of `window.scrollY`.
+```aqlli sarlavha="Shuningdek, "oyna" xususiyatlari `scrollX` va `scrollY` sifatida ham mavjud.
+Tarixiy sabablarga ko'ra ikkala xususiyat ham mavjud, ammo ular bir xil:
+- `window.pageXOffset` `window.scrollX` ning taxallusidir.
+- `window.pageYOffset` `window.scrollY` ning taxallusidir.
 ```
 
 ## Scrolling: scrollTo, scrollBy, scrollIntoView [#window-scroll]
 
 ```warn
-To scroll the page with JavaScript, its DOM must be fully built.
+Sahifani JavaScript bilan aylantirish uchun DOM to'liq qurilgan bo'lishi kerak.
 
-For instance, if we try to scroll the page with a script in `<head>`, it won't work.
+Misol uchun, `<head>` da skript bilan sahifani aylantirmoqchi bo'lsak, u ishlamaydi.
 ```
 
 Regular elements can be scrolled by changing `scrollTop/scrollLeft`.
 
-We can do the same for the page using `document.documentElement.scrollTop/scrollLeft` (except Safari, where `document.body.scrollTop/Left` should be used instead).
+Biz `document.documentElement.scrollTop/scrollLeft` yordamida sahifa uchun ham xuddi shunday qilishimiz mumkin (Safari bundan mustasno, bu erda `document.body.scrollTop/Left` o'rniga foydalanilishi lozim).
 
-Alternatively, there's a simpler, universal solution: special methods [window.scrollBy(x,y)](mdn:api/Window/scrollBy) and [window.scrollTo(pageX,pageY)](mdn:api/Window/scrollTo).
+Shu bilan bir qatorda, oddiyroq, universal yechim bor: maxsus usullar [window.scrollBy(x,y)](mdn:api/Window/scrollBy) va [window.scrollTo(pageX,pageY)](mdn:api/Window/scrollTo) .
 
-- The method `scrollBy(x,y)` scrolls the page *relative to its current position*. For instance, `scrollBy(0,10)` scrolls the page `10px` down.
+- `scrollBy(x,y)` usuli sahifani *joriy holatiga* nisbatan aylantiradi. Masalan, `scrollBy(0,10)` sahifani `10px` pastga aylantiradi.
 
     ```online
-    The button below demonstrates this:
+    Quyidagi tugma buni ko'rsatadi:
 
     <button onclick="window.scrollBy(0,10)">window.scrollBy(0,10)</button>
     ```
-- The method `scrollTo(pageX,pageY)` scrolls the page *to absolute coordinates*, so that the top-left corner of the visible part has coordinates `(pageX, pageY)` relative to the document's top-left corner. It's like setting `scrollLeft/scrollTop`.
+- `ScrollTo(pageX,pageY)` usuli sahifani *mutlaq koordinatalarga* aylantiradi, shunda ko'rinadigan qismning yuqori chap burchagida hujjatning yuqori chap burchagiga nisbatan `(pageX, pageY)` koordinatalari bo'ladi. Bu xuddi `scrollLeft/scrollTop` ni o'rnatishga o'xshaydi.
 
-    To scroll to the very beginning, we can use `scrollTo(0,0)`.
+    Boshiga o'tish uchun `scrollTo(0,0)` tugmasidan foydalanishimiz mumkin.
 
     ```online
     <button onclick="window.scrollTo(0,0)">window.scrollTo(0,0)</button>
     ```
 
-These methods work for all browsers the same way.
+Ushbu usullar barcha brauzerlar uchun bir xil ishlaydi.
 
 ## scrollIntoView
 
-For completeness, let's cover one more method: [elem.scrollIntoView(top)](mdn:api/Element/scrollIntoView).
+To'liqlik uchun yana bir usulni ko'rib chiqamiz: [elem.scrollIntoView(top)](mdn:api/Element/scrollIntoView).
 
-The call to `elem.scrollIntoView(top)` scrolls the page to make `elem` visible. It has one argument:
+`elem.scrollIntoView(top)` ga qo'ng'iroq `elem`ni ko'rinadigan qilish uchun sahifani aylantiradi. Unda bitta dalil bor:
 
-- If `top=true` (that's the default), then the page will be scrolled to make `elem` appear on the top of the window. The upper edge of the element will be aligned with the window top.
-- If `top=false`, then the page scrolls to make `elem` appear at the bottom. The bottom edge of the element will be aligned with the window bottom.
+- Agar `top=true` (bu sukut bo'yicha) bo'lsa, oynaning yuqori qismida `elem` paydo bo'lishi uchun sahifa aylantiriladi. Elementning yuqori qirrasi oynaning yuqori qismiga to'g'ri keladi.
+- Agar `top=false` bo`lsa, sahifa pastga aylanib, `elem` pastki qismida paydo bo`ladi. Elementning pastki cheti oynaning pastki qismiga to'g'ri keladi.
 
 ```online
-The button below scrolls the page to position itself at the window top:
+Quyidagi tugma sahifani oynaning yuqori qismida joylashtirish uchun aylantiradi:
 
 <button onclick="this.scrollIntoView()">this.scrollIntoView()</button>
 
-And this button scrolls the page to position itself at the bottom:
+Va bu tugma o'zini pastki qismida joylashtirish uchun sahifani aylantiradi:
 
 <button onclick="this.scrollIntoView(false)">this.scrollIntoView(false)</button>
 ```
 
-## Forbid the scrolling
+## O'tkazishni taqiqlang
+Ba'zan biz hujjatni "aylanib bo'lmaydigan" qilishimiz kerak. Misol uchun, biz sahifani darhol e'tiborni talab qiladigan katta xabar bilan yopishimiz kerak bo'lganda va biz tashrif buyuruvchi hujjat bilan emas, balki ushbu xabar bilan o'zaro aloqada bo'lishini xohlaymiz.
 
-Sometimes we need to make the document "unscrollable". For instance, when we need to cover the page with a large message requiring immediate attention, and we want the visitor to interact with that message, not with the document.
-
-To make the document unscrollable, it's enough to set `document.body.style.overflow = "hidden"`. The page will "freeze" at its current scroll position.
+Hujjatni aylantirib bo'lmaydigan qilish uchun `document.body.style.overflow = "hidden"` ni o'rnatish kifoya. Sahifa hozirgi aylantirish holatida "muzlaydi".
 
 ```online
-Try it:
+Urinib ko'ring:
 
 <button onclick="document.body.style.overflow = 'hidden'">document.body.style.overflow = 'hidden'</button>
 
 <button onclick="document.body.style.overflow = ''">document.body.style.overflow = ''</button>
 
-The first button freezes the scroll, while the second one releases it.
+Birinchi tugma varaqni muzlatib qo'yadi, ikkinchisi esa uni qo'yib yuboradi.
 ```
 
-We can use the same technique to freeze the scroll for other elements, not just for `document.body`.
+Xuddi shu usuldan faqat `document.body` uchun emas, balki boshqa elementlar uchun aylantirishni muzlatish uchun foydalanishimiz mumkin.
 
-The drawback of the method is that the scrollbar disappears. If it occupied some space, then that space is now free and the content "jumps" to fill it.
+Usulning kamchiligi shundaki, aylantirish paneli yo'qoladi. Agar u biroz bo'sh joy egallagan bo'lsa, demak, bu joy endi bo'sh va kontent uni to'ldirish uchun "sakrab" ketadi.
 
-That looks a bit odd, but can be worked around if we compare `clientWidth` before and after the freeze. If it increased (the scrollbar disappeared), then add `padding` to `document.body` in place of the scrollbar to keep the content width the same.
+Bu biroz g'alati ko'rinadi, lekin agar biz muzlatishdan oldin va keyin `clientWidth` ni solishtirsak, uni hal qilish mumkin. Agar u ko'paygan bo'lsa (aylantirish paneli yo'qolgan bo'lsa), kontent kengligini bir xil saqlash uchun aylantirish paneli o'rniga `document.body` ga `padding` ni qo'shing.
 
-## Summary
+## Xulosa
 
-Geometry:
+Geometriya:
 
-- Width/height of the visible part of the document (content area width/height): `document.documentElement.clientWidth/clientHeight`
-- Width/height of the whole document, with the scrolled out part:
+- Hujjatning ko'rinadigan qismining kengligi/balandligi (tarkib maydoni kengligi/balandligi): `document.documentElement.clientWidth/clientHeight`
+- butun hujjatning kengligi/balandligi, aylantirilgan qismi bilan:
 
     ```js
     let scrollHeight = Math.max(
@@ -168,9 +167,9 @@ Geometry:
 
 Scrolling:
 
-- Read the current scroll: `window.pageYOffset/pageXOffset`.
-- Change the current scroll:
+- Joriy varaqni o'qing: `window.pageYOffset/pageXOffset`.
+- Joriy varaqni o'zgartiring:
 
-    - `window.scrollTo(pageX,pageY)` -- absolute coordinates,
-    - `window.scrollBy(x,y)` -- scroll relative the current place,
-    - `elem.scrollIntoView(top)` -- scroll to make `elem` visible (align with the top/bottom of the window).
+    - `window.scrollTo(pageX,pageY)` -- mutlaq koordinatalar,
+    - `window.scrollBy(x,y)` -- joriy joyga nisbatan aylantiring,
+    - `elem.scrollIntoView(top)` -- `elem` ko'rinadigan qilish uchun aylantiring (oynaning yuqori/pastki qismiga tekislang).

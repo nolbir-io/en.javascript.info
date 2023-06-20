@@ -1,18 +1,18 @@
-# Attributes and properties
+# Atributlar va xususiyatlar
 
-When the browser loads the page, it "reads" (another word: "parses") the HTML and generates DOM objects from it. For element nodes, most standard HTML attributes automatically become properties of DOM objects.
+Brauzer sahifani yuklaganida, u HTMLni "o'qiydi" (boshqa so'z: "ajraladi") va undan DOM obyektlarini yaratadi. Element nodelari uchun ko'pgina standart HTML atributlari avtomatik ravishda DOM obyektlarining xususiyatlariga aylanadi.
 
-For instance, if the tag is `<body id="page">`, then the DOM object has `body.id="page"`.
+Masalan, teg `<body id="page">` bo'lsa, DOM obyektida `body.id="page"` bo'ladi.
 
-But the attribute-property mapping is not one-to-one! In this chapter we'll pay attention to separate these two notions, to see how to work with them, when they are the same, and when they are different.
+Lekin atribut-xususiyat xaritasi birma-bir emas! Ushbu bobda biz bu ikki tushunchani bir-biridan ajratishga, ular bilan qanday ishlashni, qachon bir xil va qachon farq qilishini ko'rib chiqamiz.
 
-## DOM properties
+## DOM xususiyatlari
 
-We've already seen built-in DOM properties. There are a lot. But technically no one limits us, and if there aren't enough, we can add our own.
+Biz allaqachon o'rnatilgan DOM xususiyatlarini ko'rganmiz. Ko'p bor. Lekin texnik jihatdan hech kim bizni cheklamaydi va agar yetarli bo'lmasa, biz o'zimiznikini qo'shishimiz mumkin.
 
-DOM nodes are regular JavaScript objects. We can alter them.
+DOM tugunlari oddiy JavaScript obyektlaridir. Biz ularni o'zgartirishimiz mumkin.
 
-For instance, let's create a new property in `document.body`:
+Masalan, `document.body` da yangi xususiyat yarataylik:
 
 ```js run
 document.body.myData = {
@@ -23,17 +23,17 @@ document.body.myData = {
 alert(document.body.myData.title); // Imperator
 ```
 
-We can add a method as well:
+shuningdek biz usul ham qo'shishimiz mumkin:
 
 ```js run
 document.body.sayTagName = function() {
   alert(this.tagName);
 };
 
-document.body.sayTagName(); // BODY (the value of "this" in the method is document.body)
+document.body.sayTagName(); // BODY (usuldagi "this" qiymati - document.body)
 ```
 
-We can also modify built-in prototypes like `Element.prototype` and add new methods to all elements:
+Shuningdek, biz `Element.prototype` kabi o'rnatilgan prototiplarni o'zgartirishimiz va barcha elementlarga yangi usullarni qo'shishimiz mumkin:
 
 ```js run
 Element.prototype.sayHi = function() {
@@ -44,59 +44,59 @@ document.documentElement.sayHi(); // Hello, I'm HTML
 document.body.sayHi(); // Hello, I'm BODY
 ```
 
-So, DOM properties and methods behave just like those of regular JavaScript objects:
+Shunday qilib, DOM xossalari va usullari xuddi oddiy JavaScript obyektlari kabi ishlaydi:
 
-- They can have any value.
-- They are case-sensitive (write `elem.nodeType`, not `elem.NoDeTyPe`).
+- Ular har qanday qiymatga ega bo'lishi mumkin.
+- Ular katta-kichik harflarga sezgir (`elem.NoDeTyPe` emas, `elem.nodeType` yozing).
 
-## HTML attributes
+## HTML atribyutlari
 
-In HTML, tags may have attributes. When the browser parses the HTML to create DOM objects for tags, it recognizes *standard* attributes and creates DOM properties from them.
+HTMLda teglar atributlarga ega bo'lishi mumkin. Brauzer teglar uchun DOM obyektlarini yaratish uchun HTMLni tahlil qilganda, u *standart* atributlarni taniydi va ulardan DOM xususiyatlarini yaratadi.
 
-So when an element has `id` or another *standard* attribute, the corresponding property gets created. But that doesn't happen if the attribute is non-standard.
+Shunday qilib, element `id` yoki boshqa *standart* atribyutiga ega bo'lsa, tegishli xususiyat yaratiladi. Ammo atribut nostandart bo'lsa, bu sodir bo'lmaydi.
 
-For instance:
+Masalan:
 ```html run
 <body id="test" something="non-standard">
   <script>
     alert(document.body.id); // test
 *!*
-    // non-standard attribute does not yield a property
-    alert(document.body.something); // undefined
+    // nostandart atribut xususiyatni bermaydi
+    alert(document.body.something); // aniqlanmagan
 */!*
   </script>
 </body>
 ```
 
-Please note that a standard attribute for one element can be unknown for another one. For instance, `"type"` is standard for `<input>` ([HTMLInputElement](https://html.spec.whatwg.org/#htmlinputelement)), but not for `<body>` ([HTMLBodyElement](https://html.spec.whatwg.org/#htmlbodyelement)). Standard attributes are described in the specification for the corresponding element class.
+E'tibor bering, bir element uchun standart atribut boshqasi uchun noma'lum bo'lishi mumkin. Misol uchun, `"type"` `<input>` ([HTMLInputElement](https://html.spec.whatwg.org/#htmlinputelement)) uchun standart, lekin `<body>` ([HTMLBodyElement] uchun emas. (https://html.spec.whatwg.org/#htmlbodyelement)). Standart atribyutlar tegishli element sinfi spetsifikatsiyasida tasvirlangan.
 
-Here we can see it:
+Quyidagi misolni ko'rib chiqamiz:
 ```html run
 <body id="body" type="...">
   <input id="input" type="text">
   <script>
     alert(input.type); // text
 *!*
-    alert(body.type); // undefined: DOM property not created, because it's non-standard
+    alert(body.type); // aniqlanmagan: DOM xususiyati yaratilmagan, chunki u nostandart
 */!*
   </script>
 </body>
 ```
 
-So, if an attribute is non-standard, there won't be a DOM-property for it. Is there a way to access such attributes?
+Shunday qilib, agar atribut nostandart bo'lsa, u uchun DOM xususiyati bo'lmaydi. Bunday atributlarga kirishning yo'li bormi?
 
-Sure. All attributes are accessible by using the following methods:
+Albatta. Barcha atributlarga quyidagi usullar yordamida kirish mumkin:
 
-- `elem.hasAttribute(name)` -- checks for existence.
-- `elem.getAttribute(name)` -- gets the value.
-- `elem.setAttribute(name, value)` -- sets the value.
-- `elem.removeAttribute(name)` -- removes the attribute.
+- `elem.hasAttribute(name)` -- mavjudligini tekshiradi.
+- `elem.getAttribute(name)` -- qiymatni oladi.
+- `elem.setAttribute(name, value)` -- qiymatni o'rnatadi.
+- `elem.removeAttribute(name)` -- atribyutni olib tashlaydi.
 
-These methods operate exactly with what's written in HTML.
+Ushbu usullar HTMLda yozilgan narsalar bilan to'liq ishlaydi.
 
-Also one can read all attributes using `elem.attributes`: a collection of objects that belong to a built-in [Attr](https://dom.spec.whatwg.org/#attr) class, with `name` and `value` properties.
+Shuningdek, `elem.attributes` yordamida barcha atributlarni o'qish mumkin: o'rnatilgan [Attr](https://dom.spec.whatwg.org/#attr) sinfiga tegishli obyektlar to'plami, `name` va `qiymat` xususiyatlari.
 
-Here's a demo of reading a non-standard property:
+Bu yerda nostandart xususiyatni o'qish demosi:
 
 ```html run
 <body something="non-standard">
@@ -108,12 +108,12 @@ Here's a demo of reading a non-standard property:
 </body>
 ```
 
-HTML attributes have the following features:
+HTML atributlari quyidagi xususiyatlarga ega:
 
-- Their name is case-insensitive (`id` is same as `ID`).
-- Their values are always strings.
+- Ularning nomi katta-kichik harflarni sezmaydi (`id` `ID` bilan bir xil).
+- Ularning qiymatlari doimo satrdir.
 
-Here's an extended demo of working with attributes:
+Mana atributlar bilan ishlashning kengaytirilgan demosi:
 
 ```html run
 <body>
@@ -124,27 +124,27 @@ Here's an extended demo of working with attributes:
 
     elem.setAttribute('Test', 123); // (2), writing
 
-    alert( elem.outerHTML ); // (3), see if the attribute is in HTML (yes)
+    alert( elem.outerHTML ); // (3), atribut HTMLda ekanligini tekshiring (ha)
 
-    for (let attr of elem.attributes) { // (4) list all
+    for (let attr of elem.attributes) { // (4) hammasini ro'yxatga oling
       alert( `${attr.name} = ${attr.value}` );
     }
   </script>
 </body>
 ```
 
-Please note:
+Esda tuting:
 
-1. `getAttribute('About')` -- the first letter is uppercase here, and in HTML it's all lowercase. But that doesn't matter: attribute names are case-insensitive.
-2. We can assign anything to an attribute, but it becomes a string. So here we have `"123"` as the value.
-3. All attributes including ones that we set are visible in `outerHTML`.
-4. The `attributes` collection is iterable and has all the attributes of the element (standard and non-standard) as objects with `name` and `value` properties.
+1. `getAttribute('About')` -- bu yerda birinchi harf katta, HTMLda esa hammasi kichik. Lekin bu muhim emas: atribyut nomlari katta-kichik harflarga sezgir emas.
+2. Biz atribyutga har qanday narsani belgilashimiz mumkin, lekin u satrga aylanadi. Shunday qilib, bizda qiymat sifatida "123" mavjud.
+3. Barcha atributlar, jumladan, biz oʻrnatgan atributlar `outerHTML` da koʻrinadi.
+4. `Atribyutlar` to'plami takrorlanadi va elementning barcha atribyutlariga (standart va nostandart) `name` va `value` xususiyatlariga obyektlar sifatida ega.
 
-## Property-attribute synchronization
+## Xususiyat-atribyutlarni sinxronlashtirish
 
-When a standard attribute changes, the corresponding property is auto-updated, and (with some exceptions) vice versa.
+Standart atribut o'zgarganda, tegishli xususiyat avtomatik yangilanadi va (ba'zi istisnolardan tashqari) aksincha yangilanmaydi.
 
-In the example below `id` is modified as an attribute, and we can see the property changed too. And then the same backwards:
+Quyidagi misolda `id` atribyut sifatida o'zgartirilgan va biz xususiyat ham o'zgarganini ko'rishimiz mumkin. Va keyin bir xil orqaga qaytaramiz:
 
 ```html run
 <input>
@@ -152,17 +152,17 @@ In the example below `id` is modified as an attribute, and we can see the proper
 <script>
   let input = document.querySelector('input');
 
-  // attribute => property
+  // atribyut => xususiyat
   input.setAttribute('id', 'id');
-  alert(input.id); // id (updated)
+  alert(input.id); // id (yangilangan)
 
-  // property => attribute
+  // xususiyat => atribyut
   input.id = 'newId';
-  alert(input.getAttribute('id')); // newId (updated)
+  alert(input.getAttribute('id')); // newId (yangilangan)
 </script>
 ```
 
-But there are exclusions, for instance `input.value` synchronizes only from attribute -> property, but not back:
+Ammo istisnolar mavjud, masalan, `input.value` faqat atribyut -> xususiyatdan sinxronlanadi, lekin orqaga emas:
 
 ```html run
 <input>
@@ -170,38 +170,38 @@ But there are exclusions, for instance `input.value` synchronizes only from attr
 <script>
   let input = document.querySelector('input');
 
-  // attribute => property
+  // atribyut => xususiyat
   input.setAttribute('value', 'text');
   alert(input.value); // text
 
 *!*
   // NOT property => attribute
   input.value = 'newValue';
-  alert(input.getAttribute('value')); // text (not updated!)
+  alert(input.getAttribute('value')); // text (yangilanmagan!)
 */!*
 </script>
 ```
 
-In the example above:
-- Changing the attribute `value` updates the property.
-- But the property change does not affect the attribute.
+Yuqoridagi misolda:
+- `value` atribyutini o'zgartirish xususiyatni yangilaydi.
+- Lekin xususiyat o'zgarishi atribyutga ta'sir qilmaydi.
 
-That "feature" may actually come in handy, because the user actions may lead to `value` changes, and then after them, if we want to recover the "original" value from HTML, it's in the attribute.
+Bu "xususiyat" aslida foydali bo'lishi mumkin, chunki foydalanuvchi harakatlari `value` ning o'zgarishiga olib kelishi mumkin va undan keyin, agar biz HTML'dan "asl" qiymatni tiklamoqchi bo'lsak, u atribyutda bo'ladi.
 
-## DOM properties are typed
+## DOM xususiyatlari yoziladi
 
-DOM properties are not always strings. For instance, the `input.checked` property (for checkboxes) is a boolean:
+DOM xususiyatlari har doim ham satrlar emas. Masalan, `input.checked` xususiyati (belgilash qutilari uchun) mantiqiy hisoblanadi:
 
 ```html run
 <input id="input" type="checkbox" checked> checkbox
 
 <script>
-  alert(input.getAttribute('checked')); // the attribute value is: empty string
-  alert(input.checked); // the property value is: true
+  alert(input.getAttribute('checked')); // atribut qiymati: bo'sh satr
+  alert(input.checked); // xususiyat qiymati: true
 </script>
 ```
 
-There are other examples. The `style` attribute is a string, but the `style` property is an object:
+Boshqa misollar ham bor. `style` atributi qatordir, lekin `style` xususiyati obyektdir:
 
 ```html run
 <div id="div" style="color:red;font-size:120%">Hello</div>
@@ -216,11 +216,11 @@ There are other examples. The `style` attribute is a string, but the `style` pro
 </script>
 ```
 
-Most properties are strings though.
+Aksariyat xususiyatlar qatorlardir.
 
-Quite rarely, even if a DOM property type is a string, it may differ from the attribute. For instance, the `href` DOM property is always a *full* URL, even if the attribute contains a relative URL or just a `#hash`.
+Juda kamdan-kam hollarda, hatto DOM xossa turi qator bo'lsa ham, u atributdan farq qilishi mumkin. Masalan, `href` DOM xususiyati har doim *to'liq* URL bo'ladi, hatto atributda nisbiy URL yoki shunchaki `#hash` bo'lsa ham.
 
-Here's an example:
+Quyida misol keltirilgan:
 
 ```html height=30 run
 <a id="a" href="#hello">link</a>
@@ -229,49 +229,49 @@ Here's an example:
   alert(a.getAttribute('href')); // #hello
 
   // property
-  alert(a.href ); // full URL in the form http://site.com/page#hello
+  alert(a.href ); // http://site.com/page#hello shaklida to'liq URL
 </script>
 ```
 
-If we need the value of `href` or any other attribute exactly as written in the HTML, we can use `getAttribute`.
+Agar bizga HTMLda yozilganidek `href` yoki boshqa atribut qiymati kerak bo'lsa, biz `getAttribute` dan foydalanishimiz mumkin.
 
 
-## Non-standard attributes, dataset
+## Nostandart atributlar, ma'lumotlar to'plami
 
-When writing HTML, we use a lot of standard attributes. But what about non-standard, custom ones? First, let's see whether they are useful or not? What for?
+HTML yozishda biz juda ko'p standart atributlardan foydalanamiz. Lekin nostandart, odatiy bo'lganlar haqida nima deyish mumkin? Birinchidan, ular foydali yoki yo'qligini bilib olaylik. Nima uchun?
 
-Sometimes non-standard attributes are used to pass custom data from HTML to JavaScript, or to "mark" HTML-elements for JavaScript.
+Ba'zan nostandart atributlar HTML-dan JavaScript-ga maxsus ma'lumotlarni uzatish yoki JavaScript-ning HTML-elementlarini "belgilash" uchun ishlatiladi.
 
-Like this:
+Mana bunday:
 
 ```html run
-<!-- mark the div to show "name" here -->
+<!-- Bu erda "name" ni ko'rsatish uchun divni belgilang -->
 <div *!*show-info="name"*/!*></div>
-<!-- and age here -->
+<!-- va bu yerda yoshni -->
 <div *!*show-info="age"*/!*></div>
 
 <script>
-  // the code finds an element with the mark and shows what's requested
+  // kod belgili elementni topadi va so'ralgan narsani ko'rsatadi
   let user = {
     name: "Pete",
     age: 25
   };
 
   for(let div of document.querySelectorAll('[show-info]')) {
-    // insert the corresponding info into the field
+    // maydonga tegishli ma'lumotlarni kiriting
     let field = div.getAttribute('show-info');
-    div.innerHTML = user[field]; // first Pete into "name", then 25 into "age"
+    div.innerHTML = user[field]; // birinchi Pit "name", keyin 25 "age" ga
   }
 </script>
 ```
 
-Also they can be used to style an element.
+Bundan tashqari, ular elementni uslublash uchun ishlatilishi mumkin.
 
-For instance, here for the order state the attribute `order-state` is used:
+Masalan, bu yerda tartib holati uchun `order-state` atribyuti ishlatiladi:
 
 ```html run
 <style>
-  /* styles rely on the custom attribute "order-state" */
+  /* uslublar "order-state" maxsus atributiga tayanadi */
   .order[order-state="new"] {
     color: green;
   }
@@ -298,24 +298,24 @@ For instance, here for the order state the attribute `order-state` is used:
 </div>
 ```
 
-Why would using an attribute be preferable to having classes like `.order-state-new`, `.order-state-pending`, `.order-state-canceled`?
+Nima uchun atributdan foydalanish `.order-state-new`, `.order-state-pending`, `.order-state-canceled` kabi sinflarga ega bo'lishdan afzalroq bo'ladi ?
 
-Because an attribute is more convenient to manage. The state can be changed as easy as:
+Chunki atributni boshqarish qulayroqdir. Holatni o'zgartirish oson:
 
 ```js
-// a bit simpler than removing old/adding a new class
+// eskisini olib tashlash/yangi sinf qo'shishdan ko'ra biroz oddiyroq
 div.setAttribute('order-state', 'canceled');
 ```
 
-But there may be a possible problem with custom attributes. What if we use a non-standard attribute for our purposes and later the standard introduces it and makes it do something? The HTML language is alive, it grows, and more attributes appear to suit the needs of developers. There may be unexpected effects in such case.
+Lekin maxsus atributlar bilan bog'liq muammo bo'lishi mumkin. Agar biz o'z maqsadlarimiz uchun nostandart atributdan foydalansak va keyinroq standart uni kiritib, biror narsa qilishga majbur qilsa nima bo'ladi? HTML tili tirik, u o'sib boradi va ishlab chiquvchilarning ehtiyojlariga mos keladigan ko'proq atributlar paydo bo'ladi. Bunday holatda kutilmagan oqibatlar bo'lishi mumkin.
 
-To avoid conflicts, there exist [data-*](https://html.spec.whatwg.org/#embedding-custom-non-visible-data-with-the-data-*-attributes) attributes.
+Mojarolarni oldini olish uchun [data-*](https://html.spec.whatwg.org/ mavjud. #embedding-custom-non-visible-data-with-the-data-*-attributes) attributes.
 
-**All attributes starting with "data-" are reserved for programmers' use. They are available in the `dataset` property.**
+**"Data-" bilan boshlangan barcha atributlar dasturchilar foydalanishi uchun ajratilgan. Ular `dataset` xususiyatida mavjud.**
 
-For instance, if an `elem` has an attribute named `"data-about"`, it's available as `elem.dataset.about`.
+Masalan, agar `elem` `data-about` atribyutiga ega bo'lsa, u `elem.dataset.about` sifatida mavjud.
 
-Like this:
+Mana bunday:
 
 ```html run
 <body data-about="Elephants">
@@ -324,9 +324,9 @@ Like this:
 </script>
 ```
 
-Multiword attributes like `data-order-state` become camel-cased: `dataset.orderState`.
+`Data-order-state` kabi ko'p so'z atributlari tuya shaklida bo'ladi: `dataset.orderState`.
 
-Here's a rewritten "order state" example:
+Bu yerda qayta yozilgan "order state" misoli:
 
 ```html run
 <style>
@@ -356,31 +356,31 @@ Here's a rewritten "order state" example:
 </script>
 ```
 
-Using `data-*` attributes is a valid, safe way to pass custom data.
+`Data-*` atributlaridan foydalanish maxsus ma`lumotlarni uzatishning haqiqiy va xavfsiz usuli hisoblanadi.
 
-Please note that we can not only read, but also modify data-attributes. Then CSS updates the view accordingly: in the example above the last line `(*)` changes the color to blue.
+E'tibor bering, biz nafaqat o'qishimiz, balki ma'lumotlar atribyutlarini ham o'zgartirishimiz mumkin. Keyin CSS ko'rinishni mos ravishda yangilaydi: oxirgi qatordagi `(*)` yuqoridagi misolda rangni ko'k rangga o'zgartiradi.
 
-## Summary
+## Xulosa
 
-- Attributes -- is what's written in HTML.
-- Properties -- is what's in DOM objects.
+- Atributlar -- HTMLda yozilgan narsa.
+- Xususiyatlar -- bu DOM obyektlarida mavjud.
 
-A small comparison:
+Kichik taqqoslash:
 
-|            | Properties | Attributes |
+|            | Xususiyatlar | Atribyutlar |
 |------------|------------|------------|
-|Type|Any value, standard properties have types described in the spec|A string|
-|Name|Name is case-sensitive|Name is not case-sensitive|
+|Type|Istalgan qiymat, standart xususiyatlar spetsifikatsiyada tasvirlangan turlarga ega|qator|
+|Name|Name harflar katta-kichikligiga sezgir|Name katta-kichik harflarga sezgir emas|
 
-Methods to work with attributes are:
+Atributlar bilan ishlash usullari:
 
-- `elem.hasAttribute(name)` -- to check for existence.
-- `elem.getAttribute(name)` -- to get the value.
-- `elem.setAttribute(name, value)` -- to set the value.
-- `elem.removeAttribute(name)` -- to remove the attribute.
-- `elem.attributes` is a collection of all attributes.
+- `elem.hasAttribute(name)` -- mavjudlikni tekshiradi.
+- `elem.getAttribute(name)` -- qiymatni oladi.
+- `elem.setAttribute(name, value)` -- qiymatni o'rnatadi.
+- `elem.removeAttribute(name)` -- atribyutni qaytarib oladi.
+- `elem.attributes` barcha atribbyutlarning to'plami.
 
-For most situations using DOM properties is preferable. We should refer to attributes only when DOM properties do not suit us, when we need exactly attributes, for instance:
+Aksariyat hollarda DOM xususiyatlaridan foydalanish afzalroqdir. Biz atributlarga faqat DOM xossalari bizga mos kelmasa, atributlar kerak bo'lganda murojaat qilishimiz kerak, masalan:
 
-- We need a non-standard attribute. But if it starts with `data-`, then we should use `dataset`.
-- We want to read the value "as written" in HTML. The value of the DOM property may be different, for instance the `href` property is always a full URL, and we may want to get the "original" value.
+- Bizga nostandart atribut kerak. Ammo agar u `data-` bilan boshlansa, biz `dataset` dan foydalanishimiz kerak.
+- Biz HTMLda "yozilgan" qiymatini o'qishni xohlaymiz. DOM xususiyatining qiymati boshqacha bo'lishi mumkin, masalan, `href` xususiyati har doim to'liq URL bo'ladi va biz "asl" qiymatni olishni xohlashimiz mumkin.

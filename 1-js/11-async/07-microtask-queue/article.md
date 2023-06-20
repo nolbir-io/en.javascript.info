@@ -1,112 +1,112 @@
 
-# Microtasks
+# Mikrovazifalar
 
-Promise handlers `.then`/`.catch`/`.finally` are always asynchronous.
+`.then`/`.catch`/`.finally` promise ishlov beruvchilari har doim asinxrondir.
 
-Even when a Promise is immediately resolved, the code on the lines *below* `.then`/`.catch`/`.finally` will still execute before these handlers.
+Promise darhol hal qilingan bo'lsa ham, *quyida* `.then`/`.catch`/`.finally` satrlaridagi kod bu ishlovchilardan oldin bajariladi.
 
-Here's a demo:
+Mana demo:
 
 ```js run
 let promise = Promise.resolve();
 
-promise.then(() => alert("promise done!"));
+promise.then(() => alert("promise bajarildi!"));
 
-alert("code finished"); // this alert shows first
+alert("kod tugallandi"); // bu ogohlantirish birinchi bo'lib ko'rsatiladi
 ```
 
-If you run it, you see `code finished` first, and then `promise done!`.
+Agar siz uni ishga tushirsangiz, avval `kod tugallandi`, keyin esa `promise bajarildi!` degan xabarni koʻrasiz.
 
-That's strange, because the promise is definitely done from the beginning.
+Bu g'alati, chunki promise, albatta, boshidan amalga oshiriladi.
 
-Why did the `.then` trigger afterwards? What's going on?
+Nima uchun `.then` keyinroq ishga tushdi? Nima bo'ldi?
 
-## Microtasks queue
+## Mikrovazifalar ro'yxati
 
-Asynchronous tasks need proper management. For that, the ECMA standard specifies an internal queue `PromiseJobs`, more often referred to as the "microtask queue" (V8 term).
+Asinxron vazifalar to'g'ri boshqaruvni talab qiladi. Buning uchun ECMA standarti `PromiseJobs` ichki navbatini belgilaydi, ko'pincha `mikro vazifa navbati` (V8 atamasi) deb ataladi.
 
-As stated in the [specification](https://tc39.github.io/ecma262/#sec-jobs-and-job-queues):
+[spetsifikatsiyada] aytilganidek (https://tc39.github.io/ecma262/#sec-jobs-and-job-queues):
 
-- The queue is first-in-first-out: tasks enqueued first are run first.
-- Execution of a task is initiated only when nothing else is running.
+- Navbat birinchi bo'lib chiqadi: birinchi navbatda qo'yilgan vazifalar birinchi bo'lib bajariladi.
+- Vazifani bajarish faqat boshqa hech narsa ishlamayotganda boshlanadi.
 
-Or, to put it more simply, when a promise is ready, its `.then/catch/finally` handlers are put into the queue; they are not executed yet. When the JavaScript engine becomes free from the current code, it takes a task from the queue and executes it.
+Yoki soddaroq qilib aytganda, promise tayyor bo‘lgach, uning `.then/catch/finally` ishlov beruvchilari navbatga qo‘yiladi; ular hali amalga oshirilmagan. JavaScript mexanizmi joriy koddan ozod bo'lganda, u navbatdan vazifani oladi va uni bajaradi.
 
-That's why "code finished" in the example above shows first.
+Shuning uchun yuqoridagi misolda "kod tugadi" birinchi bo'lib ko'rsatiladi.
 
 ![](promiseQueue.svg)
 
-Promise handlers always go through this internal queue.
+Promiselar bilan shug'ullanuvchilar har doim ushbu ichki navbatdan o'tadilar.
 
-If there's a chain with multiple `.then/catch/finally`, then every one of them is executed asynchronously. That is, it first gets queued, then executed when the current code is complete and previously queued handlers are finished.
+Agar bir nechta `.then/catch/finally` bilan zanjir mavjud bo'lsa, ularning har biri asinxron tarzda bajariladi. Ya'ni, u avval navbatga qo'yiladi, so'ngra joriy kod tugallangandan so'ng va avval navbatga qo'yilgan ishlov beruvchilar tugagach bajariladi.
 
-**What if the order matters for us? How can we make `code finished` appear after `promise done`?**
+**Agar buyurtma biz uchun muhim bo'lsa-chi? Qanday qilib `promise bajarilganidan` keyin `kod tugallandi` ko'rinishini yaratishimiz mumkin?**
 
-Easy, just put it into the queue with `.then`:
+Oson, shunchaki `.then` bilan navbatga qo'ying:
 
 ```js run
 Promise.resolve()
-  .then(() => alert("promise done!"))
-  .then(() => alert("code finished"));
+  .then(() => alert("promise bajarildi!"))
+  .then(() => alert("kod yakunlandi"));
 ```
 
-Now the order is as intended.
+Endi barchasi navbatda ko'rsatilgandek bo'ldi.
 
-## Unhandled rejection
+## Ishlov berilmagan rad etish
 
-Remember the `unhandledrejection` event from the article <info:promise-error-handling>?
+<info:promise-error-handling> maqolasidagi `unhandledrejection` hodisasini eslaysizmi?
 
-Now we can see exactly how JavaScript finds out that there was an unhandled rejection.
+Endi biz JavaScript-ning hal qilinmagan rad etish borligini qanday aniqlaganini ko'rishimiz mumkin.
 
-**An "unhandled rejection" occurs when a promise error is not handled at the end of the microtask queue.**
+**Mikrovazifalar navbatining oxirida promise errori ishlanmasa, "ishlov berilmagan rad etish" sodir bo'ladi.**
 
-Normally, if we expect an error, we add `.catch` to the promise chain to handle it:
+Odatda, agar error kutilgan bo'lsa, uni hal qilish uchun promiselar zanjiriga `.catch` qo'shamiz:
 
 ```js run
-let promise = Promise.reject(new Error("Promise Failed!"));
+let promise = Promise.reject(new Error("Promise muvaffaqiyatsizlikka uchradi!"));
 *!*
-promise.catch(err => alert('caught'));
+promise.catch(err => alert('ushlandi));
 */!*
 
-// doesn't run: error handled
+// ishlamaydi: error hal qilindi
 window.addEventListener('unhandledrejection', event => alert(event.reason));
 ```
 
-But if we forget to add `.catch`, then, after the microtask queue is empty, the engine triggers the event:
+Ammo agar biz `.catch` qo'shishni unutib qo'ysak, mikrovazifalar navbati bo'sh bo'lgandan keyin vosita hodisani ishga tushiradi:
 
 ```js run
-let promise = Promise.reject(new Error("Promise Failed!"));
+let promise = Promise.reject(new Error("Promise muvaffaqiyatsizlikka uchradi!"));
 
-// Promise Failed!
+// Promise muvaffaqiyatsizlikka uchradi!
 window.addEventListener('unhandledrejection', event => alert(event.reason));
 ```
 
-What if we handle the error later? Like this:
+Xatoni keyinroq hal qilsak-chi? Shunga o'xshash:
 
 ```js run
-let promise = Promise.reject(new Error("Promise Failed!"));
+let promise = Promise.reject(new Error("Promise muvaffaqiyatsizlikka uchradi!"));
 *!*
-setTimeout(() => promise.catch(err => alert('caught')), 1000);
+setTimeout(() => promise.catch(err => alert('ushlandi')), 1000);
 */!*
 
-// Error: Promise Failed!
+// Error: Promise muvaffaqiyatsizlikka uchradi!
 window.addEventListener('unhandledrejection', event => alert(event.reason));
 ```
 
-Now, if we run it, we'll see `Promise Failed!` first and then `caught`.
+Endi, agar biz uni ishga tushirsak, avval `promise bajarilmadi!`, keyin esa `caught`ni ko‘ramiz.
 
-If we didn't know about the microtasks queue, we could wonder: "Why did `unhandledrejection` handler run? We did catch and handle the error!"
+Agar biz mikrovazifalar navbati haqida bilmagan bo'lsak, biz hayron bo'lishimiz mumkin: "Nima uchun `unhandledrejection` ishlov beruvchisi ishga tushdi? Biz xatoni aniqladik va tuzatdik!"
 
-But now we understand that `unhandledrejection` is generated when the microtask queue is complete: the engine examines promises and, if any of them is in the "rejected" state, then the event triggers.
+Ammo endi biz tushunamizki, `unhandledrejection` mikrovazifalar navbati tugallanganda hosil bo‘ladi: vosita promiselarni tekshiradi va agar ulardan biri `rad etilgan` holatda bo‘lsa, hodisa tetiklanadi.
 
-In the example above, `.catch` added by `setTimeout` also triggers. But it does so later, after `unhandledrejection` has already occurred, so it doesn't change anything.
+Yuqoridagi misolda `setTimeout` tomonidan qo‘shilgan `.catch` ham ishga tushiriladi. Lekin buni keyinroq, `unhandledrejection` sodir bo'lgandan keyin qiladi, shuning uchun u hech narsani o'zgartirmaydi.
 
-## Summary
+## Xulosa
 
-Promise handling is always asynchronous, as all promise actions pass through the internal "promise jobs" queue, also called "microtask queue" (V8 term).
+Promiselarni ko'rib chiqish har doim asinxrondir, chunki barcha promiselar "mikrovazifa navbati" (V8 atamasi) deb ham ataladigan ichki "promise ishlari" navbati orqali o'tadi.
 
-So `.then/catch/finally` handlers are always called after the current code is finished.
+Shunday qilib, `.then/catch/finally` ishlov beruvchilari har doim joriy kod tugagandan so'ng chaqiriladi.
 
-If we need to guarantee that a piece of code is executed after `.then/catch/finally`, we can add it into a chained `.then` call.
+Agar kod qismi `.then/catch/finally` dan keyin bajarilishini kafolatlashimiz kerak bo'lsa, biz uni zanjirlangan `.then` chaqiruviga qo'shishimiz mumkin.
 
-In most Javascript engines, including browsers and Node.js, the concept of microtasks is closely tied with the "event loop" and "macrotasks". As these have no direct relation to promises, they are covered in another part of the tutorial, in the article <info:event-loop>.
+Ko'pgina Javascript dvigatellarida, shu jumladan brauzerlar va Node.js da, mikrotopshiriqlar tushunchasi "voqea sikli" va "makrovazifalar" bilan chambarchas bog'langan. Ularning promiselarga bevosita aloqasi yo'qligi sababli, ular o'quv qo'llanmaning boshqa qismida, <info:event-loop> maqolasida yoritilgan.
