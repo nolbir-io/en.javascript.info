@@ -1,6 +1,6 @@
-# Find bbtag pairs
+# Bbtag juftlarini toping
 
-A "bb-tag" looks like `[tag]...[/tag]`, where `tag` is one of: `b`, `url` or `quote`.
+"bb-teg" `[tag]...[/tag]`ga o'xshaydi, bu yerda `teg`: `b`, `url` yoki `quote`dan biri.
 
 For instance:
 ```
@@ -8,18 +8,18 @@ For instance:
 [url]http://google.com[/url]
 ```
 
-BB-tags can be nested. But a tag can't be nested into itself, for instance:
+BB teglarini joylashtirish mumkin. Lekin tegni o'ziga joylashtirish mumkin emas, masalan:
 
 ```
 Normal:
 [url] [b]http://google.com[/b] [/url]
 [quote] [b]text[/b] [/quote]
 
-Can't happen:
+Bo'lishi mumkin emas:
 [b][b]text[/b][/b]
 ```
 
-Tags can contain line breaks, that's normal:
+Teglar qator uzilishlarini o'z ichiga olishi mumkin, bu normaldir:
 
 ```
 [quote]
@@ -27,9 +27,9 @@ Tags can contain line breaks, that's normal:
 [/quote]
 ```
 
-Create a regexp to find all BB-tags with their contents.
+Barcha BB-teglarni ularning mazmuni bilan topish uchun regexp yarating.
 
-For instance:
+Masalan:
 
 ```js
 let regexp = /your regexp/flags;
@@ -38,7 +38,7 @@ let str = "..[url]http://google.com[/url]..";
 alert( str.match(regexp) ); // [url]http://google.com[/url]
 ```
 
-If tags are nested, then we need the outer tag (if we want we can continue the search in its content):
+Agar teglar o'rnatilgan bo'lsa, bizga tashqi teg kerak bo'ladi (agar xohlasak, uning tarkibidagi qidiruvni davom ettiramiz):
 
 ```js
 let regexp = /your regexp/flags;

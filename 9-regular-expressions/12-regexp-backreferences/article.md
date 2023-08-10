@@ -1,33 +1,33 @@
-# Backreferences in pattern: \N and \k<name>
+# Patterndagi qayta havolalar: \N and \k<name>
 
-We can use the contents of capturing groups `pattern:(...)` not only in the result or in the replacement string, but also in the pattern itself.
+Biz `pattern:(...)` guruhlarini olish mazmunidan nafaqat natijada yoki almashtirish qatorida, balki naqshning o'zida ham foydalanishimiz mumkin.
 
-## Backreference by number: \N
+## Raqam bo'yicha qayta havola: \N
 
-A group can be referenced in the pattern using `pattern:\N`, where `N` is the group number.
+Guruhga shablonda `pattern:\N` yordamida murojaat qilish mumkin, bu yerda `N` guruh raqamidir.
 
-To make clear why that's helpful, let's consider a task.
+Bu nima uchun foydali ekanligini tushunish uchun keling, vazifani ko'rib chiqaylik.
 
-We need to find quoted strings: either single-quoted `subject:'...'` or a double-quoted `subject:"..."` -- both variants should match.
+Biz qo'sh tirnoqli satrlarni topishimiz kerak: yoki bitta qo'sh tirnoqli `subject:'...'` yoki ikki qo'shtirnoqli `subject:"..."` -- ikkala variant ham mos kelishi kerak.
 
-How to find them?
+Ularni qanday topish mumkin?
 
-We can put both kinds of quotes in the square brackets: `pattern:['"](.*?)['"]`, but it would find strings with mixed quotes, like `match:"...'` and `match:'..."`. That would lead to incorrect matches when one quote appears inside other ones, like in the string `subject:"She's the one!"`:
+Ikkala turdagi tirnoqlarni kvadrat qavs ichiga qo'yishimiz mumkin: `pattern:['"](.*?)['"]`, lekin u aralash qo'shtirnoqli satrlarni topadi, masalan, `match:"...'` va `match:'..."`. Bu `subject:"She's the one!"` qatoridagi kabi bir qo'shtirnoq boshqasining ichida paydo bo'lsa, noto'g'ri mos kelishiga olib keladi:
 
 ```js run
 let str = `He said: "She's the one!".`;
 
 let regexp = /['"](.*?)['"]/g;
 
-// The result is not what we'd like to have
+// Natija biz xohlagandek emas
 alert( str.match(regexp) ); // "She'
 ```
 
-As we can see, the pattern found an opening quote `match:"`, then the text is consumed till the other quote `match:'`, that closes the match.
+Ko'rib turganimizdek, qo'shtirnoq ochuvchi qo'shtirnoq `match:"` topildi, so'ngra matn boshqa qo'shtirnoq `match:'`gacha iste'mol qilinadi, bu moslikni yopadi.
 
-To make sure that the pattern looks for the closing quote exactly the same as the opening one, we can wrap it into a capturing group and backreference it: `pattern:(['"])(.*?)\1`.
+Pattern yopilish qo'shtirnog'ini aynan ochilgan qo'shtirnoq bilan bir xil ko'rishiga ishonch hosil qilish uchun uni suratga olish guruhiga o'rashimiz va unga qayta havola qilishimiz mumkin: `pattern:(['"])(.*?)\1`.
 
-Here's the correct code:
+Quyida to'g'ri kod berilgan:
 
 ```js run
 let str = `He said: "She's the one!".`;
@@ -39,27 +39,27 @@ let regexp = /(['"])(.*?)\1/g;
 alert( str.match(regexp) ); // "She's the one!"
 ```
 
-Now it works! The regular expression engine finds the first quote `pattern:(['"])` and memorizes its content. That's the first capturing group.
+Endi u ishlaydi! Muntazam iboralar mexanizmi birinchi qo'shtirnoq `pattern:(['"])` ni topadi va uning mazmunini yodlaydi. Bu birinchi tortib olish guruhidir.
 
-Further in the pattern `pattern:\1` means "find the same text as in the first group", exactly the same quote in our case.
+Keyinchalik `pattern:\1` pattern'da "birinchi guruhdagi kabi matnni toping" degan ma'noni anglatadi, bizning holatimizda bu aynan bir xil qo'shtirnoq.
 
-Similar to that, `pattern:\2` would mean the contents of the second group, `pattern:\3` - the 3rd group, and so on.
+Shunga o'xshab, `pattern:\2` ikkinchi guruh mazmunini, `pattern:\3` - 3-guruh va hokazolarni bildiradi.
 
 ```smart
-If we use `?:` in the group, then we can't reference it. Groups that are excluded from capturing `(?:...)` are not memorized by the engine.
+Agar guruhda `?:` dan foydalansak, unga havola qila olmaymiz. `(?:...)` yozib olishdan chetlashtirilgan guruhlar dvigatel tomonidan eslab qolinmaydi.
 ```
 
-```warn header="Don't mess up: in the pattern `pattern:\1`, in the replacement: `pattern:$1`"
-In the replacement string we use a dollar sign: `pattern:$1`, while in the pattern - a backslash `pattern:\1`.
+```warn header="Chalkashtirmang: patternda `pattern:\1`, almashtirishda: `pattern:$1`"
+O'zgartirish qatorida biz dollar belgisidan foydalanamiz: `pattern:$1`, patternda esa - teskari qiyshiq chiziq `pattern:\1`.
 ```
 
-## Backreference by name: `\k<name>`
+## Ism bo'yicha qayta havola: `\k<name>`
 
-If a regexp has many parentheses, it's convenient to give them names.
+Agar regexpda ko'p qavs bo'lsa, ularga nom berish qulay.
 
-To reference a named group we can use `pattern:\k<name>`.
+Nomlangan guruhga murojaat qilish uchun `pattern:\k<name>` dan foydalanishimiz mumkin.
 
-In the example below the group with quotes is named `pattern:?<quote>`, so the backreference is `pattern:\k<quote>`:
+Quyidagi misolda qo'shtirnoqli guruh `pattern:?<quote>` deb nomlangan, shuning uchun qayta havola `pattern:\k<quote>`:
 
 ```js run
 let str = `He said: "She's the one!".`;
