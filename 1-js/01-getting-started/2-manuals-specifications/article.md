@@ -1,7 +1,7 @@
 
 # Qo'llanma va ko'rsatmalar
 
-Bu kitob bboshlang'ich o'quv qo'llanma hisoblanadi. Darslikning maqsadi sizga tilni asta-sekin o'rgatishdir. Boshlang'ich bilimlar bilan tanishib bo'lganingizdan keyin siz boshqa manbalardan ham foydalanishingiz kerak bo'ladi.
+Bu kitob boshlang'ich o'quv qo'llanma hisoblanadi. Darslikning maqsadi sizga tilni asta-sekin o'rgatishdir. Boshlang'ich bilimlar bilan tanishib bo'lganingizdan keyin siz boshqa manbalardan ham foydalanishingiz kerak bo'ladi.
 
 ## Ko'rsatma
 
