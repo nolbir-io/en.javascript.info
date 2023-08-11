@@ -31,9 +31,9 @@ nomlangan va boshqa shu kabi kod nomlari mavjud.
 
 Yuqoridagi terminlar eslab qolishga oson, chunki ulardan internetdagi dasturlashga oid maqolalarda keng foydalaniladi. Biz ham ulardan foydalanishimiz mumkin. Misol uchun, agar "X xususiyat V8 tomonidan qo'llana olsa", demak u Chrome, Opera va Edge brauzerlarida ishlay oladi.
 
-```smart header="Engine lar qanday ishlaydi?"
+```smart header="Dvigatellar qanday ishlaydi?"
 
-Engine lar aslida murakkab. Lekin asoslari ancha oson hisoblanadi.
+Dvigatellar aslida murakkab. Lekin asoslari ancha oson hisoblanadi.
 
 1. Engine (agar brauzerga o'rnatilgan bo'lsa) skriptlarni o'qiydi (tahlil qiladi).
 2. Keyin skriptni mashina kodiga aylantiradi.
@@ -47,7 +47,7 @@ asoslangan mashina kodini yanada optimallashtiradi.
 
 ## Ichki-brauzer JavaScript nimalar qila oladi?
 
-Zamonaviy JacaScript "xavsiz" dasturlash tilidir. U xotira yoki CPU ga past daraja bilan kirishni ta'minlamaydi, chunki u dastlab uni talab qilmaydigan brauzerlar uchun yaratilgandi.
+Zamonaviy JacaScript "xavfsiz" dasturlash tilidir. U xotira yoki CPU (Central Processing Unit) ga past daraja bilan kirishni ta'minlamaydi, chunki u dastlab uni talab qilmaydigan brauzerlar uchun yaratilgandi. 
 
 JavaScriptning qobiliyatlari u ishlab turgan muhit bilan bevosita bog'liq. Misol uchun, [Node.js](https://wikipedia.org/wiki/Node.js) JavaScriptga katta hajmdagi fayllarni o'qish/yozish ga yordam beradigan funksiyalarni qo'llab quvvatlaydi, tizim so'rovlarini amalga oshiradi va hokazo.
 
@@ -59,7 +59,7 @@ Misol uchun, ichki-brauzerdagi JavaScript quyidagilarga qodir:
 - Sahifaga yangi HTML qo'shish, mavjud kontentni o'zgartirish, dizaynni o'zgartirish.
 - Foydalanuvchi harakatlariga reaksiya bildirish, sichqoncha bosilganda, kursor harakatlanganda va klaviatura bosilganda ma'lum harakatlarni amalga oshirish.
 - Uzoq serverlarga tizim orqali so'rovlar yuborish, saqlab olish va yuklash ([AJAX](https://en.wikipedia.org/wiki/Ajax_(programming)) va [COMET](https://en.wikipedia.org/wiki/Comet_(programming)) nomli texnologiyalar).
-- Kukilar olish va o'rnatish, tashrif buyuruvchiga savollar berish, xabarlar ko'rsatish.
+- Cookie olish va o'rnatish, tashrif buyuruvchiga savollar berish, xabarlar ko'rsatish.
 - Mijoz tomonda (ya'ni mahalliy xotirada) ma'lumotlarni saqlab qolish.
 
 ## Ichki-brauzer JavaScript nimalar qila olmaydi?
@@ -69,15 +69,15 @@ Foydalanuvchining xavfsizligini himoya qilish maqsadida JavaScriptning brauzer d
 Bunday cheklovlarga misollar:
 
 - Web sahifada JavaScript qattiq diskdagi katta hajmli fayllarni o'qishi, ularni nusxalashi 
- yoki dasturlarni ishlatishi mumkin emas. U Operatsion Tizim funksiyalariga to'g'ridan to'gri 
+ yoki dasturlarni ishlatishi mumkin emas. U OS (Operatsion Tizim) funksiyalariga to'g'ridan to'gri 
  kira olmaydi.
 
-     Zamonaviy brauzerlar fayllar bilan birga ishlash imkonini beradi, lekin kirish cheklangan va faqat agar foydalanuvchi brauzer oynasiga faylni drop qilish, ya'ni tashlash yoki `<input>` tegi orqali tanlash kabi ma'lum harakatlarni bajarganda ruxsat beriladi.
+     Zamonaviy brauzerlar fayllar bilan birga ishlash imkonini beradi, lekin kirish cheklangan va faqat agar foydalanuvchi brauzer oynasiga faylni joylashtirish yoki `<input>` tegi orqali tanlash kabi ma'lum harakatlarni bajarganda ruxsat beriladi.
 
      Kamera/mikrofon va boshqa qurilmalar bilan bog'lanishning turli yo'llari mavjud, lekin ular foydalanuvchidan ruxsat talab qiladi. Shuning uchun JavaScript yoqilgan sahifa web-kamerani yashirincha yoqishi, atrofni kuzatishi va [NSA](https://en.wikipedia.org/wiki/National_Security_Agency) (Milliy Xavfsizlik Agentligi)ga ma'ulomot jo'natishi mumkin emas.
 
 
-     - Turli yorliq yoki oynalar umumiy jihatdan bir-biri haqida hech narsa bilishmaydi. Ba'zidabiroz ma'lumotga ega bo'lishlari mumkin, misol uchun bir oyna JavaScriptdan boshqa birini ochish uchun foydalansa. Hatto bu holatda ham, agar turli sayt(domen, protokol yoki port)lardan bir sahifadagi JavaScript boshqasiga kira olmaydi.
+     - Turli yorliq yoki oynalar umumiy jihatdan bir-biri haqida hech narsa bilishmaydi. Ba'zida biroz ma'lumotga ega bo'lishlari mumkin, misol uchun bir oyna JavaScriptdan boshqa birini ochish uchun foydalansa. Hatto bu holatda ham, agar turli sayt(domen, protokol yoki port)lardan bir sahifadagi JavaScript boshqasiga kira olmaydi.
 
      Bu "Same Origin Policy" ("Bir xil kelib chiqish siyosati") deb nomlanadi. Buni hal qilish uchun *ikkala sahifa ham* ma'lumotlar almashinuviga rozi bo'lishi va uni boshqaradigan maxsus JavaScript kodini o'z ichiga olishi kerak. Buni qo'llanmada ko'rib chiqamiz.
 
@@ -125,4 +125,4 @@ Yana boshqalar ham bor. Albatta, biz ko'chirilgan tillardan birini ishlatsak ham
 ## Xulosa
 - JavaScript dastlab faqat brauzer tili sifatida yaratilgan edi, ammo hozir u ko'plab boshqa muhitlarda ham qo'llaniladi.
 - Bugungi kunda JavaScript HTML/CSS bilan to'liq birlashgan eng keng tarqalgan brauzer tili sifatida oʻziga xos mavqe'ga ega.
-- JavaScriptga "ko'chiriladigan" va ma'lum xususiyatlarni ta'minlaydigan ko'plab tillar mavjud. JavaScriptni o'zlashtirgandan so'ng, ularni hech bo'lmaganda qisqacha ko'rib chiqish tavsiya etiladi.
+- JavaScriptga "transpiled" qilingan va ma'lum xususiyatlarni ta'minlaydigan ko'plab tillar mavjud. JavaScriptni o'zlashtirgandan so'ng, ularni hech bo'lmaganda qisqacha ko'rib chiqish tavsiya etiladi.
