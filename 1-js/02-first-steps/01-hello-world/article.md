@@ -120,7 +120,6 @@ Yuqoridagi misolni ikkita ishlaydigan skriptga ajratish mumkin:
   alert(1);
 </script>
 ```
-````
 
 ## Xulosa
 
