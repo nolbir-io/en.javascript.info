@@ -1,15 +1,15 @@
 # Asosiy operatorlar, matematika
 
-Ko'plab operatorlarni maktab davridan bilamiz. Ular qo'shuv `+`, ko'paytiruv `*`, ayiruv `-` va boshqa shunga o'xshash narsalar.
+Maktab davridan beri ko'plab operatorlarni bilamiz. Ular qo'shish `+`, ko'paytirish`*`, ayirish `-` va boshqa shunga o'xshash narsalardir.
 
-Ushbu bobda oddiy operatorlardan boshlaymiz, so'ngra maktab arifmetikasi bilan qamrab olinmagan JavaScript-ga xos jihatlarga e'tibor qaratamiz.
+Ushbu bobda oddiy operatorlardan boshlaymiz, so'ngra maktab arifmetikasi qamrab olinmagan JavaScriptga xos jihatlarga e'tibor qaratamiz.
 
-## Terminlar: "unary", "binary", "operand"
+## "unary", "binary" va "operand" terminlari
 
-Davom etishdan oldin, keling, ba'zi umumiy atamalarni tushunib olaylik.
+Davom etishdan oldin, keling, ba'zi umumiy atamalarni tushunib olamiz.
 
-- *operand* -- operatorlar qo'llaniladigan narsadir. Misol uchun, `5 * 2` ko'paytmasida ikkita operand mavjud: chap operand `5` va o'ng operand `2`. Ba'zan odamlar bularni "operand"ni o'rniga "argument" deb atashadi.
-- Agar operator yakka operand-ga ega bo'lsa u *unary*. Misol uchun, unary inkor `-` raqam belgisini teskarisiga aylantiradi:
+- *operand* -- operatorlar tomonidan qo'llaniladigan narsadir. Misol uchun, `5 * 2` ko'paytmasida ikkita operand mavjud: chap operand `5` va o'ng operand `2`. Odamlar ba'zida bularni "operand" o'rniga "argument" deb atashadi.
+- Agar operator yakka operandga ega bo'lsa u *unary* deb ataladi. Misol uchun, "unary" inkor `-` raqam belgisini teskarisiga aylantiradi:
 
     ```js run
     let x = 1;
@@ -19,31 +19,31 @@ Davom etishdan oldin, keling, ba'zi umumiy atamalarni tushunib olaylik.
     */!*
     alert( x ); // -1, unary inkor qo'llanilgan
     ```
-- Agar operator ikkita operand-ga ega bo'lsa u *binary*. Binary shaklda ham o'xshash minus mavjud:
+- Agar operator ikkita operandga ega bo'lsa u *binary* deyiladi. Binary shaklda ham o'xshash minus mavjud:
 
     ```js run no-beautify
     let x = 1, y = 3;
     alert( y - x ); // 2, binary minus qiymatlarni ayiradi
     ```
 
-    Rasman, yuqoridagi misollarda bizda bir xil belgiga ega bo'lgan ikki xil operator mavjud: inkor operatori, belgini teskari aylantiruvchi unary operator va ayirish operatori, bir raqamni boshqasidan ayiradigan binary operator.
+    Rasman, yuqoridagi misollarda bizda bir xil belgiga ega bo'lgan ikki xil operator mavjud: inkor operatori, belgini teskari aylantiruvchi unary operator, ayirish operatori va bir raqamini boshqasidan ayiradigan binary operator.
 
 ## Matematika
 
 Quyidagi operatorlar qo'llab quvvatlanadi:
 
-- Qo'shuv `+`,
-- Ayiruv `-`,
-- Ko'paytiruv `*`,
-- Bo'luv `/`,
+- Qo'shish `+`,
+- Ayirish `-`,
+- Ko'paytirish `*`,
+- Bo'lish `/`,
 - Qoldiq `%`,
 - Darajaga ko'tarish `**`.
 
-Birinchi to'rttasi oddiy, `%` va `**` esa ozgina tushuntiruv talab qiladi.
+Birinchi to'rttasi oddiy, `%` va `**` esa biroz tushuntirishni talab qiladi.
 
 ### Qoldiq %
 
-Qoldiq operatori `%`, ko'rinishiga qaramay, foizlarga bo'gliq emas.
+Qoldiq operatorining ko'rinishi `%` foizlarga bo'gliq emas.
 
  `a % b`ning natijasi `a`ni `b`ga bo'lgandagi butun [qoldiq](https://en.wikipedia.org/wiki/Remainder)ga teng.
 
@@ -68,7 +68,7 @@ alert( 2 ** 3 ); // 2³ = 8
 alert( 2 ** 4 ); // 2⁴ = 16
 ```
 
-Matematikada bo'lganidek, darajaga ko'tarish operatori butun bo'lmagan raqamlar uchun ham ishlaydi. 
+Matematikadagi kabi darajaga ko'tarish operatori butun bo'lmagan raqamlar uchun ham ishlaydi. 
 
 Misol uchun, kvadrat ildiz ½chi darajaga teng:
 
@@ -78,21 +78,20 @@ alert( 8 ** (1/3) ); // 2 (1/3 daraja kvadrat ildiz bilan barobar)
 ```
 
 
-## Binary bilan string birlashtirish +
+## Binary bilan stringni birlashtirish +
 
-Keling, maktab arifmetikasidan uzoqda bo'lgan JavaScript operatorlarining xususiyatlari bilan tanishaylik.
-Let's meet the features of JavaScript operators that are beyond school arithmetics.
+Keling, maktab arifmetikasidan uzoq bo'lgan JavaScript operatorlarining xususiyatlari bilan tanishaylik.
 
 Odatda, plyus `+` operatori raqamlarni qo'shadi.
 
-Lekin, binary plyus `+` string-larga qo'llanilsa, u ularni birlashtiradi:
+Lekin, binary plyus `+` stringlarda qo'llanilsa, u ularni birlashtiradi:
 
 ```js
 let s = "my" + "string";
 alert(s); // mystring
 ```
 
-Esda tuting, agar operand-lardan birontasi string bo'lsa, u holda boshqasi ham string-ga aylantiriladi.
+Esda tuting, agar operandlardan birontasi string bo'lsa, u holda boshqasi ham stringga aylantiriladi.
 
 Misol uchun:
 
@@ -101,15 +100,15 @@ alert( '1' + 2 ); // "12"
 alert( 2 + '1' ); // "21"
 ```
 
-Ko'rishimiz mumkin, birinchi operand yoki ikkinchisi string bo'lishi ahamiyatsiz.
+Birinchi operand yoki ikkinchisi string bo'lishi ahamiyatsiz ekanligini ko'rishimiz mumkin.
 
-Quyida ancha murakkabroq misol:
+Quyida ancha murakkabroq misol berilgan:
 
 ```js run
 alert(2 + 2 + '1' ); // "41" va "221" emas
 ```
 
-Bu yerda operatorlar birin-ketin ishlaydi. Birinchi `+` ikkita raqamni jamlaydi, shuning uchun u `4` ni qaytaradi, keyin keyingi `+` unga `1` qatorini qo`shadi, shuning uchun `4 + '1' = '41'` kabi bo`ladi.
+Bu yerda operatorlar birin-ketin ishlaydi. Birinchi `+` ikkita raqamni jamlaydi, shuning uchun u `4` ni qaytaradi, so'ng keyingi `+` unga `1` qatorini qo'shadi, shuning uchun `4 + '1' = '41'` kabi bo`ladi.
 
 ```js run
 alert('1' + 2 + 2); // "122" va "14" emas
@@ -117,16 +116,16 @@ alert('1' + 2 + 2); // "122" va "14" emas
 
 Bu yerda birinchi operand string bo'lib, compiler qolgan ikkita operandga ham string sifatida qaraydi. `2` `'1'` ga birlashtiriladi, shuning uchun u `'1' + 2 = "12"` va `"12" + 2 = "122"` kabi bo'ladi.
 
-Binary `+` string-larni shu tarzda qo'llab-quvvatlaydigan yagona operatordir. Boshqa arifmetik operatorlar faqat raqamlar bilan ishlaydi va har doim o'z operandlarini raqamlarga aylantiradi.
+Binary `+` stringlarni shu tarzda qo'llab-quvvatlaydigan yagona operatordir. Boshqa arifmetik operatorlar faqat raqamlar bilan ishlaydi va har doim o'z operandlarini raqamlarga aylantiradi.
 
-Quyida ko'paytiruv va bo'luv uchun demo:
+Quyida ko'paytirish va bo'lish uchun demo:
 
 ```js run
 alert( 6 - '2' ); // 4, '2' ni songa aylantiradi
 alert( '6' / '2' ); // 3, ikkala operandni songa aylantiradi
 ```
 
-## Numeric conversion, unary +
+## Raqamli konversiya, unary + 
 
 Plyus `+` ikki shaklda mavjud: biz yuqorida ishlatgan binary shakl va unary shakl.
 
