@@ -345,7 +345,7 @@ Shunday qilib, buning uchun maxsus operatorlar mavjud:
 Ko'paytirish/kamaytirish faqat o'zgaruvchilarga qo'llanishi mumkin. Uni `5++`ga o'xshash qiymatga ishlatishga urinish xatolikka olib keladi.
 ```
 
-`++` va `--` operatorlari o'zgaruvchidan avval yoki keyin ham qo'yilishi mumkin.
+`++` va `--` operatorlari o'zgaruvchidan avval yoki keyin ham bemalol qo'yilishi mumkin.
 
 - Operator o'zgaruvchidan keyin kelganda u "postfiks shakl"da bo'ladi: `counter++`.
 - Operator o'zgaruvchidan avval kelganda esa u "prefiks shakl"da bo'ladi: `++counter`.
