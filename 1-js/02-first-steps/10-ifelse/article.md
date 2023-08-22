@@ -1,43 +1,43 @@
 # Shartli zanjirlanish: if, '?'
 
-Ba'zan biz turli shartlar asosida turli harakatlarni amalga oshirishimiz kerak.
+Ba'zan biz turli shartlar asosida har xil harakatlarni amalga oshirishimiz kerak.
 
 Buning uchun biz `if` ifodasidan va shartli operator`?`dan foydalanishimiz mumkin, bu ham "question mark" (so'roq belgisi) operatori deb ataladi.
 
 ## "if" ifodasi
 
-`if(...)` ifoda qavs ichidagi shartni hisoblaydi va agar natija `rost` bo`lsa kod bajaradi.
+`if(...)` ifoda qavs ichidagi shartni hisoblaydi va agar natija `rost` bo`lsa kod bajariladi.
 
 Misol uchun:
 
 ```js run
-let year = prompt('In which year was ECMAScript-2015 specification published?', '');
+let year = prompt('ECMAScript-2015 spetsifikatsiyasi qaysi yilda chop etilgan?'','');
 
 *!*
-if (year == 2015) alert( 'You are right!' );
+if (year == 2015) alert( 'Siz haqsiz!' );
 */!*
 ```
 
-Yuqoridagi misolda shart oddiy tenglikni tekshirish (`yil == 2015`), lekin u ancha murakkabroq boʻlishi ham mumkin.
+Yuqoridagi misolda oddiy tenglikni tekshirish sharti berilgan (`yil == 2015`), lekin u ancha murakkabroq bo'lishi ham mumkin.
 
-Agar biz bir nechta ifoda bajarmoqchi bo'lsak, kod blokini jingalak qavslar ichiga yozishimiz kerak:
+Agar biz bir nechta ifodani bajarmoqchi bo'lsak, kod blokini figurali qavslar ichiga yozishimiz kerak:
 
 ```js
 if (year == 2015) {
-  alert( "That's correct!" );
-  alert( "You're so smart!" );
+  alert( "Bu to'g'ri!" );
+  alert( "Siz judayam aqllisiz!" );
 }
 ```
-Har safar `if` iborasidan foydalanganda, hatto bajariladigan bitta buyruq boʻlsa ham, kod blokingizni jingalak qavslar `{}` bilan oʻrashingizni tavsiya qilamiz. Bu o'qish imkoniyatini yaxshilaydi.
+Har safar `if` iborasidan foydalanganda, hatto bajariladigan bitta buyruq bo'lsa ham, kod blokingizni figurali qavslar `{}` bilan o'rashingizni tavsiya qilamiz. Bu o'qish imkoniyatini yaxshilaydi.
 
-## Boolean konvertatsiya
+## Boolean konversiyasi
 
 `if (...)` ifodasi qavs ichidagi ifodani hisoblaydi va natijani boolean qiymatga aylantiradi.
 
 Keling <info:type-conversions> bobidan konvertatsiya qilish qoidalarini eslaylik:
 
 - `0` soni, `""` bo'sh string, `null`, `undefined` va `NaN` hammasi `false` ga alanadi. Shu tufayli ular "falsy" (yolg'on) qiymatlar deb ataladi.
-- Boshqa aiymatlar `true` ga aylanadi, shuning uchun ular "truthy" (rost) deb ataladi.
+- Boshqa qiymatlar `true` ga aylanadi, shuning uchun ular "truthy" (rost) deb ataladi.
 
 Shunday qilib, ushbu shart ostidagi kod hech qachon bajarilmaydi:
 
@@ -55,10 +55,10 @@ if (1) { // 1 is truthy
 }
 ```
 
-Bundan tashqari, oldindan hisoblandan mantiqiy qiymatni `if` ga quyidagicha o'tkazishimiz mumkin:
+Bundan tashqari, oldindan hisoblangan mantiqiy qiymatni `if` ga quyidagicha o'tkazishimiz mumkin:
 
 ```js
-let cond = (year == 2015); // equality evaluates to true or false
+let cond = (year == 2015); // tenglik to'g'ri yoki noto'g'ri deb baholanadi
 
 if (cond) {
   ...
@@ -67,16 +67,16 @@ if (cond) {
 
 ## "else" clause
 
-`if` ifodasi ixtiyorim "else" blokini o'z ichiga olishi mumkin. U shart yolg'on bo'lganda bajariladi.
+`if` ifodasi ixtiyoriy "else" blokini o'z ichiga olishi mumkin. U shart yolg'on bo'lganda bajariladi.
 
 Misol uchun:
 ```js run
 let year = prompt('In which year was the ECMAScript-2015 specification published?', '');
 
 if (year == 2015) {
-  alert( 'You guessed it right!' );
+  alert( 'To'g'ri taxmin qildingiz!' );
 } else {
-  alert( 'How can you be so wrong?' ); // any value except 2015
+  alert( 'Qanday qilib bunchalik xato qila olasiz?' ); // 2015-yildan tashqari har qanday qiymat
 }
 ```
 
@@ -84,22 +84,21 @@ if (year == 2015) {
 
 Ba'zan biz shartning bir nechta variantini sinab ko'rmoqchi bo'lamiz. `Else if` clause buni qilishga imkon beradi.
 
-For example:
+Masalan:
 
 ```js run
-let year = prompt('In which year was the ECMAScript-2015 specification published?', '');
+let year = prompt('ECMAScript-2015 spetsifikatsiyasi qaysi yilda nashr etilgan?', '');
 
 if (year < 2015) {
-  alert( 'Too early...' );
+  alert( 'Juda erta...' );
 } else if (year > 2015) {
-  alert( 'Too late' );
+  alert( 'Juda kech' );
 } else {
-  alert( 'Exactly!' );
+  alert( 'Aniq!' );
 }
 ```
 
-Yuqoridagi kodda JavaScript birinchi `year < 2015` ni tekshiradi. Agar u yolg'on bo'lsa, u keyingi `year > 2015` shartga  
-yuzlanadi. Agar u ham yolg'on bo'lsa, u oxirgi `alert` ni ko'rsatadi.
+Yuqoridagi kodda JavaScript birinchi `year < 2015` ni tekshiradi. Agar u yolg'on bo'lsa, u keyingi `year > 2015` shartiga yuzlanadi. Agar u ham yolg'on bo'lsa, u oxirgi `alert` ni ko'rsatadi.
 
 Ko'plab `else if` bloklarini yaratish mumkin. Yakuniy `else` esa ixtiyoriy.
 
@@ -111,7 +110,7 @@ Misol uchun:
 
 ```js run no-beautify
 let accessAllowed;
-let age = prompt('How old are you?', '');
+let age = prompt('Yoshingiz nechchida?', '');
 
 *!*
 if (age > 18) {
@@ -126,14 +125,14 @@ alert(accessAllowed);
 
 "Shart" yoki "so'roq belgisi" deb ataladigan operator bizga buni qisqaroq va soddaroq usulda qilish imkonini beradi.
 
-Operator `?` savol belgisi bilan ifodalanadi. Ba'zan u "ternary" (uchlik) deb ataladi, chunki operator uchta operandga ega. Bu JavaScript-da buncha ko'p operandi bo'lgan yakka va yagona operatordir.
+Operator `?` savol belgisi bilan ifodalanadi. Ba'zan u "ternary" (uchlik) deb ataladi, chunki operator uchta operandga ega. Bu JavaScriptda buncha ko'p operandi bo'lgan yakka va yagona operatordir.
 
 Sintaksis:
 ```js
 let result = condition ? value1 : value2;
 ```
 
-`shart` hisoblanadi: agar u rost bo'lsa keyin `value1` qaytariladi, aks holda -- `value2`.
+`condition` hisoblanadi: agar u rost bo'lsa keyin `value1` qaytariladi, aks holda -- `value2`.
 
 Misol uchun:
 
@@ -146,8 +145,8 @@ Texnik jihatda, `age > 18` ning atrofidagi qavslarni tushirib qoldirishimiz mumk
 Ushbu misol avvalgisi bilan bir xil ishni bajaradi:
 
 ```js
-// the comparison operator "age > 18" executes first anyway
-// (no need to wrap it into parentheses)
+// "age > 18" taqqoslash operatori baribir birinchi bo'lib bajariladi
+// (qavslar ichiga o'rash shart emas)
 let accessAllowed = age > 18 ? true : false;
 ```
 
@@ -198,7 +197,7 @@ if (age < 3) {
 }
 ```
 
-## '?' ning no-an'anaviy qo'llanishi
+## '?' ning noan'anaviy qo'llanishi
 
 Ba'zida `?` so'roq belgisi `if`ni o`rniga ishlatiladi:
 
@@ -211,15 +210,15 @@ let company = prompt('Which company created JavaScript?', '');
 */!*
 ```
 
-`company == 'Netscape'` shartiga qarab, `?` dan keyingi birinchi yoki ikkinchi ifoda bajariladi va alert-ni ko'rsatadi.
+`company == 'Netscape'` shartiga qarab, `?` dan keyingi birinchi yoki ikkinchi ifoda bajariladi va alertni ko'rsatadi.
 
-Bu yerda natijani o'zgaruvchiga tayinlamaymiz. Buning o'rniga shartga qarab turlicha kodni bajaramiz.
+Bu yerda natijani o'zgaruvchiga tayinlamaymiz. Buning o'rniga shartga qarab turlicha kodni bajarishimiz mumkin.
 
 **So'roq belgisi operatorini bunday usulda qo'llash maslahat berilmaydi.**
 
-Notation ba'zi dasturchilarni qiziqtiradigan ekvivalent `if` iborasidan qisqaroq. Ammo uning o'qilish qobiliyati kamroq.
+Notation ba'zi dasturchilarni qiziqtiradigan ekvivalent `if` iborasidan qisqaroq. Ammo uning o'qilish qobiliyati kamroq hisoblanadi.
 
-Quyida taqqoslash uchun `if` dan foydalangan holda bir xil kod:
+Quyida taqqoslash uchun `if` dan foydalangan holda bir xil kodni ko'rib chiqamiz:
 
 ```js run no-beautify
 let company = prompt('Which company created JavaScript?', '');
@@ -233,6 +232,6 @@ if (company == 'Netscape') {
 */!*
 ```
 
-Ko'zlarimiz kodni vertikal ravishda tekshiradi. Bir nechta satrlarni o'z ichiga olgan kod bloklarini uzun, gorizontal ko'rsatmalar to'plamiga qaraganda tushunish osonroq.
+Ko'zlarimiz kodni vertikal ravishda tekshiradi. Bir nechta satrlarni o'z ichiga olgan kod bloklarini uzun, gorizontal ko'rsatmalar to'plamiga qaraganda tushunish osonroqdir.
 
-`?` savol belgisi operatorining maqsadi uning shartiga qarab u yoki bu qiymatni qaytarishdir. Undan faqat shu maqsaddagina foydalaning. Kodning turli bo'limlarini bajarish kerak bo'lganda `if` dan foydalaning.
+`?` savol belgisi operatorining maqsadi uning shartiga qarab u yoki bu qiymatni qaytarish. Uni faqat shu maqsaddagina ishlating. Kodning turli bo'limlarini bajarish kerak bo'lganda `if` dan foydalaning.
