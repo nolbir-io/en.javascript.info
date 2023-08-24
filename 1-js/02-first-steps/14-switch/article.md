@@ -1,12 +1,12 @@
-# The "switch" statement
+# "switch" bayonoti
 
-`switch` statement ko'plab `if` tekshiruvlarini o'rnini bosishi mumkin.
+`switch` bayonoti ko'plab `if` tekshiruvlarining o'rnini bosishi mumkin.
 
-Bu qiymatni ko'plab variant-lar bilan solishtirishning yanada tavsifiy usulini beradi.
+Bu qiymatni bir nechta variant bilan solishtirishning yanada tavsifli usulini beradi
 
 ## Sintaksis
 
-`switch` bir yoki undan ko'proq `case` bloklari va ixtiyoriy default-dan iborat.
+`switch` bir yoki undan ko'proq `case` bloklari va ixtiyoriy defaultdan iborat.
  
 U shunga o'xshaydi:
 
@@ -28,11 +28,11 @@ switch(x) {
 
 - `x`ning qiymati birinchi `case` (ya'ni `value1`) dan ikkinchisiga (`value2`) va hokazo qiymatlarga qat'iy tenglik uchun tekshiriladi.
 - Agar tenglik topilsa, `switch` mos kelgan `case`dan boshlab eng yaqin `break`ga (yoki `switch` yakuniga) qadar ishlashni boshlaydi.
-- Agar bironta `case` mos kelmasa u holda `default` kod (agar mavjud bo'lsa) ishga tushadi.
+- Agar bironta `case` mos kelmasa u holda `default` kod ishga tushadi, (agar mavjud bo'lsa).
 
-## Misol
+## Namuna
 
-`switch`ga misol (bajarilgan kod yoritilgan):
+`switch`ga namuna (bajarilgan kod yoritilgan):
 
 ```js run
 let a = 2 + 2;
@@ -54,13 +54,13 @@ switch (a) {
 }
 ```
 
-Bu yerda `switch` `a`ni `3`ga teng bo'lgan birinchi `case`dan solishtirishni boshlaydi. O'xshashlik muvaffaqiyatsiz tugaydi.
+Bu yerda `switch` `a`ni `3`ga teng bo'lgan birinchi `case`dan solishtirishni boshlaydi. O'xshashlik muvaffaqiyatsiz yakunlanadi.
 
 So'ngra `4`. U mos keladi, shuning uchun bajaruv `case4`dan boshlanib eng yaqin `break`gacha davom etadi.
 
 **Agar `break` mavjud bo'lmasa barajuv hech qanday tekshiruvlarsiz keyingi `case` bilan davom etadi.**
 
-`break` mavjud bo'lmagandagi misol:
+`break` mavjud bo'lmagandagi namuna:
 
 ```js run
 let a = 2 + 2;
@@ -79,7 +79,7 @@ switch (a) {
 }
 ```
 
-Yuqoridagi misolda uchta `alert`ning  ketma-ket bajariluvini ko'ramiz:
+Yuqoridagi misolda uchta `alert`ning  ketma-ket bajarilishini ko'ramiz:
 
 ```js
 alert( 'Exactly!' );
@@ -87,8 +87,8 @@ alert( 'Too big' );
 alert( "I don't know such values" );
 ```
 
-````smart header="Any expression can be a `switch/case` argument"
-`switch` ham `case` ham katta hajmli ifodalarga ham ishlaydi.
+````smart header="Har qanday ibora `switch/case` argumenti bo'lishi mumkin.
+`switch` ham `case` ham katta hajmli ifodalar bilan ham ishlaydi.
 
 Misol uchun:
 
@@ -99,12 +99,12 @@ let b = 0;
 switch (+a) {
 *!*
   case b + 1:
-    alert("this runs, because +a is 1, exactly equals b+1");
+    alert("bu ishlaydi, chunki +a 1, aynan b+1 ga teng");
     break;
 */!*
 
   default:
-    alert("this doesn't run");
+    alert("bu ishlamaydi");
 }
 ```
 Bu yerda `+a` `1`ni beradi, u `case`da `b + 1` bilan solishtiriladi va mos kelgan kod bajariladi.
@@ -126,7 +126,7 @@ switch (a) {
     break;
 
 *!*
-  case 3: // (*) grouped two cases
+  case 3: // (*) ikkita case guruhlandi
   case 5:
     alert('Wrong!');
     alert("Why don't you take a math class?");
@@ -138,15 +138,13 @@ switch (a) {
 }
 ```
 
-Endi `3` ham `5` ham bir xil habarni ko'rsatadi.
+Endi `3` ham `5` ham bir xil xabarni ko'rsatadi.
 
-Case-larni guruhlash qobiliyati `switch/case` `break`siz qanday ishlashining yon ta'siridir. Bu yerda `case 3`ning bajariluvi `(*)` qatordan boshlanadi va `case 5`gacha davom etadi, lekin bironta `break` mavjud emas.
-The ability to "group" cases is a side effect of how `switch/case` works without `break`. Here the execution of `case 3` starts from the line `(*)` and goes through `case 5`, because there's no `break`.
-
+Caselarni guruhlash qobiliyati `switch/case` `break`siz qanday ishlashining ta'siridir. Bu yerda `case 3`ning bajariluvi `(*)` qatordan boshlanadi va `case 5`gacha davom etadi, lekin bironta `break` mavjud emas.
 
 ## Turning ahamiyati
 
-Shuni ta'kidlash kerakki, tenglikni tekshirish har doim qat'iydir. Qiymatlar mos kelishi uchun bir xil turdga ega bo'lishi kerak.
+Shuni ta'kidlash kerakki, tenglikni tekshirish har doim qat'iy vazifadir. Qiymatlar mos kelishi uchun bir xil turga ega bo'lishlari kerak.
 
 Misol uchun:
 
@@ -170,6 +168,7 @@ switch (arg) {
 }
 ```
 
-1. `0`, `1` uchun, birnchi `alert` bajariladi.
+1. `0`, `1` uchun birnchi `alert` bajariladi.
 2. `2` uchun ikkinchi `alert` bajariladi.
-3. Lekin `3` uchun, `prompt`ning natijasi number `3`ga qat'iy teng `===` bo'lmagan string `"3"`. Shunday qilib bizda  `case 3`da ishlamaydigan kod bor! Va `default` variant bajariladi.
+3. Ammo `3` uchun so'rovning natijasi `3` qatori bo'lib, u `3` raqamiga `===` mutlaqo teng emas. Shunday qilib, bizda `case-3` ishlamaydigan kod bor va standart variant ishga tushadi.
+
