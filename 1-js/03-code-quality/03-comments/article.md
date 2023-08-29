@@ -2,13 +2,13 @@
 
 <info:structure> bobidan ma'lumki, izohlar bir qatorli `//` va ko'p qatorli `/* ... */`  bo'lishi mumkin. 
 
-Ulardan odatda kod qanday ishlashini va nima vazifada ishlashini tasvirlashda foydalaniladi. 
+Ulardan odatda kod qanday ishlashini va nima vazifa bajarishini tasvirlashda foydalaniladi. 
 
 Bir qarashda, izohlar aniq ko'rinadi, ammo yangi dasturlovchilar ularni ham ko'pincha noto'g'ri ishlatishadi.
 
 ## Yomon izohlar 
 
-Boshlang'ich dasturlovchilar izohlardan ko'pincha "kodda nima sodir bo'layotkanini" tushuntirishda foydalanishga o'rganib qolishgan. Xuddi shunga o'xshash: 
+Boshlang'ich dasturlovchilar izohlardan ko'pincha "kodda nima sodir bo'layotkanini" tushuntirishda foydalanishga o'rganib qolishgan. Masalan: 
 
 ```js
 // Bu kod bu ishni bajaradi (...) va bu esa buni (...)
@@ -18,13 +18,13 @@ complex;
 code;
 ```
 
-Lekin yaxshi kodda, bu kabi "sharhlovchi" izohlar minimal miqdorda bo'ladi. Haqiqatdan ham, kod bularsiz ancha o'qishga oson bo'lib qoladi.  
+Lekin yaxshi kodda bu kabi "sharhlovchi" izohlar minimal miqdorda bo'ladi. Haqiqatdan ham kod izohlarsiz ancha o'qishga oson bo'lib qoladi.  
 
 Bu to'g'risida bir ajoyib qoida bor: "agar kod izoh talab qiladigan darajada noaniq bo'lsa, demak izoh o'rniga kodni qaytadan yozish kerak".
 
-### Retsept: funktsiyalarni hisobga olish
+### Retsept: funksiyalarni hisobga olish
 
-Ba'zan kod qismini funksiya bilan almashtirish foydali bo'ladi, xuddi shu kabi:
+Ba'zan kod qismini funksiya bilan almashtirish foydali bo'ladi:
 
 ```js
 function showPrimes(n) {
@@ -64,11 +64,11 @@ function isPrime(n) {
 }
 ```
 
-Hozir kodni osonlik bilan tushuna olamiz. Funksiyaning o'zi izoh bo'lib qoladi. Bunday kod *o'zini-tasvirlovchi* dep ataladi. 
+Hozir kodni osonlik bilan tushuna olamiz. Funksiyaning o'zi izoh bo'lib qoladi. Bunday kod *o'zini-tasvirlovchi* deb ataladi. 
 
 ### Retsept: funksiyalarni yaratish
 
-Va agar  uzun "kod varog'i" bo'lsa:
+Va agar uzun "kod varog'i" bo'lsa:
 
 ```js
 // here we add whiskey
@@ -110,19 +110,19 @@ function addJuice(container) {
 }
 ```
 
-Yana bir bor ta'kidlab o'tilganda, funksiyani o'zi ham nima sodir bo'layotkanini aytib turadi. Izoh berishga hech narsa yo'q. Bundan tashqari, kod tuzilishi ajratilganda yaxshiroq ishlaydi. Har bir funksiya nima vazifa bajarishi, nimani talab qilishi va nimani qaytarishi ma'lum bo'lib qoladi.
+Yana bir bor ta'kidlab o'tilganda, funksiyani o'zi ham nima sodir bo'layotganini aytib turadi. Izoh berishga hojat yo'q. Bundan tashqari, kod tuzilishi ajratilganda yaxshiroq ishlaydi. Har bir funksiya nima vazifa bajarishi, nimani talab qilishi va nimani qaytarishi ma'lum bo'lib qoladi.
 
- Asilda, "tushuntiruvchi" izohlardan butunlay qochib qutilishning iloji yo'q chunki ba'zi murakkab algoritmlar mavjud. Optimallashtirish uchun aqilli "tweaklar" ham bor. Qisqa qilib aytkanda, kodni iloji boricha sodda va o'zini o'zi tasvirlab turuvchi qilib saqlash kerak.  
+ Aslida, "tushuntiruvchi" izohlardan butunlay qochib qutilishning iloji yo'q, chunki ba'zi murakkab algoritmlar mavjud. Optimallashtirish uchun aqlli "tweak"lar ham bor. Qisqa qilib aytganda, kodni iloji boricha sodda va o'zini o'zi tasvirlab turuvchi qilib saqlash kerak.  
 
 ## Yaxshi izohlar
 
 Demak, odatda tushuntiruvchi izohlar yomon ekan, u holda qaysi izohlar yaxshi?
 
 Arxitektura(tuzilsh)ni tasvirlovchi. 
-: Komponent(tarkibiy tuzilma)larning yuqori darajadagi umumiy ko'rinishini taqdim etadi, ular qanday o'zaro ta'sir qiladi va turli vaziyatlarda boshqaruv oqimi nima  kabilar bilan ta'minlaydi ... Qisqa qilib aytkanda -- kodga yuqoridan boqish degani. Bu kabi yuqori darajali kodni izohlab turuvchi arxitektura diagrammalarini tuzish uchun maxsus til bor [UML](http://wikipedia.org/wiki/Unified_Modeling_Language) va bu albatta o'qib chiqishg arziydi. 
+: Komponent, ya'ni tarkibiy tuzilmalarning yuqori darajadagi umumiy ko'rinishini taqdim etadi, ular qanday o'zaro ta'sir qiladi va turli vaziyatlarda boshqaruv oqimi nima ekanligi bilan ta'minlaydi ... Qisqa qilib aytganda -- kodga yuqoridan boqish degani. Bu kabi yuqori darajali kodni izohlab turuvchi arxitektura diagrammalarini tuzish uchun maxsus til bor [UML](http://wikipedia.org/wiki/Unified_Modeling_Language) va bu albatta o'qib chiqishg arziydi. 
 
 Hujjat funksiyasi parametrlari va ishlatilishi
-: Funktsiyani hujjatlashtirish uchun maxsus [JSDoc](http://en.wikipedia.org/wiki/JSDoc) sintaksisi mavjud: foydalanish, parametrlar, qaytarilgan qiymat.
+: Funksiyani hujjatlashtirish uchun maxsus [JSDoc](http://en.wikipedia.org/wiki/JSDoc) sintaksisi: foydalanish, parametrlar va qaytarilgan qiymat mavjud.
 
 Misol uchun:
 ```js
@@ -130,7 +130,7 @@ Misol uchun:
  * n-chi darajaga ko'tarilgan x ni qaytaradi.
  *
  * @param {number} x Ko'tariladigan raqam.
- * @param {number} n Daraja, tabiy son bo'lishi kerak. 
+ * @param {number} n Daraja, tabiiy son bo'lishi kerak. 
  * @return {number} x n-chi darajaga ko'tarildi.
  */
 function pow(x, n) {
@@ -138,38 +138,37 @@ function pow(x, n) {
 }
 ```
 
-Bu kabi izohlar bizga funksiyani maqsadini tushunish va kodga qaramasdan turib undan to'g'ri foydalanish imkonini beradi.
+Bu kabi izohlar bizga funksiyaning maqsadini tushunish va kodga qaramasdan turib, undan to'g'ri foydalanish imkonini beradi.
 
 Aytgancha, [WebStorm](https://www.jetbrains.com/webstorm/) kabi ko'plab muharrirlar ham ularni tushunishlari va avtomatik to'ldirish va ba'zi avtomatik kodlarni tekshirish uchun ulardan foydalanishlari mumkin.
 
-Bundan tashqari, izohlardan HTML-hujjatlarni yaratishi mumkin bo'lgan [JSDoc 3](https://github.com/jsdoc3/jsdoc) kabi vositalar ham mavjud. JSDoc haqida batafsil ma'lumotni <http://usejsdoc.org/> sahifasida o'qishingiz mumkin.
-Also, there are tools like [JSDoc 3](https://github.com/jsdoc/jsdoc) that can generate HTML-documentation from the comments. You can read more information about JSDoc at <https://jsdoc.app>.
+Bundan tashqari, izohlardan HTML hujjatlarni yaratishi mumkin bo'lgan [JSDoc 3](https://github.com/jsdoc3/jsdoc) kabi vositalar ham mavjud. JSDoc haqida batafsil ma'lumotni <http://usejsdoc.org/> sahifasida o'qishingiz mumkin.
 
 Nima uchun vazifa bu tarzda hal qilinadi?
-: Yozilgan narsa muhim. Lekin, sodir bo'layotkan narsalarni tushunish uchun esa yozilmagan narsa undan ham muhim bo'lishi mumkin. Nima uchun vazifa aynan shu tarzda hal qilingan? Kod javob bermaydi.
+: Yozilgan narsa muhim. Lekin, sodir bo'layotgan narsalarni tushunish uchun esa yozilmagan narsa undan ham muhim bo'lishi mumkin. Nima uchun vazifa aynan shu tarzda hal qilingan? Kod bunga javob bermaydi.
 
     Agar vazifani hal qilishning ko'plab usullari mavjud bo'lsa, nima uchun bu? Ayniqsa, bu eng aniq bo'lmaganda.
 
     Bunday izohlarsiz quyidagi vaziyat yuzaga kelishi mumkin:
     1. Siz (yoki sizning hamkasbingiz) bir muncha vaqt oldin yozilgan kodni ochasiz va uning "suboptimal" ekanligini ko'rasiz.
     2. Siz: "O'sha paytda men qanchalik ahmoq edim va hozir qanchalik aqlliman" deb o'ylaysiz va "aniqroq va to'g'ri" variantidan foydalanib qayta yozasiz.
-    3. ...Qayta yozishga istak yaxshi edi. Lekin, jarayonni o'zida, "aniqroq" yechim yetishmayotkanini ko'rasiz. Ancha avval harakat qilib ko'rganligingiz tufayli buni uncha eslolmaysiz ham. To'g'ri variantga qaytasiz, ammo orada vaqt behuda ketdi. 
+    3. ...Qayta yozishga istak yaxshi edi. Lekin, jarayonni o'zida, "aniqroq" yechim yetishmayotganini ko'rasiz. Ancha avval harakat qilib ko'rganligingiz tufayli buni uncha eslolmaysiz ham. To'g'ri variantga qaytasiz, ammo orada vaqt behuda ketdi. 
 
     Yechimni tushuntiruvchi izohlar juda muhim. Ular dasturlashni to'g'ri yo'lda davom ettirishga yordam beradi.
 
 Kodning nozik xususiyatlari bormi? Ular qayerda ishlatiladi?
-: Agar kodda nozik va intuitiv bo'lgan narsa bo'lsa, albatta izoh berishga arziydi.
+: Agar kodda nozik va intuitiv narsa bo'lsa, albatta izoh berishga arziydi.
 
 ## Xulosa
 
-Yaxshi dasturlovchining muhim belgisi izohlardir: Ularning borligi va hatto yo'qligi ham.
+Yaxshi dasturlovchining muhim belgisi izohlardir: Ularning borligi va hatto yo'qligi ham muhim ahamiyat kasb etadi.
 
 Yaxshi sharhlar kodni yaxshi saqlashga, kechikishdan so'ng unga qaytishga va undan samaraliroq foydalanishga imkon beradi.
 
 **Bunga izoh bering:**
 
 - Umumiy arxitektura, yuqori darajadagi ko'rinish.
-- Funktsiyadan foydalanish.
+- Funksiyadan foydalanish.
 - Muhim yechimlar, ayniqsa darhol aniq bo'lmaganda.
 
 **Fikr bildirishdan saqlaning:**
@@ -177,4 +176,4 @@ Yaxshi sharhlar kodni yaxshi saqlashga, kechikishdan so'ng unga qaytishga va und
 - Bu "kod qanday ishlaydi" va "nima qiladi". 
 - Agar kodni talab qilmaydigan darajada sodda va o'zini o'zi tavsiflash imkoni bo'lmasa, ularni kiriting.
 
-Izohlar shuningdek JSDoc3 kabi avtomatik hujjatlashtirish vositalari uchun ham qo'llaniladi: ular ularni o'qiydi va HTML-hujjatlarni (yoki boshqa formatdagi hujjatlarni) yaratadi.
+Izohlar, shuningdek, JSDoc3 kabi avtomatik hujjatlashtirish vositalari uchun ham qo'llaniladi: ular kommentlarni o'qiydi va HTML hujjatlarni (yoki boshqa formatdagi hujjatlarni) yaratadi.
