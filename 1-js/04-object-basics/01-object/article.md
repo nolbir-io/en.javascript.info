@@ -489,11 +489,6 @@ Ushbu bobda biz o'rgangan narsa "oddiy obyekt" yoki shunchaki `Obyekt` deb atala
 
 JavaScriptda ko'plab boshqa turdagi obyektlar mavjud:
 
-- `Array` to store ordered data collections,
-- `Date` to store the information about the date and time,
-- `Error` to store the information about an error.
-- ...And so on.
-
 - `Array` - buyurtma qilingan ma'lumotlar to'plamini saqlash uchun,
 - `Date` - sana va vaqt haqidagi ma'lumotlarni saqlash uchun,
 - `Error` - error haqidagi ma'lumotlarni saqlash uchun.
