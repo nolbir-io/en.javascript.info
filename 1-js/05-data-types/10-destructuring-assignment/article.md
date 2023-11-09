@@ -1,19 +1,19 @@
 # Destruktiv topshiriq
 
-JavaScript-da eng ko'p qo'llaniladigan ikkita ma'lumotlar tuzilmasi Ob'ekt va Massivdir.
+JavaScriptda eng ko'p qo'llaniladigan ikkita ma'lumotlar tuzilmasi `Object` va `Array` (massiv) hisoblanadi.
 
-- Ob'ektlar bizga kalit bo'yicha ma'lumotlar elementlarini saqlaydigan yagona ob'ektni yaratishga imkon beradi.
+- Obyektlar bizga kalit bo'yicha ma'lumotlar elementini saqlaydigan yagona obyektni yaratishga imkon beradi.
 - Massivlar bizga ma'lumotlar elementlarini tartiblangan ro'yxatga yig'ish imkonini beradi.
 
-Garchi biz ularni funktsiyaga o'tkazsak, u umuman ob'ekt/massiv bo'lishi shart emas. Buning uchun alohida qismlar kerak bo'lishi mumkin.
+Garchi biz ularni funksiyaga o'tkazsak, u umuman obyekt/massiv bo'lishi shart emas. Buning uchun alohida qismlar kerak bo'lishi mumkin.
 
-_Destruktiv topshiriq_ - bu massivlar yoki ob'ektlarni o'zgaruvchilar to'plamiga "ochish" imkonini beruvchi maxsus sintaksis, chunki ba'zida bu qulayroq.
+_Destruktiv topshiriq_ - massivlar yoki obyektlarni o'zgaruvchilar to'plamiga "ochish" imkonini beruvchi maxsus sintaksis, ba'zida bu ancha qulay.
 
-Yo'q qilish, shuningdek, juda ko'p parametrlarga, standart qiymatlarga va boshqalarga ega bo'lgan murakkab funktsiyalar bilan ajoyib ishlaydi. Tez orada buni ko'ramiz.
+Yo'q qilish, ya'ni destructuring, shuningdek, juda ko'p parametrlarga, standart qiymatlarga va boshqalarga ega bo'lgan murakkab funksiyalar bilan yaxshi ishlaydi. Tez orada buni ko'rib chiqamiz.
 
 ## Massivni destruksiya qilish
 
-Massivning o‘zgaruvchilarga qanday tuzilishiga misol:
+Massivning qanday o'zgaruvchilardan tuzilishiga misol:
 
 ```js
 // bizda ism va familiyaga ega massiv bor
@@ -32,7 +32,7 @@ alert(surname);  // Smith
 
 Endi biz massiv a'zolari o'rniga o'zgaruvchilar bilan ishlashimiz mumkin.
 
-Bu `split` yoki massivni qaytarishning boshqa metodlari bilan birlashganda ajoyib koʻrinadi:
+Bu `split` yoki massivni qaytarishning boshqa metodlari bilan birlashganda ajoyib ko'rinadi:
 
 ```js run
 let [firstName, surname] = "John Smith".split(" ");
@@ -40,10 +40,10 @@ alert(firstName); // John
 alert(surname); // Smith
 ```
 
-Ko'rib turganingizdek, sintaksis oddiy. Biroq, bir nechta o'ziga xos tafsilotlar mavjud. Buni yaxshiroq tushunish uchun ko'proq misollarni ko'rib chiqaylik.
+Ko'rib turganingizdek, sintaksis oddiy. Biroq, bir nechta o'ziga xos tafsilotlar mavjud. Buni yaxshiroq tushunish uchun ko'proq misollarni ko'rib chiqamiz.
 
-``smart header="\"Destrukturlash\" \"destruktiv\" degani emas."
-U "destrukturizatsiya topshirig'i" deb ataladi, chunki u elementlarni o'zgaruvchilarga nusxalash orqali "destrukturizatsiya qiladi". Ammo massivning o'zi o'zgartirilmagan.
+``smart header="\"Destrukturalash\" \"destruktiv\" degani emas."
+Bu "destrukturizatsiya topshirig'i" deb ataladi, chunki u elementlarni o'zgaruvchilarga nusxalash orqali "destrukturizatsiya qiladi". Ammo massivning o'zi o'zgartirilmagan holda qoldiriladi.
 
 Bu yozishning qisqaroq yo'li:
 
@@ -54,7 +54,7 @@ let surname = arr[1];
 ```
 ````
 
-``smart header="Vergul yordamida elementlarga e'tibor bermang"
+``smart header="Vergul yordamida ortiqcha elementlarga e'tibor bermang"
 Massivning keraksiz elementlarini qo'shimcha vergul orqali ham tashlash mumkin:
 
 ```js run
@@ -65,12 +65,11 @@ let [firstName, , title] = ["Julius", "Caesar", "Consul", "of the Roman Republic
 
 alert( title ); // Consul
 ```
-
-In the code above, the second element of the array is skipped, the third one is assigned to `title`, and the rest of the array items is also skipped (as there are no variables for them).
+Yuqoridagi kodda massivning ikkinchi elementi o'tkazib yuborilgan, uchinchisi `title` ga tayinlangan va massivning qolgan elementlari ham o'tkazib yuborilgan (chunki ular uchun o'zgaruvchilar yo'q).
 
 ````
 
-``smart header="Works with any iterable on the right-side"
+``smart header="O'ng tarafdagi har qanday takrorlanuvchi bilan ishlaydi"
 
 ...Aslida, biz uni faqat massivlar bilan emas, balki har qanday iteratsiya bilan ishlatishimiz mumkin:
 ```js
@@ -78,12 +77,12 @@ let [a, b, c] = "abc"; // ["a", "b", "c"]
 let [one, two, three] = new Set([1, 2, 3]);
 ````
 
-Bu ishlaydi, chunki ichki tuzilmani buzish topshirig'i to'g'ri qiymatni takrorlash orqali ishlaydi. Bu `=` ning o'ng tomonidagi qiymatdan `for..of` ni chaqirish va qiymatlarni belgilash uchun bir xil sintaksis shakaridir.
+Bu ishlaydi, chunki ichki tuzilmani buzish topshirig'i to'g'ri qiymatni takrorlash orqali bajariladi. Bu `=` ning o'ng tomonidagi qiymatdan `for..of` ni chaqirish va qiymatlarni belgilash uchun bir xil sintaksis shakaridir.
 
 ``smart header="Chap tarafdagi har qanday narsani tayinlang"
-Chap tomonda har qanday "tayinlash" dan foydalanishimiz mumkin.
+Chap tomonda har qanday `assignables`, ya'ni tayinlashdan foydalanishimiz mumkin.
 
-Masalan, ob'ekt xususiyati:
+Masalan, obyekt xususiyati:
 
 ```js run
 let user = {};
@@ -93,11 +92,11 @@ alert(user.name); // John
 alert(user.surname); // Smith
 ```
 
-``smart header=".entries() bilan tsikllash"
+``smart header=".entries() bilan sikllash"
 
-Oldingi bobda biz [Object.entries(obj)](mdn:js/Object/entries) metodini ko‘rdik.
+Oldingi bobda biz [Object.entries(obj)](mdn:js/Object/entries) metodini ko'rdik.
 
-Ob'ektning kalitlari va qiymatlari ustidan aylanish uchun biz uni tuzilmani buzish bilan ishlatishimiz mumkin:
+Obyektning kalitlari va qiymatlari ustidan aylanish uchun biz uni tuzilmani buzish bilan ishlatishimiz mumkin:
 
 ```js run
 let user = {
@@ -105,7 +104,7 @@ let user = {
   yosh: 30
 };
 
-// kalitlar va qiymatlar ustidan tsikllash
+// kalitlar va qiymatlar ustidan sikllash
 *!*
 for (let [key, value] of Object.entries(user)) {
 */!*
@@ -113,7 +112,7 @@ for (let [key, value] of Object.entries(user)) {
 }
 ```
 
-`Map` uchun oʻxshash kod oddiyroq, chunki u takrorlanadi:
+`Map` uchun o'xshash kod oddiyroq, chunki u takrorlanadi:
 
 ```js run
 let user = new Map();
@@ -177,7 +176,7 @@ alert(rest.length); // 2
 
 `rest` qiymati massivning qolgan elementlari massividir.
 
-Biz `rest` oʻrniga istalgan boshqa oʻzgaruvchi nomidan foydalanishimiz mumkin, shunchaki uning oldida uchta nuqta borligiga ishonch hosil qiling va tuzilmani buzish topshirigʻida oxirgi oʻrinda turadi.
+Biz `rest` o'rniga istalgan boshqa o'zgaruvchi nomidan foydalanishimiz mumkin, shunchaki uning oldida uchta nuqta borligiga ishonch hosil qiling va tuzilmani buzish topshirig'ida oxirgi o'rinda turadi.
 
 ```js run
 let [name1, name2, *!*...titles*/!*] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
@@ -186,7 +185,7 @@ let [name1, name2, *!*...titles*/!*] = ["Julius", "Caesar", "Consul", "of the Ro
 
 ### Standart qiymatlar
 
-Agar massiv chap tarafdagi oʻzgaruvchilar roʻyxatidan qisqaroq boʻlsa, xatolik boʻlmaydi. Yo'q qiymatlar aniqlanmagan deb hisoblanadi:
+Agar massiv chap tarafdagi o'zgaruvchilar ro'yxatidan qisqaroq bo'lsa, xatolik bo'lmaydi. Yo'q qiymatlar aniqlanmagan deb hisoblanadi:
 
 ```js run
 *!*
@@ -197,7 +196,7 @@ alert(firstName); // undefined
 alert(surname); // undefined
 ```
 
-Agar etishmayotgan qiymatni almashtirish uchun "standart" qiymatni xohlasak, biz uni `=` yordamida ta'minlashimiz mumkin:
+Agar yetishmayotgan qiymatni almashtirish uchun "standart" qiymatni xohlasak, biz uni `=` yordamida ta'minlashimiz mumkin:
 
 ```js run
 *!*
@@ -211,7 +210,7 @@ alert(surname); // Anonymous (standart)
 
 Standart qiymatlar murakkabroq ifodalar yoki hatto funksiya chaqiruvlari bo'lishi mumkin. Agar qiymat ko'rsatilmagan bo'lsa, ular baholanadi.
 
-Misol uchun, bu erda biz ikkita standart uchun `prompt` funksiyasidan foydalanamiz:
+Misol uchun, bu yerda biz ikkita standart uchun `prompt` funksiyasidan foydalanamiz:
 
 ```js run
 // faqat surname so'rovini ishga tushiradi
@@ -221,11 +220,11 @@ alert(name); // Julius (from array)
 alert(surname); // nima bo'lishidan qat'iy nazar
 ```
 
-E'tibor bering: `prompt` faqat etishmayotgan qiymat uchun ishlaydi ("surname").
+E'tibor bering: `prompt` faqat yetishmayotgan qiymat uchun ishlaydi ("surname").
 
-## Ob'ektni destrukturlash
+## Obyektni destrukturalash
 
-Destrukturlash topshirig'i ob'ektlar bilan ham ishlaydi.
+Destrukturlash topshirig'i obyektlar bilan ham ishlaydi.
 
 Asosiy sintaksis:
 
@@ -233,7 +232,7 @@ Asosiy sintaksis:
 let {var1, var2} = {var1:…, var2:…}
 ```
 
-O'ng tomonda biz o'zgaruvchilarga bo'linmoqchi bo'lgan mavjud ob'ektga ega bo'lishimiz kerak. Chap tomonda mos keladigan xususiyatlar uchun ob'ektga o'xshash "naqsh" mavjud. Eng oddiy holatda, bu `{...}` ichidagi o'zgaruvchilar nomlari ro'yxati.
+O'ng tomonda biz o'zgaruvchilarga bo'linmoqchi bo'lgan mavjud obyektga ega bo'lishimiz kerak. Chap tomonda mos keladigan xususiyatlar uchun obyektga o'xshash `pattern` mavjud. Eng oddiy holatda, bu `{...}` ichidagi o'zgaruvchilar nomlari ro'yxati hisoblanadi.
 
 Masalan:
 
@@ -253,7 +252,7 @@ alert(width);  // 100
 alert(height); // 200
 ```
 
-`options.title`, `options.width` va `options.height` xossalari mos keladigan o`zgaruvchilarga tayinlanadi.
+`options.title`, `options.width` va `options.height` xossalari mos keladigan o'zgaruvchilarga tayinlanadi.
 
 Buyurtma muhim emas. Bu ham ishlaydi:
 
@@ -262,9 +261,9 @@ Buyurtma muhim emas. Bu ham ishlaydi:
 let { height, width, title } = { title: "Menu", height: 200, width: 100 };
 ```
 
-Chap tarafdagi naqsh murakkabroq bo'lishi mumkin va xususiyatlar va o'zgaruvchilar o'rtasidagi xaritalashni belgilang.
+Chap tarafdagi naqsh (pattern) murakkabroq bo'lishi mumkin, shu sababli xususiyatlar va o'zgaruvchilar o'rtasidagi xaritalashni belgilang.
 
-Agar biz boshqa nomdagi oʻzgaruvchiga xususiyat tayinlashni istasak, masalan, `options.width` ni `w` nomli oʻzgaruvchiga kiriting, u holda oʻzgaruvchi nomini ikki nuqta yordamida oʻrnatishimiz mumkin:
+Agar biz boshqa nomdagi o'zgaruvchiga xususiyat tayinlashni istasak, masalan, `options.width` ni `w` nomli o'zgaruvchiga kiriting, u holda o'zgaruvchi nomini ikki nuqta yordamida o'rnatishimiz mumkin:
 
 ```js run
 let options = {
@@ -287,9 +286,9 @@ alert(w);      // 100
 alert(h);      // 200
 ```
 
-Ikki nuqta "nima : qayerga ketadi" ni ko'rsatadi. Yuqoridagi misolda `width` xususiyati `w` ga, `height` xususiyati `h` ga, `title` esa bir xil nomga tayinlangan.
+Ikki nuqta "nima : qayerga ketishini" ni ko'rsatadi. Yuqoridagi misolda `width` xususiyati `w` ga, `height` xususiyati `h` ga, `title` esa bir xil nomga tayinlangan.
 
-Potensial etishmayotgan xususiyatlar uchun biz `"="` yordamida standart qiymatlarni o'rnatishimiz mumkin, masalan:
+Potensial yetishmayotgan xususiyatlar uchun biz `"="` yordamida standart qiymatlarni o'rnatishimiz mumkin, masalan:
 
 ```js run
 let options = {
@@ -305,7 +304,7 @@ alert(width);  // 100
 alert(height); // 200
 ```
 
-Massivlar yoki funksiya parametrlari kabi standart qiymatlar har qanday ifoda yoki hatto funksiya chaqiruvi bo‘lishi mumkin. Qiymat taqdim etilmasa, ular baholanadi.
+Massivlar yoki funksiya parametrlari kabi standart qiymatlar har qanday ifoda yoki hatto funksiya chaqiruvi bo'lishi mumkin. Qiymat taqdim etilmasa, ular baholanadi.
 
 Quyidagi kodda `prompt` `width` ni so'raydi, lekin `title` uchun emas:
 
@@ -319,10 +318,10 @@ let {width = prompt("width?"), title = prompt("title?")} = options;
 */!*
 
 alert(title);  // Menu
-alert(width);  // (whatever the result of prompt is)
+alert(width);  // (prompt natijasi nima bo'lishidan qat'iy nazar)
 ```
 
-We also can combine both the colon and equality:
+Shuningdek, biz ikki nuqta va tenglikni birlashtira olamiz:
 
 ```js run
 let options = {
@@ -338,7 +337,7 @@ alert(w);      // 100
 alert(h);      // 200
 ```
 
-Agar bizda juda ko'p xususiyatlarga ega bo'lgan murakkab ob'ekt bo'lsa, biz faqat kerakli narsani olishimiz mumkin:
+Agar bizda juda ko'p xususiyatlarga ega bo'lgan murakkab obyekt bo'lsa, biz faqat kerakli narsani olishimiz mumkin:
 
 ```js run
 let options = {
@@ -347,7 +346,7 @@ let options = {
   height: 200,
 };
 
-// only extract title as a variable
+// faqat sarlavhani o'zgaruvchi sifatida ajratib oling
 let { title } = options;
 
 alert(title); // Menu
@@ -355,11 +354,11 @@ alert(title); // Menu
 
 ### Rest ko'rinishi "..."
 
-Agar ob'ekt o'zgaruvchilarga qaraganda ko'proq xususiyatlarga ega bo'lsa-chi? Bir oz olib, keyin "rest" ni biron joyga tayinlashimiz mumkinmi?
+Agar obyekt o'zgaruvchilarga qaraganda ko'proq xususiyatlarga ega bo'lsachi? Bir oz olib, keyin`rest` ni biron joyga tayinlashimiz mumkinmi?
 
-Biz massivlarda bo'lgani kabi qolgan naqshdan ham foydalanishimiz mumkin. Bu ba'zi eski brauzerlar tomonidan qo'llab-quvvatlanmaydi (IE, uni polifill qilish uchun Babel-dan foydalaning), ammo zamonaviylarida ishlaydi.
+Biz massivlarda bo'lgani kabi qolgan naqshdan ham foydalanishimiz mumkin. Bu ba'zi eski brauzerlar tomonidan qo'llab-quvvatlanmaydi (IE, uni polyfill qilish uchun Babeldan foydalaning), ammo zamonaviy brauzerlarda bu ishlaydi.
 
-Bu shunday ko'rinadi:
+Bu shunday ko'rinishga ega:
 
 ```js run
 let options = {
@@ -370,7 +369,7 @@ let options = {
 
 *!*
 // title = nomli xususiyat
-// rest = rest xususiyatlariga ega ob'ekt
+// rest = rest xususiyatlariga ega obyekt
 let {title, ...rest} = options;
 */!*
 
@@ -381,7 +380,7 @@ alert(rest.width);   // 100
 
 ``smart header="Agar 'let' bo'lmasa"
 
-Yuqoridagi misollarda o'zgaruvchilar to'g'ridan-to'g'ri topshiriqda e'lon qilingan: `let {…} = {…}`. Albatta, biz mavjud o'zgaruvchilardan "let"siz ham foydalanishimiz mumkin. Lekin bir narsa bor.
+Yuqoridagi misollarda o'zgaruvchilar to'g'ridan-to'g'ri topshiriqda e'lon qilingan: `let {…} = {…}`. Albatta, biz mavjud o'zgaruvchilardan `let` siz ham foydalanishimiz mumkin. Lekin bir muammo bor.
 
 Bu ishlamaydi:
 
@@ -392,7 +391,7 @@ let title, width, height;
 {title, width, height} = {title: "Menu", width: 200, height: 100};
 ```
 
-Muammo shundaki, JavaScript asosiy kod oqimidagi `{...}` ni (boshqa ifoda ichida emas) kod bloki sifatida ko‘radi. Bunday kod bloklari bayonotlarni guruhlash uchun ishlatilishi mumkin, masalan:
+Muammo shundaki, JavaScript asosiy kod oqimidagi `{...}` ni (boshqa ifoda ichida emas) kod bloki sifatida ko'radi. Bunday kod bloklari bayonotlarni guruhlash uchun ishlatilishi mumkin, masalan:
 
 ```js run
 {
@@ -403,7 +402,7 @@ Muammo shundaki, JavaScript asosiy kod oqimidagi `{...}` ni (boshqa ifoda ichida
 }
 ```
 
-Shunday qilib, bu erda JavaScript bizda kod bloki bor deb taxmin qiladi, shuning uchun xatolik yuz berdi. Buning o'rniga biz buzilishni xohlaymiz.
+Shunday qilib, bu yerda JavaScript bizda kod bloki bor deb taxmin qiladi, shuning uchun xatolik yuz berdi. Buning o'rniga biz destructuring ni xohlaymiz.
 
 JavaScriptni bu kod bloki emasligini ko'rsatish uchun biz ifodani `(...)` qavs ichiga o'rashimiz mumkin:
 
@@ -418,11 +417,11 @@ alert( title ); // Menu
 
 ``
 
-## Ichma ich destruksiya
+## Ichma-ich destruksiya
 
-Agar ob'ekt yoki massiv boshqa o'rnatilgan ob'ektlar va massivlarni o'z ichiga olsa, biz chuqurroq qismlarni ajratib olish uchun chap tomondagi murakkabroq naqshlardan foydalanishimiz mumkin.
+Agar obyekt yoki massiv boshqa o'rnatilgan obyektlar va massivlarni o'z ichiga olsa, biz chuqurroq qismlarni ajratib olish uchun chap tomondagi murakkabroq naqshlardan foydalanishimiz mumkin.
 
-Quyidagi kodda `options` `size` xususiyatidagi boshqa ob'ekt va `items` xususiyatidagi massivga ega. Topshiriqning chap tomonidagi naqsh ulardan qiymatlarni olish uchun bir xil tuzilishga ega:
+Quyidagi kodda `options` `size` xususiyatidagi boshqa obyekt va `items` xususiyatidagi massivga ega. Topshiriqning chap tomonidagi naqsh ulardan qiymatlarni olish uchun bir xil tuzilishga ega:
 
 ```js run
 let options = {
@@ -442,7 +441,7 @@ let {
     height,
   },
   items: [item1, item2], // elementlarni bu yerga kiriting
-  title = "Menu", // ob'ektda mavjud emas (standart qiymat ishlatiladi)
+  title = "Menu", // obyektda mavjud emas (standart qiymat ishlatiladi)
 } = options;
 
 alert(title); // Menu
@@ -452,7 +451,7 @@ alert(item1); // Cake
 alert(item2); // Donut
 ```
 
-Chap qismda mavjud bo'lmagan `extra` dan tashqari `options` ob'ektining barcha xususiyatlari tegishli o'zgaruvchilarga tayinlanadi:
+Chap qismda mavjud bo'lmagan `extra` dan tashqari `options` obyektining barcha xususiyatlari tegishli o'zgaruvchilarga tayinlanadi:
 
 ![](destructuring-complex.svg)
 
@@ -464,7 +463,7 @@ E'tibor bering, `size` va `items` uchun hech qanday o'zgaruvchi yo'q, chunki biz
 
 Funktsiyaning ko'p parametrlari bo'lgan holatlar mavjud, ularning aksariyati ixtiyoriydir. Bu, ayniqsa, foydalanuvchi interfeyslari uchun to'g'ri keladi. Menyu yaratuvchi funksiyani tasavvur qiling. Uning kengligi, balandligi, sarlavhasi, elementlar ro'yxati va boshqalar bo'lishi mumkin.
 
-Mana bunday funktsiyani yozishning yomon yo'li:
+Mana bunday funksiyani yozishning yomon yo'li:
 
 ```js
 function showMenu(title = "Untitled", width = 200, height = 100, items = []) {
@@ -472,23 +471,23 @@ function showMenu(title = "Untitled", width = 200, height = 100, items = []) {
 }
 ```
 
-Haqiqiy hayotda muammo argumentlar tartibini qanday eslab qolishdir. Odatda IDElar bizga yordam berishga harakat qiladi, ayniqsa kod yaxshi hujjatlashtirilgan bo'lsa, lekin baribir ... Yana bir muammo - ko'pchilik parametrlar sukut bo'yicha ok bo'lsa, funktsiyani qanday chaqirishdir.
+Haqiqiy hayotda muammo argumentlar tartibini qanday eslab qolishdir. Odatda IDElar bizga yordam berishga harakat qiladi, ayniqsa, kod yaxshi hujjatlashtirilgan bo'lsa. Yana bir muammo - ko'pchilik parametrlar sukut bo'yicha normal bo'lsa, funksiyani qanday chaqirishdir.
 
-Like this?
+Shundaymi?
 
 ```js
 // standart qiymatlar yaxshi bo'lgan joyda undefined
 showMenu("My Menu", undefined, undefined, ["Item1", "Item2"]);
 ```
 
-Bu xunuk. Va biz ko'proq parametrlar bilan shug'ullansak, o'qib bo'lmaydi.
+Bu biroz xunuk ko'rinadi. Va biz ko'proq parametrlar bilan shug'ullansak, o'qib bo'lmaydi.
 
-Destrukturlash yordamga keladi!
+Bunday holda bizga destrukturalash yordamga keladi!
 
-Biz parametrlarni ob'ekt sifatida o'tkazishimiz mumkin va funktsiya ularni darhol o'zgaruvchilarga tuzatmaydi:
+Biz parametrlarni obyekt sifatida o'tkazishimiz mumkin va funktsiya ularni darhol o'zgaruvchilarga tuzatmaydi:
 
 ```js run
-// ob'ektni funktsiyaga o'tkazamiz
+// obyektni funktsiyaga o'tkazamiz
 let options = {
   title: "My menu",
   items: ["Item1", "Item2"]
@@ -505,7 +504,7 @@ function showMenu(*!*{title = "Untitled", width = 200, height = 100, items = []}
 showMenu(options);
 ```
 
-Shuningdek, biz ichki o'rnatilgan ob'ektlar va ikki nuqtali xaritalar bilan murakkabroq destruksiyadan foydalanishimiz mumkin:
+Shuningdek, biz ichki o'rnatilgan obyektlar va ikki nuqtali xaritalar bilan murakkabroq destruksiyadan foydalanishimiz mumkin:
 
 ```js run
 let options = {
@@ -538,9 +537,9 @@ function({
 })
 ```
 
-Keyin, parametrlar ob'ekti uchun `incomingProperty` xususiyati uchun `varName` o'zgaruvchisi bo'ladi, sukut bo'yicha `defaultValue`.
+Keyin, parametrlar obyekti uchun `incomingProperty` xususiyati uchun `varName` o'zgaruvchisi bo'ladi, sukut bo'yicha `defaultValue`.
 
-Iltimos, shuni yodda tutingki, bunday destruksiya `showMenu()`da argument borligini nazarda tutadi. Agar biz barcha qiymatlarni sukut bo'yicha xohlasak, bo'sh ob'ektni ko'rsatishimiz kerak:
+Iltimos, shuni yodda tutingki, bunday destruksiya `showMenu()`da argument borligini nazarda tutadi. Agar biz barcha qiymatlarni sukut bo'yicha xohlasak, bo'sh obyektni ko'rsatishimiz kerak:
 
 ```js
 showMenu({}); // yaxshi, barcha qiymatlar standart bo'yicha
@@ -558,20 +557,20 @@ function showMenu({ title = "Menu", width = 100, height = 200 }*!* = {}*/!*) {
 showMenu(); // Menu 100 200
 ```
 
-Yuqoridagi kodda barcha argumentlar ob'ekti sukut bo'yicha `{}`dir, shuning uchun har doim tuzilmani buzish uchun biror narsa mavjud.
+Yuqoridagi kodda barcha argumentlar obyekti sukut bo'yicha `{}`dir, shuning uchun har doim tuzilmani buzish uchun biror narsa mavjud.
 
 ## Xulosa
 
-- Tuzilishni buzish ob'ekt yoki massivni ko'p o'zgaruvchilarga bir zumda xaritalash imkonini beradi.
-- To'liq ob'ekt sintaksisi:
+- Tuzilishni buzish obyekt yoki massivni ko'p o'zgaruvchilarga bir zumda xaritalash imkonini beradi.
+- To'liq obyekt sintaksisi:
 
   ```js
   let {prop : varName = default, ...rest} = object
   ```
 
-  Bu `prop` xususiyati `varName` o‘zgaruvchisiga kirishi va agar bunday xususiyat mavjud bo‘lmasa, `default` qiymatidan foydalanish kerakligini anglatadi.
+  Bu `prop` xususiyati `varName` o'zgaruvchisiga kirishi va agar bunday xususiyat mavjud bo'lmasa, `default` qiymatidan foydalanish kerakligini anglatadi.
 
-  Xaritaga ega bo'lmagan ob'ekt xususiyatlari `rest` ob'ektiga ko'chiriladi.
+  Xaritaga ega bo'lmagan obyekt xususiyatlari `rest` obyektiga ko'chiriladi.
 
 - To'liq massiv sintaksisi:
 
