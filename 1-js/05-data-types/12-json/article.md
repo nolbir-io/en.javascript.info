@@ -1,8 +1,8 @@
 # JSON metodlari, toJSON
 
-Aytaylik, bizda murakkab ob'ekt bor va biz uni satrga aylantirmoqchimiz, uni tarmoq orqali jo'natmoqchimiz yoki uni ro'yxatga olish maqsadida chiqarishni xohlaymiz.
+Aytaylik, bizda murakkab obyekt bor va biz uni satrga aylantirmoqchimiz, uni tarmoq orqali jo'natmoqchimiz yoki uni ro'yxatga olish maqsadida chiqarishni istaymiz.
 
-Tabiiyki, bunday satr barcha muhim xususiyatlarni o'z ichiga olishi kerak.
+Tabiiyki, bunday satr barcha muhim xususiyatlarni o'z ichiga olishi lozim.
 
 Biz konvertatsiyani quyidagicha amalga oshirishimiz mumkin:
 
@@ -21,7 +21,7 @@ let user = {
 alert(user); // {name: "John", age: 30}
 ```
 
-...Ammo rivojlanish jarayonida yangi xususiyatlar qo'shiladi, eski xususiyatlar o'zgartiriladi va olib tashlanadi. Bunday `toString` ni har safar yangilash og'riqli bo'lishi mumkin. Biz undagi xususiyatlarni aylanib chiqishga harakat qilishimiz mumkin, lekin agar ob'ekt murakkab bo'lsa va xususiyatlarda ichki ob'ektlar bo'lsa-chi? Biz ularning konvertatsiyasini ham amalga oshirishimiz kerak.
+...Ammo rivojlanish jarayonida yangi xususiyatlar qo'shiladi, eski xususiyatlar o'zgartiriladi va olib tashlanadi. Bunday `toString` ni har safar yangilash og'riqli bo'lishi mumkin. Biz undagi xususiyatlarni aylanib chiqishga harakat qilishimiz mumkin, lekin agar ob'ekt murakkab bo'lsa va xususiyatlarda ichki obyektlar bo'lsachi? Biz ularning konvertatsiyasini ham amalga oshirishimiz kerak.
 
 Yaxshiyamki, bularning barchasini hal qilish uchun kod yozishning hojati yo'q. Vazifa allaqachon hal qilingan.
 
@@ -208,7 +208,7 @@ let meetup = {
 };
 
 room.occupiedBy = meetup; // xona ma'lumotnomalari uchrashuvi
-
+0
 alert( JSON.stringify(meetup, *!*['title', 'participants']*/!*) );
 // {"title":"Conference","participants":[{},{}]}
 ```
