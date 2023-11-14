@@ -1,15 +1,15 @@
 # Sana va vaqt
 
-Keling, yangi o'rnatilgan ob'ekt bilan tanishamiz: [Date](mdn:js/Date). U sana, vaqtni saqlaydi va sana/vaqtni boshqarish metodlarini taqdim etadi.
+Keling, yangi o'rnatilgan obyekt bilan tanishamiz: [Date](mdn:js/Date). U sana hamda vaqtni saqlaydi va ularni boshqarish metodlarini taqdim etadi.
 
 Masalan, biz uni yaratish/o'zgartirish vaqtlarini saqlash, vaqtni o'lchash yoki joriy sanani chop etish uchun ishlatishimiz mumkin.
 
 ## Yaratilishi
 
-Yangi `Date` ob'ektini yaratish uchun quyidagi argumentlardan biri bilan `new Date()` ga chaqiruv qiling:
+Yangi `Date` obyektini yaratish uchun quyidagi argumentlardan biri bilan `new Date()` ga chaqiruv qiling:
 
 `new Date()`
-: Argumentlarsiz – joriy sana va vaqt uchun `Date` ob'ektini yarating:
+: Argumentlarsiz – joriy sana va vaqt uchun `Date` obyektini yarating:
 
     ```js run
     let now = new Date();
@@ -17,7 +17,7 @@ Yangi `Date` ob'ektini yaratish uchun quyidagi argumentlardan biri bilan `new Da
     ```
 
 `new Date(milliseconds)`
-: 1970-yil 1-yanvar UTC+0 dan keyin oʻtgan millisekundlar soniga (1/1000 soniya) teng vaqtga ega `Date` ob'ektini yarating.
+: 1970-yil 1-yanvar UTC+0 dan keyin o'tgan millisekundlar soniga (1/1000 soniya) teng vaqtga ega `Date` obyektini yarating.
 
     ````js run
     // 0 degani 01.01.1970 UTC+0
@@ -30,10 +30,10 @@ Yangi `Date` ob'ektini yaratish uchun quyidagi argumentlardan biri bilan `new Da
     ````
     ``
 
-    1970-yil boshidan buyon oʻtgan millisekundlar sonini ifodalovchi butun songa _timestamp_ deyiladi.
+    1970-yil boshidan buyon o'tgan millisekundlar sonini ifodalovchi butun songa _timestamp_ deyiladi.
 
 ``    
-Bu sananing yengil raqamli tasviri. Biz har doim`new Date(timestamp)`yordamida vaqt tamg'asidan sana yaratishimiz va mavjud "Sana" ob'ektini`date.getTime()` metodi yordamida vaqt belgisiga aylantirishimiz mumkin (pastga qarang).
+Bu sananing yengil raqamli tasviri. Biz har doim `new Date(timestamp)` yordamida vaqt tamg'asidan sana yaratishimiz va mavjud "Sana" obyektini `date.getTime()` metodi yordamida vaqt belgisiga aylantirishimiz mumkin (pastga qarang).
 
     D01.01.1970 dan oldingi ates salbiy vaqt belgilariga ega, e.g.:
     ```js run
@@ -43,7 +43,7 @@ Bu sananing yengil raqamli tasviri. Biz har doim`new Date(timestamp)`yordamida v
     ```
 
 `new Date(datestring)`
-: Agar bitta argument bo'lsa va u satr bo'lsa, u avtomatik ravishda tahlil qilinadi. Algoritm `Date.parse` ishlatadigan bilan bir xil, biz buni keyinroq ko'rib chiqamiz.
+: Agar bitta argument bo'lsa va u satr bo'lsa, u avtomatik ravishda tahlil qilinadi. Algoritm `Date.parse` ni ishlatish bilan bir xil, biz buni keyinroq ko'rib chiqamiz.
 
     ```js run
     let date = new Date("2017-01-26");
@@ -57,12 +57,12 @@ Bu sananing yengil raqamli tasviri. Biz har doim`new Date(timestamp)`yordamida v
     ```
 
 `new Date(year, month, date, hours, minutes, seconds, ms)`
-: Mahalliy vaqt mintaqasida berilgan komponentlar bilan sana yarating. Faqat birinchi ikkita dalil majburiydir.
+: Mahalliy vaqt mintaqasida berilgan komponentlar bilan sana yarating. Faqat birinchi ikkita majburiy dalilni kiritish lozim.
 
-- `Year` 4 ta raqamdan iborat bo'lishi kerak. Moslik uchun 2 ta raqam ham qabul qilinadi va "19xx" deb hisoblanadi, masalan. `98` bu yerda `1998` bilan bir xil, lekin har doim 4 ta raqamdan foydalanish qat`iyan tavsiya etiladi.
+- `Year` 4 ta raqamdan iborat bo'lishi kerak. Moslik uchun 2 ta raqam ham qabul qilinadi va "19xx" deb hisoblanadi, masalan. `98` bu yerda `1998` bilan bir xil, lekin har doim 4 ta raqamdan foydalanish qat'iyan tavsiya etiladi.
 - `month` hisobi `0` (yanvar) dan boshlanadi, `11` (dekabr) gacha.
 - `date` parametri aslida oyning kunidir, agar yo'q bo'lsa, `1` qabul qilinadi.
-- Agar `hours/minutes/seconds/ms` bo‘lmasa, ular `0` ga teng deb hisoblanadi.
+- Agar `hours/minutes/seconds/ms` bo'lmasa, ular `0` ga teng deb hisoblanadi.
 
   Masalan:
 
@@ -89,14 +89,14 @@ Bu sananing yengil raqamli tasviri. Biz har doim`new Date(timestamp)`yordamida v
 : Oyni olish, **0 dan 11** gacha.
 
 [getDate()](mdn:js/Date/getDate)
-: Oyning kunini 1 dan 31 gacha oling, metodning nomi biroz g'alati ko'rinadi.
+: Oyning kunini 1 dan 31 gacha oling, usul nomi biroz g'alati ko'rinadi.
 
 [getHours()](mdn:js/Date/getHours), [getMinutes()](mdn:js/Date/getMinutes), [getSeconds()](mdn:js/Date/getSeconds), [getMilliseconds()](mdn:js/Date/getMilliseconds)
 : Tegishli vaqt komponentlarini olish.
 
 ``
 `warn header="``getYear()`emas,`getFullYear()`"
-Ko'pgina JavaScript dvigatellari `getYear()`nostandart metodini qo'llaydi. Bu metod eskirgan. Ba'zan 2 xonali yilni qaytaradi. Iltimos, hech qachon foydalanmang. Yil uchun`getFullYear()` mavjud.
+Ko'pgina JavaScript dvigatellari `getYear()`nostandart metodini qo'llaydi. Bu metod biroz eskirgan. Ba'zan 2 xonali yilni qaytaradi. Iltimos, hech qachon bu usuldan foydalanmang. Yil uchun `getFullYear()` mavjud.
 
 ```
 
@@ -105,11 +105,11 @@ Ko'pgina JavaScript dvigatellari `getYear()`nostandart metodini qo'llaydi. Bu me
 Bundan tashqari, biz haftaning bir kunini olishimiz mumkin:
 
 [getDay()](mdn:js/Date/getDay)
-: `0` (yakshanba) dan `6` (shanba) gacha haftaning kunini olish. Birinchi kun har doim yakshanba, ba'zi mamlakatlarda bunday emas, lekin o'zgartirib bo'lmaydi.
+: `0` (yakshanba) dan `6` (shanba) gacha haftaning kunini olish. Birinchi kun har doim yakshanba, ayrim mamlakatlarda bunday emas, lekin o'zgartirib bo'lmaydi.
 
 **Yuqoridagi barcha metodlar mahalliy vaqt mintaqasiga nisbatan komponentlarni qaytaradi.**
 
-UTC+0 vaqt mintaqasi uchun qaytariladigan kun, oy, yil va shunga o'xshash ularning UTC alternativlari ham bor: [getUTCFullYear()](mdn:js/Date/getUTCFullYear), [getUTCMonth()](mdn:js/Date/getUTCMonth), [getUTCDay()](mdn:js/Date/getUTCDay). Shunchaki `“get”`dan so‘ng `“UTC”`ni kiriting.
+UTC+0 vaqt mintaqasi uchun qaytariladigan kun, oy, yil va shunga o'xshash ularning UTC alternativlari ham bor: [getUTCFullYear()](mdn:js/Date/getUTCFullYear), [getUTCMonth()](mdn:js/Date/getUTCMonth), [getUTCDay()](mdn:js/Date/getUTCDay). Shunchaki `“get”`dan so'ng `“UTC”`ni kiriting.
 
 Agar sizning mahalliy vaqt mintaqangiz UTC ga nisbatan o'zgartirilsa, quyidagi kod turli soatlarni ko'rsatadi:
 
@@ -127,7 +127,7 @@ alert(date.getUTCHours());
 Berilgan metodlardan tashqari, UTC-variantiga ega bo'lmagan ikkita maxsus metodlar mavjud:
 
 [getTime()](mdn:js/Date/getTime)
-: Sana uchun vaqt tamg'asini qaytaradi -- 1970 yil 1 yanvardan boshlab o'tgan millisekundlar soni UTC+0.
+: Sana uchun vaqt tamg'asini qaytaradi -- 1970-yil 1 yanvardan boshlab o'tgan millisekundlar soni UTC+0.
 
 [getTimezoneOffset()](mdn:js/Date/getTimezoneOffset)
 : UTC va mahalliy vaqt mintaqasi o'rtasidagi farqni daqiqalarda qaytaradi:
@@ -150,9 +150,9 @@ Quyidagi metodlar sana/vaqt komponentlarini sozlash imkonini beradi:
 - [`setMinutes(min, [sec], [ms])`](mdn:js/Date/setMinutes)
 - [`setSeconds(sec, [ms])`](mdn:js/Date/setSeconds)
 - [`setMilliseconds(ms)`](mdn:js/Date/setMilliseconds)
-- [`setTime(milliseconds)`](mdn:js/Date/setTime) (sets the whole date by milliseconds since 01.01.1970 UTC)
+- [`setTime(milliseconds)`](mdn:js/Date/setTime) (01.01.1970 UTC dan boshlab butun sanani millisekundlarda belgilaydi)
 
-`setTime()`dan tashqari ularning har biri UTC-variantiga ega, masalan: `setUTCHours()`.
+`setTime()` dan tashqari ularning har biri UTC variantiga ega, masalan: `setUTCHours()`.
 
 Ko'rib turganimizdek, ba'zi metodlar bir vaqtning o'zida bir nechta komponentlarni o'rnatishi mumkin, masalan, `setHours`. Ko'rsatilmagan komponentlar o'zgartirilmaydi.
 
@@ -181,7 +181,7 @@ alert(date); // ...is 1 Fev 2013!
 
 Diapazondan tashqari sana komponentlari avtomatik ravishda taqsimlanadi.
 
-Aytaylik, “2016-yil 28-fevral” sanasini 2 kunga oshirishimiz kerak. Kabisa yili bo'lsa, "2 mart" yoki "1 mart" bo'lishi mumkin. Bu haqda o'ylashimiz shart emas. Faqat 2 kun qo'shing. `Date` obyekti qolgan ishlarni bajaradi:
+Aytaylik, "2016-yil 28-fevral" sanasini 2 kunga oshirishimiz kerak. Kabisa yili bo'lsa, "2-mart" yoki "1-mart" bo'lishi mumkin. Bu haqda havotirlanishga hojat yo'q. Faqat 2 kun qo'shing. `Date` obyekti qolgan ishlarni yaxshi bajaradi:
 
 ```js run
 let date = new Date(2016, 1, 28);
@@ -215,14 +215,14 @@ alert(date); // 31 Dek 2015
 
 ## Sanadan raqamga, sana farqi
 
-`Date` obyekti raqamga aylantirilganda, u `date.getTime()` bilan bir xil vaqt tamg‘asiga aylanadi:
+`Date` obyekti raqamga aylantirilganda, u `date.getTime()` bilan bir xil vaqt tamg'asiga aylanadi:
 
 ```js run
 let date = new Date();
 alert(+date); // millisekundlar soni date.getTime() bilan bir xil
 ```
 
-Muhim yon ta'siri: sanalarni olib tashlash mumkin, natijada ularning msdagi farqi.
+Muhim salbiy ta'siri: sanalarni olib tashlash mumkin, natija ularning msdagi farqida namoyon bo'ladi.
 
 Bu vaqtni o'lchash uchun ishlatilishi mumkin:
 
@@ -241,19 +241,19 @@ alert(`Sikl ${end - start} ms vaqt oldi`);
 
 ## Date.now()
 
-Agar biz faqat vaqtni o'lchashni istasak, bizga `Date` ob'ekti kerak emas.
+Agar biz faqat vaqtni o'lchashni istasak, bizga `Date` obyekti kerak emas.
 
 Joriy vaqt tamg'asini qaytaruvchi `Date.now()` maxsus metodi mavjud.
 
-U semantik jihatdan `new Date().getTime()` ga teng, lekin u oraliq “Sana” obyektini yaratmaydi. Shunday qilib, u tezroq va axlat yig'ishda bosim o'tkazmaydi.
+U semantik jihatdan `new Date().getTime()` ga teng, lekin u oraliq `Date`obyektini yaratmaydi. Shunday qilib, u tezroq ishlaydi va axlat yig'ishda bosim o'tkazmaydi.
 
 U asosan qulaylik uchun yoki JavaScriptdagi o'yinlarda yoki boshqa maxsus ilovalarda ishlash muhim bo'lganda ishlatiladi.
 
-Shunday qilib, ehtimol bu yaxshiroq:
+Shunday qilib, bu usul ancha yaxshiroq:
 
 ```js run
 *!*
-let start = Date.now(); // millisekundlar 1970 yil 1 yanvardan boshlab hisoblanadi
+let start = Date.now(); // millisekundlar 1970-yil 1-yanvardan boshlab hisoblanadi
 */!*
 
 // ishni bajarish
@@ -270,7 +270,7 @@ alert( `Sikl ${end - start} ms vaqt oldi` ); // sanalarni emas, raqamlarni ayiri
 
 ## Benchmarking
 
-Agar biz CPUga ochlik funktsiyasining ishonchli mezonini xohlasak, ehtiyot bo'lishimiz kerak.
+Agar biz CPU uchun ochlik funktsiyasining ishonchli "benchmark" xohlasak, ehtiyot bo'lishimiz kerak.
 
 Masalan, ikkita sana orasidagi farqni hisoblaydigan ikkita funktsiyani o'lchaymiz: qaysi biri tezroq?
 
@@ -292,7 +292,7 @@ Bu ikkalasi aynan bir xil ishni bajaradi, lekin ulardan biri sanani msda olish u
 
 Xo'sh, qaysi biri tezroq?
 
-Birinchi g'oya ularni ketma-ket ko'p marta ishlatish va vaqt farqini o'lchash bo'lishi mumkin. Bizning holatlarimiz uchun funktsiyalar juda oddiy, shuning uchun biz buni kamida 100000 marta bajarishimiz kerak.
+Birinchi g'oya ularni ketma-ket ko'p marta ishlatish va vaqt farqini o'lchash bo'lishi mumkin. Bizning holatlarimiz uchun funksiyalar juda oddiy, shuning uchun biz buni kamida 100000 marta bajarishimiz kerak.
 
 Keling, o'lchaymiz:
 
@@ -324,7 +324,7 @@ Yaxshi, bizda nimadir bor. Ammo bu hali yaxshi ko'rsatkich emas.
 
 Tasavvur qiling-a, `bench(diffSubtract)` ishlayotgan vaqtda protsessor parallel ravishda biror narsa qilyapti va u resurslarni olayotgan edi. Va `bench(diffGetTime)` ishga tushirilganda, bu ish tugadi.
 
-Zamonaviy ko'p jarayonli OS uchun juda haqiqiy stsenariy.
+Zamonaviy ko'p jarayonli OS uchun chinakam ajoyib ssenariy.
 
 Natijada, birinchi benchmark ikkinchisiga qaraganda kamroq CPU resurslariga ega bo'ladi. Bu noto'g'ri natijalarga olib kelishi mumkin.
 
@@ -354,7 +354,7 @@ let time1 = 0;
 let time2 = 0;
 
 *!*
-// bench(diffSubtract) va bench(diffGetTime)ni har 10 marta o'zgartiring
+// bench(diffSubtract) va bench(diffGetTime)ni 10 marta o'zgartiring
 for (let i = 0; i < 10; i++) {
   time1 += bench(diffSubtract);
   time2 += bench(diffGetTime);
@@ -379,17 +379,17 @@ for (let i = 0; i < 10; i++) {
 }
 ```
 
-```warn header="Mikrobenchmarking qilishda ehtiyot bo'ling"
-Zamonaviy JavaScript dvigatellari ko'plab optimallashtirishlarni amalga oshiradi. Ular "sun'iy testlar" natijalarini "oddiy foydalanish" bilan solishtirganda o'zgartirishi mumkin, ayniqsa biz juda kichik narsalarni, masalan, operator qanday ishlashini yoki o'rnatilgan funksiyani taqqoslaganda. Shunday qilib, agar siz unumdorlikni jiddiy tushunmoqchi bo'lsangiz, iltimos, JavaScript mexanizmi qanday ishlashini o'rganing. Va keyin sizga mikrobenchmarklar umuman kerak bo'lmaydi.
+```warn header="Mikrobenchmarking ni bajarishda ehtiyot bo'ling"
+Zamonaviy JavaScript dvigatellari ko'plab optimallashtirishlarni amalga oshiradi. Ular "sun'iy testlar" natijalarini "oddiy foydalanish" bilan solishtirganda, ayniqsa biz juda kichik narsalarni, masalan, operator qanday ishlashini yoki o'rnatilgan funksiyani taqqoslaganda o'zgartirishi mumkin. Shunday qilib, agar siz unumdorlikni jiddiy tushunmoqchi bo'lsangiz, iltimos, JavaScript mexanizmi qanday ishlashini o'rganing. Va keyin sizga mikrobenchmarklar umuman kerak bo'lmaydi.
 
 V8 haqidagi ajoyib maqolalar to'plamini <https://mrale.ph> saytida topish mumkin.
 ```
 
 ## Stringdan Date.parse
 
-[Date.parse(string)](mdn:js/Date/parse) metodi qatordan sanani o‘qiy oladi.
+[Date.parse(string)](mdn:js/Date/parse) metodi qatordan sanani o'qiy oladi.
 
-Satr formati quyidagicha bo'lishi kerak: `YYYY-AA-DDTHH:dd:ss.sssZ`, bu erda:
+Satr formati quyidagicha bo'lishi kerak: `YYYY-AA-DDTHH:dd:ss.sssZ`, bu yerda:
 
 - `YYYY-MM-DD` -- sana: yil-oy-kun.
 - Ajratuvchi sifatida `“T”` belgisi ishlatiladi.
@@ -398,7 +398,7 @@ Satr formati quyidagicha bo'lishi kerak: `YYYY-AA-DDTHH:dd:ss.sssZ`, bu erda:
 
 `YYYY-MM-DD` yoki `YYYY-MM` yoki hatto `YYYY` kabi qisqaroq variantlar ham mumkin.
 
-`Date.parse(str)` ga chaqirilgan formatda stringni tahlil qiladi va vaqt tamgʻasini qaytaradi (1970-yil 1-yanvardan boshlab millisekundlar soni UTC+0). Agar format noto‘g‘ri bo‘lsa, `NaN`ni qaytaradi.
+`Date.parse(str)` ga chaqirilgan formatda stringni tahlil qiladi va vaqt tamg'asini qaytaradi (1970-yil 1-yanvardan boshlab millisekundlar soni UTC+0). Agar format noto'g'ri bo‘lsa, `NaN` ni qaytaradi.
 
 Masalan:
 
@@ -418,22 +418,23 @@ alert(date);
 
 ## Xulosa
 
-- JavaScript-da sana va vaqt [Date](mdn:js/Date) obyekti bilan ifodalanadi. Biz “faqat sana” yoki “faqat vaqt”ni yarata olmaymiz: `Date` obyektlari har doim ikkalasini ham olib yuradi.
-- Oylar noldan hisoblanadi (ha, yanvar nol oy).
+- JavaScriptda sana va vaqt [Date](mdn:js/Date) obyekti bilan ifodalanadi. Biz "faqat sana" yoki "faqat vaqt" ni yarata olmaymiz: `Date` obyektlari har doim ikkalasini ham olib yuradi.
+- Oylar noldan hisoblanadi (ha, yanvar nolinchi oy).
 - `getDay()` da haftaning kunlari ham noldan boshlab hisoblanadi (bu yakshanba).
 - `Date` diapazondan tashqari komponentlar o'rnatilganda o'zini avtomatik ravishda tuzatadi. Kunlar/oylar/soatlarni qo'shish/ayirish uchun yaxshi.
 - Sanalarni ayirish mumkin, bu ularning farqini millisekundlarda beradi. Buning sababi, `Date` raqamga aylantirilganda vaqt tamg'asi bo'ladi.
-- Joriy vaqt tamg‘asini tezda olish uchun `Date.now()` dan foydalaniladi.
+- Joriy vaqt tamg'asini tezda olish uchun `Date.now()` dan foydalaniladi.
 
-E'tibor bering, boshqa tizimlardan farqli o'laroq, JavaScript-dagi vaqt belgilari soniyalarda emas, millisekundlarda.
+E'tibor bering, boshqa tizimlardan farqli o'laroq, JavaScriptdagi vaqt belgilari soniyalarda emas, millisekundlarda berilgan.
 
-Ba'zan bizga aniqroq vaqt o'lchovlari kerak bo'ladi. JavaScript-ning o'zida vaqtni mikrosekundlarda (soniyaning 1 milliondan bir qismi) o'lchash usuli yo'q, lekin ko'pchilik muhitlar buni ta'minlaydi. Masalan, brauzerda [performance.now()](mdn:api/Performance/now) mavjud bo'lib, u sahifa yuklanishi boshlanishidan boshlab mikrosekundlik aniqlikda (nuqtadan keyin 3 ta raqam) millisekundlar sonini beradi:
+Ba'zan bizga aniqroq vaqt o'lchovlari kerak bo'ladi. JavaScriptning o'zida vaqtni mikrosekundlarda (soniyaning 1 milliondan bir qismi) o'lchash usuli yo'q, lekin ko'pchilik muhitlar buni ta'minlaydi. Masalan, brauzerda [performance.now()](mdn:api/Performance/now) mavjud bo'lib, u sahifa yuklanishi boshlanishidan boshlab mikrosekundlik aniqlikda (nuqtadan keyin 3 ta raqam) millisekundlar sonini beradi:
 
 ```js run
 alert(`Yuklash ${performance.now()}ms oldin boshlandi`);
 // Shunga o'xshash narsa: "Yuklash 34731.26000000001ms oldin boshlangan"
 // .26 mikrosoniya (260 mikrosekund)
-// kasrdan keyin 3 tadan ortiq raqam aniqlik xatosi, faqat birinchi 3 tasi to'g'ri
+// kasrdan keyin 3 tadan ortiq raqam aniqlik xatosi, faqat birinchi uchtasi to'g'ri
 ```
 
-Node.js da `microtime` moduli va boshqa metodlar mavjud. Texnik jihatdan, deyarli har qanday qurilma va muhit aniqroq bo'lishga imkon beradi, bu shunchaki "Sana" da emas.
+Node.js da `microtime` moduli va boshqa metodlar mavjud. Texnik jihatdan, faqat `Date` (sana) ni emas, balki
+deyarli har qanday qurilma va muhitning aniqroq bo'lishiga imkon beradi.
