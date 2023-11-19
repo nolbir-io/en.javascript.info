@@ -1,6 +1,6 @@
 # JSON metodlari, toJSON
 
-Aytaylik, bizda murakkab obyekt bor va biz uni satrga aylantirmoqchimiz, uni tarmoq orqali jo'natmoqchimiz yoki uni ro'yxatga olish maqsadida chiqarishni istaymiz.
+Aytaylik, bizda murakkab obyekt bor va biz uni satrga aylantirmoqchimiz, uni tarmoq orqali jo'natish yoki ro'yxatga olish maqsadida chiqarishni istaymiz.
 
 Tabiiyki, bunday satr barcha muhim xususiyatlarni o'z ichiga olishi lozim.
 
@@ -21,20 +21,20 @@ let user = {
 alert(user); // {name: "John", age: 30}
 ```
 
-...Ammo rivojlanish jarayonida yangi xususiyatlar qo'shiladi, eski xususiyatlar o'zgartiriladi va olib tashlanadi. Bunday `toString` ni har safar yangilash og'riqli bo'lishi mumkin. Biz undagi xususiyatlarni aylanib chiqishga harakat qilishimiz mumkin, lekin agar ob'ekt murakkab bo'lsa va xususiyatlarda ichki obyektlar bo'lsachi? Biz ularning konvertatsiyasini ham amalga oshirishimiz kerak.
+...Ammo rivojlanish jarayonida yangi xususiyatlar qo'shiladi, eski xususiyatlar o'zgartiriladi va olib tashlanadi. Bunday `toString` ni har safar yangilash og'riqli bo'lishi mumkin. Biz undagi xususiyatlarni aylanib chiqishga harakat qilamiz, lekin agar obyekt murakkab bo'lsa va xususiyatlarda ichki obyektlar bo'lsachi? Biz ularning konvertatsiyasini ham amalga oshirishimiz lozim.
 
-Yaxshiyamki, bularning barchasini hal qilish uchun kod yozishning hojati yo'q. Vazifa allaqachon hal qilingan.
+Yaxshiyamki, bularning barchasini hal qilish uchun kod yozishning hojati yo'q. Bu muammo allaqachon hal qilingan.
 
 ## JSON.stringify
 
-[JSON](https://en.wikipedia.org/wiki/JSON) (JavaScript Object Notation) qiymatlar va obyektlarni ifodalash uchun umumiy formatdir. U [RFC 4627](https://tools.ietf.org/html/rfc4627) standartida tasvirlangan. Dastlab u JavaScript uchun yaratilgan, ammo boshqa ko'plab tillarda ham uni boshqarish uchun kutubxonalar mavjud. Shunday qilib, mijoz JavaScript-dan foydalansa va server Ruby/PHP/Java/Whatever da yozilgan bo'lsa, ma'lumotlar almashinuvi uchun JSON-dan foydalanish oson.
+[JSON](https://en.wikipedia.org/wiki/JSON) (JavaScript Object Notation) qiymatlar va obyektlarni ifodalash uchun umumiy formatdir. U [RFC 4627](https://tools.ietf.org/html/rfc4627) standartida tasvirlangan. Dastlab u JavaScript uchun yaratilgan, ammo boshqa ko'plab tillarda ham uni boshqarish uchun kutubxonalar mavjud. Shunday qilib, mijoz JavaScriptdan foydalansa va server Ruby/PHP/Java/Whatever da yozilgan bo'lsa, ma'lumotlar almashinuvi uchun JSONdan foydalanish oson.
 
 JavaScript quyidagi metodlarni taqdim etadi:
 
-- `JSON.stringify` ob'ektlarni JSONga aylantirish uchun.
-- `JSON.parse` JSON-ni yana ob'ektga aylantirish uchun.
+- `JSON.stringify` obyektlarni JSONga aylantiradi.
+- `JSON.parse` JSONni yana obyektga aylantiradi.
 
-Masalan, biz talabani `JSON.stringify` qilamiz:
+Masalan, biz student (talaba) ni `JSON.stringify` qilamiz:
 
 ```js run
 let student = {
@@ -65,25 +65,25 @@ alert(json);
 */!*
 ```
 
-`JSON.stringify(student)` usuli ob'ektni oladi va uni satrga aylantiradi.
+`JSON.stringify(student)` usuli obyektni oladi va uni satrga aylantiradi.
 
 Olingan json qatori _JSON-kodlangan_ yoki _seriyalashtirilgan_ yoki _stringlashtirilgan_ yoki _marshalllangan_ obyekt deb ataladi. Biz uni sim orqali yuborishga yoki oddiy ma'lumotlar do'koniga joylashtirishga tayyormiz.
 
-E'tibor bering, JSON-kodlangan ob'ekt ob'ekt literalidan bir nechta muhim farqlarga ega:
+E'tibor bering, JSON-kodlangan obyekt obyekt literalidagi bir nechta muhim farqlarga ega:
 
-- Sstringlar qo'sh tirnoqlardan foydalanadi. JSONda bitta tirnoq yoki teskari belgi yo'q. Shunday qilib, `'John'` `"John"` ga aylanadi.
-- Obyekt xossalari nomlari ham ikki tirnoqli. Bu majburiy. Shunday qilib, `age: 30` `"age": 30` ga aylanadi.
+- Sstringlar qo'sh tirnoqlardan foydalanadi. JSONda bitta qo'shtirnoq yoki teskari belgi yo'q. Shunday qilib, `'John'` `"John"` ga aylanadi.
+- Obyekt xossalari nomlari ham ikkita qo'shtirnoqli. Bunday usulda yozish majburiy. Shunday qilib, `age: 30` `"age": 30` ga aylanadi.
 
-`JSON.stringify` primitivlarga ham qo'llanilishi mumkin.
+`JSON.stringify` primitivlar bilan ham qo'llanilishi mumkin.
 
 JSON quyidagi ma'lumotlar turlarini qo'llab-quvvatlaydi:
 
-- Ob'ektlar `{ ... }`
+- Obyektlar `{ ... }`
 - Massivlar `[ ... ]`
 - Primitivlar:
   - stringlar,
   - raqamlar,
-  - boolean qiymaylar `true/false`,
+  - boolean qiymatlar `true/false`,
   - `null`.
 
 Masalan:
@@ -92,7 +92,7 @@ Masalan:
 // JSONdagi raqam shunchaki raqamdir
 alert(JSON.stringify(1)); // 1
 
-// JSONdagi satr hali ham satr, lekin ikki tirnoqli
+// JSONdagi satr hali ham satr, lekin ikkita qo'shtirnoqli
 alert(JSON.stringify("test")); // "test"
 
 alert(JSON.stringify(true)); // true
@@ -100,7 +100,7 @@ alert(JSON.stringify(true)); // true
 alert(JSON.stringify([1, 2, 3])); // [1,2,3]
 ```
 
-JSON faqat maʼlumotlarga bogʻliq boʻlgan tilga bogʻliq boʻlmagan spetsifikatsiyadir, shuning uchun JavaScript-ga xos boʻlgan baʼzi obyekt xususiyatlari `JSON.stringify` tomonidan oʻtkazib yuboriladi.
+JSON faqat tilga emas, balki ma'lumotlarga ham bog'liq bo'lgan spetsifikatsiyadir, shuning uchun JavaScriptga xos bo'lgan ba'zi obyekt xususiyatlari `JSON.stringify` tomonidan o'tkazib yuboriladi.
 
 Ya'ni:
 
@@ -118,12 +118,12 @@ let user = {
   something: undefined, // e'tiborga olinmagan
 };
 
-alert(JSON.stringify(user)); // {} (bo'sh ob'ekt)
+alert(JSON.stringify(user)); // {} (bo'sh obyekt)
 ```
 
 Odatda bu yaxshi. Agar bu biz xohlagan narsa bo'lmasa, tez orada jarayonni qanday sozlashni ko'ramiz.
 
-Ajoyib narsa shundaki, ichki o'rnatilgan ob'ektlar avtomatik ravishda qo'llab-quvvatlanadi va o'zgartiriladi.
+Ajoyib narsa shundaki, ichki o'rnatilgan obyektlar avtomatik ravishda qo'llab-quvvatlanadi va o'zgartiriladi.
 
 Masalan:
 
@@ -139,7 +139,7 @@ let meetup = {
 };
 
 alert( JSON.stringify(meetup) );
-/* The whole structure is stringified:
+/* Butun struktura stringlashtirilgan:
 {
   "title":"Conference",
   "room":{"number":23,"participants":["john","ann"]},
@@ -165,15 +165,15 @@ meetup.place = room;       // uchrashuv ma'lumotnomalari xonasi
 room.occupiedBy = meetup; // xona ma'lumotnomalari uchrashuvi
 
 *!*
-JSON.stringify(meetup); // Error: aylanma tuzilmani JSON ga aylantirishda
+JSON.stringify(meetup); // Error: aylanma tuzilmani JSON ga aylantirish
 */!*
 ```
 
-Bu yerda konvertatsiya amalga oshmadi, chunki aylanali havola: `room.occupiedBy` `meetup` va `meetup.place` havolalari `room`:
+Aylanali havola: `room.occupiedBy` `meetup` va `meetup.place` havolalari `room` sabab konvertatsiya amalga oshmadi:
 
 ![](json-meetup.svg)
 
-## Istisno qilish va o'zgartirish: almashtiruvchi
+## Istisno qilish va o'zgartirish: almashtiruvchi (replacer)
 
 `JSON.stringify` ning to'liq sintaksisi:
 
@@ -185,14 +185,14 @@ value
 : Kodlash uchun qiymat.
 
 replacer
-: Kodlash uchun xossalar massivi yoki `function (key, value)` xaritalash funksiyasi.
+: Kodlash uchun xossalar massivi yoki `function (key, value)` xaritalash (mapping) funksiyasi.
 
 space
 : Formatlash uchun foydalanish uchun bo'sh joy miqdori
 
 Ko'pincha `JSON.stringify` faqat birinchi argument bilan ishlatiladi. Ammo agar biz aylanma havolalarni filtrlash kabi almashtirish jarayonini nozik sozlashimiz kerak bo'lsa, biz `JSON.stringify` ning ikkinchi argumentidan foydalanishimiz mumkin.
 
-Agar unga xossalar massivini uzatsak, faqat shu xossalar kodlanadi.
+Unga xossalar massivini uzatsak, faqat shu xossalar kodlanadi.
 
 Masalan:
 
@@ -213,9 +213,9 @@ alert( JSON.stringify(meetup, *!*['title', 'participants']*/!*) );
 // {"title":"Conference","participants":[{},{}]}
 ```
 
-Bu erda, ehtimol, biz juda qattiqqo'lmiz. Xususiyatlar ro'yxati butun ob'ekt tuzilishiga qo'llaniladi. Shunday qilib, `participants` dagi ob'ektlar bo'sh, chunki `name` ro'yxatda yo'q.
+Bu yerda, ehtimol, biz qattiqqo'llik bilan ish tutmoqdamiz. Xususiyatlar ro'yxati butun obyekt tuzilishiga qo'llaniladi. Shunday qilib, `participants` dagi obyektlar bo'sh qoldi, chunki `name` ro'yxatda yo'q.
 
-Keling, ro'yxatga dumaloq havolaga sabab bo'ladigan `room.occupiedBy`dan tashqari har bir xususiyatni kiritaylik:
+Keling, ro'yxatga dumaloq havolaga sabab bo'ladigan `room.occupiedBy` dan tashqari har bir xususiyatni kiritaylik:
 
 ```js run
 let room = {
@@ -242,9 +242,9 @@ alert( JSON.stringify(meetup, *!*['title', 'participants', 'place', 'name', 'num
 
 Endi `occupiedBy` dan tashqari hamma narsa seriyalashtirildi. Ammo mulklar ro'yxati juda katta.
 
-Yaxshiyamki, biz massiv o‘rniga `replacer` sifatida funksiyadan foydalanishimiz mumkin.
+Yaxshiyamki, biz massiv o'rniga `replacer` (almashtiruvchi) sifatida funksiyadan foydalanishimiz mumkin.
 
-Funktsiya har bir `(kalit, qiymat)` juftligi uchun chaqiriladi va asl qiymati o'rniga ishlatiladigan "almashtirilgan(replaced)" qiymatni qaytarishi kerak. Yoki qiymat o'tkazib yuborilishi kerak bo'lsa, `undefined`.
+Funksiya har bir `(key, value)` juftligi uchun chaqiriladi va asl qiymati o'rniga ishlatiladigan "almashtirilgan(replaced)" qiymatni qaytarishi lozim yoki qiymat o'tkazib yuborilishi kerak bo'lsa, `undefined` ni qaytarishi mumkin.
 
 Bizning holatda, biz `occupiedBy` dan tashqari hamma narsa uchun `value` ni "bo'lgani kabi" qaytarishimiz mumkin. `OccupiedBy` ni e'tiborsiz qoldirish uchun quyidagi kod "aniqlanmagan"ni qaytaradi:
 
@@ -268,7 +268,7 @@ alert(
   })
 );
 
-/* key:value pairs that come to replacer:
+/* key:almashtiruvchiga keladigan qiymat juftlari:
 :             [object Object]
 title:        Conference
 participants: [object Object],[object Object]
@@ -282,19 +282,19 @@ occupiedBy: [object Object]
 */
 ```
 
-Esda tutingki, `replacer` funksiyasi har bir kalit/qiymat juftligini oladi, shu jumladan ichki oʻrnatilgan obyektlar va massiv elementlari. U rekursiv ravishda qo'llaniladi. `Replacer` ichidagi `this` qiymati joriy xususiyatni o'z ichiga olgan ob'ektdir.
+Esda tutingki, `replacer` funksiyasi har bir kalit/qiymat juftligini oladi, ichki o'rnatilgan obyektlar va massiv elementlari ham shu jumladan. U rekursiv ravishda qo'llaniladi. `Replacer` ichidagi `this` qiymati joriy xususiyatni o'z ichiga olgan obyektdir.
 
-Birinchi chaqiruv alohida. U maxsus "oʻrash obyekti" yordamida amalga oshiriladi: `{"": meetup}`. Boshqacha qilib aytganda, birinchi `(kalit, qiymat)` juftligi bo'sh kalitga ega va qiymat butun sifatida maqsadli ob'ektdir. Shuning uchun yuqoridagi misolda birinchi qator `":[object Object]"`.
+Birinchi chaqiruv alohida bajariladi. U maxsus "o'rash obyekti" yordamida amalga oshiriladi: `{"": meetup}`. Boshqacha qilib aytganda, birinchi `(kalit, qiymat)` juftligi bo'sh kalitga ega va qiymat butun sifatida maqsadli obyektdir. Shuning uchun yuqoridagi misolda birinchi qatorda `":[object Object]"` yoziladi.
 
-G'oya `replacer` ni iloji boricha ko'proq quvvat bilan ta'minlashdan iborat: agar kerak bo'lsa, hatto butun ob'ektni tahlil qilish va almashtirish/o'tkazib yuborish imkoniyati mavjud.
+G'oya `replacer` ni iloji boricha ko'proq quvvat bilan ta'minlashdan iborat: agar kerak bo'lsa, hatto butun obyektni tahlil qilish va almashtirish/o'tkazib yuborish imkoniyati mavjud.
 
 ## Formatlash: bo'sh joy
 
-`JSON.stringify(value, replacer, space)` ning uchinchi argumenti chiroyli formatlash uchun foydalaniladigan bo'shliqlar soni.
+`JSON.stringify(value, replacer, space)` ning uchinchi argumenti chiroyli formatlash uchun foydalaniladigan bo'shliqlar soni hisoblanadi.
 
-Ilgari, barcha torli ob'ektlarda chuqurchalar va ortiqcha bo'shliqlar yo'q edi. Ob'ektni tarmoq orqali jo'natmoqchi bo'lsak, bu yaxshi. `Space` argumenti faqat chiroyli chiqish uchun ishlatiladi.
+Ilgari barcha stringlangan obyektlarda chuqurchalar va ortiqcha bo'shliqlar yo'q edi. Obyektni tarmoq orqali jo'natish yaxshi tanlov. `Space` argumentidan chiroyli chiqish uchun foydalaniladi.
 
-Bu erda `space = 2` JavaScript-ga bir nechta satrlarda ichki o'rnatilgan ob'ektlarni ko'rsatishni aytadi, bunda ob'ekt ichida 2 bo'sh joy ajratiladi:
+Bu yerda `space = 2` JavaScriptga bir nechta satrlarda ichki o'rnatilgan obyektlarni ko'rsatishni aytadi, bunda obyekt ichida 2ta bo'sh joy ajratiladi:
 
 ```js run
 let user = {
@@ -307,7 +307,7 @@ let user = {
 };
 
 alert(JSON.stringify(user, null, 2));
-/* two-space indents:
+/* 2ta bo'shliqli indent lar:
 {
   "name": "John",
   "age": 25,
@@ -318,7 +318,7 @@ alert(JSON.stringify(user, null, 2));
 }
 */
 
-/* for JSON.stringify(user, null, 4) the result would be more indented:
+/* JSON.stringify(user, null, 4) uchun natija satr boshidan boshlab yoziladi:
 {
     "name": "John",
     "age": 25,
@@ -330,13 +330,13 @@ alert(JSON.stringify(user, null, 2));
 */
 ```
 
-Uchinchi argument ham string bo'lishi mumkin. Bunda qator bo'shliqlar o'rniga chekinish uchun ishlatiladi.
+Uchinchi argument ham string bo'lishi mumkin. Bunda qator bo'shliqlar o'rniga satr boshidan yozilish uchun ishlatiladi.
 
-`space` parametri faqat jurnalga yozish va chiroyli chiqish uchun ishlatiladi.
+`space` parametri faqat jurnalga yozish va natija chiroyli chiqishi uchun ishlatiladi.
 
 ## Maxsus "toJSON"
 
-Stringni oʻzgartirish uchun `toString` singari, obyekt ham JSONʼga oʻtkazish uchun `toJSON` metodini taqdim qilishi mumkin. `JSON.stringify"`agar mavjud bo'lsa, uni avtomatik ravishda chaqiradi.
+Stringni o'zgartirish uchun `toString` kabi, obyekt JSONga o'tkazish uchun `toJSON` usulini taqdim etishi mumkin. Agar mavjud bo'lsa, `JSON.stringify` uni avtomatik ravishda chaqiradi.
 
 Masalan:
 
@@ -363,7 +363,7 @@ alert( JSON.stringify(meetup) );
 */
 ```
 
-Bu erda biz `date` `(1)` satrga aylanganini ko'rishimiz mumkin. Buning sababi, barcha sanalarda shunday qatorni qaytaradigan o'rnatilgan "toJSON" usuli mavjud.
+Bu yerda biz `date` `(1)` satrga aylanganini ko'rishimiz mumkin. Buning sababi, barcha sanalarda shunday qatorni qaytaradigan o'rnatilgan `toJSON` usuli mavjud.
 
 Keling, `room` `(2)` obyektimiz uchun maxsus `toJSON` qo'shamiz:
 
@@ -397,7 +397,7 @@ alert( JSON.stringify(meetup) );
 */
 ```
 
-Ko'rib turganimizdek, `toJSON` ham `JSON.stringify(room)` to'g'ridan-to'g'ri chaqiruvi uchun, ham `room` boshqa kodlangan ob'ektga joylashtirilganda ishlatiladi.
+Ko'rib turganimizdek, `toJSON` dan to'g'ridan-to'g'ri `JSON.stringify(room)` chaqiruvi uchun ham, `room` boshqa kodlangan obyektga joylashtirishda ham ishlatiladi.
 
 ## JSON.parse
 
@@ -426,7 +426,7 @@ numbers = JSON.parse(numbers);
 alert(numbers[1]); // 1
 ```
 
-Yoki o'rnatilgan ob'ektlar uchun:
+Yoki o'rnatilgan obyektlar uchun:
 
 ```js run
 let userData =
@@ -437,31 +437,31 @@ let user = JSON.parse(userData);
 alert(user.friends[1]); // 1
 ```
 
-JSON kerakli darajada murakkab bo'lishi mumkin, ob'ektlar va massivlar boshqa ob'ektlar va massivlarni o'z ichiga olishi mumkin. Lekin ular bir xil JSON formatiga bo'ysunishlari kerak.
+JSON yetarli darajada murakkab, obyektlar va massivlar boshqa obyektlar va massivlarni o'z ichiga olishi mumkin. Lekin ular bir xil JSON formatiga bo'ysunishlari kerak.
 
 Qo'lda yozilgan JSON-dagi odatiy xatolar (ba'zida biz uni tuzatish uchun yozishimiz kerak):
 
 ```js
 let json = `{
-  *!*name*/!*: "John",                     // mistake: property name without quotes
-  "surname": *!*'Smith'*/!*,               // mistake: single quotes in value (must be double)
-  *!*'isAdmin'*/!*: false                  // mistake: single quotes in key (must be double)
-  "birthday": *!*new Date(2000, 2, 3)*/!*, // mistake: no "new" is allowed, only bare values
-  "friends": [0,1,2,3]              // here all fine
+  *!*name*/!*: "John",                     // xato: qo'shtirnoqlarsiz xususiyat nomiz
+  "surname": *!*'Smith'*/!*,               // xato: qiymatdagi bitta qo'shtirnoq (ikkita yozilishi kerak)
+  *!*'isAdmin'*/!*: false                  // xato: (key) kalitdagi bitta qo'shtirnoq (ikkita yozilishi kerak)
+  "birthday": *!*new Date(2000, 2, 3)*/!*, // xato: hech qanday "new" ga ruxsat berilmagan, faqatgina bo'sh qiymatlar
+  "friends": [0,1,2,3]              // bu yerda hammasi joyida
 }`;
 ```
 
-Bundan tashqari, JSON sharhlarni qo'llab-quvvatlamaydi. JSONga izoh qo‘shish uni yaroqsiz qiladi.
+Bundan tashqari, JSON sharhlarni qo'llab-quvvatlamaydi. JSONga izoh qo'shish uni yaroqsiz holga keltiradi.
 
-Yana [JSON5](https://json5.org/) nomli format mavjud boʻlib, unda tirnoqsiz kalitlar, sharhlar va hokazolar mavjud. Lekin bu alohida kutubxona boʻlib, til spetsifikatsiyasida emas.
+Yana [JSON5](https://json5.org/) nomli format mavjud bo'lib, unda qo'shtirnoqsiz kalitlar, sharhlar va hokazolar mavjud. Lekin bu alohida kutubxona bo'lib, til spetsifikatsiyasida joylashmagan.
 
-Muntazam JSON juda qattiq, chunki uni ishlab chiquvchilar dangasa emas, balki tahlil qilish algoritmini oson, ishonchli va juda tez amalga oshirish imkonini beradi.
+Dasturchilar dangasa bo'lgani uchun emas, balki tahlil qilish algoritmni oson, ishonchli va juda tez amalga oshirish imkonini bergani sababli muntazam JSON dan foydalanish majburiy.
 
 ## Reviver ishlatish
 
 Tasavvur qiling-a, biz serverdan simli `meetup` obyektini oldik.
 
-Bu shunday ko'rinadi:
+Bu quyidagicha ko'rinadi:
 
 ```js
 // title: (meetup title), date: (meetup date)
@@ -470,7 +470,7 @@ let str = '{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}';
 
 ...Endi esa yana JavaScript obyektiga aylantirish uchun uni _deserialize_ qilishimiz kerak.
 
-Keling, buni `JSON.parse` chaqirib bajaramiz:
+Keling, buni `JSON.parse` ni chaqirgan holda bajaramiz:
 
 ```js run
 let str = '{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}';
@@ -484,9 +484,9 @@ alert( meetup.date.getDate() ); // Error!
 
 Yo'q! Error!
 
-`meetup.date` qiymati `Date` obyekti emas, balki stringdir. `JSON.parse` bu qatorni `Date`ga aylantirish kerakligini qayerdan bilishi mumkin?
+`meetup.date` qiymati `Date` obyekti emas, balki stringdir. `JSON.parse` bu qatorni `Date` ga aylantirish kerakligini qayerdan bilishi mumkin?
 
-`JSON.parse` ga ikkinchi argument sifatida barcha qiymatlarni qaytaruvchi jonlantirish funksiyasini o‘tamiz, lekin `date` `Date`ga aylanadi:
+`JSON.parse` ga ikkinchi argument sifatida barcha qiymatlarni qaytaruvchi jonlantirish funksiyasini o'tamiz, lekin `date` `Date`ga aylanadi:
 
 ```js run
 let str = '{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}';
@@ -501,7 +501,7 @@ let meetup = JSON.parse(str, function(key, value) {
 alert( meetup.date.getDate() ); // endi ishlaydi!
 ```
 
-Aytgancha, bu ichki o'rnatilgan ob'ektlar uchun ham ishlaydi:
+Aytgancha, bu ichki o'rnatilgan obyektlar uchun ham ishlaydi:
 
 ```js run
 let schedule = `{
@@ -524,7 +524,7 @@ alert( schedule.meetups[1].date.getDate() ); // works!
 ## Xulosa
 
 - JSON o'zining mustaqil standarti va ko'pgina dasturlash tillari uchun kutubxonalarga ega bo'lgan ma'lumotlar formatidir.
-- JSON oddiy ob'ektlar, massivlar, satrlar, raqamlar, mantiqiy va `null` ni qo'llab-quvvatlaydi.
-- JavaScript JSON-ga seriyalashtirish uchun [JSON.stringify](mdn:js/JSON/stringify) va JSON-dan o'qish uchun [JSON.parse](mdn:js/JSON/parse) usullarini taqdim etadi.
+- JSON oddiy obyektlar, massivlar, satrlar, raqamlar, mantiqiy va `null` ni qo'llab-quvvatlaydi.
+- JavaScriptni JSONga seriyalashtirish uchun [JSON.stringify](mdn:js/JSON/stringify) va JSONni o'qish uchun [JSON.parse](mdn:js/JSON/parse) usullarini taqdim etadi.
 - Ikkala metod ham aqlli o'qish/yozish uchun transformator funktsiyalarini qo'llab-quvvatlaydi.
-- Agar ob'ektda `toJSON` bo'lsa, u `JSON.stringify` tomonidan chaqiriladi.
+- Agar obyektda `toJSON` bo'lsa, u `JSON.stringify` tomonidan chaqiriladi.
