@@ -1,18 +1,18 @@
 # Rekursiya va stack
 
-Keling, funktsiyalarga qaytaylik va ularni chuqurroq o'rganamiz.
+Keling, funksiyalarga qaytib, ularni yanada chuqurroq o'rganamiz.
 
-Birinchi mavzuimiz *rekursiya* bo'ladi.
+Birinchi mavzumiz *rekursiya* bo'ladi.
 
-Agar siz dasturlashda yangi bo'lmasangiz, u tanish bo'lishi mumkin va siz ushbu bobni o'tkazib yuborishingiz mumkin.
+Agar siz dasturlashda yangi bo'lmasangiz, bu mavzu sizga tanish bo'lishi mumkin va ushbu bobni o'tkazib yuborsangiz bo'ladi.
 
-Rekursiya - bu vazifa tabiiy ravishda bir xil, ammo soddaroq bo'lgan bir nechta vazifalarga bo'linishi mumkin bo'lgan holatlarda foydali bo'lgan dasturlash naqshidir. Yoki vazifani oson harakatga va bir xil vazifaning oddiy variantiga soddalashtirish mumkin bo'lganda. Yoki, biz tez orada ko'rib turganimizdek, ma'lum ma'lumotlar tuzilmalari bilan shug'ullanish uchun.
+Rekursiya - bu vazifa tabiiy ravishda bir xil, ammo bir nechta soddaroq vazifalarga bo'linishi mumkin bo'lgan holatlarda foydali dasturlash naqshidir (programming pattern). Biz undan vazifani oson harakatga va bir xil vazifaning oddiy variantiga soddalashtirish mumkin bo'lganda foydalansak bo'ladi yoki ma'lum ma'lumotlar tuzilmalari bilan shug'ullanish uchun ham ishlatiladi, buni tez orada ko'rib chiqamiz.
 
-Funktsiya vazifani hal qilganda, jarayonda u boshqa ko'plab funktsiyalarni chaqirishi mumkin. Buning qisman holati funksiya *o'zini* chaqirishidir. Bu *rekursiya* deb ataladi.
+Funksiya vazifani hal qilganda, jarayonda u boshqa ko'plab funksiyalarni chaqirishi mumkin. Buning qisman holati funksiya *o'zini* chaqirishidir. Bu *rekursiya* deb ataladi.
 
 ## Ikki fikrlash usuli
 
-Boshlash uchun oddiy narsa uchun -- keling, `x` ni `n` tabiiy kuchiga oshiradigan `pow(x, n)` funksiyasini yozaylik. Boshqacha qilib aytganda, `x` ni o'ziga `n` marta ko'paytiradi.
+Oddiy narsadan boshlaymiz -- keling, `x` ni `n` tabiiy kuchiga oshiradigan `pow(x, n)` funksiyasini yozaylik. Boshqacha qilib aytganda, `x` ni o'ziga `n` marta ko'paytiradi.
 
 ```js
 pow(2, 2) = 4
@@ -20,7 +20,7 @@ pow(2, 3) = 8
 pow(2, 4) = 16
 ```
 
-Uni amalga oshirishning ikki yo'li mavjud.
+Uni amalga oshirishning ikkita yo'li mavjud.
 
 1. Takroriy fikrlash: `for` sikli:
 
@@ -39,7 +39,7 @@ Uni amalga oshirishning ikki yo'li mavjud.
     alert( pow(2, 3) ); // 8
     ```
 
-2. Rekursiv fikrlash: vazifani soddalashtiring va o'zingizni chaqiring:
+2. Rekursiv fikrlash: vazifani soddalashtiring va uning o'zini chaqiring:
 
     ```js run
     function pow(x, n) {
@@ -53,7 +53,7 @@ Uni amalga oshirishning ikki yo'li mavjud.
     alert( pow(2, 3) ); // 8
     ```
 
-Iltimos, rekursiv variant qanday qilib tubdan farq qilishiga e'tibor bering.
+Iltimos, rekursiv variant qaysi jihati bilan farq qilishiga e'tibor bering.
 
 `pow(x, n)` chaqirilsa, ijro ikki tarmoqqa bo'linadi:
 
@@ -65,7 +65,7 @@ pow(x, n) =
               else     = x * pow(x, n - 1)
 ```
 
-1. Agar `n == 1` bo'lsa, unda hamma narsa ahamiyatsiz. U rekursiyaning asosi* deb ataladi, chunki u darhol aniq natija beradi: `pow(x, 1)` teng `x`.
+1. Agar `n == 1` bo'lsa, unda hamma narsa ahamiyatsiz. U rekursiyaning *asosi* deb ataladi, chunki u darhol aniq natijani ko'rsatadi: `pow(x, 1)` teng `x`.
 2. Aks holda, `pow(x, n)` ni `x * pow(x, n - 1)` shaklida ifodalashimiz mumkin. Matematikada <code>x<sup>n</sup> = x * x<sup>n-1</sup></code> yozish mumkin. Bu *rekursiv qadam* deb ataladi: biz vazifani oddiyroq harakatga (`x` ga ko'paytirish) va bir xil vazifaning oddiy chaqiruviga (pastki `n` bilan` pow`) aylantiramiz. Keyingi qadamlar `n` `1` ga yetguncha uni yanada soddalashtiradi.
 
 Aytishimiz mumkinki, `pow` *` n == 1`gacha o'zini* rekursiv chaqiradi.
@@ -80,10 +80,10 @@ Masalan, `pow(2, 4)` ni hisoblash uchun rekursiv variant quyidagi amallarni baja
 3. `pow(2, 2) = 2 * pow(2, 1)`
 4. `pow(2, 1) = 2`
 
-Shunday qilib, rekursiya funktsiya chaqiruvini oddiyroqga qisqartiradi, keyin esa -- yanada soddaroq va natija aniq bo'lmaguncha davom etadi.
+Shunday qilib, rekursiya funksiya chaqiruvini oddiyroqqa qisqartiradi, keyin esa -- yanada soddaroq va natija aniq bo'lmaguncha davom etadi.
 
 ``smart header="Rekursiya odatda qisqaroq"
-Rekursiv yechim odatda iterativga qaraganda qisqaroq bo'ladi.
+Rekursiv yechimlar iterativlarga qaraganda qisqaroq bo'ladi.
 
 Bu yerda `pow(x, n)` ni yanada aniqroq va baribir o'qilishi mumkin bo'lishi uchun `if` o'rniga `?` shartli operatoridan foydalanib qayta yozishimiz mumkin:
 
@@ -96,26 +96,26 @@ function pow(x, n) {
 ``
 Ichki chaqiruvlarning maksimal soni (shu jumladan birinchisi) *rekursiya chuqurligi* deb ataladi. Bizning holatda, bu aniq `n` bo'ladi.
 
-Maksimal rekursiya chuqurligi JavaScript dvigateli tomonidan cheklangan. Biz uning 10000 ekanligiga ishonishimiz mumkin, ba'zi dvigatellar ko'proq ruxsat beradi, lekin 100000 ularning aksariyati uchun chegaradan tashqarida. Buni engillashtirishga yordam beradigan avtomatik optimallashtirishlar mavjud ("quyruq chaqiruvlarini optimallashtirish"), lekin ular hali hamma joyda qo'llab-quvvatlanmaydi va faqat oddiy holatlarda ishlaydi.
+Maksimal rekursiya chuqurligi JavaScript dvigateli tomonidan cheklangan. Biz uning 10000 ekanligiga ishonishimiz mumkin, ba'zi dvigatellar ko'proq ruxsat beradi, lekin 100000 ularning aksariyati uchun chegaradan tashqarida. Buni yengillashtirishga yordam beradigan avtomatik optimallashtirishlar mavjud ("quyruq chaqiruvlarini optimallashtirish"), lekin ular hali hamma joyda qo'llab-quvvatlanmaydi va ulardan faqat oddiy holatlarda foydalaniladi.
 
 Bu rekursiyani qo'llashni cheklaydi, lekin u hali ham juda keng bo'lib qolmoqda. Rekursiv fikrlash usuli oddiyroq kodni beradi, saqlash osonroq bo'lgan ko'plab vazifalar mavjud.
 
 ## Bajarish konteksti va stack
 
-Endi rekursiv chaqiruvlar qanday ishlashini ko'rib chiqamiz. Buning uchun biz funksiyalar qopqog'ini ko'rib chiqamiz.
+Endi rekursiv chaqiruvlar qanday ishlashini tekshirib ko'ramiz. Buning uchun biz funksiyalar qopqog'ini ko'rib chiqamiz.
 
-Ishlayotgan funktsiyani bajarish jarayoni haqidagi ma'lumotlar uning *bajarish kontekstida* saqlanadi.
+Ishlayotgan funksiyani bajarish jarayoni haqidagi ma'lumotlar uning *bajarish kontekstida* saqlanadi.
 
-[bajarish konteksti](https://tc39.github.io/ecma262/#sec-execution-contexts) funksiyaning bajarilishi haqidagi tafsilotlarni o'z ichiga olgan ichki ma'lumotlar strukturasidir: boshqaruv oqimi hozir qaerda, joriy o'zgaruvchilar. , `this` qiymati (biz uni bu yerda ishlatmaymiz) va boshqa bir nechta ichki tafsilotlar.
+[bajarish konteksti](https://tc39.github.io/ecma262/#sec-execution-contexts) funksiyaning bajarilishi haqidagi tafsilotlarni o'z ichiga olgan ichki ma'lumotlar strukturasidir: boshqaruv oqimi hozir qayerda, joriy o'zgaruvchilar, `this` qiymati (biz uni bu yerda ishlatmaymiz) va boshqalar.
 
-Bitta funktsiya chaqiruvi u bilan bog'langan aynan bitta bajarish kontekstiga ega.
+Bitta funksiya chaqiruvi u bilan bog'langan aynan bitta bajarish kontekstiga ega.
 
-Funktsiya ichki chaqiruvni amalga oshirganda, quyidagilar sodir bo'ladi:
+Funksiya ichki chaqiruvni amalga oshirganda, quyidagilar sodir bo'ladi:
 
-- Joriy funktsiya to'xtatildi.
+- Joriy funksiya to'xtatildi.
 - U bilan bog'liq bajarilish konteksti *ijro etuvchi kontekstli stack* deb nomlangan maxsus ma'lumotlar strukturasida eslab qolinadi.
 - Ichki chaqiruv amalga oshiriladi.
-- U tugagandan so'ng, eski ijro konteksti stackdan olinadi va tashqi funktsiya u to'xtagan joydan davom ettiriladi.
+- U tugagandan so'ng, eski ijro konteksti stackdan olinadi va tashqi funksiya u to'xtagan joydan davom ettiriladi.
 
 Keling, `pow(2, 3)` chaqiruvi paytida nima sodir bo'lishini ko'rib chiqaylik.
 
@@ -132,7 +132,7 @@ Biz uni quyidagicha chizishimiz mumkin:
   </li>
 </ul>
 
-O'shanda funktsiya bajarila boshlaydi. `n == 1` sharti noto'g'ri, shuning uchun oqim `if` ning ikkinchi tarmog'ida davom etadi:
+O'shanda funksiya bajarila boshlaydi. `n == 1` sharti noto'g'ri, shuning uchun oqim `if` ning ikkinchi tarmog'ida davom etadi:
 
 ```js run
 function pow(x, n) {
@@ -149,7 +149,7 @@ alert( pow(2, 3) );
 ```
 
 
-O'zgaruvchilar bir xil, lekin qator o'zgaradi, shuning uchun kontekst hozir:
+O'zgaruvchilar bir xil, lekin qator o'zgaradi, kontekstni quyida ko'rishingiz mumkin:
 
 <ul class="function-execution-context-list">
   <li>
@@ -158,17 +158,17 @@ O'zgaruvchilar bir xil, lekin qator o'zgaradi, shuning uchun kontekst hozir:
   </li>
 </ul>
 
-`x * pow(x, n - 1)` ni hisoblash uchun biz yangi `pow(2, 2)` argumentlari bilan `pow` ga qo`shimcha chaqiruv qilishimiz kerak.
+`x * pow(x, n - 1)` ni hisoblash uchun biz yangi `pow(2, 2)` argumentlari bilan `pow` ga qo'shimcha chaqiruv qilishimiz kerak.
 
 ### pow(2, 2)
 
 Ichki chaqiruvni amalga oshirish uchun JavaScript *ijro kontekst stekidagi* joriy bajarilish kontekstini eslab qoladi.
 
-Bu erda biz bir xil funktsiyani `pow` deb ataymiz, lekin bu mutlaqo muhim emas. Jarayon barcha funktsiyalar uchun bir xil:
+Bu yerda biz bir xil funksiyani `pow` deb ataymiz, lekin bu mutlaqo muhim emas. Jarayon barcha funktsiyalar uchun bir xil:
 
-1. Joriy kontekst stekning tepasida "eslab qolinadi".
-2. chaqiruv uchun yangi kontekst yaratiladi.
-3. chaqiruv tugagach -- oldingi kontekst stackdan chiqariladi va uning bajarilishi davom etadi.
+1. Joriy kontekst stackning tepasida "eslab qolinadi".
+2. Chaqiruv uchun yangi kontekst yaratiladi.
+3. Chaqiruv tugagach -- oldingi kontekst stackdan chiqariladi va uning bajarilishi davom etadi.
 
 Mana biz `pow(2, 2)` chaqiruvqa kirganimizda kontekst to'plami:
 
@@ -185,17 +185,17 @@ Mana biz `pow(2, 2)` chaqiruvqa kirganimizda kontekst to'plami:
 
 Yangi joriy ijro konteksti tepada (va qalin) va oldingi eslab qolingan kontekstlar quyida joylashgan.
 
-chaqiruvni tugatganimizda -- oldingi kontekstni davom ettirish oson, chunki u ikkala o'zgaruvchini ham, kodning to'xtagan joyini ham saqlaydi.
+Chaqiruvni tugatganimizda -- oldingi kontekstni davom ettirish oson, chunki u ikkala o'zgaruvchini ham, kodning to'xtagan joyini ham saqlaydi.
 
 ``smart
 Bu yerda rasmda biz "chiziq" so'zidan foydalanamiz, chunki bizning misolimizda faqat bitta qo'shimcha chaqiruv mavjud, lekin odatda bitta kod satrida `pow(…) + pow(...) + somethingElse(...)` kabi bir nechta qo'shimcha chaqiruvlar bo'lishi mumkin.
 
-Shunday qilib, qatl "chaqiruvdan keyin darhol" davom etadi, deb aytish aniqroq bo'ladi.
+Shunday qilib, ijro "chaqiruvdan keyin darhol" davom etadi, deb aytsak, aniqroq bo'ladi.
 ```
 ```
 ### pow(2, 1)
 
-Jarayon takrorlanadi: yangi chaqiruv `5` qatorida amalga oshiriladi, endi `x=2`, `n=1` argumentlari bilan.
+Jarayon takrorlanadi: yangi chaqiruv `5` qatorida endi `x=2`, `n=1` argumentlari bilan amalga oshiriladi.
 
 Yangi ijro konteksti yaratiladi, avvalgisi stack ustiga suriladi:
 
@@ -214,7 +214,7 @@ Yangi ijro konteksti yaratiladi, avvalgisi stack ustiga suriladi:
   </li>
 </ul>
 
-Hozirda 2 ta eski kontekst mavjud va 1 tasi hozirda `pow(2, 1)` uchun ishlaydi.
+Hozirda 2 ta eski kontekst mavjud va bittasi hozirda `pow(2, 1)` uchun ishlaydi.
 
 ### Chiqish
 
@@ -232,9 +232,9 @@ function pow(x, n) {
 }
 ```
 
-Endi ichki qoʻngʻiroqlar yoʻq, shuning uchun funksiya tugaydi va `2`ni qaytaradi.
+Endi ichki qo'ng'iroqlar yo'q, shuning uchun funksiya tugab, `2` ni qaytaradi.
 
-Funktsiya tugashi bilan uning ijro konteksti endi kerak emas, shuning uchun u xotiradan o'chiriladi. Avvalgisi stekning yuqori qismidan tiklanadi:
+Funksiya tugashi bilan uning ijro konteksti endi kerak emas, shuning uchun u xotiradan o'chiriladi. Avvalgisi stackning yuqori qismidan tiklanadi:
 
 
 <ul class="function-execution-context-list">
@@ -248,7 +248,7 @@ Funktsiya tugashi bilan uning ijro konteksti endi kerak emas, shuning uchun u xo
   </li>
 </ul>
 
-`pow(2, 2)` ijrosi qayta tiklandi. U `pow(2, 1)` qo'shimcha chaqiruvining natijasiga ega, shuning uchun u `x * pow(x, n - 1)` baholashni yakunlab, `4` qiymatini qaytara oladi.
+`pow(2, 2)` ijrosi qayta tiklandi. U `pow(2, 1)` qo'shimcha chaqiruvining natijasiga ega, shu sababdan u `x * pow(x, n - 1)` baholashni yakunlab, `4` qiymatini qaytara oladi.
 
 Keyin oldingi kontekst tiklanadi:
 
@@ -281,19 +281,19 @@ function pow(x, n) {
 }
 ```
 
-Takrorlanuvchi `pow` jarayonda `i` va `natija`ni o‘zgartiruvchi yagona kontekstdan foydalanadi. Uning xotira talablari kichik, qat'iy va `n` ga bog'liq emas.
+Takrorlanuvchi `pow` jarayonda `i` va `natija`ni o'zgartiruvchi yagona kontekstdan foydalanadi. Uning xotira talablari kichik, qat'iy va `n` ga bog'liq emas.
 
 **Har qanday rekursiyani sikl sifatida qayta yozish mumkin. Sikl variantini odatda samaraliroq qilish mumkin.**
 
-...Ammo ba'zida qayta yozish ahamiyatsiz bo'ladi, ayniqsa, funktsiya shartlarga qarab turli xil rekursiv chaqiruvlarni ishlatganda va ularning natijalarini birlashtirganda yoki tarmoqlanish yanada murakkab bo'lsa. Va optimallashtirish keraksiz bo'lishi mumkin va bu harakatlarga mutlaqo arzimaydi.
+...Ayniqsa, funksiya shartlarga qarab turli xil rekursiv chaqiruvlarni ishlatganda va ularning natijalarini birlashtirganda yoki tarmoqlanish yanada murakkab bo'lsa, ba'zida qayta yozish ahamiyatsiz. Va optimallashtirish keraksiz hisoblanadi va bu harakatlarga mutlaqo arzimaydi.
 
-Rekursiya qisqaroq kod berishi mumkin, tushunish va qo'llab-quvvatlash osonroq. Optimallashtirish hamma joyda talab qilinmaydi, asosan bizga yaxshi kod kerak, shuning uchun u ishlatiladi.
+Rekursiya qisqaroq, tushunish va qo'llab-quvvatlash osonroq kod berishi mumkin. Optimallashtirish hamma joyda talab qilinmaydi, asosan bizga yaxshi kod kerak, shuning uchun undan foydalanamiz.
 
 ## Rekursiv o'tishlar
 
 Rekursiyaning yana bir ajoyib qo'llanilishi bu rekursiv o'tishdir.
 
-Tasavvur qiling, bizning kompaniyamiz bor. Xodimlar tuzilishi ob'ekt sifatida taqdim etilishi mumkin:
+Tasavvur qiling, bizning kompaniyamiz bor. Xodimlar tuzilishi obyekt sifatida taqdim etilishi mumkin:
 
 ```js
 let company = {
@@ -322,34 +322,34 @@ let company = {
 };
 ```
 
-Boshqacha aytganda, kompaniyada bo'limlar mavjud.
+Boshqacha tushuntirganda, kompaniyada bo'limlar mavjud.
 
 - Bo'limda bir qator xodimlar bo'lishi mumkin. Masalan, `sales` bo'limida 2 nafar xodim bor: Jon va Elis.
-- Yoki bo'lim kichik bo'limlarga bo'linishi mumkin, masalan, `development` ikkita filialga ega: `sites` va `internals`. Ularning har biri o'z xodimlariga ega.
-- Bundan tashqari, bo'lim o'sib ulg'ayganida, u kichik bo'limlarga (yoki jamoalarga) bo'linishi mumkin.
+- Yoki bo'lim yanayam kichik bo'limlarga bo'linishi mumkin, masalan, `development` ikkita filialga ega: `sites` va `internals`. Ularning har biri ham yana o'z xodimlariga ega.
+- Bundan tashqari, bo'lim kengayganda, u kichik bo'limlarga (yoki jamoalarga) bo'linishi mumkin.
 
-    Masalan, kelajakda `sites` bo'limi `siteA` va `siteB` uchun guruhlarga bo'linishi mumkin. Va ular, ehtimol, ko'proq bo'linishi mumkin. Bu rasmda yo'q, faqat yodda tutish kerak bo'lgan narsa.
+    Masalan, kelajakda `sites` bo'limi `siteA` va `siteB` guruhlariga bo'linishi mumkin. Va ular, ehtimol, ko'proq bo'linish ehtimoli ham mavjud. Rasmda yodda tutish kerak bo'lgan narsa yo'q.
 
 Aytaylik, biz barcha maoshlarning yig'indisini oladigan funktsiyani xohlaymiz. Buni qanday qilishimiz mumkin?
 
-Iterativ yondashuv oson emas, chunki struktura oddiy emas. Birinchi g'oya, 1-darajali bo'limlar ustida joylashgan pastki loop bilan `company` ustidan `for` siklini yaratish bo'lishi mumkin. Ammo keyin bizga `sites` kabi 2-darajali bo'limlarda xodimlarni takrorlash uchun ko'proq ichki ichki tizimlar kerak bo'ladi... Va keyin kelajakda paydo bo'lishi mumkin bo'lgan 3-darajali bo'limlar ichida yana bir pastki loop kerakmi? Agar biz bitta ob'ektni aylanib o'tish uchun kodga 3-4 ta ichki pastadir qo'ysak, u juda xunuk bo'lib qoladi.
+Iterativ yondashuv qiyin, chunki struktura oddiy emas. Birinchi g'oya, birinchi darajali bo'limlar ustida joylashgan pastki loop bilan `company` ustidan `for` siklini yaratish bo'lishi mumkin. Ammo keyin bizga `sites` kabi ikkimchi darajali bo'limlarda xodimlarni takrorlash uchun ko'proq ichki ichki tizimlar kerak bo'ladi... Va keyin kelajakda paydo bo'lishi mumkin bo'lgan uchinchi darajali bo'limlar ichida yana bir pastki loop kerakmi? Agar biz bitta obyektni aylanib o'tish uchun kodga 3-4 ta ichki subloop qo'ysak, u juda xunuk bo'lib qoladi.
 
-Keling, rekursiyani sinab ko'raylik.
+Keling, rekursiyani sinab ko'ramiz.
 
-Ko'rib turganimizdek, bizning funktsiyamiz bo'limni yig'ish uchun olganida, ikkita mumkin bo'lgan holat mavjud:
+Ko'rib turganimizdek, bizning funksiyamiz bo'limni yig'ish uchun olganida, ikkita mumkin bo'lgan holat mavjud:
 
-1. Yoki bu "oddiy" bo'lim bo'lib, odamlarning * massividan iborat bo'ladi -- keyin biz maoshlarni oddiy tsiklda yig'ishimiz mumkin.
-2. Yoki bu `N` bo'limlari bo'lgan *ob'ekt* -- keyin biz har bir kichik bo'lim uchun summani olish va natijalarni birlashtirish uchun "N" rekursiv chaqiruvlarni amalga oshirishimiz mumkin.
+1. Yoki bu "oddiy" bo'lim bo'lib, odamlarning *massividan* iborat bo'ladi -- keyin biz maoshlarni oddiy siklda yig'ishimiz mumkin.
+2. Yoki bu `N` bo'limlari bo'lgan *obyekt* -- keyin biz har bir kichik bo'lim uchun summani olish va natijalarni birlashtirish uchun `N` rekursiv chaqiruvlarni amalga oshirishimiz mumkin.
 
-1-holat rekursiyaning asosi, massivni olganimizda trivial holat.
+Birinchi holat rekursiyaning asosi, massivni olganimizdagi ahamiyatsiz holat.
 
-Ob'ektni olganimizda ikkinchi holat rekursiv qadamdir. Murakkab vazifa kichikroq bo'limlar uchun kichik vazifalarga bo'lingan. Ular o'z navbatida yana bo'linishi mumkin, lekin ertami-kechmi bo'linish (1) da tugaydi.
+Obyektni olganimizda ikkinchi holat rekursiv qadamdir. Murakkab vazifa kichikroq bo'limlar uchun kichik vazifalarga bo'lingan. Ular o'z navbatida yana bo'linishi mumkin, lekin ertami-kechmi bo'linish (1) da tugaydi.
 
 Algoritmni koddan o'qish osonroq bo'lishi mumkin:
 
 
 ```js run
-let company = { // qisqalik uchun siqilgan bir xil ob'ekt
+let company = { // qisqalik uchun siqilgan bir xil obyekt
   sales: [{name: 'John', salary: 1000}, {name: 'Alice', salary: 1600 }],
   development: {
     sites: [{name: 'Peter', salary: 2000}, {name: 'Alex', salary: 1800 }],
@@ -375,31 +375,31 @@ function sumSalaries(department) {
 alert(sumSalaries(company)); // 7700
 ```
 
-Kod qisqa va tushunarli (umid qilamanki?). Bu rekursiyaning kuchi. Shuningdek, u har qanday darajadagi bo'limlarni joylashtirish uchun ishlaydi.
+Umid qilamanki, kod qisqa va tushunarli. Bu rekursiyaning kuchi. Shuningdek, u har qanday darajadagi bo'limlarni joylashtirish uchun ishlaydi.
 
 Mana chaqiruvlar diagrammasi:
 
 ![recursive salaries](recursive-salaries.svg)
 
-Biz printsipni osongina ko'rishimiz mumkin: `{...}` ob'ekt uchun qo'shimcha chaqiruvlar amalga oshiriladi, `[...]` massivlar rekursiya daraxtining "barglari" bo'lsa, ular darhol natija beradi.
+Biz prinsipni osongina ko'rishimiz mumkin: `{...}` obyekt uchun qo'shimcha chaqiruvlar amalga oshiriladi, `[...]` massivlar rekursiya daraxtining "barglari" bo'lsa, ular darhol natija beradi.
 
 E'tibor bering, kod biz ilgari ko'rib chiqqan aqlli xususiyatlardan foydalanadi:
 
 - Massiv yig'indisini olish uchun `arr.reduce` usuli <info:array-methods> bobida tushuntirilgan.
-- Ob'ekt qiymatlari ustidan takrorlash uchun `for(val of Object.values(obj))` sikli: `Object.values` ularning massivini qaytaradi.
+- Obyekt qiymatlari ustidan takrorlash uchun `for(val of Object.values(obj))` sikli: `Object.values` ularning massivini qaytaradi.
 
 
 ## Rekursiv tuzilmalar
 
 Rekursiv (rekursiv belgilangan) ma'lumotlar strukturasi o'zini qismlarga bo'lib takrorlaydigan tuzilmadir.
 
-Biz buni yuqoridagi kompaniya tuzilishi misolida ko‘rdik.
+Biz buni yuqoridagi kompaniya tuzilishi misolida ko'rdik.
 
 Kompaniya *bo'limi* bu:
 - Yoki bir massiv odamlar.
-- Yoki *bo'limlari* bo'lgan ob'ekt.
+- Yoki *bo'limlari* bo'lgan obyekt.
 
-Veb-ishlab chiquvchilar uchun ko'proq mashhur misollar mavjud: HTML va XML hujjatlari.
+Veb-dasturchilar uchun ko'proq mashhur misollar mavjud: HTML va XML hujjatlari.
 
 HTML hujjatida *HTML-tegi* quyidagilar ro'yxatini o'z ichiga olishi mumkin:
 - Matn qismlari.
@@ -408,11 +408,11 @@ HTML hujjatida *HTML-tegi* quyidagilar ro'yxatini o'z ichiga olishi mumkin:
 
 Bu yana bir bor rekursiv ta'rif.
 
-Yaxshiroq tushunish uchun biz ba'zi hollarda massivlar uchun yaxshiroq alternativ bo'lishi mumkin bo'lgan "Bog'langan ro'yxat" deb nomlangan yana bir rekursiv tuzilmani ko'rib chiqamiz.
+Yaxshiroq tushunish uchun biz ba'zi hollarda massivlar uchun yaxshiroq alternativ "bog'langan ro'yxat" deb nomlangan yana bir rekursiv tuzilmani ko'rib chiqamiz.
 
 ### Bog'langan ro'yxat
 
-Tasavvur qiling, biz ob'ektlarning tartiblangan ro'yxatini saqlamoqchimiz.
+Tasavvur qiling, biz obyektlarning tartiblangan ro'yxatini saqlamoqchimiz.
 
 Tabiiy tanlov massiv bo'ladi:
 
@@ -422,13 +422,13 @@ let arr = [obj1, obj2, obj3];
 
 ...Ammo massivlarda muammo bor. "Elementni o'chirish" va "elementni kiritish" operatsiyalari qimmat. Masalan, `arr.unshift(obj)` operatsiyasi yangi `obj` uchun joy ochish uchun barcha elementlarni qayta raqamlashi kerak va agar massiv katta bo'lsa, bu vaqt talab etadi. `arr.shift()` bilan ham xuddi shunday.
 
-Ommaviy raqamlashni talab qilmaydigan yagona tuzilmaviy modifikatsiyalar qatorning oxiri bilan ishlaydiganlardir: `arr.push/pop`. Shunday qilib, biz boshi bilan ishlashimiz kerak bo'lganda, katta navbatlar uchun massiv juda sekin bo'lishi mumkin.
+Ommaviy raqamlashni talab qilmaydigan yagona tuzilmaviy modifikatsiyalar qatorning oxiri bilan ishlaydi: `arr.push/pop`. Shunday qilib, biz boshi bilan ishlashimiz kerak bo'lganda, katta navbatlar uchun massiv juda sekin bo'lishi mumkin.
 
 Shu bilan bir qatorda, agar bizga tezda qo'shish/o'chirish kerak bo'lsa, biz [bog'langan ro'yxat] (https://en.wikipedia.org/wiki/Linked_list) deb nomlangan boshqa ma'lumotlar strukturasini tanlashimiz mumkin.
 
-*Bog'langan ro'yxat elementi* rekursiv ravishda ob'ekt sifatida belgilanadi:
+*Bog'langan ro'yxat elementi* rekursiv ravishda obyekt sifatida belgilanadi:
 - `value`.
-- `next` keyingi *bog'langan ro'yxat elementiga* havola qiluvchi xususiyat yoki agar bu oxiri bo'lsa, "null".
+- `next` keyingi *bog'langan ro'yxat elementiga* havola qiluvchi xususiyat yoki agar bu oxiri bo'lsa, "null" hisoblanadi.
 
 Masalan:
 
@@ -452,7 +452,7 @@ Ro'yxatning grafik ko'rinishi:
 
 ![linked list](linked-list.svg)
 
-Yaratish uchun muqobil kod:
+Yaratish uchun alternativ kod:
 
 ```js no-beautify
 let list = { value: 1 };
@@ -462,7 +462,7 @@ list.next.next.next = { value: 4 };
 list.next.next.next.next = null;
 ```
 
-Bu erda biz bir nechta ob'ektlar mavjudligini yanada aniqroq ko'rishimiz mumkin, ularning har biri qo'shniga ishora qiluvchi `value` va `next` ga ega. `list` o'zgaruvchisi zanjirdagi birinchi ob'ektdir, shuning uchun `next` ko'rsatkichlardan keyin biz istalgan elementga kira olamiz.
+Bu yerda biz bir nechta obyektlar mavjudligini yanada aniqroq ko'rishimiz mumkin, ularning har biri qo'shniga ishora qiluvchi `value` va `next` ga ega. `list` o'zgaruvchisi zanjirdagi birinchi obyektdir, shuning uchun `next` ko'rsatkichlardan keyin biz istalgan elementga kira olamiz.
 
 Ro'yxat osongina bir nechta qismlarga bo'linishi va keyinroq birlashtirilishi mumkin:
 
@@ -497,7 +497,7 @@ list = { value: "new item", next: list };
 
 ![linked list](linked-list-0.svg)
 
-Qiymatni o'rtadan olib tashlash uchun oldingisining `next` ni o'zgartiring:
+Qiymatni o'rtadan olib tashlash uchun oldingisidagi `next` ni o'zgartiring:
 
 ```js
 list.next = list.next.next;
@@ -505,38 +505,38 @@ list.next = list.next.next;
 
 ![linked list](linked-list-remove-1.svg)
 
-Biz `list.next` ni `1` dan `2` qiymatiga o‘tkazdik. Endi `1` qiymati zanjirdan chiqarib tashlandi. Agar u boshqa joyda saqlanmasa, u avtomatik ravishda xotiradan o'chiriladi.
+Biz `list.next` ni `1` dan `2` qiymatiga o'tkazdik. Endi `1` qiymati zanjirdan chiqarib tashlandi. Agar u boshqa joyda saqlanmasa, u avtomatik ravishda xotiradan o'chiriladi.
 
 Massivlardan farqli o'laroq, ommaviy qayta raqamlash yo'q, biz elementlarni osongina o'zgartirishimiz mumkin.
 
-Tabiiyki, ro'yxatlar har doim ham massivlardan yaxshiroq emas. Aks holda, hamma faqat ro'yxatlardan foydalanadi.
+Tabiiyki, ro'yxatlar har doim ham massivlardan yaxshiroq emas. Aks holda, hamma faqat ro'yxatlardan foydalangan bo'lardi.
 
-Asosiy kamchilik shundaki, biz elementga uning raqami bo'yicha osongina kira olmaymiz. Bu oson massivda: `arr[n]` to'g'ridan-to'g'ri havola. Lekin ro'yxatda biz birinchi elementdan boshlashimiz va N-elementni olish uchun `keyingi` `N` marta borishimiz kerak.
+Asosiy kamchilik shundaki, biz elementga uning raqami bo'yicha osongina kira olmaymiz. Bu oson massivda: `arr[n]` to'g'ridan-to'g'ri havola. Lekin ro'yxatda biz birinchi elementdan boshlashimiz va N-elementni olish uchun `next` ga `N` marta borishimiz kerak.
 
-...Ammo bizga bunday operatsiyalar har doim ham kerak emas. Misol uchun, bizga navbat yoki hatto [deque] (https://en.wikipedia.org/wiki/Double-ended_queue) kerak bo'lganda -- elementlarni ikkala uchidan juda tez qo'shish/o'chirish imkonini beradigan tartiblangan tuzilma, lekin uning o'rtasiga kirish kerak emas.
+...Ammo bizga bunday operatsiyalar har doim ham kerak bo'lmaydi. Misol uchun, bizga navbat yoki hatto [deque] (https://en.wikipedia.org/wiki/Double-ended_queue) kerak bo'lganda -- belementlarni ikkala uchidan juda tez qo'shish/o'chirish imkonini beradigan tartiblangan tuzilmani ishlatamiz, lekin uning o'rtasiga kirish kerak emas.
 
 Ro'yxatlar kengaytirilishi mumkin:
 - Oldingi elementga osongina orqaga o'tish uchun `next` ga qo'shimcha ravishda `prev` xususiyatini qo'shishimiz mumkin.
-- Roʻyxatning oxirgi elementiga havola qiluvchi `tail` nomli oʻzgaruvchini ham qoʻshishimiz mumkin (va oxiridan elementlarni qoʻshish/oʻchirishda uni yangilash).
-- ...Ma'lumotlar tuzilishi bizning ehtiyojlarimizga qarab farq qilishi mumkin.
+- Ro'yxatning oxirgi elementiga havola qiluvchi `tail` nomli o'zgaruvchini ham qo'shishimiz mumkin (va oxiridan elementlarni qo'shish/o'chirishda uni yangilash).
+- ...Ma'lumotlar tuzilishi bizning ehtiyojlarimizga qarab farq qiladi.
 
 ## Xulosa
 
 Shartlar:
-- *Rekursiya* dasturlash atamasi boʻlib, funksiyani oʻzidan chaqirishni anglatadi. Rekursiv funksiyalar vazifalarni nafis usullar bilan hal qilish uchun ishlatilishi mumkin.
+- *Rekursiya* dasturlash atamasi bo'lib, funksiyani o'zidan chaqirishni anglatadi. Rekursiv funksiyalar vazifalarni nafis usullar bilan hal qilish uchun ishlatilishi mumkin.
 
-    Funktsiya o'zini chaqirganda, bu *rekursiya qadami* deb ataladi. Rekursiyaning *asoslari funksiya argumentlari bo'lib, vazifani shu qadar sodda qiladiki, funktsiya boshqa chaqiruvlarni amalga oshirmaydi.
+    Funksiya o'zini chaqirganda, bu *rekursiya qadami* deb ataladi. Rekursiyaning *asoslari* funksiya argumentlari bo'lib, vazifani shu qadar sodda qiladiki, funksiya boshqa chaqiruvlarni amalga oshirmaydi.
 
-- [Recursively-defined](https://en.wikipedia.org/wiki/Recursive_data_type) maʼlumotlar strukturasi oʻzi yordamida aniqlanishi mumkin boʻlgan maʼlumotlar strukturasidir.
+- [Recursively-defined](https://en.wikipedia.org/wiki/Recursive_data_type) ma'lumotlar strukturasi o'zi yordamida aniqlanishi mumkin bo'lgan ma'lumotlar strukturasidir.
 
-    Masalan, bog'langan ro'yxatni ro'yxatga (yoki null) havola qiluvchi ob'ektdan iborat ma'lumotlar strukturasi sifatida aniqlash mumkin.
+    Masalan, bog'langan ro'yxatni ro'yxatga (yoki null) havola qiluvchi obyektdan iborat ma'lumotlar strukturasi sifatida aniqlash mumkin.
 
     ```js
     list = { value, next -> list }
     ```
 
-    Ushbu bobdagi HTML elementlari daraxti yoki boʻlim daraxti kabi daraxtlar ham tabiiy ravishda rekursivdir: ularning shoxlari bor va har bir filialda boshqa shoxchalar boʻlishi mumkin.
+    Ushbu bobdagi HTML elementlari daraxti yoki bo'lim daraxti kabi daraxtlar ham tabiiy ravishda rekursivdir: ularning shoxlari bor va har bir filialda boshqa shoxchalar bo'lishi mumkin.
 
     Rekursiv funksiyalar ularni boshqarish uchun ishlatilishi mumkin, chunki biz `sumSalary` misolida ko'rganmiz.
 
-Har qanday rekursiv funksiya iterativ funksiyaga qayta yozilishi mumkin. Va bu ba'zan narsalarni optimallashtirish uchun talab qilinadi. Ammo ko'p vazifalar uchun rekursiv yechim etarlicha tez va yozish va qo'llab-quvvatlash osonroq.
+Har qanday rekursiv funksiya iterativ funksiyaga qayta yozilishi mumkin. Va bu ba'zan narsalarni optimallashtirish uchun talab qilinadi. Ammo ko'p vazifalar uchun rekursiv yechim yetarlicha tez, yozish va qo'llab-quvvatlash osonroq hisoblanadi.
