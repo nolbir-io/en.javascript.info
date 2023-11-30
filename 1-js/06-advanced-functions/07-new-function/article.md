@@ -1,11 +1,11 @@
 
-# "new Function" sintaksisi
+# "new Function" sintaksisi (Yangi funksiya)
 
-Funksiyani yaratishning yana bir usuli bor. U kamdan-kam qo'llaniladi, lekin ba'zida muqobil yo'q.
+Funksiyani yaratishning yana bir usuli bor. U kamdan-kam qo'llaniladi, lekin uning muqobil varianti yo'q.
 
-## Syntaksisi
+## Sintaksis
 
-Funktsiyani yaratish sintaksisi:
+Funksiyani yaratish sintaksisi:
 
 ```js
 let func = new Function ([arg1, arg2, ...argN], functionBody);
@@ -13,7 +13,7 @@ let func = new Function ([arg1, arg2, ...argN], functionBody);
 
 Funksiya `arg1...argN` argumentlari va berilgan `functionBody` bilan yaratilgan.
 
-Misolni ko'rib chiqish orqali tushunish osonroq. Quyida ikkita argumentli funksiya:
+Misolni ko'rib chiqish orqali tushunish osonroq. Quyida ikkita argumentli funksiya berilgan:
 
 ```js run
 let sum = new Function('a', 'b', 'return a + b');
@@ -29,9 +29,9 @@ let sayHi = new Function('alert("Hello")');
 sayHi(); // Hello
 ```
 
-Biz ko'rgan boshqa usullardan asosiy farqi shundaki, funktsiya ish vaqtida uzatiladigan stringdan tom ma'noda yaratilgan.
+Biz ko'rgan boshqa usullardan asosiy farqi shundaki, funksiya ish vaqtida uzatiladigan stringdan tom ma'noda alohida yaratilgan.
 
-Oldingi barcha deklaratsiyalar bizdan, dasturchilardan skriptga funktsiya kodini yozishni talab qilgan.
+Oldingi barcha deklaratsiyalar biz dasturchilardan skriptga funksiya kodini yozishni talab qilgan.
 
 Lekin `new Function` har qanday stringni funksiyaga aylantirish imkonini beradi. Masalan, biz serverdan yangi funksiyani qabul qilib, keyin uni bajarishimiz mumkin:
 
@@ -42,15 +42,15 @@ let func = new Function(str);
 func();
 ```
 
-U juda aniq holatlarda, masalan, serverdan kod olganimizda yoki shablondan funksiyani dinamik ravishda kompilyatsiya qilishda, murakkab veb-ilovalarda qo'llaniladi.
+U juda aniq holatlarda, masalan, serverdan kod olishda yoki shablondan funksiyani dinamik ravishda kompilyatsiya qilishda va murakkab veb-ilovalarda qo'llaniladi.
 
-## Closure
+## Closure (yopish)
 
-Odatda, funksiya `[[Environment]]` maxsus mulkida qayerda tug'ilganini eslab qoladi. U yaratilgan joydan leksik muhitga havola qiladi (biz buni <info:closure> bobida yoritganmiz).
+Odatda, funksiya `[[Environment]]` maxsus xususiyati qayerda tug'ilganini eslab qoladi. U yaratilgan joydan leksik muhitga havola qiladi (biz buni <info:closure> bobida ko'rib chiqamiz).
 
-Lekin funksiya `new Function` yordamida yaratilganda, uning `[[Environment]]` joriy Leksik muhitga emas, balki global muhitga havola qilish uchun o'rnatiladi.
+Lekin funksiya `new Function` yordamida yaratilganda, uning `[[Environment]]` xususiyati joriy leksik muhitga emas, balki global muhitga havola qilish uchun o'rnatiladi.
 
-Shunday qilib, bunday funktsiya tashqi o'zgaruvchilarga emas, faqat global o'zgaruvchilarga kirish huquqiga ega.
+Shunday qilib, bunday funksiya tashqi o'zgaruvchilarga emas, faqat global o'zgaruvchilarga kirish huquqiga ega.
 
 ```js run
 function getFunc() {
@@ -63,7 +63,7 @@ function getFunc() {
   return func;
 }
 
-getFunc()(); // error: value is not defined
+getFunc()(); // error: qiymat aniqlanmagan
 ```
 
 Oddiy xatti-harakatlar bilan solishtiring:
@@ -79,20 +79,20 @@ function getFunc() {
   return func;
 }
 
-getFunc()(); // *!*"test"*/!*, from the Lexical Environment of getFunc
+getFunc()(); // *!*"test"*/!*, getFunc leksik muhitidan olingan
 ```
 
-`new Function`ning bu oʻziga xos xususiyati gʻalati koʻrinadi, lekin amalda juda foydali koʻrinadi.
+`new Function`ning bu o'ziga xos xususiyati g'alati, lekin amalda juda ko'p foyda beradi.
 
-Tasavvur qiling, biz stringdan funktsiya yaratishimiz kerak. Ushbu funktsiyaning kodi skriptni yozish vaqtida ma'lum emas (shuning uchun biz oddiy funktsiyalardan foydalanmaymiz), lekin uni bajarish jarayonida ma'lum bo'ladi. Biz uni serverdan yoki boshqa manbadan olishimiz mumkin.
+Tasavvur qiling, biz stringdan funksiya yaratishimiz kerak. Ushbu funksiyaning kodi skriptni yozish vaqtida ma'lum emas (shuning uchun biz oddiy funktsiyalardan foydalanmaymiz), lekin uni bajarish jarayonida ma'lum bo'ladi. Biz uni serverdan yoki boshqa manbaadan olishimiz mumkin.
 
 Bizning yangi funksiyamiz asosiy skript bilan o'zaro aloqada bo'lishi kerak.
 
-Agar u tashqi o'zgaruvchilarga kira olsa nima bo'ladi?
+Agar u tashqi o'zgaruvchilarga kirolsa nima bo'ladi?
 
-Muammo shundaki, JavaScript ishlab chiqarishga nashr etilishidan oldin, u *minifikator* yordamida siqiladi -- qo'shimcha izohlar, bo'shliqlarni olib tashlash orqali kodni qisqartiruvchi maxsus dastur va eng muhimi, mahalliy o'zgaruvchilar nomini qisqaroq qilib o'zgartiradi.
+Muammo shundaki, JavaScript nashr etilishidan oldin, u *minifikator* yordamida siqiladi -- qo'shimcha izohlar, bo'shliqlarni olib tashlash orqali kodni qisqartiruvchi maxsus dastur va eng muhimi, mahalliy o'zgaruvchilar nomini qisqaroq qilib o'zgartiradi.
 
-Masalan, agar funksiyada `let userName` bo‘lsa, minifikator uni `let a` (yoki agar u band bo‘lsa, boshqa harf) bilan almashtiradi va buni hamma joyda bajaradi. Bu odatda xavfsiz ish, chunki o'zgaruvchi mahalliy bo'lib, funksiyadan tashqari hech narsa unga kira olmaydi. Funktsiya ichida esa minifikator uning har bir eslatmasini almashtiradi. Minifikatorlar aqlli, ular kod tuzilishini tahlil qiladilar, shuning uchun ular hech narsani buzmaydi. Ular shunchaki topish va almashtirish emas.
+Masalan, agar funksiyada `let userName` bo'lsa, minifikator uni `let a` (yoki agar u band bo'lsa, boshqa harf) bilan almashtiradi va buni hamma joyda bajaradi. Bu ish xavfsiz, chunki o'zgaruvchi mahalliy bo'lib, funksiyadan tashqari hech narsa unga kira olmaydi. Funksiya ichida esa minifikator uning har bir eslatmasini almashtiradi. Minifikatorlar aqlli, ular kod tuzilishini tahlil qiladilar, shuning uchun ular hech narsani buzmaydi. Ularning vazifasi shunchaki topish va almashtirish emas.
 
 Shunday qilib, agar `new Function` tashqi o'zgaruvchilarga kirish huquqiga ega bo'lsa, u o'zgartirilgan `userName` ni topa olmaydi.
 
@@ -120,4 +120,4 @@ new Function('a,b', 'return a + b'); // vergul bilan ajratilgan
 new Function('a , b', 'return a + b'); // bo'shliqlar va vergul bilan ajratilgan
 ```
 
-`new Function` bilan yaratilgan funksiyalar tashqi muhitga emas, balki global leksik muhitga ishora qiluvchi `[[Environment]]`ga ega. Shuning uchun ular tashqi o'zgaruvchilardan foydalana olmaydi. Lekin bu juda yaxshi, chunki u bizni xatolardan sug'urta qiladi. Parametrlarni aniq o'tkazish arxitektura jihatidan ancha yaxshi usul bo'lib, minifikatorlar bilan hech qanday muammo tug'dirmaydi.
+`new Function` bilan yaratilgan funksiyalar tashqi muhitga emas, balki global leksik muhitga ishora qiluvchi `[[Environment]]`ga ega. Shuning uchun ular tashqi o'zgaruvchilardan foydalana olmaydi. Lekin bu juda yaxshi, chunki u bizni xatolardan himoya qiladi. Parametrlarni aniq o'tkazish arxitektura jihatidan ancha yaxshi usul bo'lib, minifikatorlar bilan hech qanday muammo tug'dirmaydi.
