@@ -1,26 +1,26 @@
-# Arrow funksiyalari qayta koʻrib chiqildi
+# Arrow funksiyalarini qayta ko'rib chiqish
 
-Keling, arrow funktsiyalarini qayta ko'rib chiqaylik.
+Keling, arrow funksiyalarini qayta ko'rib chiqaylik.
 
-Arrow funksiyalari shunchaki kichik narsalarni yozish uchun "qisqa belgi" emas. Ular juda o'ziga xos va foydali xususiyatlarga ega.
+Arrow funksiyalari shunchaki kichik narsalarni yozish uchun "qisqa belgi" emas. Ular o'ziga xos va judayam foydali xususiyatlarga ega.
 
-JavaScript boshqa joyda bajariladigan kichik funktsiyani yozishimiz kerak bo'lgan holatlarga to'la.
+JavaScript boshqa joyda bajariladigan kichik funksiyani yozishimiz kerak bo'lgan holatlarga to'la.
 
 Masalan:
 
 - `arr.forEach(func)` -- `func` har bir massiv elementi uchun `forEach` tomonidan bajariladi.
 - `setTimeout(func)` -- `func` o'rnatilgan rejalashtiruvchi tomonidan bajariladi.
-- ..va yana ko'plab mavjud.
+- ..va yana ko'plab holatlar mavjud.
 
-Funktsiyani yaratish va uni biror joyga o'tkazish JavaScript-ning o'ziga xos ruhida.
+Funksiyani yaratish va uni biror joyga o'tkazishni JavaScript o'ziga xos tarzda bajaradi.
 
-Va bunday funktsiyalarda biz odatda joriy kontekstni tark etishni xohlamaymiz. Bu erda arrow funktsiyalari yordam beradi.
+Va bunday funksiyalarda biz odatda joriy kontekstni tark etishni xohlamaymiz. Bu yerda arrow funksiyalari yordam beradi.
 
 ## Arrow funksiyalarida "this" yo'q
 
 <info:object-methods> bobidan eslaganimizdek, arrow funksiyalarida `this` yo'q. Agar `this` ga kirsa, u tashqaridan olinadi.
 
-Misol uchun, biz uni ob'ekt usuli ichida takrorlash uchun ishlatishimiz mumkin:
+Misol uchun, biz uni obyekt usuli ichida takrorlash uchun ishlatishimiz mumkin:
 
 ```js run
 let group = {
@@ -39,7 +39,7 @@ let group = {
 group.showList();
 ```
 
-Bu yerda `forEach` da arrow funksiyasidan foydalaniladi, shuning uchun undagi `this.title` tashqi `showList` metodii bilan aynan bir xil. Ya'ni: `group.title`.
+Bu yerda `forEach` da arrow funksiyasidan foydalaniladi, shuning uchun undagi `this.title` tashqi `showList` metodi bilan aynan bir xil, ya'ni: `group.title`.
 
 Agar biz "muntazam" funksiyadan foydalansak, xato bo'ladi:
 
@@ -51,7 +51,7 @@ let group = {
   showList() {
 *!*
     this.students.forEach(function(student) {
-      // Error: Cannot read property 'title' of undefined
+      // Error: undefined ning 'title' xususiyatini o'qiy olmaydi
       alert(this.title + ': ' + student);
     });
 */!*
@@ -63,28 +63,28 @@ group.showList();
 
 Xatolik yuzaga keladi, chunki `forEach` standard bo'yicha `this=undefined` bilan funksiyalarni ishga tushiradi, shuning uchun `undefined.title` ga kirishga harakat qilinadi.
 
-Bu arrow funktsiyalariga ta'sir qilmaydi, chunki ularda "this" yo'q.
+Bu arrow funksiyalariga ta'sir qilmaydi, chunki ularda "this" yo'q.
 ````
 ````
 `` `warn header="Arrow funksiyalari `new` bilan ishlamaydi"
-`this` ga ega bo'lmaslik tabiiy ravishda boshqa cheklovni anglatadi: arrow funktsiyalarini konstruktor sifatida ishlatib bo'lmaydi. Ularni `new`deb atash mumkin emas.
+`this` ga ega bo'lmaslik tabiiy ravishda boshqa cheklovni anglatadi: arrow funksiyalarini konstruktor sifatida ishlatib bo'lmaydi. Ularni `new` deb atash mumkin emas.
 ```
 ```
 ``smart header="Arrow funktsiyalari VS bind"
-`=>` arrow funksiyasi va `.bind(this)` bilan chaqiriladigan oddiy funksiya o`rtasida nozik farq bor:
+`=>` arrow funksiyasi va `.bind(this)` bilan chaqiriladigan oddiy funksiya o'rtasida nozik farq bor:
 ```
 ```
 - `.bind(this)` funksiyaning "bog'langan versiyasini" yaratadi.
-- `=>` strelkasi hech qanday bog'lanishni yaratmaydi. Funktsiyada oddiygina `this` yo'q. `This` ni qidirish odatiy o'zgaruvchilarni qidirish bilan bir xil tarzda amalga oshiriladi: tashqi leksik muhitda.
+- `=>` strelkasi hech qanday bog'lanishni yaratmaydi. Funksiyada oddiygina `this` yo'q. `This` ni qidirish odatiy o'zgaruvchilarni qidirish bilan bir xil tarzda tashqi leksik muhitda amalga oshiriladi.
 ````
 ````
 ## Arrowlarda "argumentlar" yo'q
 
 Arrow funksiyalarida `arguments` o'zgaruvchisi ham yo'q.
 
-Joriy `this` va `argumentas` bilan chaqiruvni yo‘naltirishimiz kerak bo‘lganda, bu dekoratorlar uchun juda yaxshi.
+Joriy `this` va `arguments` bilan chaqiruvni yo'naltirishimiz kerak bo'lganda, bu dekoratorlar uchun juda yaxshi usul.
 
-Masalan, `defer(f, ms)` funksiyani oladi va uning atrofida chaqiruvni `ms` millisekundlarga kechiktiradigan o‘ramni qaytaradi:
+Masalan, `defer(f, ms)` funksiyani oladi va uning atrofida chaqiruvni `ms` millisekundlarga kechiktiradigan o'ramni qaytaradi:
 
 ```js run
 function defer(f, ms) {
@@ -123,6 +123,6 @@ Arrow funksiyalar:
 - `this` yo'q
 - `arguments` yo'q
 - `new` deb atash mumkin emas
-- Ularda ham `super` yo'q, lekin biz buni hali o'rganmaganmiz. Biz <info:class-inheritance> bobida ko'rib chiqamiz
+- Ularda ham `super` yo'q, lekin biz buni hali o'rganmadik. Bu haqida <info:class-inheritance> bobida ko'rib chiqamiz
 
-Buning sababi, ular o'zlarining "konteksti" ga ega bo'lmagan, balki joriy kodda ishlaydigan qisqa kod qismlari uchun mo'ljallangan. Va ular haqiqatan ham bu foydalanish holatida porlaydilar.
+Buning sababi, ular o'zlarining "konteksti" ga ega bo'lmagan, balki joriy kodda ishlaydigan qisqa kod qismlari uchun mo'ljallangan va ular haqiqatan ham bu foydalanish holatida porlaydilar.
