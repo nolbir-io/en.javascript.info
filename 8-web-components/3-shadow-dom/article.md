@@ -1,28 +1,28 @@
-# Shadow DOM
+# DOM soyasi
 
-Shadow DOM serves for encapsulation. It allows a component to have its very own "shadow" DOM tree, that can't be accidentally accessed from the main document, may have local style rules, and more.
+Shadow DOM inkapsulyatsiya uchun xizmat qiladi. Bu komponentga o'zining "soya" DOM daraxtiga ega bo'lishiga imkon beradi, unga asosiy hujjatdan tasodifiy kirish mumkin emas, mahalliy uslub qoidalari bo'lishi mumkin.
 
-## Built-in shadow DOM
+## O'rnatilgan soyali DOM
 
-Did you ever think how complex browser controls are created and styled?
+Murakkab brauzer boshqaruvlari qanday yaratilgani va uslublanishi haqida hech o'ylab ko'rganmisiz?
 
-Such as `<input type="range">`:
+`<input type="range">` kabi:
 
 <p>
 <input type="range">
 </p>
 
-The browser uses DOM/CSS internally to draw them. That DOM structure is normally hidden from us, but we can see it in developer tools. E.g. in Chrome, we need to enable in Dev Tools "Show user agent shadow DOM" option.
+Brauzer ularni chizish uchun ichki DOM/CSS dan foydalanadi. Ushbu DOM tuzilishi odatda bizga ko'rinmaydi, lekin biz buni ishlab chiquvchi vositalarida ko'rishimiz mumkin. Masalan, Chrome'da biz Dev Toolsda "Foydalanuvchi agenti soya DOMni ko'rsatish" opsiyasini yoqishimiz kerak.  
 
-Then `<input type="range">` looks like this:
+Keyin `<input type="range">` quyidagicha ko'rinadi:
 
 ![](shadow-dom-range.png)
 
-What you see under `#shadow-root` is called "shadow DOM".
+`#shadow-root` ostida ko`rayotgan narsangiz "shadow DOM" deb ataladi.
 
-We can't get built-in shadow DOM elements by regular JavaScript calls or selectors. These are not regular children, but a powerful encapsulation technique.
+Muntazam JavaScript chaqiruvlari yoki selektorlari orqali biz o'rnatilgan soyali DOM elementlarini ololmaymiz. Bu oddiy bolalar emas, balki kuchli inkapsulyatsiya texnikasi hisoblanadi.
 
-In the example above, we can see a useful attribute `pseudo`. It's non-standard, exists for historical reasons. We can use it style subelements with CSS, like this:
+Yuqoridagi misolda biz `pseudo` foydali atribyutini ko'rishimiz mumkin. Bu nostandart, tarixiy sabablarga ko'ra mavjud. Biz CSS bilan uning uslubi pastki elementlaridan foydalanishimiz mumkin, masalan:
 
 ```html run autorun
 <style>
@@ -35,22 +35,22 @@ input::-webkit-slider-runnable-track {
 <input type="range">
 ```
 
-Once again, `pseudo` is a non-standard attribute. Chronologically, browsers first started to experiment with internal DOM structures to implement controls, and then, after time, shadow DOM was standardized to allow us, developers, to do the similar thing.
+Yana bir bor ta'kidlaymizki, `pseudo` - bu nostandart atribut. Xronologik jihatdan, brauzerlar avval boshqaruv elementlarini amalga oshirish uchun ichki DOM tuzilmalari bilan tajriba o'tkazishni boshladilar, keyin esa vaqt o'tgach, soya DOM standartlashtirildi, bu bizga, ishlab chiquvchilarga xuddi shunday qilish imkonini beradi.
 
-Further on, we'll use the modern shadow DOM standard, covered by [DOM spec](https://dom.spec.whatwg.org/#shadow-trees) and other related specifications.
+Keyinchalik, [DOM spec](https://dom.spec.whatwg.org/#shadow-trees) va boshqa tegishli spetsifikatsiyalar bilan qamrab olingan zamonaviy soyali DOM standartidan foydalanamiz. 
 
-## Shadow tree
+## Soya daraxti (shadow tree)
 
-A DOM element can have two types of DOM subtrees:
+DOM elementi ikki xil DOM pastki daraxtiga ega bo'lishi mumkin:
 
-1. Light tree -- a regular DOM subtree, made of HTML children. All subtrees that we've seen in previous chapters were "light".
-2. Shadow tree -- a hidden DOM subtree, not reflected in HTML, hidden from prying eyes.
+1. Light tree (yorug'lik daraxti) -- oddiy DOM pastki daraxti, HTML bolalaridan yaratilgan. Oldingi boblarda ko'rgan barcha pastki daraxtlar "light" edi.
+2. Shadow tree -- HTMLda aks ettirilmagan, begona ko'zlardan berkitilngan yashirin DOM pastki daraxti.
 
-If an element has both, then the browser renders only the shadow tree. But we can setup a kind of composition between shadow and light trees as well. We'll see the details later in the chapter <info:slots-composition>.
+Agar element ikkalasiga ega bo'lsa, brauzer faqat soya daraxtini ko'rsatadi. Ammo biz soya va yorug'lik daraxtlari o'rtasida ham qandaydir kompozitsiyani o'rnatishimiz mumkin. Tafsilotlarni keyinroq <info:slots-composition> bobida ko'rib chiqamiz.
 
-Shadow tree can be used in Custom Elements to hide component internals and apply component-local styles.
+Soya daraxti shaxsiy elementlarda komponentning ichki qismlarini yashirish va komponentlarning mahalliy uslublarini qo'llash uchun ishlatilishi mumkin.
 
-For example, this `<show-hello>` element hides its internal DOM in shadow tree:
+Masalan, ushbu `<show-hello>` elementi ichki DOMni soya daraxtida yashiradi:
 
 ```html run autorun height=60
 <script>
@@ -67,46 +67,46 @@ customElements.define('show-hello', class extends HTMLElement {
 <show-hello name="John"></show-hello>
 ```
 
-That's how the resulting DOM looks in Chrome dev tools, all the content is under "#shadow-root":
+Natijada paydo bo'lgan DOM Chrome dev asboblarida shunday ko'rinadi, barcha kontent "#shadow-root" ostida joylashgan:
 
 ![](shadow-dom-say-hello.png)
 
-First, the call to `elem.attachShadow({mode: …})` creates a shadow tree.
+Birinchidan, `elem.attachShadow({rejim: …})` ga qo'ng'iroq qilish soya daraxtini yaratadi.
 
-There are two limitations:
-1. We can create only one shadow root per element.
-2. The `elem` must be either a custom element, or one of: "article", "aside", "blockquote", "body", "div", "footer", "h1..h6", "header", "main" "nav", "p", "section", or "span". Other elements, like `<img>`, can't host shadow tree.
+Ikkita cheklovlar mavjud:
+1. Biz har bir element uchun faqat bitta soya ildizini yaratishimiz mumkin.
+2. `Elem` moslashtirilgan element yoki quyidagilardan biri bo'lishi kerak: "article", "aside", "blockquote", "body", "div", "footer", "h1..h6", "header", "main" "nav", "p", "section" yoki "span". `<img>` kabi boshqa elementlar soya daraxtini joylashtira olmaydi.
 
-The `mode` option sets the encapsulation level. It must have any of two values:
-- `"open"` -- the shadow root is available as `elem.shadowRoot`.
+`mode` opsiyasi inkapsulyatsiya darajasini belgilaydi. U ikkita qiymatdan biriga ega bo'lishi kerak:
+- `"open"` -- soya ildizi `elem.shadowRoot` sifatida mavjud.
 
-    Any code is able to access the shadow tree of `elem`.   
-- `"closed"` -- `elem.shadowRoot` is always `null`.
+  Har qanday kod `elem` soya daraxtiga kirishi mumkin.
+- `"closed"` -- `elem.shadowRoot` har doim `null`.
 
-    We can only access the shadow DOM by the reference returned by `attachShadow` (and probably hidden inside a class). Browser-native shadow trees, such as  `<input type="range">`, are closed. There's no way to access them.
+  Biz DOM soyasiga faqat `attachShadow` tomonidan qaytarilgan (va, ehtimol, sinf ichida yashiringan) havola orqali kira olamiz. `<input type="range">` kabi brauzerda joylashgan soya daraxtlari yopiq. Ularga kirishning iloji yo'q.
 
-The [shadow root](https://dom.spec.whatwg.org/#shadowroot), returned by `attachShadow`, is like an element: we can use `innerHTML` or DOM methods, such as `append`, to populate it.
+`attachShadow` tomonidan qaytarilgan [soya ildizi](https://dom.spec.whatwg.org/#shadowroot) elementga o'xshaydi: uni to'ldirish uchun biz `innerHTML` yoki DOM usullaridan, masalan, `append` dan foydalanishimiz mumkin.
 
-The element with a shadow root is called a "shadow tree host", and is available as the shadow root `host` property:
+Soya ildiziga ega element "soya daraxti xosti (mezboni)" deb ataladi va soya ildizi `host` xususiyati sifatida mavjud:
 
 ```js
-// assuming {mode: "open"}, otherwise elem.shadowRoot is null
+// {mode: "open"} deb faraz qilsak, aks holda elem.shadowRoot null hisoblanadi
 alert(elem.shadowRoot.host === elem); // true
 ```
 
-## Encapsulation
+## Inkapsulyatsiya
 
-Shadow DOM is strongly delimited from the main document:
+Shadow DOM asosiy hujjatdan qattiq ajratilgan:
 
-1. Shadow DOM elements are not visible to `querySelector` from the light DOM. In particular,  Shadow DOM elements may have ids that conflict with those in the light DOM. They must be unique only within the shadow tree.
-2. Shadow DOM has own stylesheets. Style rules from the outer DOM don't get applied.
+1. Soya DOM elementlari yorug'lik DOM dan `querySelector`ga ko'rinmaydi. Xususan, Shadow DOM elementlari yorug'lik DOMdagilarga zid keladigan identifikatorlarga ega bo'lishi mumkin. Ular faqat soya daraxti ichida noyob bo'lishi kerak.
+2. Shadow DOM o'zining uslublar jadvaliga ega. Tashqi DOM uslubi qoidalari qo'llanilmaydi.
 
-For example:
+Masalan:
 
 ```html run untrusted height=40
 <style>
 *!*
-  /* document style won't apply to the shadow tree inside #elem (1) */
+  /* hujjat uslubi #elem (1) ichidagi soya daraxtiga taalluqli emas */
 */!*
   p { color: red; }
 </style>
@@ -116,7 +116,7 @@ For example:
 <script>
   elem.attachShadow({mode: 'open'});
 *!*
-    // shadow tree has its own style (2)
+    // soya daraxtining o'ziga xos uslubi bor (2)
 */!*
   elem.shadowRoot.innerHTML = `
     <style> p { font-weight: bold; } </style>
@@ -124,34 +124,34 @@ For example:
   `;
 
 *!*
-  // <p> is only visible from queries inside the shadow tree (3)
+  // <p> faqat soya daraxti ichidagi so'rovlardan ko'rinadi (3)
 */!*
   alert(document.querySelectorAll('p').length); // 0
   alert(elem.shadowRoot.querySelectorAll('p').length); // 1
 </script>  
 ```
 
-1. The style from the document does not affect the shadow tree.
-2. ...But the style from the inside works.
-3. To get elements in shadow tree, we must query from inside the tree.
+1. Hujjatdagi uslub soya daraxtiga ta'sir qilmaydi.
+2. ...Ammo ichkaridan uslub ishlaydi.
+3. Soya daraxtida elementlarni olish uchun biz daraxt ichidan so'rashimiz kerak.
 
-## References
+## Havolalar
 
 - DOM: <https://dom.spec.whatwg.org/#shadow-trees>
-- Compatibility: <https://caniuse.com/#feat=shadowdomv1>
-- Shadow DOM is mentioned in many other specifications, e.g. [DOM Parsing](https://w3c.github.io/DOM-Parsing/#the-innerhtml-mixin) specifies that shadow root has `innerHTML`.
+- Moslik: <https://caniuse.com/#feat=shadowdomv1>
+- Shadow DOM ko'plab boshqa spetsifikatsiyalarda qayd etilgan, masalan. [DOM Parsing](https://w3c.github.io/DOM-Parsing/#the-innerhtml-mixin) soya ildizida `innerHTML` mavjudligini bildiradi.
 
 
-## Summary
+## Xulosa
 
-Shadow DOM is a way to create a component-local DOM.
+Shadow DOM - mahalliy komponentli DOM yaratish usuli.
 
-1. `shadowRoot = elem.attachShadow({mode: open|closed})` -- creates shadow DOM for `elem`. If `mode="open"`, then it's accessible as `elem.shadowRoot` property.
-2. We can populate `shadowRoot` using `innerHTML` or other DOM methods.
+1. `shadowRoot = elem.attachShadow({rejim: ochiq|yopiq})` -- `elem` uchun soya DOM yaratadi. Agar `mode="open"` bo'lsa, u holda `elem.shadowRoot` xususiyati sifatida foydalanish mumkin.
+2. Biz `shadowRoot` ni `innerHTML` yoki boshqa DOM usullari yordamida to'ldirishimiz mumkin.
 
-Shadow DOM elements:
-- Have their own ids space,
-- Invisible to JavaScript selectors from the main document, such as `querySelector`,
-- Use styles only from the shadow tree, not from the main document.
+Shadow DOM elementlari:
+- O'z identifikatorlari maydoniga ega,
+- `querySelector` kabi asosiy hujjatdagi JavaScript selektorlariga koʻrinmaydi,
+- Uslublardan asosiy hujjatdan emas, faqat soya daraxtidan foydalanadi.
 
-Shadow DOM, if exists, is rendered by the browser instead of so-called "light DOM" (regular children). In the chapter <info:slots-composition> we'll see how to compose them.
+Shadow DOM, agar mavjud bo'lsa, "light DOM" (oddiy bolalar) o'rniga brauzer tomonidan taqdim etiladi. <info:slots-composition> bo'limida biz ularni qanday tuzishni ko'rib chiqamiz.

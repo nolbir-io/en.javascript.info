@@ -1,22 +1,22 @@
 # Prototypal inheritance
 
-In programming, we often want to take something and extend it.
+Dasturlash davomida biz ko'pincha biror narsani olishni va uni kengaytirishni xohlaymiz.
 
-For instance, we have a `user` object with its properties and methods, and want to make `admin` and `guest` as slightly modified variants of it. We'd like to reuse what we have in `user`, not copy/reimplement its methods, just build a new object on top of it.
+ Masalan, bizda o'z xususiyati va usullariga ega bo'lgan `user` obyekti bor, `admin` hamda `guest`obyektlarini esa uning biroz o'zgartirish kiritilgan variantlari sifatida qoldiramiz. Biz metodlarni nusxalash yoki qayta bajarish orqali emas, balki yuqori qismida yangi obyektni yaratish orqali `user`da mavjud bo'lgan narsalardan qaytadan foydalanmoqchimiz. 
 
-*Prototypal inheritance* is a language feature that helps in that.
+ *Prototypal inheritance* bu borada yordam beruvchi til xususiyatidir.
 
 ## [[Prototype]]
 
-In JavaScript, objects have a special hidden property `[[Prototype]]` (as named in the specification), that is either `null` or references another object. That object is called "a prototype":
+ JavaScriptda obyektlar huddi spesifikatsiyada ko'rsatilgandek `[[Prototype]]`nomli maxsus yashirin xususiyatga ega. Bu xossa odatda `null`deyiladi yoki boshqa obyektga ishora qiladi. Bu obyekt " prototype" deb ataladi:
 
 ![prototype](object-prototype-empty.svg)
 
-When we read a property from `object`, and it's missing, JavaScript automatically takes it from the prototype. In programming, this is called "prototypal inheritance". And soon we'll study many examples of such inheritance, as well as cooler language features built upon it.
+ Biz `object`dan mavjud bo'lmagan ma'lumotni o'qimoqchi bo'lganimizda JavaScript avtomatik ravishda uni prototipdan olib, bizga taqdim etadi. Dasturlashda bu usul "prototypal inheritance", ya'ni prototip merosi, deb ataladi. Va biz tez orada bunday merosning ko'p turlarini hamda unga asoslangan ajoyib til xususiyatlarini o'rganamiz.
 
-The property `[[Prototype]]` is internal and hidden, but there are many ways to set it.
+`[[Prototype]]` xossasi ichki va yashirin bo'lib, uni o'rnatishning ko'plab usullari mavjud.
 
-One of them is to use the special name `__proto__`, like this:
+Bulardan biri `__proto__`maxsus nomini ishlatishdir, masalan: 
 
 ```js run
 let animal = {
@@ -31,9 +31,9 @@ rabbit.__proto__ = animal; // sets rabbit.[[Prototype]] = animal
 */!*
 ```
 
-Now if we read a property from `rabbit`, and it's missing, JavaScript will automatically take it from `animal`.
+Endi biz `rabbit`ma'lumotini o'qimoqchi bo'lganimizda u mavjud bo'lmasa, JavaScript ushbu xususiyatni avtomatik tarzda `animal` dan oladi. 
 
-For instance:
+Masalan:
 
 ```js
 let animal = {
@@ -47,24 +47,24 @@ let rabbit = {
 rabbit.__proto__ = animal; // (*)
 */!*
 
-// we can find both properties in rabbit now:
+// Endi ikkala xususiyatni ham rabbit dan topishimiz mumkin:
 *!*
 alert( rabbit.eats ); // true (**)
 */!*
 alert( rabbit.jumps ); // true
 ```
 
-Here the line `(*)` sets `animal` to be the prototype of `rabbit`.
+Yuqorida ko'rsatilgan `(*)` belgisi `animal``rabbit` ning prototipi bo'lishini belgilaydi.
 
-Then, when `alert` tries to read property `rabbit.eats` `(**)`, it's not in `rabbit`, so JavaScript follows the `[[Prototype]]` reference and finds it in `animal` (look from the bottom up):
+ Keyin  `alert` esa `rabbit.eats` `(**)` ma'lumotini o'qishga harakat qiladi, ammo u `rabbit` ichida mavjud emas, shuning uchun JavaScript `[[Prototype]]` havolasiga amal qiladi va uni `animal`ichidan topadi (pastdan yuqoriga qarang):
 
 ![](proto-animal-rabbit.svg)
 
-Here we can say that "`animal` is the prototype of `rabbit`" or "`rabbit` prototypically inherits from `animal`".
+ Biz bu yerda `animal`ni `rabbit`ning prototipi yoki `rabbit`ni `animal` prototipi bo'yicha nusxalangan deyishimiz mumkin. 
 
-So if `animal` has a lot of useful properties and methods, then they become automatically available in `rabbit`. Such properties are called "inherited".
+ Shunday qilib `animal`ko'plab xususiyatlar va usullarga ega bo'lsa, ular `rabbit`da ham avtomatik ravishda mavjud bo'ladi. Bunday xususiyatlar "inherited", ya'ni "meros" deb ataladi.
 
-If we have a method in `animal`, it can be called on `rabbit`:
+Agar bizda `animal` metodi mavjud bo'lsa, biz uni `rabbit` deb nomlashimiz mumkin: 
 
 ```js run
 let animal = {
@@ -81,17 +81,17 @@ let rabbit = {
   __proto__: animal
 };
 
-// walk is taken from the prototype
+ // walk prototipdan olingan
 *!*
 rabbit.walk(); // Animal walk
 */!*
 ```
 
-The method is automatically taken from the prototype, like this:
+Ushbu metod avtomatik tarzda prototipdan olinadi, misol uchun:
 
 ![](proto-animal-rabbit-walk.svg)
 
-The prototype chain can be longer:
+Prototip zanjiri uzunroq bo'lishi ham mumkin:
 
 ```js run
 let animal = {
@@ -115,47 +115,47 @@ let longEar = {
 */!*
 };
 
-// walk is taken from the prototype chain
+// walk prototip zanjiridan olingan
 longEar.walk(); // Animal walk
 alert(longEar.jumps); // true (from rabbit)
 ```
 
 ![](proto-animal-rabbit-chain.svg)
 
-Now if we read something from `longEar`, and it's missing, JavaScript will look for it in `rabbit`, and then in `animal`.
+Endi biz `longEar`dan nimadir o'qimoqchi bo'lsak, ammo biz qidirgan ma'lumot mavjud bo'lmasa, JavaScript uni avval `rabbit` dan, keyin esa `longEar`dan izlab ko'radi.
 
-There are only two limitations:
+Bu yerda atigi ikkita cheklov mavjud:
 
-1. The references can't go in circles. JavaScript will throw an error if we try to assign `__proto__` in a circle.
-2. The value of `__proto__` can be either an object or `null`. Other types are ignored.
+1. Havolalar aylana bo'ylab bora olmaydi. Agar biz aylanada `__proto__` ni belgilashga harakat qilsak, JavaScript bu harakatning xato ekanligini ko'rsatadi.
+2. `__proto__`ning qiymati obyekt yoki `null` bo'lishi mumkin. Boshqa turlar hisobga olinmaydi. 
 
-Also it may be obvious, but still: there can be only one `[[Prototype]]`. An object may not inherit from two others.
+Also it may be obvious, but still: there can be only one `[[Prototype]]`. An object may not inherit from two others. Hamma narsa aniq bo'lsada, faqat bittagina `[[Prototype]]` ga ega bo'lishimiz mumkin. Birorta obyekt boshqa ikkita obyektning nusxasi bo'la olmaydi.
 
-```smart header="`__proto__` is a historical getter/setter for `[[Prototype]]`"
-It's a common mistake of novice developers not to know the difference between these two.
+```smart header="`__proto__, ya'ni aqlli sarlavha protosi `[[Prototype]]`"  ``` uchun tarixiy qabul qiluvchi va sozlovchi hisoblanadi.
+Ikkala funksiyaning o'rtasidagi farqni bilmaslik bu sohaga endi kirib kelgan yangi dasturchilarning odatiy xatosidir. 
+ 
+Yodda tutingki, `__proto__` `[[Prototype]]`deb nomlanuvchi ichki xususiyat bilan *umuman o'xshash emas*, balki `[[Prototype]]` ning qabul qiluvchi yoki sozlovchisidir. Bu holatni keyinchalik muhim bo'lgan vaziyatlarda ko'rib chiqamiz, hozir esa JavaScript dasturlash tili haqidagi tushunchalarimizni shakllantirish bilan birga ushbu qoidani ham yoddan chiqarmaylik. 
 
-Please note that `__proto__` is *not the same* as the internal `[[Prototype]]` property. It's a getter/setter for `[[Prototype]]`. Later we'll see situations where it matters, for now let's just keep it in mind, as we build our understanding of JavaScript language.
+`__proto__` xususiyati biroz eskirgan, hozirda u ayrim tarixiy sabablar uchun mavjud. Zamonaviy JavaScript dasturlash tili olish yoki sozlash prototipi o'rniga `Object.getPrototypeOf/Object.setPrototypeOf`funksiyalaridan foydalanishni taklif qiladi. Ushbu funksiyalarni ham keyinroq ko'rib chiqamiz.  
 
-The `__proto__` property is a bit outdated. It exists for historical reasons, modern JavaScript suggests that we should use `Object.getPrototypeOf/Object.setPrototypeOf` functions instead that get/set the prototype. We'll also cover these functions later.
+Tafsilotlarga qaraganda `__proto__` faqat brauzerlar tomonidan qo'llab-quvvatlanishi kerak. Aslida barcha muhitlar, shuningdek, serverlar ham `__proto__` ni qo'llab-quvvatlaydi, shuning uchun biz undan xavfsiz foydalana olishimiz mumkin. 
 
-By the specification, `__proto__` must only be supported by browsers. In fact though, all environments including server-side support `__proto__`, so we're quite safe using it.
-
-As the `__proto__` notation is a bit more intuitively obvious, we use it in the examples.
+`__proto__` belgisi intuitiv tarzda aniqroq bo'lgani uchun, undan misollarda foydalanamiz.  
 ```
 
-## Writing doesn't use prototype
+## Yozish prototipdan foydalanmaydi. 
 
-The prototype is only used for reading properties.
+Prototiplar faqatgina xususiyatlarni o'qish uchun foydalaniladi. 
 
-Write/delete operations work directly with the object.
+Yozish va o'chirish operatsiyalari obyekt bilan bevosita ish olib boradi. 
 
-In the example below, we assign its own `walk` method to `rabbit`:
+Quyidagi milsolda `rabbit` ga o'zining `walk` usulini tayinlaymiz": 
 
 ```js run
 let animal = {
   eats: true,
   walk() {
-    /* this method won't be used by rabbit */  
+    /* ushbu usul rabbit tomonidan ishlatilmaydi*/  
   }
 };
 
@@ -172,13 +172,13 @@ rabbit.walk = function() {
 rabbit.walk(); // Rabbit! Bounce-bounce!
 ```
 
-From now on, `rabbit.walk()` call finds the method immediately in the object and executes it, without using the prototype:
+Bundan buyon `rabbit.walk()`chaqiruvi obyektda usulni darhol topadi va uni prototipdan foydalanmasdan bajaradi:
 
 ![](proto-animal-rabbit-walk-2.svg)
 
-Accessor properties are an exception, as assignment is handled by a setter function. So writing to such a property is actually the same as calling a function.
+Qo'shimcha qismlar bundan mustasno, chunki belgilash sozlash funksiyasi tomonidan amalga oshiriladi. Shunday qilib, bunday xususiyatlarni yozish aslida funksiyalarni chaqirish bilan bir xil. 
 
-For that reason `admin.fullName` works correctly in the code below:
+Shu sababga ko'ra `admin.fullName` quyidagi kodda xatosiz ishlaydi:
 
 ```js run
 let user = {
@@ -204,30 +204,29 @@ alert(admin.fullName); // John Smith (*)
 // setter triggers!
 admin.fullName = "Alice Cooper"; // (**)
 
-alert(admin.fullName); // Alice Cooper, state of admin modified
-alert(user.fullName); // John Smith, state of user protected
+alert(admin.fullName); // Alice Cooper, boshqaruv holati o'zgartirildi
+alert(user.fullName); // John Smith, foydalanuvchi holati himoyalandi
 ```
 
-Here in the line `(*)` the property `admin.fullName` has a getter in the prototype `user`, so it is called. And in the line `(**)` the property has a setter in the prototype, so it is called.
+`(*)` qatorida `admin.fullName` xususiyati `user`prototipiga ega bo'lganligi uchun bu shunday nomlanadi. Va `(**)` qatoridagi xususiyat setter, ya'ni o'rnatuvchiga ega va bu ham shunday ataladi. 
 
-## The value of "this"
+## "This" ning qiymati
 
-An interesting question may arise in the example above: what's the value of `this` inside `set fullName(value)`? Where are the properties `this.name` and `this.surname` written: into `user` or `admin`?
+An interesting question may arise in the example above: what's the value of `this` inside `set fullName(value)`? Where are the properties `this.name` and `this.surname` written: into `user` or `admin`? Quyidagi misolda qiziq savol paydo bo'lishi mumkin: `this` ning `set fullName(value)`tarkibidagi qiymati qanday? `this.name` va `this.surname`xususiyatlari qayerga yozilgan: `user` yoki `admin` gami?  
 
-The answer is simple: `this` is not affected by prototypes at all.
+Javob esa oddiy: `this`xususiyati prototiplarga umuman ta'sir o'tkazmaydi. 
 
-**No matter where the method is found: in an object or its prototype. In a method call, `this` is always the object before the dot.**
+**Metod obyektda yoki uning prototipida bo'lishidan qat'iy nazar, `this` xususiyati chaqiruvda har doim nuqtadan oldingi belgi hisoblanadi.**
 
-So, the setter call `admin.fullName=` uses `admin` as `this`, not `user`.
+Demak, `admin.fullName=` sozlovchi chaqiruvi `user` ni emas, `admin` ni `this` sifatida ishlatadi. 
+Bu aslida juda muhim holat, chunki bizda juda ko'p metodlarga ega bo'lgan katta obyekt va ulardan meros bo'lib qolgan xususiyatlar bo'lishi mumkin. Va meros qilib olingan obyektlar meros usullarini ishga tushirganda, ular katta obyektning holatini emas, balki faqat o'zlarining holatlarini o'zgartiradilar.
 
-That is actually a super-important thing, because we may have a big object with many methods, and have objects that inherit from it. And when the inheriting objects run the inherited methods, they will modify only their own states, not the state of the big object.
+Masalan, `animal` "salqash usuli ni ifodalaydi va `rabbit` undan foydalanadi. 
 
-For instance, here `animal` represents a "method storage", and `rabbit` makes use of it.
-
-The call `rabbit.sleep()` sets `this.isSleeping` on the `rabbit` object:
+`rabbit.sleep()` chaqiruvi `this.isSleeping` ni `rabbit` obyektida o'rnatadi:
 
 ```js run
-// animal has methods
+// animal bir qancha metodlarga ega
 let animal = {
   walk() {
     if (!this.isSleeping) {
@@ -244,26 +243,26 @@ let rabbit = {
   __proto__: animal
 };
 
-// modifies rabbit.isSleeping
+// rabbit.isSleeping o'zgaradi
 rabbit.sleep();
 
-alert(rabbit.isSleeping); // true
-alert(animal.isSleeping); // undefined (no such property in the prototype)
+alert(rabbit.isSleeping); // to'g'ri
+alert(animal.isSleeping); // (prototipda hech qanday xususiyat aniqlanmadi)
 ```
 
-The resulting picture:
+Natijaviy surat:
 
 ![](proto-animal-rabbit-walk-3.svg)
 
-If we had other objects, like `bird`, `snake`, etc., inheriting from `animal`, they would also gain access to methods of `animal`. But `this` in each method call would be the corresponding object, evaluated at the call-time (before dot), not `animal`. So when we write data into `this`, it is stored into these objects.
+Agar bizda `animal` dan meros bo'lgan `bird`, `snake` kabi boshqa hayvonlar bo'lsa, ular ham `animal` dagi metodlardan foydalanish imkoniyatiga ega bo'lar edi. Lekin har bir usul chaqiruvidagi `this` xususiyati `animal` emas, chaqiruv vaqtida nuqtadan oldin baholanadigan mos obyekt bo'ladi. Shunday qilib biz `this` ga ma'lumot yozganimizda, u ushbu obyektlarda saqlanadi. 
 
-As a result, methods are shared, but the object state is not.
+As a result, methods are shared, but the object state is not.Natijada obyekt holati emas, metodlar ulashiladi.  
 
-## for..in loop
+## for..in sikli
 
-The `for..in` loop iterates over inherited properties too.
+`for..in` sikli meros qilib olingan xususiyatlarni ham ifodalaydi.
 
-For instance:
+Masalan:
 
 ```js run
 let animal = {
@@ -276,27 +275,26 @@ let rabbit = {
 };
 
 *!*
-// Object.keys only returns own keys
-alert(Object.keys(rabbit)); // jumps
+// Object belgilari faqatgina o'z belgilarinigina qaytaradi
+alert(Object.keys(rabbit)); // sakraydi
 */!*
 
 *!*
-// for..in loops over both own and inherited keys
-for(let prop in rabbit) alert(prop); // jumps, then eats
+// for..in sikli o'z va meros belgilarni ham qaytaradi
+for(let prop in rabbit) alert(prop); // sakraydi, keyin yeydi
 */!*
 ```
 
-If that's not what we want, and we'd like to exclude inherited properties, there's a built-in method [obj.hasOwnProperty(key)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty): it returns `true` if `obj` has its own (not inherited) property named `key`.
-
-So we can filter out inherited properties (or do something else with them):
+Agar bu biz xohlagan natijani bermasa va biz meros qilib olingan xususiyatlarni istisno qilmoqchi bo'lsak, [obj.hasOwnProperty(key)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty) kabi metoddan foydalanamiz: agar `obj` o'zining meroslanmagan xususiyatiga ega bo'lsa, u `true` qiymatini qaytaradi. 
+So we can filter out inherited properties (or do something else with them): Shunday qilib biz meroslangan xususiyatlarni filtrlashimiz mumkin (yoki ulardan boshqa maqsadlarda foydalanishimiz mumkin ):
 
 ```js run
 let animal = {
-  eats: true
+  yeydi: true
 };
 
 let rabbit = {
-  jumps: true,
+  sakraydi: true,
   __proto__: animal
 };
 
@@ -304,35 +302,35 @@ for(let prop in rabbit) {
   let isOwn = rabbit.hasOwnProperty(prop);
 
   if (isOwn) {
-    alert(`Our: ${prop}`); // Our: jumps
+    alert(`Our: ${prop}`); // Shaxsiy: sakraydi
   } else {
-    alert(`Inherited: ${prop}`); // Inherited: eats
+    alert(`Inherited: ${prop}`); // Meroslangan: yeydi
   }
 }
 ```
 
-Here we have the following inheritance chain: `rabbit` inherits from `animal`, that inherits from `Object.prototype` (because `animal` is a literal object `{...}`, so it's by default), and then `null` above it:
+Bu yerda bizda quyidagi meros zanjiri mavjud: `rabbit` `animal` dan, 'that' esa `Object.prototype` dan meros oladi, chunki `animal` haqiqiy obyekt `{...}, demak u hech qanday majburiyatni bajarmaydi, va uning yuqorisida `null` mavjud:
 
 ![](rabbit-animal-object.svg)
 
-Note, there's one funny thing. Where is the method `rabbit.hasOwnProperty` coming from? We did not define it. Looking at the chain we can see that the method is provided by `Object.prototype.hasOwnProperty`. In other words, it's inherited.
+ E'tibor bergan bo'lsangiz, bir kulguli holat yuz bermoqda. `rabbit.hasOwnProperty` metodi qayerdan paydo bo'ldi? Biz hali buni aniqlamadik. Zanjirga qarab shunga guvoh bo'lishimiz mumkinki, metod `Object.prototype.hasOwnProperty` tomonidan ta'minlangan. Boshqacha so'z bilan aytganda, u meros qilib olingan. 
 
-...But why does `hasOwnProperty` not appear in the `for..in` loop like `eats` and `jumps` do, if `for..in` lists inherited properties?
+...Agar `for..in` meroslangan xususiyatlar ro'yxatida mavjud bo'lsa, nega `hasOwnProperty` xususiyati `eats`, yeydi va `jumps`, sakraydi kabi `for..in` siklida ko'rinmaydi?
 
-The answer is simple: it's not enumerable. Just like all other properties of `Object.prototype`, it has `enumerable:false` flag. And `for..in` only lists enumerable properties. That's why it and the rest of the `Object.prototype` properties are not listed.
+Javobi oddiy: uni sanab bo'lmaydi. `Object.prototype` ning huddi boshqa xususiyatlari kabi u ham `enumerable:false` bayrog'iga ega. Va `for..in` faqat sanash mumkin bo'lgan xususiyatlarni hisobga oladi. Shu sababli `Object.prototype` ning boshqa xususiyatlari ro'yxatga kiritilmagan. 
 
-```smart header="Almost all other key/value-getting methods ignore inherited properties"
-Almost all other key/value-getting methods, such as `Object.keys`, `Object.values` and so on ignore inherited properties.
+```smart header="deyarli barcha boshqa qiymat olish usullari meros bo'lib qolgan xususiyatlarni e'tiborsiz qoldiradi". 
+Deyarli barcha boshqa qiymat olish usullari, jumladan `Object.keys`, `Object.values`va boshqalar meros qilib olingan xususiyatlarni e'tiborsiz qoldiradi. 
 
-They only operate on the object itself. Properties from the prototype are *not* taken into account.
+Ular faqat obyektning o'zida ishlaydi. Prototipning xususiyatlari hisobga *olinmaydi*. 
 ```
 
-## Summary
+## Xulosa
 
-- In JavaScript, all objects have a hidden `[[Prototype]]` property that's either another object or `null`.
-- We can use `obj.__proto__` to access it (a historical getter/setter, there are other ways, to be covered soon).
-- The object referenced by `[[Prototype]]` is called a "prototype".
-- If we want to read a property of `obj` or call a method, and it doesn't exist, then JavaScript tries to find it in the prototype.
-- Write/delete operations act directly on the object, they don't use the prototype (assuming it's a data property, not a setter).
-- If we call `obj.method()`, and the `method` is taken from the prototype, `this` still references `obj`. So methods always work with the current object even if they are inherited.
-- The `for..in` loop iterates over both its own and its inherited properties. All other key/value-getting methods only operate on the object itself.
+- JavaScript dasturlash tilida hamma obyektlar boshqa obyekt yoki `null` hisoblangan `[[Prototype]]` yashirin xususiyatiga ega.  
+- Unga kirish uchun `obj.__proto__` dan foydalanishimiz mumkin (tarixiy qabul qiluvchi, sozlovchi va boshqa usullar tez orada muhokama qilinadi). 
+- `[[Prototype]]` tomonidan havola qilingan obyekt "prototip" deb ataladi. 
+- Agar biz `obj` xususiyatini o'qimoqchi yoki metod chaqiruvini amalga oshirmoqchi bo'lganimizda, bunday xususiyat mavjud bo'lmasa, JavaScript uni prototipdan topishga harakat qiladi. 
+- Yozish va o'chirish operatsiyalari obyektga to'g'ridan-to'g'ri ta'sir o'tkazadi. agar u sozlovchi emas, ma'lumotlar xususiyati bo'lsa, prototipdan foydalanilmaydi.
+- Agar `obj.method()` chaqiruvini amalga oshirsak va `method`prototipdan olingan bo'lsa, `this` hali ham `obj`ga ishora qiladi. Shunday qilib, usullar meros qilib olingan bo'lsa ham, har doim joriy ob'ekt bilan ishlaydi.
+- `for..in` sikli o'zining ham, meroslangan obyektlar atrofida ham takrorlanadi. Boshqa barcha qiymat olish usullari faqat obyektning o'zida ishlaydi. 

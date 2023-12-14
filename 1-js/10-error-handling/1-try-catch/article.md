@@ -1,14 +1,13 @@
-# Error handling, "try...catch"
+# Xatolarni nazorat qilish, "try...catch" (sinab ko'rish...tutish)
+Biz dasturlashda qanchalik zo'r bo'lishimizdan qat'iy nazar, ba'zida skriptlarimizda xatolar bo'ladi. Ular bizning xatolarimiz, kutilmagan foydalanuvchi kiritilishi, serverning noto'g'ri javobi va boshqa minglab sabablarga ko'ra yuzaga kelishi mumkin.
 
-No matter how great we are at programming, sometimes our scripts have errors. They may occur because of our mistakes, an unexpected user input, an erroneous server response, and for a thousand other reasons.
+Odatda, skript xatolik yuz berganda uni konsolga chop etayotganda "o'ladi" (darhol to'xtaydi).
 
-Usually, a script "dies" (immediately stops) in case of an error, printing it to console.
+Ammo `try...catch` sintaksis konstruksiyasi mavjud bo'lib, u bizga xatolarni “tutib olish” imkonini beradi, shunda skript o'lish o'rniga yanada oqilona ishlay oladi.
 
-But there's a syntax construct `try...catch` that allows us to "catch" errors so the script can, instead of dying, do something more reasonable.
+## "try...catch" sintaksisi
 
-## The "try...catch" syntax
-
-The `try...catch` construct has two main blocks: `try`, and then `catch`:
+`try... catch` konstruktsiyasi ikkita asosiy blokdan iborat: `try` va `catch`:
 
 ```js
 try {
@@ -17,195 +16,194 @@ try {
 
 } catch (err) {
 
-  // error handling
+  // xatolarni nazorat qilish
 
 }
 ```
 
-It works like this:
+Bu shunday ishlaydi:
 
-1. First, the code in `try {...}` is executed.
-2. If there were no errors, then `catch (err)` is ignored: the execution reaches the end of `try` and goes on, skipping `catch`.
-3. If an error occurs, then the `try` execution is stopped, and control flows to the beginning of `catch (err)`. The `err` variable (we can use any name for it) will contain an error object with details about what happened.
+1. Birinchidan, `try {...}` dagi kod bajariladi.
+2. Agar xatoliklar bo'lmasa, `catch (err)` e'tiborga olinmaydi: `try` ni bajarish oxiriga yetib, `catch` ni o'tkazib yuborish bilan davom etadi.
+3. Agar xato ro'y bersa, u holda `try` ijrosi to'xtatiladi va boshqaruv `catch (err)` ning boshiga o'tadi. `err` o'zgaruvchisi (biz u uchun istalgan nomdan foydalanishimiz mumkin) nima sodir bo'lganligi haqidagi tafsilotlar bilan xato obyektini o'z ichiga oladi.
 
 ![](try-catch-flow.svg)
 
-So, an error inside the `try {...}` block does not kill the script -- we have a chance to handle it in `catch`.
+Shunday qilib, `try {...}` blokidagi xatolik skriptni o'ldirmaydi -- bizda uni `catch` da hal qilish imkoniyati mavjud.
 
-Let's look at some examples.
+Quyida bir nechta misollarni ko'rib chiqamiz.
 
-- An errorless example: shows `alert` `(1)` and `(2)`:
+- Xatosiz misol:  `alert` `(1)` and `(2)`:
 
     ```js run
     try {
 
-      alert('Start of try runs');  // *!*(1) <--*/!*
+      alert(' try blokining boshlanishi');  // *!*(1) <--*/!*
 
-      // ...no errors here
+      // ...bu yerda xato yo'q
 
-      alert('End of try runs');   // *!*(2) <--*/!*
+      alert('try blokining tugashi');   // *!*(2) <--*/!*
 
     } catch (err) {
 
-      alert('Catch is ignored, because there are no errors'); // (3)
+      alert('Catch hisobga olinmadi, chunki bu yerda hech qanday xato mavjud emas edi); // (3)
 
     }
     ```
-- An example with an error: shows `(1)` and `(3)`:
+- Xato mavjud bo'lgan misol: `(1)` and `(3)`:
 
     ```js run
     try {
 
-      alert('Start of try runs');  // *!*(1) <--*/!*
+      ogohlantirish('try blokining boshlanishi');  // *!*(1) <--*/!*
 
     *!*
-      lalala; // error, variable is not defined!
+      lalala; // xato, variable aniqlanmagan!
     */!*
 
-      alert('End of try (never reached)');  // (2)
+      alert(' try blokining tugashi (hech qachon yetishilmadi)');  // (2)
 
     } catch (err) {
 
-      alert(`Error has occurred!`); // *!*(3) <--*/!*
+      alert(`Error, ya'ni xato paydo bo'ldi!`); // *!*(3) <--*/!*
 
     }
     ```
 
 
-````warn header="`try...catch` only works for runtime errors"
-For `try...catch` to work, the code must be runnable. In other words, it should be valid JavaScript.
+````warn header (0gohlantiruvchi sarlavha)="`try...catch` faqatgina ish vaqtidagi xatolar uchun ishlaydi"
+`Try... catch` ishlashi uchun kod ishga tushirilishi kerak. Boshqacha qilib aytganda, u haqiqiy JavaScript bo'lishi kerak.
 
-It won't work if the code is syntactically wrong, for instance it has unmatched curly braces:
+Agar kod sintaktik jihatdan noto'g'ri bo'lsa, ishlamaydi, masalan, unda nomunosib figurali qavslar mavjud:
 
 ```js run
 try {
   {{{{{{{{{{{{
 } catch (err) {
-  alert("The engine can't understand this code, it's invalid");
+  alert("Mexanizm bu kodni tushuna olmaydi, u yaroqsiz");
 }
 ```
+JavaScript mexanizmi avval kodni o'qiydi va keyin uni ishga tushiradi. O'qish bosqichida yuzaga keladigan xatolar "parse-time" xatolari deb ataladi va ularni tuzatib bo'lmaydi (kod ichidan). Buning sababi, mexanizm kodni tushunolmaydi.
 
-The JavaScript engine first reads the code, and then runs it. The errors that occur on the reading phase are called "parse-time" errors and are unrecoverable (from inside that code). That's because the engine can't understand the code.
-
-So, `try...catch` can only handle errors that occur in valid code. Such errors are called "runtime errors" or, sometimes, "exceptions".
+Shunday qilib, `try... catch` faqat haqiqiy kodda yuzaga keladigan xatolarni ko'rib chiqishi mumkin. Bunday xatolar "runtime errors" yoki ba'zan "exceptions", ya'ni istisnolar deb ataladi.
 ````
 
 
-````warn header="`try...catch` works synchronously"
-If an exception happens in "scheduled" code, like in `setTimeout`, then `try...catch` won't catch it:
+````ogohlantiruvchi sarlavha="`try...catch` sinxron tarzda ishlaydi"
+Agar exception "rejalashtirilgan" kodda, masalan, "setTimeout" da sodir bo'lsa, "try...catch" buni tushunmaydi:
 
 ```js run
 try {
   setTimeout(function() {
-    noSuchVariable; // script will die here
+    noSuchVariable; // script shu yerda tugaydi
   }, 1000);
 } catch (err) {
   alert( "won't work" );
 }
 ```
 
-That's because the function itself is executed later, when the engine has already left the `try...catch` construct.
+Buning sababi, funksiyaning o'zi keyinroq, vosita allaqachon "try... catch" konstruktsiyasini tark etganda bajariladi.
 
-To catch an exception inside a scheduled function, `try...catch` must be inside that function:
+Rejalashtirilgan funktsiya ichidagi istisnoni olishi uchun "try... catch" ushbu funktsiya ichida bo'lishi kerak:
 ```js run
 setTimeout(function() {
   try {    
-    noSuchVariable; // try...catch handles the error!
+    noSuchVariable; // try...catch xatoni topdi!
   } catch {
-    alert( "error is caught here!" );
+    alert( "error shu yerda topildi" );
   }
 }, 1000);
 ```
 ````
 
-## Error object
+## Error, ya'ni xato obyektlar
 
-When an error occurs, JavaScript generates an object containing the details about it. The object is then passed as an argument to `catch`:
+Xatolik yuz berganda, JavaScript u haqidagi ma'lumotlarni o'z ichiga olgan obyektni yaratadi. Keyin obyekt `catch` ga argument sifatida uzatiladi:
 
 ```js
 try {
   // ...
-} catch (err) { // <-- the "error object", could use another word instead of err
+} catch (err) { // <-- "error obyekti" err ning o'rniga boshqa so'zdan foydalanishi ham mumkin
   // ...
 }
 ```
 
-For all built-in errors, the error object has two main properties:
+Barcha o'rnatilgan xatolar uchun xato obyekti ikkita asosiy xususiyatga ega:
 
-`name`
-: Error name. For instance, for an undefined variable that's `"ReferenceError"`.
+`name`(nom)
+: Xato nomi. Masalan, aniqlanmagan o'zgaruvchi uchun `"ReferenceError"`.
 
-`message`
-: Textual message about error details.
+`message` (xabar)
+: Xato tafsilotlari haqida matnli xabar.
 
-There are other non-standard properties available in most environments. One of most widely used and supported is:
+Aksariyat muhitlarda mavjud bo'lgan boshqa nostandart xususiyatlar mavjud. Eng ko'p ishlatiladigan va qo'llab-quvvatlanadiganlardan biri:
 
-`stack`
-: Current call stack: a string with information about the sequence of nested calls that led to the error. Used for debugging purposes.
+`stack` (to'plam)
+: Joriy qo'ng'iroqlar to'plami: xatoga olib kelgan ichki qo'ng'iroqlar ketma-ketligi haqida ma'lumotga ega bo'lgan qator. Nosozliklarni tuzatish uchun ishlatiladi.
 
-For instance:
+Masalan:
 
 ```js run untrusted
 try {
 *!*
-  lalala; // error, variable is not defined!
+  lalala; // xato, chunki variable, ya'ni o'zgaruvchi aniqlanmagan!
 */!*
 } catch (err) {
   alert(err.name); // ReferenceError
-  alert(err.message); // lalala is not defined
-  alert(err.stack); // ReferenceError: lalala is not defined at (...call stack)
+  alert(err.message); // lalala aniqlanmagan
+  alert(err.stack); // ReferenceError: lalala (...call stack)da aniqlanmagan
 
-  // Can also show an error as a whole
-  // The error is converted to string as "name: message"
+  // Xatoni ham bir butun sifatida ko'rsatishi mumkin
+  // Xato "name: message" sifatida satrga aylantiriladi
   alert(err); // ReferenceError: lalala is not defined
 }
 ```
 
-## Optional "catch" binding
+## Ixtiyoriy "catch" bilan birlashtirish
 
-[recent browser=new]
+[oxirgi brauzer=yangi]
 
-If we don't need error details, `catch` may omit it:
+Agar bizga xato tafsilotlari kerak bo'lmasa, `catch` uni o'tkazib yuborishi mumkin:
 
 ```js
 try {
   // ...
-} catch { // <-- without (err)
+} catch { // <-- without (err) 
   // ...
 }
 ```
 
-## Using "try...catch"
+## "try...catch" dan foydalanish
 
-Let's explore a real-life use case of `try...catch`.
+Keling, `try... catch` ga doir haqiqiy hayotiy misol ko'rib chiqaylik.
 
-As we already know, JavaScript supports the [JSON.parse(str)](mdn:js/JSON/parse) method to read JSON-encoded values.
+ Bizga ma'lumki, JavaScript JSON kodlangan qiymatlarni o'qish uchun [JSON.parse(str)](mdn:js/JSON/parse) usulini qo'llab-quvvatlaydi.
 
-Usually it's used to decode data received over the network, from the server or another source.
+ Odatda u tarmoq orqali, serverdan yoki boshqa manbadan olingan ma'lumotlarni dekodlash uchun ishlatiladi.
 
-We receive it and call `JSON.parse` like this:
+Biz uni qabul qilamiz va `JSON.parse` ni quyidagicha chaqiramiz:
 
 ```js run
-let json = '{"name":"John", "age": 30}'; // data from the server
+let json = '{"name":"John", "age": 30}'; // serverdagi ma'lumot
 
 *!*
-let user = JSON.parse(json); // convert the text representation to JS object
+let user = JSON.parse(json); // matn ko'rinishini JS obyektiga aylantirish
 */!*
 
-// now user is an object with properties from the string
+// endi foydalanuvchi satrdagi xususiyatlarga ega obyektdir
 alert( user.name ); // John
 alert( user.age );  // 30
 ```
 
-You can find more detailed information about JSON in the <info:json> chapter.
+ JSON haqida batafsil ma'lumotni <info:json> bo'limida topishingiz mumkin.
 
-**If `json` is malformed, `JSON.parse` generates an error, so the script "dies".**
+**Agar `json` not'o'g'ri tuzilgan bo'lsa, `JSON.parse` xatolik hosil qiladi, shuning uchun skript “o`ladi”.**
 
-Should we be satisfied with that? Of course not!
+Faqat shu bilan kifoyalanamizmi? Albatta yo'q!
 
-This way, if something's wrong with the data, the visitor will never know that (unless they open the developer console). And people really don't like when something "just dies" without any error message.
+Shunday qilib, agar ma'lumotlarda biror narsa noto'g'ri bo'lsa, ishlab chiquvchi konsoli ochilmaguncha tashrif buyuruvchi buni hech qachon bilmaydi. Va odamlar hech qanday xato xabarisiz biror narsa "shunchaki o'lganini" yoqtirmaydi.
 
-Let's use `try...catch` to handle the error:
+Xatoni tuzatish uchun `try... catch` dan foydalanamiz:
 
 ```js run
 let json = "{ bad json }";
@@ -213,62 +211,61 @@ let json = "{ bad json }";
 try {
 
 *!*
-  let user = JSON.parse(json); // <-- when an error occurs...
+  let user = JSON.parse(json); // <-- error paydo bo'lganida...
 */!*
-  alert( user.name ); // doesn't work
+  alert( user.name ); // ishlamaydi
 
 } catch (err) {
 *!*
-  // ...the execution jumps here
-  alert( "Our apologies, the data has errors, we'll try to request it one more time." );
+  // ... .ijro bu yerga o'tadi
+  alert( "Uzr so'raymiz, ma'lumotlarda xatolik bor, biz bu haqda yana bir bor so'rashga harakat qilamiz." );
   alert( err.name );
   alert( err.message );
 */!*
 }
 ```
 
-Here we use the `catch` block only to show the message, but we can do much more: send a new network request, suggest an alternative to the visitor, send information about the error to a logging facility, ... . All much better than just dying.
+Bu yerda biz `catch` blokidan faqat xabarni ko'rsatish uchun foydalanamiz, lekin biz ko'proq narsani qila olamiz: yangi tarmoq so'rovini yuborish, tashrif buyuruvchiga muqobil taklif qilish, xato haqida ma'lumotni ro'yxatga olish vositasiga yuborish, ... . Hammasi shunchaki o'lishdan ko'ra yaxshiroq.
 
-## Throwing our own errors
+## O'z xatolarimizdan xalos bo'lish
 
-What if `json` is syntactically correct, but doesn't have a required `name` property?
+ Agar `json` sintaktik jihatdan to'g'ri bo'lsa-da, lekin talab qilinadigan `name` xususiyatiga ega bo`lmasa-chi?
 
-Like this:
+Bunga o'xshab:
 
 ```js run
-let json = '{ "age": 30 }'; // incomplete data
+let json = '{ "age": 30 }'; // tugallanmagan ma'lumot
 
 try {
 
-  let user = JSON.parse(json); // <-- no errors
+  let user = JSON.parse(json); // <-- error yo'q
 *!*
-  alert( user.name ); // no name!
+  alert( user.name ); // name yo'q!
 */!*
 
 } catch (err) {
-  alert( "doesn't execute" );
+  alert( "bajarmaydi" );
 }
 ```
 
-Here `JSON.parse` runs normally, but the absence of `name` is actually an error for us.
+Bu yerda `JSON.parse` normal ishlaydi, lekin `name` yo`qligi aslida biz uchun xato.
 
-To unify error handling, we'll use the `throw` operator.
+Xatolarni qayta ishlashni birlashtirish uchun biz `throw` operatoridan foydalanamiz.
+### "Throw" operatori
 
-### "Throw" operator
+`Throw` operatori xatolik hosil qiladi.
 
-The `throw` operator generates an error.
-
-The syntax is:
+Sintaksis:
 
 ```js
 throw <error object>
 ```
 
-Technically, we can use anything as an error object. That may be even a primitive, like a number or a string, but it's better to use objects, preferably with `name` and `message` properties (to stay somewhat compatible with built-in errors).
+Texnik jihatdan biz har qanday narsani xato obyekti sifatida ishlatishimiz mumkin. Bu hatto raqam yoki satr kabi primitiv blok ham bo'lishi mumkin, lekin obyektlardan afzalroq `name` va `message` xususiyatlariga ega bo'lgan ma'qul (o'rnatilgan xatolarga biroz mos bo'lish uchun).
 
-JavaScript has many built-in constructors for standard errors: `Error`, `SyntaxError`, `ReferenceError`, `TypeError` and others. We can use them to create error objects as well.
+JavaScript-da standart xatolar uchun ko'plab o'rnatilgan konstruktorlar mavjud: `Error`, `SyntaxError`, `ReferenceError`, `TypeError` va boshqalar. Ulardan xato obyektlarini yaratishda ham foydalanishimiz mumkin.
 
-Their syntax is:
+Ularning sintaksisi:
 
 ```js
 let error = new Error(message);
@@ -278,18 +275,18 @@ let error = new ReferenceError(message);
 // ...
 ```
 
-For built-in errors (not for any objects, just for errors), the `name` property is exactly the name of the constructor. And `message` is taken from the argument.
+O'rnatilgan xatolar uchun (hech qanday obyekt uchun emas, faqat xatolar uchun) `name` xossasi aynan konstruktor nomidir. Va shuningdek, `message` argumentdan olingan.
 
-For instance:
+Masalan:
 
 ```js run
-let error = new Error("Things happen o_O");
+let error = new Error("o_O kabi hodisalar sodir bo'ladi");
 
-alert(error.name); // Error
-alert(error.message); // Things happen o_O
+alert(error.name); // Xato
+alert(error.message); // o_O kabi hodisalar sodir bo'ladi
 ```
 
-Let's see what kind of error `JSON.parse` generates:
+Keling, `JSON.parse` qanday xatolik yaratishini ko'rib chiqaylik:
 
 ```js run
 try {
@@ -298,74 +295,71 @@ try {
 *!*
   alert(err.name); // SyntaxError
 */!*
-  alert(err.message); // Unexpected token b in JSON at position 2
+  alert(err.message); // JSONda 2-pozitsiyada kutilmagan b tokeni
 }
 ```
 
-As we can see, that's a `SyntaxError`.
+Ko'rib turganimizdek, bu `SyntaxError` hisoblanadi.
 
-And in our case, the absence of `name` is an error, as users must have a `name`.
+Va bizning holatlarimizda `name` ning yo'qligi xatodir, chunki foydalanuvchilarda `name` bo'lishi lozim.
 
-So let's throw it:
+Demak, sinab ko'ramiz:
 
 ```js run
-let json = '{ "age": 30 }'; // incomplete data
+let json = '{ "age": 30 }'; // nomukammal ma'lumot
 
 try {
 
-  let user = JSON.parse(json); // <-- no errors
+  let user = JSON.parse(json); // <-- error yo'q
 
   if (!user.name) {
 *!*
-    throw new SyntaxError("Incomplete data: no name"); // (*)
+    throw new SyntaxError("Nomukammal ma'lumot: name yo'q"); // (*)
 */!*
   }
 
   alert( user.name );
 
 } catch (err) {
-  alert( "JSON Error: " + err.message ); // JSON Error: Incomplete data: no name
+  alert( "JSON Error: " + err.message ); // JSON Error: Nomukammal ma'lumot: name yo'q
 }
 ```
+`(*)` qatorida `throw` operatori berilgan `message`(xabar) bilan `SyntaxError` hosil qiladi, xuddi JavaScriptning o'zi uni yaratgandek. `try` ning bajarilishi darhol to'xtaydi va boshqaruv oqimi `catch` ga o'tadi.
 
-In the line `(*)`, the `throw` operator generates a `SyntaxError` with the given `message`, the same way as JavaScript would generate it itself. The execution of `try` immediately stops and the control flow jumps into `catch`.
-
-Now `catch` became a single place for all error handling: both for `JSON.parse` and other cases.
+Endi `catch` barcha xatolar, `JSON.parse` ni ham qayta ishlash uchun yagona joyga aylandi.
 
 ## Rethrowing
 
-In the example above we use `try...catch` to handle incorrect data. But is it possible that *another unexpected error* occurs within the `try {...}` block? Like a programming error (variable is not defined) or something else, not just this "incorrect data" thing.
-
-For example:
+Yuqoridagi misolda biz noto'g'ri ma'lumotlarni qayta ishlash uchun `try... catch` dan foydalanamiz. Lekin `try {...}` blokida yana *boshqa kutilmagan xatoliklar* yuzaga kelishi mumkinmi? Faqat bu "noto'g'ri ma'lumotlar" emas, balki dasturlash xatosi (o'zgaruvchi aniqlanmagan) yoki boshqalar kabi bo'lishi mumkin.
+Masalan:
 
 ```js run
-let json = '{ "age": 30 }'; // incomplete data
+let json = '{ "age": 30 }'; // nomukammal ma'lumot
 
 try {
-  user = JSON.parse(json); // <-- forgot to put "let" before user
+  user = JSON.parse(json); // <-- user dan oldin "let" unutib qoldirilgan
 
   // ...
 } catch (err) {
-  alert("JSON Error: " + err); // JSON Error: ReferenceError: user is not defined
-  // (no JSON Error actually)
+  alert("JSON Error: " + err); // JSON Error: ReferenceError: user (foydalanuvchi) aniqlanmagan
+  // (aslida JSON Error yo'q)
 }
 ```
+Hamma narsa bo'lishi mumkin. Dasturchilar ham xato qiladi. Hatto millionlab odamlar tomonidan o'n yildan beri foydalanilayotgan ochiq manbali yordamchi dasturlarda ham to'satdan xato aniqlanishi mumkin, bu esa dahshatli xakerliklarga olib keladi.
 
-Of course, everything's possible! Programmers do make mistakes. Even in open-source utilities used by millions for decades -- suddenly a bug may be discovered that leads to terrible hacks.
+Bizning holatimizda "noto'g'ri ma'lumotlar" errorni topish uchun `try... catch` qo'yiladi. Lekin o'z tabiatiga ko'ra, `catch` `try`dan *barcha* errorni oladi. Bu yerda kutilmagan error yuz beradi, lekin baribir oʻsha `JSON Error` xabarini koʻrsatadi. Bu noto'g'ri va kodni disk raskadrovka qilishni qiyinlashtiradi.
 
-In our case, `try...catch` is placed to catch "incorrect data" errors. But by its nature, `catch` gets *all* errors from `try`. Here it gets an unexpected error, but still shows the same `"JSON Error"` message. That's wrong and also makes the code more difficult to debug.
+Bunday muammolarni oldini olish uchun biz "rethrowing" texnikasidan foydalanishimiz mumkin. Qoida esa oddiy:
 
-To avoid such problems, we can employ the "rethrowing" technique. The rule is simple:
+**Catch faqat o‘zi bilgan error larni qayta ishlashi va qolganlarini “rethrow” qilishi kerak.**
 
-**Catch should only process errors that it knows and "rethrow" all others.**
+"Rethrowing" texnikasini quyidagicha batafsilroq tushuntirish mumkin:
 
-The "rethrowing" technique can be explained in more detail as:
+1. Catch hamma error larni topadi.
+2. `catch (err) {...}` blokida we analyze the error object `err` error obyektini analiz qilamiz.
+3. Agar buni hal qilolmasak, `throw err` , ya'ni error ni qoldirib ketamiz.
 
-1. Catch gets all errors.
-2. In the `catch (err) {...}` block we analyze the error object `err`.
-3. If we don't know how to handle it, we do `throw err`.
-
-Usually, we can check the error type using the `instanceof` operator:
+Odatda biz error ning turini `instanceof` operatoridan foydalangan holda tekshiramiz.
 
 ```js run
 try {
@@ -374,27 +368,27 @@ try {
 *!*
   if (err instanceof ReferenceError) {
 */!*
-    alert('ReferenceError'); // "ReferenceError" for accessing an undefined variable
+    alert('ReferenceError'); // Aniqlanmagan o'zgaruvchiga kirish uchun "ReferenceError"
   }
 }
 ```
 
-We can also get the error class name from `err.name` property. All native errors have it. Another option is to read `err.constructor.name`.
+Error sinfi nomini `err.name` xususiyatidan ham olishimiz mumkin. Bu barcha mahalliy error larda mavjud. Yana bir variant - `err.constructor.name` ni o'qish.
 
-In the code below, we use rethrowing so that `catch` only handles `SyntaxError`:
+Quyidagi kodda biz `catch` faqat `SyntaxError` ni boshqarishi uchun qayta o'rnatishdan foydalanamiz:
 
 ```js run
-let json = '{ "age": 30 }'; // incomplete data
+let json = '{ "age": 30 }'; // nomukammal ma'lumot
 try {
 
   let user = JSON.parse(json);
 
   if (!user.name) {
-    throw new SyntaxError("Incomplete data: no name");
+    throw new SyntaxError("Nomukammal ma'lumot: name yo'q");
   }
 
 *!*
-  blabla(); // unexpected error
+  blabla(); // kutilmagan error
 */!*
 
   alert( user.name );
@@ -412,11 +406,11 @@ try {
 }
 ```
 
-The error throwing on line `(*)` from inside `catch` block "falls out" of `try...catch` and can be either caught by an outer `try...catch` construct (if it exists), or it kills the script.
+`Catch` blokining ichidan `(*)` qatoriga yuborilgan xatolik `try...catch`dan “tushadi” va tashqi `try...catch` konstruksiyasi (agar mavjud bo‘lsa) tomonidan ushlanishi mumkin yoki skriptni o'ldiradi.
 
-So the `catch` block actually handles only errors that it knows how to deal with and "skips" all others.
+Shunday qilib, `catch` bloki aslida qanday hal qilishni biladigan xatolarni ko'rib chiqadi va qolganlarini "o'tkazib yuboradi".
 
-The example below demonstrates how such errors can be caught by one more level of `try...catch`:
+Quyidagi berilgan misol shu kabi error lar yana bitta yuqori darajali `try...catch` yordamida topiladi.
 
 ```js run
 function readData() {
@@ -431,7 +425,7 @@ function readData() {
     // ...
     if (!(err instanceof SyntaxError)) {
 *!*
-      throw err; // rethrow (don't know how to deal with it)
+      throw err; // rethrow (buni nima qilishni bilmadim)
 */!*
     }
   }
@@ -441,42 +435,41 @@ try {
   readData();
 } catch (err) {
 *!*
-  alert( "External catch got: " + err ); // caught it!
+  alert( "External catch got: " + err ); // buni endi uddaladim!
 */!*
 }
 ```
+ Yuqoridagi `readData` faqatgina `SyntaxError` ni nazorat qiloladi, tashqaridagi `try...catch` esa hamma bloklarni nazoratga oladi. 
 
-Here `readData` only knows how to handle `SyntaxError`, while the outer `try...catch` knows how to handle everything.
+## try...catch...finally(vanihoyat)
 
-## try...catch...finally
+To'xtang, bu hali hammasi emas.
 
-Wait, that's not all.
+`try... catch` konstruktsiyasida yana bitta kod bandi bo'lishi mumkin: `finally`.
 
-The `try...catch` construct may have one more code clause: `finally`.
+Agar u mavjud bo'lsa, u barcha sinflarda ishlaydi:
 
-If it exists, it runs in all cases:
+- `try` dan keyin, agar error bo'lmasa,
+- `catch` dan keyin, agar error mavjud bo'lsa.
 
-- after `try`, if there were no errors,
-- after `catch`, if there were errors.
-
-The extended syntax looks like this:
+Kengaytirilgan sintaksis quyidagicha bo'ladi:
 
 ```js
 *!*try*/!* {
-   ... try to execute the code ...
+   ... kodni ishlatishga harakat qiladi ...
 } *!*catch*/!* (err) {
-   ... handle errors ...
+   ... error larni nazorat qiladi ...
 } *!*finally*/!* {
-   ... execute always ...
+   ... doimiy ishlaydi ...
 }
 ```
 
-Try running this code:
+Ushbu kodni ishlatishga harakat qilib ko'ring:
 
 ```js run
 try {
   alert( 'try' );
-  if (confirm('Make an error?')) BAD_CODE();
+  if (confirm('error ga duch keldingizmi?')) BAD_CODE();
 } catch (err) {
   alert( 'catch' );
 } finally {
@@ -484,66 +477,66 @@ try {
 }
 ```
 
-The code has two ways of execution:
+Kodni ishlatishning ikkita yo'li bor:
 
-1. If you answer "Yes" to "Make an error?", then `try -> catch -> finally`.
-2. If you say "No", then `try -> finally`.
+1. Agar siz “Errorga duch keldingizmi?” savoliga ga “Ha” deb javob bersangiz, u holda `try -> catch -> finally` ni qo'llang.
+2. Agar yo'q desangiz, unda `try -> finally` ni qo'llang.
 
-The `finally` clause is often used when we start doing something and want to finalize it in any case of outcome.
+`finally` bandi ko'pincha biror narsani qilishni boshlaganimizda va har qanday natijada uni yakunlashni xohlayotganimizda ishlatiladi.
 
-For instance, we want to measure the time that a Fibonacci numbers function `fib(n)` takes. Naturally, we can start measuring before it runs and finish afterwards. But what if there's an error during the function call? In particular, the implementation of `fib(n)` in the code below returns an error for negative or non-integer numbers.
+Masalan, biz Fibonachchi raqamlari funksiyasi `fib(n)` qancha vaqt sarflaganini o'lchamoqchimiz. Tabiiyki, biz o'lchashni ishga tushirishdan oldin boshlashimiz va keyin tugatishimiz mumkin. Ammo funksiyani chaqirish paytida xatolik yuz bersa nima bo'ladi? Xususan, quyidagi kodda `fib(n)` ni amalga oshirish manfiy yoki butun son bo'lmagan raqamlar uchun xatolikni qaytaradi.
 
-The `finally` clause is a great place to finish the measurements no matter what.
+`finally` bandi nima bo'lishidan qat'iy nazar o'lchovlarni tugatish uchun ajoyib joy.
 
-Here `finally` guarantees that the time will be measured correctly in both situations -- in case of a successful execution of `fib` and in case of an error in it:
+Bu yerda `finally` har ikkala holatda ham vaqt to'g'ri o'lchanishini kafolatlaydi -- `fib` muvaffaqiyatli bajarilgan taqdirda va unda xato bo'lgan taqdirda:
 
 ```js run
-let num = +prompt("Enter a positive integer number?", 35)
+let num = +prompt("Butun musbat sonni kiritdingizmi?", 35)
 
-let diff, result;
+let diff, natija;
 
 function fib(n) {
   if (n < 0 || Math.trunc(n) != n) {
-    throw new Error("Must not be negative, and also an integer.");
+    throw new Error("Manfiy bo'lmasligi kerak, shuningdek butun son ham bo'lishi kerak.");
   }
   return n <= 1 ? n : fib(n - 1) + fib(n - 2);
 }
 
-let start = Date.now();
+let start = sana.now();
 
 try {
-  result = fib(num);
+  natija = fib(num);
 } catch (err) {
-  result = 0;
+  natija = 0;
 *!*
 } finally {
-  diff = Date.now() - start;
+  diff = Sana.now() - start;
 }
 */!*
 
-alert(result || "error occurred");
+alert(result || "error sodir bo'ldi");
 
-alert( `execution took ${diff}ms` );
+alert(`bajarish ${diff}ms vaqtni oldi`);
 ```
 
-You can check by running the code with entering `35` into `prompt` -- it executes normally, `finally` after `try`. And then enter `-1` -- there will be an immediate error, and the execution will take `0ms`. Both measurements are done correctly.
+Kodni `prompt` ga `35` ni kiritish orqali tekshirishingiz mumkin – u `try` (sinab ko'rish) dan keyin `finally` normal tarzda ishlaydi. Keyin `-1`ni kiriting -- darhol xatolik yuz beradi va bajarish `0ms` tezlikda davom etadi. Ikkala o'lchov ham to'g'ri bajarilgan.
 
-In other words, the function may finish with `return` or `throw`, that doesn't matter. The `finally` clause executes in both cases.
+Boshqacha qilib aytganda, funksiya `return` yoki `throw` bilan tugashi mumkin, bu muhim emas. `Finally` bandi ikkala holatda ham bajariladi.
 
 
-```smart header="Variables are local inside `try...catch...finally`"
-Please note that `result` and `diff` variables in the code above are declared *before* `try...catch`.
+```aqlli sarlavha ="Variables (o'zgaruvchilar) mahalliydir `try...catch...finally`"
+E'tibor bering, yuqoridagi koddagi `result` va `diff` o'zgaruvchilari `try... catch` dan *oldin* e'lon qilingan.
 
-Otherwise, if we declared `let` in `try` block, it would only be visible inside of it.
+Aks holda, agar biz `try` blokida `let` deb e`lon qilsak, let faqat uning ichida ko'rinadi.
 ```
 
-````smart header="`finally` and `return`"
-The `finally` clause works for *any* exit from `try...catch`. That includes an explicit `return`.
+````aqlli sarlavha="`finally` va `return`"
+“Finally” bandi “try...catch” dan *har qanday* chiqish uchun ishlaydi. Bunga aniq "return" kiradi.
 
-In the example below, there's a `return` in `try`. In this case, `finally` is executed just before the control returns to the outer code.
+ Quyidagi misolda “try” da “return” mavjud. Bunday holda, "finally" boshqaruv elementi tashqi kodga qaytishidan oldin bajariladi.
 
 ```js run
-function func() {
+funksiya func() {
 
   try {
 *!*
@@ -559,40 +552,39 @@ function func() {
   }
 }
 
-alert( func() ); // first works alert from finally, and then this one
+alert( func() ); // Birinchi finally dan alert ishlaydi, keyin esa bu
 ```
 ````
 
-````smart header="`try...finally`"
+````aqlli sarlavha="`try...finally`"
 
-The `try...finally` construct, without `catch` clause, is also useful. We apply it when we don't want to handle errors here (let them fall through), but want to be sure that processes that we started are finalized.
+`catch` bandisiz `try...finally` konstruktsiyasi ham foydalidir. Biz buni bu yerda xatoliklarni bartaraf etishni istamaganimizda qo'llaymiz, lekin biz boshlagan jarayonlar yakunlanganiga ishonch hosil qilishni xohlaymiz.
 
 ```js
-function func() {
-  // start doing something that needs completion (like measurements)
+funksiya func() {
+  // bajarilishi kerak bo'lgan narsani qilishni boshlang (masalan, o'lchovlar)
   try {
     // ...
   } finally {
-    // complete that thing even if all dies
+    // hamma narsa o'lsa ham bu ishni tugating
   }
 }
 ```
-In the code above, an error inside `try` always falls out, because there's no `catch`. But `finally` works before the execution flow leaves the function.
+Yuqoridagi kodda "try" ichidagi xatolik har doim paydo bo'ladi, chunki "catch" yo'q. Lekin “finally” ijro oqimi funksiyani tark etishidan oldin ishlaydi.
 ````
 
 ## Global catch
 
-```warn header="Environment-specific"
-The information from this section is not a part of the core JavaScript.
+```ogohlantiruvchi sarlavha="Atrof-muhitga xos"
+Ushbu bo'limdagi ma'lumotlar asosiy JavaScriptning bir qismi emas.
 ```
+Tasavvur qilaylik, bizda `try... catch` dan tashqari jiddiy xatolik yuz berdi va skript dasturlash xatosi yoki boshqa dahshatli narsa kabi o‘lib qoldi. 
 
-Let's imagine we've got a fatal error outside of `try...catch`, and the script died. Like a programming error or some other terrible thing.
+Bunday hodisalarga munosabat bildirishning yo'li bormi? Biz xatoni qayd qilishni, foydalanuvchiga biror narsani ko'rsatishni xohlashimiz mumkin (odatda ular xato xabarlarini ko'rmaydi) va hokazo.
 
-Is there a way to react on such occurrences? We may want to log the error, show something to the user (normally they don't see error messages), etc.
+Spetsifikatsiyada hech narsa yo'q, lekin muhitlar odatda buni ta'minlaydi, chunki bu haqiqatan ham foydali. Masalan, Node.js da buning uchun [`process.on("uncaughtException")`](https://nodejs.org/api/process.html#process_event_uncaughtexception) mavjud. Brauzerda esa, aniqlanmagan xatolik yuz berganda ishga tushadigan maxsus [window.onerror](mdn:api/GlobalEventHandlers/onerror) xususiyatiga funksiya belgilashimiz mumkin.
 
-There is none in the specification, but environments usually provide it, because it's really useful. For instance, Node.js has [`process.on("uncaughtException")`](https://nodejs.org/api/process.html#process_event_uncaughtexception) for that. And in the browser we can assign a function to the special [window.onerror](mdn:api/GlobalEventHandlers/onerror) property, that will run in case of an uncaught error.
-
-The syntax:
+Sintaksis:
 
 ```js
 window.onerror = function(message, url, line, col, error) {
@@ -600,21 +592,21 @@ window.onerror = function(message, url, line, col, error) {
 };
 ```
 
-`message`
+`message` (xabar)
 : Error message.
 
 `url`
-: URL of the script where error happened.
+: Xatolik yuz bergan skriptning URL manzili.
 
 `line`, `col`
-: Line and column numbers where error happened.
+: Error yuz bergan satr va ustun raqamlari.
 
 `error`
-: Error object.
+: Error obyekt.
 
-For instance:
+Masalan:
 
-```html run untrusted refresh height=1
+```html-da ishonchsiz yangilanish balandligi = 1
 <script>
 *!*
   window.onerror = function(message, url, line, col, error) {
@@ -623,53 +615,53 @@ For instance:
 */!*
 
   function readData() {
-    badFunc(); // Whoops, something went wrong!
+    badFunc(); // Voy, qandaydir xatolik ro'y berdi!
   }
 
   readData();
 </script>
 ```
 
-The role of the global handler `window.onerror` is usually not to recover the script execution -- that's probably impossible in case of programming errors, but to send the error message to developers.
+`window.onerror` global ishlov beruvchisining roli odatda skriptning bajarilishini tiklash emas -- bu dasturlash xatolarida imkonsiz bo'lishi mumkin, balki xato xabarini ishlab chiquvchilarga yuborishdir.
 
-There are also web-services that provide error-logging for such cases, like <https://errorception.com> or <https://www.muscula.com>.
+<https://errorception.com> yoki <https://www.muscula.com> kabi bunday holatlar uchun xatoliklarni qayd etishni ta'minlaydigan veb-xizmatlar ham mavjud.
 
-They work like this:
+Ular bunday ishlaydi:
 
-1. We register at the service and get a piece of JS (or a script URL) from them to insert on pages.
-2. That JS script sets a custom `window.onerror` function.
-3. When an error occurs, it sends a network request about it to the service.
-4. We can log in to the service web interface and see errors.
+1. Biz xizmatda ro'yxatdan o'tamiz va sahifalarga joylashtirish uchun ulardan JS (yoki skript URL manzili) bo'lagini olamiz.
+2. Ushbu JS skripti maxsus `window.onerror` funksiyasini o'rnatadi.
+3. Xatolik yuzaga kelganda, u bu haqda xizmatga tarmoq so'rovini yuboradi.
+4. Biz xizmat veb-interfeysiga kirishimiz va xatolarni ko'rishimiz mumkin.
+## Xulosa
 
-## Summary
+`try...catch` konstruksiyasi ish vaqtidagi xatolarni boshqarish imkonini beradi. Bu tom ma'noda kodni ishga tushirishga "sinab ko'rish" va unda yuzaga kelishi mumkin bo'lgan xatolarni "tutish" imkonini beradi.
 
-The `try...catch` construct allows to handle runtime errors. It literally allows to "try" running the code and "catch" errors that may occur in it.
-
-The syntax is:
+Sintaksis:
 
 ```js
 try {
-  // run this code
+  // bu kodni ishlatish
 } catch (err) {
-  // if an error happened, then jump here
-  // err is the error object
+  // agar xatolik yuz bergan bo'lsa, bu yerga o'ting
+   // err - err obyekti
 } finally {
-  // do in any case after try/catch
+  // har qanday holatda ham urinib ko'ring / qo'lga oling (try/catch)
 }
 ```
 
 There may be no `catch` section or no `finally`, so shorter constructs `try...catch` and `try...finally` are also valid.
+`Catch` bo‘limi yoki `finally` mavjud bo‘lmasligi mumkin, shuning uchun qisqaroq `try... catch` va `try... finally` ham amal qiladi.
 
-Error objects have following properties:
+Error obyektlar quyidagi xususiyatlarga ega:
 
-- `message` -- the human-readable error message.
-- `name` -- the string with error name (error constructor name).
-- `stack` (non-standard, but well-supported) -- the stack at the moment of error creation.
+- `message` -- inson tomonidan o'qilishi mumkin bo'lgan xato xabari.
+- `name` -- the string with error name (error constructor name). error name bilan satr (error konstruktor nomi).
+- `stack` (nostandart, lekin yaxshi qo'llab-quvvatlanadigan) -- error yaratish vaqtidagi stack.
 
-If an error object is not needed, we can omit it by using `catch {` instead of `catch (err) {`.
+Agar error obyekti kerak bo'lmasa, `catch (err) {` o'rniga `catch {` dan foydalanib uni o'tkazib yuborishimiz mumkin.
 
-We can also generate our own errors using the `throw` operator. Technically, the argument of `throw` can be anything, but usually it's an error object inheriting from the built-in `Error` class. More on extending errors in the next chapter.
+Shuningdek, biz `throw` operatori yordamida o'z xatolarimizni yaratishimiz mumkin. Texnik jihatdan `throw` argumenti har qanday bo'lishi mumkin, lekin odatda bu o'rnatilgan `Error` sinfidan meros bo'lgan xato obyektidir. Keyingi bobda xatolarni kengaytirish haqida ko'proq ma'lumotlarga ega bo'lamiz.
 
-*Rethrowing* is a very important pattern of error handling: a `catch` block usually expects and knows how to handle the particular error type, so it should rethrow errors it doesn't know.
+*Rethrowing* xatolarni qayta ishlashning juda muhim namunasidir: `catch` bloki odatda ma'lum bir xato turini qanday hal qilishni kutadi va biladi, shuning uchun u bilmagan xatolarni qayta tiklashi kerak.
 
-Even if we don't have `try...catch`, most environments allow us to setup a "global" error handler to catch errors that "fall out". In-browser, that's `window.onerror`.
+Agar bizda `try...catch` bo'lmasa ham, ko'pchilik muhitlar "tushib qolgan" xatolarni aniqlash uchun "global" xato ishlov beruvchisini o'rnatishga imkon beradi. Brauzerda bu "window.onerror" deb berilgan.

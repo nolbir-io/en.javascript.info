@@ -1,63 +1,63 @@
 # Long polling
 
-Long polling is the simplest way of having persistent connection with server, that doesn't use any specific protocol like WebSocket or Server Side Events.
+Long polling server bilan doimiy ulanishning eng oddiy usuli bo'lib, u WebSocket yoki Server Side Events kabi maxsus protokollardan foydalanmaydi.
 
-Being very easy to implement, it's also good enough in a lot of cases.
+Amalga oshirish juda oson bo'lib, u ko'p hollarda ham yetarli darajada yaxshi amalga oshiriladi.
 
-## Regular Polling
+## Muntazam Polling
 
-The simplest way to get new information from the server is periodic polling. That is, regular requests to the server: "Hello, I'm here, do you have any information for me?". For example, once every 10 seconds.
+Serverdan yangi ma'lumotlarni olishning eng oddiy usuli bu davriy pollingdir. Ya'ni, serverga muntazam so'rovlar: "Salom, men shu yerdaman, men uchun biron bir ma'lumotingiz bormi?" kabi so'rovlar har 10 soniyada bir marta bajariladi.
 
-In response, the server first takes a notice to itself that the client is online, and second - sends a packet of messages it got till that moment.
+Bunga javoban, server birinchi navbatda mijozning onlayn ekanligi haqida xabar oladi, ikkinchidan - shu paytgacha olingan xabarlar paketini yuboradi.
 
-That works, but there are downsides:
-1. Messages are passed with a delay up to 10 seconds (between requests).
-2. Even if there are no messages, the server is bombed with requests every 10 seconds, even if the user switched somewhere else or is asleep. That's quite a load to handle, speaking performance-wise.
+Bu ishlaydi, ammo kamchiliklar mavjud:
+1. Xabarlar 10 soniyagacha kechikish bilan uzatiladi (so'rovlar orasida).
+2. Xabarlar bo'lmasa ham, foydalanuvchi boshqa joyga o'tgan yoki uxlab yotgan bo'lsa ham, server har 10 soniyada so'rovlar bilan bombalanadi. Ishlash nuqtai nazaridan aytganda, bu juda katta yukdir.
 
-So, if we're talking about a very small service, the approach may be viable, but generally, it needs an improvement.
+Shunday qilib, agar biz juda kichik xizmat haqida gapiradigan bo'lsak, yondashuv hayotiy bo'lishi mumkin, lekin umuman olganda, uni yaxshilash kerak.
 
 ## Long polling
 
-So-called "long polling" is a much better way to poll the server.
+"Long polling" deb ataladigan narsa serverda so'rov o'tkazishning ancha yaxshi usulidir.
 
-It's also very easy to implement, and delivers messages without delays.
+Uni amalga oshirish ham juda oson va xabarlarni kechiktirmasdan yetkazib beradi.
 
-The flow:
+Oqim:
 
-1. A request is sent to the server.
-2. The server doesn't close the connection until it has a message to send.
-3. When a message appears - the server responds to the request with it.
-4. The browser makes a new request immediately.
+1. Serverga so'rov yuboriladi.
+2. Server yuborish uchun xabar bo'lmaguncha ulanishni yopmaydi.
+3. Xabar paydo bo'lganda - server so'rovga u bilan javob beradi.
+4. Brauzer darhol yangi so'rov yuboradi.
 
-The situation when the browser sent a request and has a pending connection with the server, is standard for this method. Only when a message is delivered, the connection is reestablished.
+Brauzer so'rov yuborgan va server bilan kutilayotgan aloqaga ega bo'lgan vaziyat ushbu usul uchun standart hisoblanadi. Faqat xabar yuborilganda, ulanish qayta tiklanadi.
 
 ![](long-polling.svg)
 
-If the connection is lost, because of, say, a network error, the browser immediately sends a new request.
+Agar ulanish, masalan, tarmoq xatosi tufayli yo'qolsa, brauzer darhol yangi so'rov yuboradi.
 
-A sketch of client-side `subscribe` function that makes long requests:
+Uzoq so'rovlarni amalga oshiradigan mijoz tomonidagi `subscribe` funksiyasining eskizi:
 
 ```js
 async function subscribe() {
   let response = await fetch("/subscribe");
 
   if (response.status == 502) {
-    // Status 502 is a connection timeout error,
-    // may happen when the connection was pending for too long,
-    // and the remote server or a proxy closed it
-    // let's reconnect
+    // Status 502 - ulanish vaqti tugashi xatosi,
+    // ulanish juda uzoq vaqt davomida kutilayotganda sodir bo'lishi mumkin,
+    // va masofaviy server yoki proksi uni yopadi
+    // qayta ulanamiz
     await subscribe();
   } else if (response.status != 200) {
-    // An error - let's show it
+    // error - keling, uni ko'rsatamiz
     showMessage(response.statusText);
-    // Reconnect in one second
+    // bir soniyada qayta ulanamiz
     await new Promise(resolve => setTimeout(resolve, 1000));
     await subscribe();
   } else {
-    // Get and show the message
+    // Xabarni oling va ko'rsating
     let message = await response.text();
     showMessage(message);
-    // Call subscribe() again to get the next message
+    // Keyingi xabarni olish uchun subscribe() ga yana qo'ng'iroq qiling
     await subscribe();
   }
 }
@@ -65,34 +65,35 @@ async function subscribe() {
 subscribe();
 ```
 
-As you can see, `subscribe` function makes a fetch, then waits for the response, handles it and calls itself again.
+Ko'rib turganingizdek, `subscribe` funksiyasi yuklaydi, keyin javobni kutadi, uni boshqaradi va yana o'zini chaqiradi.
 
-```warn header="Server should be ok with many pending connections"
-The server architecture must be able to work with many pending connections.
+```warn header="Server ko'plab kutilayotgan ulanishlar bilan yaxshi bo'lishi kerak"
 
-Certain server architectures run one process per connection, resulting in there being as many processes as there are connections, while each process consumes quite a bit of memory. So, too many connections will just consume it all.
+Server arxitekturasi ko'plab kutilayotgan ulanishlar bilan ishlay olishi kerak.
 
-That's often the case for backends written in languages like PHP and Ruby.
+Ba'zi server arxitekturalari har bir ulanish uchun bitta jarayonni ishga tushiradi, natijada ulanishlar qancha bo'lsa, shuncha ko'p jarayonlar mavjud bo'lib, har bir jarayon biroz xotirani sarflaydi. Shunday qilib, juda ko'p ulanishlar hammasini iste'mol qiladi.
 
-Servers written using Node.js usually don't have such problems.
+Ko'pincha PHP va Ruby kabi tillarda yozilgan backendlar uchun shunday bo'ladi.
 
-That said, it isn't a programming language issue. Most modern languages, including PHP and Ruby allow to implement a proper backend. Just please make sure that your server architecture works fine with many simultaneous connections.
+Node.js yordamida yozilgan serverlarda odatda bunday muammolar bo'lmaydi.
+
+Ya'ni, bu dasturlash tili muammosi emas. Ko'pgina zamonaviy tillar, shu jumladan PHP va Ruby backendni to'g'ri amalga oshirishga imkon beradi. Iltimos, server arxitekturasi bir vaqtning o'zida bir nechta ulanishlar bilan yaxshi ishlashiga ishonch hosil qiling.
 ```
 
 ## Demo: a chat
 
-Here's a demo chat, you can also download it and run locally (if you're familiar with Node.js and can install modules):
+Bu yerda demo chat mavjud, siz uni yuklab olishingiz va mahalliy ravishda ishga tushirishingiz mumkin (agar siz Node.js bilan tanish bo'lsangiz va modullarni o'rnata olsangiz):
 
 [codetabs src="longpoll" height=500]
 
-Browser code is in `browser.js`.
+Brauzer kodi `browser.js` da.
 
-## Area of usage
+## Foydalanish sohasi
 
-Long polling works great in situations when messages are rare.
+Xabarlar kam bo'lgan holatlarda long polling juda yaxshi ishlaydi.
 
-If messages come very often, then the chart of requesting-receiving messages, painted above, becomes saw-like.
+Agar xabarlar tez-tez kelib tursa, yuqorida bo'yalgan xabarlarni so'rash-qabul qilish jadvali arraga o'xshaydi.
 
-Every message is a separate request, supplied with headers, authentication overhead, and so on.
+Har bir xabar alohida so'rov bo'lib, sarlavhalar, autentifikatsiya xarajatlari va boshqalar bilan ta'minlanadi.
 
-So, in this case, another method is preferred, such as [Websocket](info:websocket) or [Server Sent Events](info:server-sent-events).
+Shunday qilib, bu holda, boshqa usul afzal ko'riladi, masalan, [Websocket](info:websocket) yoki [Server Sent Events](info:server-sent-events).

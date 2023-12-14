@@ -1,144 +1,144 @@
 
 # Unicode, String internals
 
-```warn header="Advanced knowledge"
-The section goes deeper into string internals. This knowledge will be useful for you if you plan to deal with emoji, rare mathematical or hieroglyphic characters, or other rare symbols.
+```ogohlantiruvchi sarlavha="Ilg'or bilim"
+Bo'lim string ning ichki qismlariga chuqurroq kiradi. Agar siz emoji, noyob matematik, ieroglif yoki boshqa noyob belgilar bilan shug'ullanishni rejalashtirmoqchi bo'lsangiz, bu bilim siz uchun foydali bo'ladi.
 ```
 
-As we already know, JavaScript strings are based on [Unicode](https://en.wikipedia.org/wiki/Unicode): each character is represented by a byte sequence of 1-4 bytes.
+Bizga ma'lumki, JavaScript satrlari [Unicode] (https://en.wikipedia.org/wiki/Unicode) ga asoslangan: har bir belgi 1-4 baytlik bayt ketma-ketligi bilan ifodalanadi.
 
-JavaScript allows us to insert a character into a string by specifying its hexadecimal Unicode code with one of these three notations:
+JavaScript bizga quyidagi uchta belgidan biri bilan oʻn oltilik Unicode kodini koʻrsatib, satrga belgi kiritish imkonini beradi:
 
 - `\xXX`
 
-    `XX` must be two hexadecimal digits with a value between `00` and `FF`, then `\xXX` is the character whose Unicode code is `XX`.
+    `XX` qiymati `00` va `FF` orasidagi ikkita o'n oltilik raqam bo'lishi kerak, keyin `\xXX` Unicode kodi `XX` bo`lgan belgidir.
 
-    Because the `\xXX` notation supports only two hexadecimal digits, it can be used only for the first 256 Unicode characters.
+    `\xXX` belgisi faqat ikkita o'n oltilik raqamni qo'llab-quvvatlaganligi sababli, uni faqat birinchi 256 ta Unicode belgilari uchun ishlatish mumkin.
 
-    These first 256 characters include the Latin alphabet, most basic syntax characters, and some others. For example, `"\x7A"` is the same as `"z"` (Unicode `U+007A`).
+    Ushbu dastlabki 256 ta belgi lotin alifbosi, asosiy sintaksis belgilari va boshqalarni o'z ichiga oladi. Masalan, `"\x7A"` `"z"` (Unicode `U+007A`) bilan bir xil.
 
     ```js run
     alert( "\x7A" ); // z
-    alert( "\xA9" ); // ©, the copyright symbol
+    alert( "\xA9" ); // ©, mualliflik huquqi belgisi
     ```
 
 - `\uXXXX`
-    `XXXX` must be exactly 4 hex digits with the value between `0000` and `FFFF`, then `\uXXXX` is the character whose Unicode code is `XXXX`.
+    `XXXX` qiymati `0000` va `FFFF` oralig'ida bo'lgan aniq 4 olti burchakli raqam bo'lishi kerak, keyin `\uXXXX` Unicode kodi `XXXX` bo`lgan belgidir.
 
-    Characters with Unicode values greater than `U+FFFF` can also be represented with this notation, but in this case, we will need to use a so called surrogate pair (we will talk about surrogate pairs later in this chapter).
+    Unicode qiymatlari `U+FFFF` dan katta bo'lgan belgilar ham ushbu belgi bilan ifodalanishi mumkin, ammo bu holda biz surrogat juftlik deb ataladigan juftlikdan foydalanishimiz kerak (bu bobda keyinroq surrogat juftliklar haqida gaplashamiz).
 
     ```js run
-    alert( "\u00A9" ); // ©, the same as \xA9, using the 4-digit hex notation
-    alert( "\u044F" ); // я, the Cyrillic alphabet letter
-    alert( "\u2191" ); // ↑, the arrow up symbol
+    alert( "\u00A9" ); // ©, 4-raqamli olti burchakli yozuvdan foydalangan holda \xA9 bilan bir xil
+    alert( "\u044F" ); // я, kirill alifbosi harfi
+    alert( "\u2191" ); // ↑, tepaga yo'naltirilgan o'q belgisi
     ```
 
 - `\u{X…XXXXXX}`
 
-    `X…XXXXXX` must be a hexadecimal value of 1 to 6 bytes between `0` and `10FFFF` (the highest code point defined by Unicode). This notation allows us to easily represent all existing Unicode characters.
+    `X…XXXXXX` `0` va `10FFFF` oralig'ida 1 dan 6 baytgacha bo'lgan o'n oltilik qiymat bo`lishi kerak (Unicode tomonidan belgilangan eng yuqori kod nuqtasi). Ushbu belgi bizga barcha mavjud Unicode belgilarini osongina ko'rsatishga imkon beradi.
 
     ```js run
-    alert( "\u{20331}" ); // 佫, a rare Chinese character (long Unicode)
-    alert( "\u{1F60D}" ); // 😍, a smiling face symbol (another long Unicode)
+    alert( "\u{20331}" ); // 佫, noyob xitoycha belgi (uzoq Unicode)
+    alert( "\u{1F60D}" ); // 😍, jilmayib turgan yuz belgisi (boshqa uzun Unicode)
     ```
 
-## Surrogate pairs
+## Surrogat juftliklar
 
-All frequently used characters have 2-byte codes (4 hex digits). Letters in most European languages, numbers, and the basic unified CJK ideographic sets (CJK -- from Chinese, Japanese, and Korean writing systems), have a 2-byte representation.
+Tez-tez ishlatiladigan barcha belgilar 2 baytlik kodlarga ega (4 hex raqam). Aksariyat Yevropa tillaridagi harflar, raqamlar va asosiy birlashtirilgan CJK ideografik to‘plamlari (CJK – xitoy, yapon va koreys yozuv tizimlaridan) 2 baytlik tasvirga ega.
 
-Initially, JavaScript was based on UTF-16 encoding that only allowed 2 bytes per character. But 2 bytes only allow 65536 combinations and that's not enough for every possible symbol of Unicode.
+Dastlab, JavaScript har bir belgi uchun atigi 2 baytga ruxsat beruvchi UTF-16 kodlashiga asoslangan edi. Ammo 2 bayt faqat 65536 kombinatsiyaga ruxsat beradi va bu Unicode-ning barcha mumkin bo'lgan belgilari uchun yetarli emas.
 
-So rare symbols that require more than 2 bytes are encoded with a pair of 2-byte characters called "a surrogate pair".
+Shunday qilib, 2 baytdan ortiq talab qilinadigan noyob belgilar "surrogat juftlik" deb ataladigan 2 baytli belgilar juftligi bilan kodlangan.
 
-As a side effect, the length of such symbols is `2`:
+Yon ta'sir sifatida bunday belgilarning uzunligi `2` ni tashkil qiladi:
 
 ```js run
-alert( '𝒳'.length ); // 2, MATHEMATICAL SCRIPT CAPITAL X
-alert( '😂'.length ); // 2, FACE WITH TEARS OF JOY
-alert( '𩷶'.length ); // 2, a rare Chinese character
+alert( '𝒳'.length ); // 2, MATEMATIK SCRIPT BOSH HARF X
+alert( '😂'.length ); // 2, XURSANDCHILIK KO'Z YOSHLARI bor YUZ
+alert( '𩷶'.length ); // 2, noyob xitoycha belgi
 ```
 
-That's because surrogate pairs did not exist at the time when JavaScript was created, and thus are not correctly processed by the language!
+Buning sababi, JavaScript yaratilgan vaqtda surrogat juftliklar mavjud bo'lmagan va shuning uchun til tomonidan to'g'ri ishlov berilmagan!
 
-We actually have a single symbol in each of the strings above, but the `length` property shows a length of `2`.
+Yuqoridagi satrlarning har birida bizda bitta belgi bor, lekin `length` xususiyati `2` uzunligini ko'rsatadi.
 
-Getting a symbol can also be tricky, because most language features treat surrogate pairs as two characters.
+Belgini olish ham qiyin bo'lishi mumkin, chunki til xususiyatlarining ko'pchiligi surrogat juftlarni ikkita belgi sifatida ko'rib chiqadi.
 
-For example, here we can see two odd characters in the output:
+Misol uchun, bu yerda biz outputda ikkita g'alati belgini ko'rishimiz mumkin:
 
 ```js run
-alert( '𝒳'[0] ); // shows strange symbols...
-alert( '𝒳'[1] ); // ...pieces of the surrogate pair
+alert( '𝒳'[0] ); // g'alati belgilarni ko'rsatadi ...
+alert( '𝒳'[1] ); // ...surrogat juftining qismlari
 ```
 
-Pieces of a surrogate pair have no meaning without each other. So the alerts in the example above actually display garbage.
+Surrogat juftlik qismlari bir-birisiz hech qanday ma'noga ega emas. Shunday qilib, yuqoridagi misoldagi ogohlantirishlar aslida axlatni ko'rsatadi.
 
-Technically, surrogate pairs are also detectable by their codes: if a character has the code in the interval of `0xd800..0xdbff`, then it is the first part of the surrogate pair. The next character (second part) must have the code in interval `0xdc00..0xdfff`. These intervals are reserved exclusively for surrogate pairs by the standard.
+Texnik jihatdan, surrogat juftlarni o'z kodlari orqali ham aniqlash mumkin: agar belgi `0xd800..0xdbff` oralig'ida kodga ega bo'lsa, u surrogat juftlikning birinchi qismidir. Keyingi belgi (ikkinchi qism) `0xdc00..0xdfff` oralig'ida kodga ega bo'lishi kerak. Ushbu intervallar standart bo'yicha faqat surrogat juftliklar uchun ajratilgan.
 
-So the methods [String.fromCodePoint](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint) and [str.codePointAt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/codePointAt) were added in JavaScript to deal with surrogate pairs.
+Shunday qilib, [String.fromCodePoint](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint) va [str.codePointAt](https://developer. mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/codePointAt) surrogat juftliklar bilan ishlash uchun JavaScript-ga qo'shilgan.
 
-They are essentially the same as [String.fromCharCode](mdn:js/String/fromCharCode) and [str.charCodeAt](mdn:js/String/charCodeAt), but they treat surrogate pairs correctly.
+Ular [String.fromCharCode](mdn:js/String/fromCharCode) va [str.charCodeAt](mdn:js/String/charCodeAt) bilan bir xil, biroq ular surrogat juftliklarga to‘g‘ri munosabatda bo‘lishadi.
 
-One can see the difference here:
+Bu yerda farqni ko'rish mumkin:
 
 ```js run
-// charCodeAt is not surrogate-pair aware, so it gives codes for the 1st part of 𝒳:
+// charCodeAt surrogat juftligini bilmaydi, shuning uchun u 𝒳 ning 1-qismi uchun kodlarni beradi:
 
 alert( '𝒳'.charCodeAt(0).toString(16) ); // d835
 
-// codePointAt is surrogate-pair aware
-alert( '𝒳'.codePointAt(0).toString(16) ); // 1d4b3, reads both parts of the surrogate pair
+// codePointAt surrogat juftligini biladi
+alert( '𝒳'.codePointAt(0).toString(16) ); // 1d4b3, surrogat juftlikning ikkala qismini o'qiydi
 ```
 
-That said, if we take from position 1 (and that's rather incorrect here), then they both return only the 2nd part of the pair:
+Ya'ni, agar biz 1-pozitsiyadan olsak (va bu juda noto'g'ri), u holda ikkalasi ham juftlikning faqat 2-qismini qaytaradi:
 
 ```js run
 alert( '𝒳'.charCodeAt(1).toString(16) ); // dcb3
 alert( '𝒳'.codePointAt(1).toString(16) ); // dcb3
-// meaningless 2nd half of the pair
+// ma'nosiz juftlikning 2-yarmi
 ```
 
-You will find more ways to deal with surrogate pairs later in the chapter <info:iterable>. There are probably special libraries for that too, but nothing famous enough to suggest here.
+Surrogat juftliklar bilan ishlashning boshqa usullarini keyinroq <info:iterable> bobida topasiz. Ehtimol, buning uchun maxsus kutubxonalar ham mavjud, ammo bu yerda taklif qilish uchun ma'lum hech narsa yo'q.
 
-````warn header="Takeaway: splitting strings at an arbitrary point is dangerous"
-We can't just split a string at an arbitrary position, e.g. take `str.slice(0, 4)` and expect it to be a valid string, e.g.:
+````ogohlantiruvchi sarlavha="Takeaway: ixtiyoriy nuqtada satrlarni ajratish xavfli"
+Biz shunchaki satrni o'zboshimchalik bilan ajrata olmaymiz, masalan, `str.slice(0, 4)` ni oling va uni haqiqiy qator bo'lishini kuting, masalan:
 
 ```js run
 alert( 'hi 😂'.slice(0, 4) ); //  hi [?]
 ```
 
-Here we can see a garbage character (first half of the smile surrogate pair) in the output.
+Bu yerda biz chiqishda axlat belgisini (tabassum surrogat juftligining birinchi yarmi) ko'rishimiz mumkin.
 
-Just be aware of it if you intend to reliably work with surrogate pairs. May not be a big problem, but at least you should understand what happens.
+Agar siz surrogat juftliklar bilan ishonchli ishlashni xohlasangiz, bundan xabardor bo'ling. Katta muammoga duch kelmaslik uchun hech bo'lmaganda nima sodir bo'layotganini tushunishingiz kerak.
 ````
 
-## Diacritical marks and normalization
+##  Diacritical marks and normalization
 
-In many languages, there are symbols that are composed of the base character with a mark above/under it.
+Ko'pgina tillarda asosiy belgidan iborat bo'lgan belgilar mavjud bo'lib, ular ustida/ostida belgi mavjud.
 
-For instance, the letter `a` can be the base character for these characters: `àáâäãåā`.
+Masalan, `a` harfi ushbu belgilar uchun asosiy belgi bo'lishi mumkin: `àáâäãåā`.
 
-Most common "composite" characters have their own code in the Unicode table. But not all of them, because there are too many possible combinations.
+Eng keng tarqalgan "composite" belgilar Unicode jadvalida o'z kodiga ega. Lekin ularning hammasi ham unday emas, chunki mos kombinatsiyalar juda ko'p.
 
-To support arbitrary compositions, the Unicode standard allows us to use several Unicode characters: the base character followed by one or many "mark" characters that "decorate" it.
+Asossiz kompozitsiyalarni qo'llab-quvvatlash uchun Unicode standarti bizga bir nechta Unicode belgilaridan foydalanishga imkon beradi: asosiy belgidan keyin uni "bezaydigan" bir yoki bir nechta "belgi" belgilari.
 
-For instance, if we have `S` followed by the special "dot above" character (code `\u0307`), it is shown as Ṡ.
+Misol uchun, agar bizda `S`dan keyin maxsus "yuqoridagi nuqta" belgisi (kod`\u0307`) bo'lsa, u Ṡ sifatida ko'rsatiladi.
 
 ```js run
 alert( 'S\u0307' ); // Ṡ
 ```
 
-If we need an additional mark above the letter (or below it) -- no problem, just add the necessary mark character.
+Agar bizga harf ustiga (yoki uning ostida) qo'shimcha belgi kerak bo'lsa -- muammo emas, shunchaki kerakli belgini qo'shing.
 
-For instance, if we append a character "dot below" (code `\u0323`), then we'll have "S with dots above and below": `Ṩ`.
+`Ṩ`. Misol uchun, agar biz "dot below" belgisini qo'shsak (kod `\u0323`), u holda bizda "yuqorida va ostida nuqtali S" bo'ladi: `Ṩ`.
 
-For example:
+Masalan:
 
 ```js run
 alert( 'S\u0307\u0323' ); // Ṩ
 ```
 
-This provides great flexibility, but also an interesting problem: two characters may visually look the same, but be represented with different Unicode compositions.
+Bu katta moslashuvchanlikni ta'minlaydi, lekin ayni paytda qiziqarli muammo: ikkita belgi vizual ravishda bir xil ko'rinishi mumkin, lekin turli Unicode kompozitsiyalari bilan ifodalanadi.
 
 For instance:
 
@@ -148,18 +148,18 @@ let s2 = 'S\u0323\u0307'; // Ṩ, S + dot below + dot above
 
 alert( `s1: ${s1}, s2: ${s2}` );
 
-alert( s1 == s2 ); // false though the characters look identical (?!)
+alert( s1 == s2 ); // noto'g'ri, garchi belgilar bir xil ko'rinsa ham (?!)
 ```
 
-To solve this, there exists a "Unicode normalization" algorithm that brings each string to the single "normal" form.
+Buni hal qilish uchun har bir satrni yagona "normal" shaklga keltiradigan "Unicode normalizatsiya" algoritmi mavjud.
 
-It is implemented by [str.normalize()](mdn:js/String/normalize).
+Bu vazifa [str.normalize()](mdn:js/String/normalize) tomonidan amalga oshiriladi.
 
 ```js run
 alert( "S\u0307\u0323".normalize() == "S\u0323\u0307".normalize() ); // true
 ```
 
-It's funny that in our situation `normalize()` actually brings together a sequence of 3 characters to one: `\u1e68` (S with two dots).
+Qizig'i shundaki, bizning vaziyatimizda `normalize()` aslida 3 ta belgidan iborat ketma-ketlikni bittaga birlashtiradi: `\u1e68` (ikki nuqta bilan S).
 
 ```js run
 alert( "S\u0307\u0323".normalize().length ); // 1
@@ -167,6 +167,6 @@ alert( "S\u0307\u0323".normalize().length ); // 1
 alert( "S\u0307\u0323".normalize() == "\u1e68" ); // true
 ```
 
-In reality, this is not always the case. The reason is that the symbol `Ṩ` is "common enough", so Unicode creators included it in the main table and gave it the code.
+Aslida, bu har doim ham shunday emas. Sababi, `Ṩ` belgisi "yetarlicha keng tarqalgan", shuning uchun Unicode yaratuvchilari uni asosiy jadvalga kiritib, kodni berishgan.
 
-If you want to learn more about normalization rules and variants -- they are described in the appendix of the Unicode standard: [Unicode Normalization Forms](https://www.unicode.org/reports/tr15/), but for most practical purposes the information from this section is enough.
+Agar siz normallashtirish qoidalari va variantlari haqida ko'proq ma'lumotga ega bo'lishni istasangiz -- ular Unicode standartining ilovasida tasvirlangan: [Unicode Normalization Forms](https://www.unicode.org/reports/tr15/), lekin amaliy maqsadlar uchun ushbu bo'limdagi ma'lumotlar yetarli.
