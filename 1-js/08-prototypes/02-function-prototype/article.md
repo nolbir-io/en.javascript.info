@@ -1,13 +1,13 @@
 # F.prototype
 
-Yodda tuting, yangi obyektlar `new F()`kabi konstruktor funksiyalar yordamida yaratilishi mumkin. 
+Yodda tuting, yangi obyektlar `new F()`kabi konstruktor funksiyasi yordamida yaratilishi mumkin. 
 
 Agar `F.prototype` obyekt bo'lsa, bunday holda `new`operator undan `[[Prototype]]` ni yangi obyektga o'rnatish uchun foydalanadi.   
 
 ```smart
-JavaScript boshidayoq prototip merosga ega edi. Bu dasturlash tilining asosiy xususiyatlaridan biri hisoblanadi.  
+JavaScript avval ham prototip merosiga ega bo'lgan. Bu dasturlash tilining asosiy xususiyatlaridan biri hisoblanadi.  
 
-Avval unga to'g'ridan-to'g'ri kirish imkoni yo'q edi. Ishonchli ishlagan yagona narsa ushbu bobda tasvirlangan `"prototype"` xususiyati edi. Shunday qilib hali ham undan foydalanadigan ko'plab matnlar mavjud. 
+Avval unga to'g'ridan-to'g'ri kirish imkoni yo'q edi. Ishonchli ishlagan yagona narsa ushbu bobda tasvirlangan `"prototype"` xususiyati edi. Shunday qilib hali ham undan foydalanadigan ko'plab skriptlar mavjud. 
 ```
 
 Esingizda bo'lsin,  `F.prototype`  bu yerda `F` da `"prototype"` nomli oddiy xususiyatni bildiradi. Bu "prototip" atamasiga o'xshash nomdek eshitiladi, lekin biz bu yerda haqiqatan ham shunday nomga ega oddiy mulkni nazarda tutyapmiz. 
@@ -15,95 +15,95 @@ Esingizda bo'lsin,  `F.prototype`  bu yerda `F` da `"prototype"` nomli oddiy xus
 Quyidagi misolni ko'rib chiqamiz:
 
 ```js run
-let hayvon = {
-  yeydi: true
+let animal = {
+  eats: true
 };
 
-function Quyon(name) {
+function Rabbit(name) {
   this.name = name;
 }
 
 *!*
-quyon.prototype = hayvon;
+rabbit.prototype = animal;
 */!*
 
-let quyon = yangi Quyon("Oq Quyon"); //  quyon.__proto__ == hayvon
+let rabbit = new Rabbit("White rabbit"); //  rabbit.__proto__ == animal
 
-alert( quyon.yeydi ); // true
+alert( rabbit.eats ); // true
 ```
 
-`Quyon.prototype = hayvon` sozlamasi tom ma'noda quyidagi ma'noni bildiradi: "`yangi Quyon` obyekti yaratilganda, uning `[[Prototype]]`, ya'ni prototipini `hayvon`da belgilang". 
+`Rabbit.prototype = animal` sozlamasi tom ma'noda quyidagi ma'noni bildiradi: "`new Rabbit` obyekti yaratilganda, uning `[[Prototype]]`ini `animal`da belgilang". 
 
 Mana natijaviy surat:
 
 ![](proto-constructor-animal-rabbit.svg)
 
-Rasmda `"prototype"`gorizontal o'q bo'lib, oddiy xususiyatlarni ifodalaydi, and `[[Prototype]]`vertikal bo'lib, `quyon` ning `hayvon` dan meros bo'lishini belgilaydi.
+Rasmda `"prototype"`gorizontal o'q bo'lib, oddiy xususiyatlarni ifodalaydi, va `[[Prototype]]`vertikal bo'lib, `rabbit` ning `animal` dan meros bo'lishini belgilaydi.
 
-```smart header="`F.prototype` faqat `yangi F` vaqtida ishlatilgan" `F.prototype` xususiyati faqat `yangi F` chaqiruvi amalga oshirilganda foydalaniladi, u yangi obyektga `[[Prototip]]`ni tayinlaydi.
+```smart header="F.prototype` faqat `new F` vaqtida ishlatilgan" `F.prototype` xususiyati faqat `new F` chaqiruvi amalga oshirilganda foydalaniladi, u yangi obyektga `[[Prototype]]`ni tayinlaydi.
 
-``` Agar yaratilgandan so'ng `F.prototype` xususiyati o'zgarsa (`F.prototype = <boshqa obyekt>`), u holda `yangi F` tomonidan yaratilgan yangi obyektlar `[[Prototype]]' kabi boshqa obyektga ega bo'ladi, lekin allaqachon mavjud obyektlar eskisini saqlab qoladi.
+``` Agar yaratilgandan so'ng `F.prototype` xususiyati o'zgarsa (`F.prototype = <another object>`), u holda `new F` tomonidan yaratilgan yangi obyektlar `[[Prototype]]`` kabi boshqa obyektga ega bo'ladi, lekin allaqachon mavjud obyektlar eskisini saqlab qoladi.
 ```
 
 ## Standart F.prototipi, konstruktor xususiyati
 
 Biz taqdim qilmasak ham har bir funksiya `"prototip"` xususiyatiga ega. 
 
-Standart `"prototip"` funksiyaning o'ziga ishora qiluvchi yagona `konstruktor` xususiyatiga ega obyektdir.
+Standart `"prototip"` funksiyaning o'ziga ishora qiluvchi yagona `constructor` xususiyatiga ega obyektdir.
 
 Masalan:
 
 ```js
-function Quyon() {}
+function Rabbit() {}
 
-/* standart prototip
-Quyon.prototip = { konstruktor: Quyon };
+/* defaultt prototype
+Rabbit.prototype = { constructor: Rabbit };
 */
 ```
 
 ![](function-prototype-constructor.svg)
 
-Biz buni amalda tekshirib k'rishimiz mumkin:
+Biz buni amalda tekshirib ko'rishimiz mumkin:
 
 ```js run
-function Quyon() {}
+function Rabbit() {}
 // by default:
-// Quyon.prototip = { konstruktor: Quyon }
+// Rabbit.prototype = { constructor: Rabbit }
 
-alert( Quyon.prototip.konstruktor == Quyon ); // true
+alert( Rabbit.prototype.constructor == Rabbit ); // true
 ```
-Tabiiyki, agar biz hech narsa qilmasak, `konstruktor` xususiyati `[[Prototip]]` orqali barcha quyonlar uchun mavjud bo'ladi:
+Tabiiyki, agar biz hech narsa qilmasak, `constructor` xususiyati `[[Prototype]]` orqali barcha rabbit uchun mavjud bo'ladi:
 
 ```js run
-function Quyon() {}
+function Rabbit() {}
 // by default:
-// Quyon.prototip = { konstruktor: Quyon }
+// Rabbit.prototype = { constructor: Rabbit }
 
-let quyon = yangi Quyon(); // {konstruktor: Quyon} dan meros bo'ladi
+let rabbit = New Rabbit(); // {constructor: Rabbit} dan meros bo'ladi
 
-alert(quyon.konstruktor == Quyon); // true (prototipdan)
+alert(rabbit.constructor == Rabbit); // true (prototipdan)
 ```
 
 ![](rabbit-prototype-constructor.svg)
 
-Biz `konstruktor` xususiyatidan foydalanib, mavjud obyekt bilan bir xil konstruktor yordamida yangi obyekt yaratishimiz mumkin.
+Biz `constructor` xususiyatidan foydalanib, mavjud obyekt bilan bir xil konstruktor yordamida yangi obyekt yaratishimiz mumkin.
 
 Masalan bunday:
 
 ```js run
-function Quyon(name) {
+function Rabbit(name) {
   this.name = name;
   alert(name);
 }
 
-let quyon = yangi Quyon("Oq Quyon");
+let rabbit = new Rabbit("White Rabbit");
 
 *!*
-let quyon2 = yangi quyon.konstruktor("Qora Quyon");
+let rabbit2 = new rabbit.constructor("Black Rabbit");
 */!*
 ```
 
-Bizdagi obyekt uchun qaysi konstruktor ishlatilganligini bilmagan vaqtimizda (masalan, u uchinchi tomon kutubxonasidan olingan) va biz xuddi shunday boshqasini yaratishimiz kerak bo'lganda, ushbu usul qulay yo'l hisoblanadi.
+Bizdagi obyekt uchun qaysi konstruktor ishlatilganligini bilmagan vaqtimizda (masalan, u uchinchi tomon kutubxonasidan olingandir) va biz xuddi shunday boshqasini yaratishimiz kerak bo'lganda, ushbu usul qulay yo'l hisoblanadi.
 
 Lekin ehtimol `"constructor"` haqidagi eng muhim narsa bu...
 
@@ -116,49 +116,49 @@ Xususan, agar biz standart prototipni bir butun sifatida almashtirsak, unda `"co
 Misol uchun:
 
 ```js run
-function Quyon() {}
-Quyon.prototip = {
-  sakraydi: true
+function Rabbit() {}
+Rabbit.prototype = {
+  jumps: true
 };
 
-let quyon = yangi Quyon();
+let rabbit = new Rabbit();
 *!*
-alert(quyon.konstruktor === Quyon); // false
+alert(rabbit.constructor === Rabbit); // false
 */!*
 ```
 
-Shunday qilib, to'g'ri `"konstruktor"` ni saqlab qolish uchun biz uni butunlay qayta yozish o'rniga standart `"prototip"` ga xususiyatlarni qo'shish/o'chirishni tanlashimiz mumkin:
+Shunday qilib, to'g'ri `"constructor"` ni saqlab qolish uchun biz uni butunlay qayta yozish o'rniga standart `"prototype"` ga xususiyatlarni qo'shish/o'chirishni tanlashimiz mumkin:
 
 ```js
-function Quyon() {}
+function Rabbit() {}
 
-//Quyon.prototip to'liq qayta yozilmaydi
+//Rabbit.prototype to'liq qayta yozilmaydi
 // shunchaki unga qo'shing
-Quyon.prototip.sakraydi = true
-// standart Rabbit.prototip.konstruktor saqlandi
+Rabbit.prototype.jumps = true
+// standart Rabbit.prototype.constructor saqlandi
 ```
 
 Yoki, muqobil ravishda, `constructor` xususiyatini qo'lda qayta yaratish mumkin:
 
 ```js
-Quyon.prototip = {
-  sakraydi: true,
+Rabbit.prototype = {
+  jumps: true,
 *!*
-  konstruktor: Quyon
+  constructor: Rabbit
 */!*
 };
 
-// endi konstructor to'g'ri holatda, chunki uni obyektga qo'shdik
+// endi konstruktor to'g'ri holatda, chunki uni obyektga qo'shdik
 ```
 
 
 ## Xulosa
 
-Ushbu bobda biz konstruktor funksiyasi orqali yaratilgan obyektlar uchun `[[Prototip]]`ni o'rnatish usulini qisqacha tasvirlab berdik. Keyinchalik biz unga tayanadigan yanada rivojlangan dasturlash modellarini ko'ramiz.
+Ushbu bobda biz konstruktor funksiyasi orqali yaratilgan obyektlar uchun `[[Prototype]]`ni o'rnatish usulini qisqacha tasvirlab berdik. Keyinchalik yanada rivojlangan dasturlash modellarini ko'rib chiqamiz.
 
  Hammasi juda oddiy, tushunarli bo'lishi uchun bir nechta eslatmalar mavjud:
 
-- `F.prototype` xususiyati (`[[Prototype]]`bilan adashtirmang) `yangi F()` chaqiruvi amalga oshirilganda, yangi obyektlarning `[[Prototype]]` ini o'rnatadi. 
+- `F.prototype` xususiyatini (`[[Prototype]]`bilan adashtirmang. `new F()` chaqiruvi amalga oshirilganda, yangi obyektlarning `[[Prototype]]` ini o'rnatadi. 
 - `F.prototype` yoki obyekt yoki `null` bo'lishi lozim: boshqa qiymatlar ishlamaydi.
 - `"prototype"` xususiyati faqat konstruktor funksiyasiga o'rnatilganda va `new` orqali chaqirilganda shunday maxsus natija beradi.
 
@@ -169,4 +169,4 @@ let user = {
   prototype: "Bla-bla" // hech qanaqa sehr-jodu emas
 };
 ```
-Barcha funksiyalar `F.prototype = { constructor: F }` ga ega, shuning uchun obekt konstruktorini uning `"konstruktor"` xususiyatiga kirish orqali olishimiz mumkin.
+Barcha funksiyalar `F.prototype = { constructor: F }` ga ega, shuning uchun obekt konstruktorini uning `"constructor"` xususiyatiga kirish orqali olishimiz mumkin.
