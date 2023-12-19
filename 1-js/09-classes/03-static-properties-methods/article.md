@@ -14,7 +14,7 @@ class User {
   }
 }
 
-User.staticMethod(); // to'g'ri
+User.staticMethod(); // true
 ```
 
 Bu aslida uni to'g'ridan-to'g'ri mulk sifatida belgilash bilan bir xil bajariladi:
@@ -26,7 +26,7 @@ User.staticMethod = function() {
   alert(this === User);
 };
 
-User.staticMethod(); // to'g'ri
+User.staticMethod(); // true
 ```
 
 `User.staticMethod()` chaqiruvidagi `this` ning qiymati `User` sinf konstruktoridir ("nuqtadan oldingi obyekt" qoidasi).
@@ -67,7 +67,7 @@ alert( articles[0].title ); // CSS
 
 Bu yerda `Article.compare` usuli maqolalarni solishtirish vositasi sifatida "yuqorida" turadi. Bu maqolaning usuli emas, balki butun sinfning usuli hisoblanadi.
 
-Yana bir misol, "zavod" deb ataladigan usul.
+Yana bir misol, "factory" deb ataladigan usul.
 
  Aytaylik, maqola yaratish uchun bizga bir nechta usullar kerak bo'ladi:
 
@@ -109,7 +109,7 @@ Statik usullar ma'lumotlar bazasi bilan bog'liq sinflarda ma'lumotlar bazasidan 
 Article.remove({id: 12345});
 ```
 
-````ogohlantiruvchi sarlavha="Statik usullar alohida obyektlar uchun mavjud emas"
+````warn header="Statik usullar alohida obyektlar uchun mavjud emas"
 Statik usullar alohida obyektlarda emas, balki sinflarda chaqirilishi mumkin.
 
 E.g. quyidagi kabi kodlar ishlamaydi:
@@ -134,17 +134,17 @@ class Article {
 alert( Article.publisher ); // Ilya Kantor
 ```
 
-That is the same as a direct assignment to `Article`: Bu  `Article` ga to'g'ridan-to'g'ri tayinlash bilan bir xil
+Bu `Article` ga to'g'ridan-to'g'ri tayinlash bilan bir xil:
 
 ```js
 Article.publisher = "Ilya Kantor";
 ```
 
-## Statik xossalar va usullarni meros qilib olish[#statik-va-meros]
+## Statik xossalar va usullarni meros qilib olish
 
 Statik xususiyatlar va usullar meros qilib olinadi.
 
-Masalan, quyidagi kodda berilgan `Animal.compare` va `Animal.planet` meros qilib olingan hamda ulardan `Rabbit.compare` va `Rabbit.planet` kabi foydalamish mumkin:
+Masalan, quyidagi kodda berilgan `Animal.compare` va `Animal.planet` meros qilib olingan hamda ulardan `Rabbit.compare` va `Rabbit.planet` kabi foydalanish mumkin:
 
 ```js run
 class Animal {
@@ -184,7 +184,7 @@ let rabbits = [
 rabbits.sort(Rabbit.compare);
 */!*
 
-rabbits[0].run(); // Black Rabbit (qora quyon) 5 tezlikda yuguradi.
+rabbits[0].run(); // Black Rabbit 5 tezlikda yuguradi.
 
 alert(Rabbit.planet); // Earth
 ```
@@ -195,7 +195,7 @@ Bu qanday ishlaydi? Yana prototiplardan foydalangan holda ishlatilishi mumkin. A
 
 ![](animal-rabbit-static.svg)
 
-Demak, `Rabbit extends Animal` (quyon hayvonni kengaytiradi) ikkita `[[Prototype]]` havola yaratadi:
+Demak, `Rabbit extends Animal` ikkita `[[Prototype]]` havola yaratadi:
 
 1. `Rabbit`  funksiyasi prototip sifatida `Animal` funksiyasidan meros oladi.
 2. `Rabbit.prototype` prototipi sifatida `Animal.prototype` dan meros oladi.
@@ -221,7 +221,7 @@ Statik usullar "butun" sinfga tegishli bo'lgan funksionallik uchun qo'llaniladi.
 
 Masalan, `Article.compare(article1, article2)` taqqoslash usuli yoki `Article.createTodays()` zavod usuli.
 
-Ular sinf deklaratsiyasida `static` so'zi bilan belgilanadi.
+Ular sinf deklaratsiyasida `static` so'zi bilan belgilanadi. 
 
 Statik xususiyatlar biz sinf darajasidagi ma'lumotlarni saqlamoqchi bo'lganimizda ishlatiladi, shuningdek, ular  misol bilan bog'lanmagan.
 
@@ -244,6 +244,6 @@ MyClass.property = ...
 MyClass.method = ...
 ```
 
-Static xususiyatlar va usullar meros qilib olingan.
+Statik xususiyatlar va usullar meros qilib olingan.
 
 `class B extends A` uchun `B` sinf prototipining o'zi `A` ga ishora qiladi: `B.[[Prototype]] = A`. Shunday qilib, agar `B` da maydon topilmasa, qidiruv `A` da davom etadi.
