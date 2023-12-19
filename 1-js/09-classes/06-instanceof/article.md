@@ -1,7 +1,8 @@
 # Sinfni tekshirish: "instanceof"
-`instanceof` operatori obyektning ma`lum bir sinfga tegishliligini tekshirish imkonini beradi. Shuningdek, u merosni hisobga oladi.
 
-Bunday tekshirish ko'p hollarda kerak bo'lishi mumkin. Masalan, u *polimorfik* funksiyani yaratish uchun ishlatilishi mumkin, bu argumentlarni ularning turiga qarab har xil usulda ko'rib chiqadi.
+`instanceof` operatori obyektning ma'lum bir sinfga tegishliligini tekshirish imkonini beradi. Shuningdek, u merosni hisobga oladi.
+
+Bunday tekshirish ko'p hollarda kerak bo'lishi mumkin. Masalan, u *polimorfik* funksiyani yaratish uchun ishlatiladi, bu argumentlarni ularning turiga qarab har xil usulda ko'rib chiqadi.
 
 ## instanceof operatori [#ref-instanceof]
 
@@ -10,7 +11,7 @@ Sintaksisda quyidagicha:
 obj instanceof Class
 ```
 
-Agar `obj` `Class` yoki undan meros bo'lgan sinfga tegishli bo'lsa, u `true`qaytaradi.
+Agar `obj` `Class` yoki undan meros bo'lgan sinfga tegishli bo'lsa, u `true` ni qaytaradi.
 
 Masalan:
 
@@ -35,7 +36,7 @@ function Rabbit() {}
 alert( new Rabbit() instanceof Rabbit ); // true
 ```
 
-...And with built-in classes like `Array`:
+...`Array` kabi bulit-in, ya'ni o'rnatilgan sinflar bilan ham ishlaydi:
 
 ```js run
 let arr = [1, 2, 3];
@@ -45,11 +46,11 @@ alert( arr instanceof Object ); // true
 
 Esda tutingki, `arr` ham `Object` sinfiga tegishli. Buning sababi, `Array`  prototip sifatida `Object` dan meros bo'lib qoladi.
 
-Odatda, `instanceof` tekshirish uchun prototip zanjirini tekshiradi. Shuningdek, biz `Symbol.hasInstance` statik usulida maxsus mantiqni oʻrnatishimiz mumkin.
+Odatda, `instanceof` tekshirish uchun prototip zanjirini tekshiradi. Shuningdek, biz `Symbol.hasInstance` statik usulida maxsus mantiqni o'rnatishimiz mumkin.
 
-`obj instanceof Class` algoritmi taxminan quyidagicha ishlaydi:
+`obj instanceof Class` algoritmi tahminan quyidagicha ishlaydi:
 
-1. Agar `Symbol.hasInstance` statik usuli mavjud boʻlsa, uni shunchaki chaqiring: `Class[Symbol.hasInstance](obj)`. U `true` yoki `false` ni qaytarishi kerak va biz tugatgan bo'lamiz. Shunday qilib, biz `instanceof` harakatini sozlashimiz mumkin.
+1. Agar `Symbol.hasInstance` statik usuli mavjud bo'lsa, uni shunchaki chaqiring: `Class[Symbol.hasInstance](obj)`. U `true` yoki `false` ni qaytarishi kerak va biz tugatgan bo'lamiz. Shunday qilib, biz `instanceof` harakatini sozlashimiz mumkin.
 
     Masalan:
 
@@ -67,7 +68,7 @@ Odatda, `instanceof` tekshirish uchun prototip zanjirini tekshiradi. Shuningdek,
     alert(obj instanceof Animal); // true: Animal[Symbol.hasInstance](obj) chaqiriladi
     ```
 
-2. Aksariyat sinflarda `Symbol.hasInstance` mavjud emas. Bunday holda standart mantiqdan foydalaniladi: `obj instanceOf Class` `Class.prototype` `obj` prototip zanjiridagi prototiplardan biriga teng yoki yo`qligini tekshiradi.
+2. Aksariyat sinflarda `Symbol.hasInstance` mavjud emas. Bunday holda standart mantiqdan foydalaniladi: `obj instanceOf Class` `Class.prototype` `obj` prototip zanjiridagi prototiplardan biriga teng yoki yo'qligini tekshiradi.
 
     Boshqacha qilib aytganda, birin-ketin solishtiriladi:
     ```js
@@ -125,7 +126,7 @@ alert( rabbit instanceof Rabbit ); // false
 
 ## Bonus: turlar uchun Object.prototype.toString
 
-Biz allaqachon bilamizki, oddiy obyektlar `[object Object]` sifatida zanjirga aylantiriladi:
+Allaqachon ma'lumki, oddiy obyektlar `[object Object]` sifatida zanjirga aylantiriladi:
 
 ```js run
 let obj = {};
@@ -136,18 +137,18 @@ alert(obj.toString()); // bir xil
 
 Bu ularning `toString` ni amalga oshirishidir. Ammo `toString` ni aslida undan ham kuchliroq qiladigan yashirin xususiyat mavjud. Biz uni kengaytirilgan `typeof` va `instanceof` uchun muqobil sifatida ishlatishimiz mumkin.
 
-G'alati tuyuladimi? Haqiqatdan ham. Keling, sirni oshkor qilaylik.
+G'alati tuyuladimi? Haqiqatdan ham. Keling, bir sirni oshkor qilamiz.
 
-[Specification](https://tc39.github.io/ecma262/#sec-object.prototype.tostring) boʻyicha oʻrnatilgan `toString` obyektdan chiqarilishi va boshqa istalgan qiymat kontekstida bajarilishi mumkin. Va uning natijasi bu qiymatga bog'liq.
+[Specification](https://tc39.github.io/ecma262/#sec-object.prototype.tostring) bo'yicha o'rnatilgan `toString` obyektdan chiqarilishi va boshqa istalgan qiymat kontekstida bajarilishi mumkin va uning natijasi bu qiymatga bog'liq.
 
 - raqamlar uchun, `[object Number]` bo'ladi
 - boolean uchun, `[object Boolean]`
 - `null` uchun: `[object Null]`
 - `undefined`: `[object Undefined]`
-- arrays, massivlar uchun: `[object Array]`
+- massivlar uchun: `[object Array]`
 - ...va boshqalar uchun (moslashtiriladi).
 
-Keling, namoyish qilaylik:
+Keling, buni ko'rib chiqamiz:
 
 ```js run
 // qulaylik uchun toString usulini o'zgaruvchiga nusxalash
@@ -161,7 +162,7 @@ alert( objectToString.call(arr) ); // [object *!*Array*/!*]
 
 Bu yerda biz [](info:call-apply-decorators) bobida tavsiflanganidek [call](mdn:js/function/call) dan `this=arr` kontekstida `objectToString` funksiyasini bajarish uchun foydalandik.
 
-Ichki `toString` algoritmi `this`ni tekshiradi va tegishli natijani qaytaradi. Ko'proq misollarda ko'rishimiz mumkin:
+Ichki `toString` algoritmi `this` ni tekshiradi va tegishli natijani qaytaradi. Ko'proq misollarda ko'rishimiz mumkin:
 
 ```js run
 let s = Object.prototype.toString;
@@ -173,7 +174,7 @@ alert( s.call(alert) ); // [object Function]
 
 ### Symbol.toStringTag
 
-`toString` obyektining xatti-harakati `Symbol.toStringTag` maxsus obyekt xususiyati yordamida moslashtirilishi mumkin.
+`toString` obyektining xatti-harakati `Symbol.toStringTag` maxsus obyekt xususiyati yordamida moslashtiriladi.
 
 Masalan:
 
@@ -196,11 +197,11 @@ alert( {}.toString.call(window) ); // [object Window]
 alert( {}.toString.call(new XMLHttpRequest()) ); // [object XMLHttpRequest]
 ```
 
-Ko'rib turganingizdek, natija aynan `Symbol.toStringTag` (agar mavjud bo'lsa), `[ob'ekt ...]` ichiga o'ralgan.
+Ko'rib turganingizdek, natija aynan `Symbol.toStringTag` (agar mavjud bo'lsa), `[object ...]` ichiga o'ralgan.
 
-Oxirida bizda "steroidlar turi" mavjud bo'lib, u nafaqat oddiy ma'lumotlar turlari uchun, balki o'rnatilgan obyektlar uchun ham ishlaydi va hatto moslashtirilishi mumkin.
+Oxirida "steroidlar turi" mavjud bo'lib, u nafaqat oddiy ma'lumotlar turlari uchun, balki o'rnatilgan obyektlar uchun ham ishlaydi va hatto moslashtirilishi mumkin.
 
-Agar biz faqat tekshirish uchun emas, balki satr sifatida turni olishni xohlasak, o'rnatilgan obyektlar uchun `instanceof` o'rniga `{}.toString.call` dan foydalanishimiz mumkin.
+Agar biz faqat tekshirish uchun emas, balki satr sifatida turni olishni xohlasak, o'rnatilgan obyektlar uchun `instanceof` o'rniga `{}.toString.call` dan foydalanamiz.
 
 ## Xulosa
 
@@ -211,6 +212,6 @@ Keling, biz bilgan turdagi tekshirish usullarini umumlashtiramiz:
 | `{}.toString` | primitivlar, o'rnatilgan obyektlar, `Symbol.toStringTag` mavjud obyektlar  | zanjir |
 | `instanceof`  | obyektlar    |  to'g'ri/xato   |
 
-As we can see, `{}.toString` is technically a "more advanced" `typeof`. Ko‘rib turganimizdek, `{}.toString` texnik jihatdan rivojlangan `typeof` hisoblanadi. 
+Ko'rib turganimizdek, `{}.toString` texnik jihatdan rivojlangan `typeof` hisoblanadi. 
 
-Biz sinf ierarxiyasi bilan ishlayotganimizda va merosni hisobga olgan holda sinfni tekshirishni xohlayotganimizda `instanceof` operatori haqiqatan ham porlaydi.
+Biz sinf ierarxiyasi bilan ishlayotganimizda va merosni hisobga olgan holda sinfni tekshirishni xohlayotganimizda `instanceof` operatori haqiqatan ham porlaydi. 
