@@ -1,7 +1,7 @@
 
 # # O'rnatilgan sinflarni kengaytirish
 
-Array (to'plam), map (xarita) va boshqalar kabi o'rnatilgan sinflar ham kengaytirilishi mumkin.
+Array (to'plam), map (xarita) va boshqa o'rnatilgan sinflar ham kengaytirilishi mumkin.
 
 Misol uchun, bu yerda `PowerArray` mahalliy `Array` dan meros oladi:
 
@@ -21,18 +21,18 @@ alert(filteredArr); // 10, 50
 alert(filteredArr.isEmpty()); // false
 ```
 
-Iltimos, juda qiziq narsaga e'tibor bering. `filter` , `map` va boshqalar kabi o'rnatilgan usullar -- `PowerArray` turidagi yangi obyektlarni qaytaradi. Ularning ichki amalga oshirilishi uchun obyektning `constructor` xususiyatidan foydalaniladi.
+Iltimos, bir qiziq narsaga e'tibor bering. `filter` , `map` va boshqalar kabi o'rnatilgan usullar -- `PowerArray` turidagi yangi obyektlarni qaytaradi. Ularning ichki tarzda amalga oshirilishi uchun obyektning `constructor` xususiyatidan foydalaniladi.
 
-Yuqoridagi misolda berilganki:
+Yuqoridagi misolga diqqat qiling:
 ```js
 arr.constructor === PowerArray
 ```
 
 `arr.filter()` chaqirilganda, u asosiy `Array` emas, aynan `arr.constructor` yordamida yangi natijalar qatorini yaratadi. Bu aslida juda zo'r, chunki biz natijada `PowerArray` usullaridan foydalanishni davom ettirishimiz mumkin.
 
-Bundan tashqari, biz bu xatti-harakatni sozlashimiz mumkin.
+Bundan tashqari, bu xatti-harakatni sozlashimiz mumkin.
 
-Biz sinfga maxsus statik qabul qiluvchi `Symbol.species` ni qo'shishimiz mumkin. Agar u mavjud bo'lsa, u `map`, `filter` va hokazolarda yangi obyektlar yaratish uchun JavaScript ichki ishlatadigan konstruktorni qaytarishi kerak.
+Biz sinfga maxsus statik qabul qiluvchi `Symbol.species` ni qo'shsak bo'ladi. Agar u mavjud bo'lsa, `map`, `filter` va hokazolarda yangi obyektlar yaratish uchun JavaScript ichki ishlatadigan konstruktorni qaytarishi kerak.
 
 Oddiy massivlarni qaytarish uchun `map` yoki `filter` kabi o'rnatilgan usullarni xohlasak, `Symbol.species` da `Array`ni qaytarishimiz mumkin, masalan:
 
@@ -64,7 +64,7 @@ alert(filteredArr.isEmpty()); // Xato: filteredArr. bo'sh va u funksiya emas
 
 Ko'rib turganingizdek, endi `.filtr` `Array`ni qaytaradi. Shunday qilib, kengaytirilgan funksiya boshqa o'tkazilmaydi.
 
-```aqlli sarlavha="Boshqa to'plamlar xuddi shunday ishlaydi"
+```smart header="Boshqa to'plamlar xuddi shunday ishlaydi"
 "Map" va "Set" kabi boshqa to'plamlar bir xil ishlaydi. Ular `Symbol.species` dan ham foydalanadilar.
 ```
 
@@ -76,9 +76,9 @@ Allaqachon bizga ma'lumki,  mahalliy sinflar bir-birini kengaytiradi. Masalan, `
 
 Odatda, bir sinf boshqasini kengaytirganda, statik va statik bo'lmagan usullar meros qilib olinadi. Bu maqolada batafsil tushuntirilgan [](info:static-properties-methods#statics-and-inheritance).
 
-O'rnatilgan sinflar bundan istisno. Ular bir-biridan statiklarni meros qilib olmaydi.
+O'rnatilgan sinflar bundan mustisno. Ular bir-biridan statiklarni meros qilib olmaydi.
 
-Masalan, `Array` ham, `Date` ham `Object`dan meros bo‘lib, ularning misollarida `Object.prototype` usullari mavjud. Lekin `Array.[[Prototype]]` `Object`ga havola qilmaydi, shuning uchun, masalan, `Array.keys()` (yoki `Date.keys()`) statik usuli mavjud emas.
+Masalan, `Array` ham, `Date` ham `Object`dan meros bo'lib, ularning misollarida `Object.prototype` usullari mavjud. Lekin `Array.[[Prototype]]` `Object`ga havola qilmaydi, shuning uchun `Array.keys()` (yoki `Date.keys()`) statik usuli mavjud emas.
 
 Bu yerda `Date` va `Object` uchun rasm strukturasi berilgan:
 
