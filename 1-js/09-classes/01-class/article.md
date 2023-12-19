@@ -5,17 +5,17 @@
 Obyektga yo'naltirilgan dasturlashda *sinf* obyektlarni yaratish uchun kengaytiriladigan dastur-kod-shablon bo'lib, holat (a'zo o'zgaruvchilar) va xatti-harakatlarning amalga oshirilishi (a'zo funksiyalari yoki usullari) uchun boshlang'ich qiymatlarni taqdim etadi.
 ```
 
-Amalda, biz ko'pincha bir xil turdagi ko'plab obyektlarni yaratishimiz kerak, masalan, foydalanuvchilar yoki tovarlar yoki boshqalar.
+Amalda, biz ko'pincha bir xil turdagi ko'plab obyektlarni yaratishimiz kerak, masalan, foydalanuvchilar, tovarlar yoki boshqalar.
 
 <info:constructor-new> bobidan ma'lumki, `new function`, ya'ni yangi funksiya bizga yordam bera oladi.
 
-Ammo zamonaviy JavaScript-da obyektga yo'naltirilgan dasturlash uchun foydali bo'lgan ajoyib yangi xususiyatlarni taqdim etadigan yanada rivojlangan "sinf" konstruktsiyasi mavjud.
+Ammo zamonaviy JavaScriptda obyektga yo'naltirilgan dasturlash uchun foydali bo'lgan ajoyib yangi xususiyatlarni taqdim etadigan yanada rivojlangan "sinf" konstruktsiyasi mavjud.
 
 ## "sinf" sintaksisi
 
 Asosiy sintaksis bu:
 ```js
-sinf MeningSinfim {
+class MyClass  {
   // sinf metodlari
   constructor() { ... }
   method1() { ... }
@@ -32,7 +32,7 @@ Obyektni ishga tushirish uchun `constructor()` metod chaqiruvi `new` orqali avto
 Masalan:
 
 ```js run
-sinf Foydalanuvchi {
+class User {
 
   constructor(name) {
     this.name = name;
@@ -45,18 +45,18 @@ sinf Foydalanuvchi {
 }
 
 // Usage:
-let foydalanuvchi = yangi Foydalanuvchi("John");
+let user = new User("John");
 user.sayHi();
 ```
 
-Qachonki `yangi Foydalanuvchi ("John")` chaqirilganda:
+Qachonki `new User ("John")` chaqirilganda:
 1. Yangi obyekt yaratiladi
 2. `constructor` berilgan argument bilan ishlaydi va uni `this.name` ga tayinlaydi.
 
 ...Keyin biz `user.sayHi()` kabi obyekt metodlarini chaqira olamiz.
 
 
-```ogohlantiruvchi sarlavha="sinf metodlari orasida vergul qo'yilmaydi"
+```warn header="sinf metodlari orasida vergul qo'yilmaydi"
 Yangi dasturchilar yo'l qo'yadigan ko'p xatolardan biri - bu sinf usullari orasiga vergul qo'yish, bu hol esa sintaksis xatosiga olib keladi.
 
 Bu yerda yozuvni obyekt harflari bilan aralashtirib yubormaslik kerak. Sinf ichida vergul qo'yish shart emas.
@@ -64,11 +64,11 @@ Bu yerda yozuvni obyekt harflari bilan aralashtirib yubormaslik kerak. Sinf ichi
 
 ## Sinf nima?
 
-Demak, `sinf` qanday ma'noni anglatadi? Bu ko'pchilik o'ylashi mumkin bo'lgan til darajasidagi mutlaqo yangi obyekt emas.
+Demak, `class` qanday ma'noni anglatadi? Bu ko'pchilik o'ylashi mumkin bo'lgan til darajasidagi mutlaqo yangi obyekt emas.
 
  Keling, har qanday sehrni ochib, sinf aslida nima ekanligini bilib olamiz. Bu ko'plab murakkab jihatlarni tushunishga yordam beradi.
 
-JavaScript-da sinf o'ziga xos funktsiyadir.
+JavaScriptda sinf o'ziga xos funksiyadir.
 
 Bu yerda o'zingiz ko'rishingiz mumkin:
 
@@ -86,10 +86,10 @@ alert(typeof User); // function
 
 `class User {...}` konstruktori aynan qanday vazifalarni bajaradi:
 
-1. Sinf deklaratsiyasining natijasi bo'lgan `User` nomli funktsiyani yaratadi. Funktsiya kodi `constructor` usulidan olingan (agar biz bunday usulni yozmasak, bo'sh deb hisoblanadi).
+1. Sinf deklaratsiyasining natijasi bo'lgan `User` nomli funktsiyani yaratadi. Funksiya kodi `constructor` usulidan olingan (agar biz bunday usulni yozmasak, bo'sh deb hisoblanadi).
 2. `User.prototype`da `sayHi` kabi sinf metodlarini saqlaydi. 
 
-`new User` obyekti yaratilgandan so`ng, biz uning usulini chaqirganimizda, <info:function-prototype> bobida tasvirlanganidek, u prototipdan olinadi. Shunday qilib, obyekt sinf usullariga kirish huquqiga ega.
+`new User` obyekti yaratilgandan so'ng, biz uning usulini chaqirganimizda, <info:function-prototype> bobida tasvirlanganidek, u prototipdan olinadi. Shunday qilib, obyekt sinf usullariga kirish huquqiga ega.
 
 Biz `class User` deklaratsiyasining natijasini quyidagicha tasvirlashimiz mumkin:
 
@@ -118,16 +118,16 @@ alert(Object.getOwnPropertyNames(User.prototype)); // konstruktor, sayHi
 
 ## Faqatgina sintaktik shakar emas
 
-Ba'zan odamlar `class` bu "sintaktik shakar", deb aytishadi, (sintaksisni o'qishni osonlashtirish uchun yaratilgan, ammo yangi hech narsa kiritmaydi), chunki biz `class` kalit so'zidan foydalanmasdan ham xuddi shu narsani e'lon qilishimiz mumkin:
+Ba'zan odamlar `class` bu "sintaktik shakar", deb aytishadi, (sintaksisni o'qishni osonlashtirish uchun yaratilgan, ammo hech qanday yangilik kiritmaydi), chunki biz `class` kalit so'zidan foydalanmasdan ham xuddi shu narsani e'lon qilishimiz mumkin:
 
 ```js run
-// sof funktsiyalarda foydalanuvchi sinfini qayta yozish
+// sof funksiyalarda foydalanuvchi sinfini qayta yozish
 
 // 1. Konstruktor funksiyasini yaarting
 function User(name) {
   this.name = name;
 }
-// funktsiya prototipi sukut bo'yicha "konstruktor" xususiyatiga ega,
+// funksiya prototipi sukut bo'yicha "konstruktor" xususiyatiga ega,
 // shuning uchun uni yaratishimiz shart emas
 
 // 2. Prototipga metodni qo'shing
@@ -144,7 +144,7 @@ Ushbu ta'rifning natijasi tahminan bir xil. Shunday qilib, `class` ni konstrukto
 
 Ammo bu yerda muhim farqlar mavjud:
 
-1. Birinchidan, `sinf` tomonidan yaratilgan funksiya maxsus ichki xususiyat `[[IsClassConstructor]] bilan belgilanadi: true`. Shunday qilib, uni qo'lda yaratish bilan butunlay bir xil emas.
+1. Birinchidan, `class` tomonidan yaratilgan funksiya maxsus ichki xususiyat `[[IsClassConstructor]]: true` bilan belgilanadi. Shunday qilib, uni qo'lda yaratish bilan butunlay bir xil emas.
 
   Til bu xususiyatni turli joylarda tekshiradi. Masalan, oddiy funksiyadan farqli ravishda, uni `new` bilan chaqirish kerak:
 
@@ -156,7 +156,7 @@ Ammo bu yerda muhim farqlar mavjud:
     alert(typeof User); // function
     User(); // Error: Sinf konstruktori foydalanuvchisini "new"siz chaqirib bo'lmaydi
     ```
-   Bundan tashqari, ko'pgina JavaScript dvigatellarida sinf konstruktorining qatorli ko'rinishi "sinf..." bilan boshlanadi.
+   Bundan tashqari, ko'pgina JavaScript dvigatellarida sinf konstruktorining qatorli ko'rinishi "class..." bilan boshlanadi.
 
     ```js run
     class User {
@@ -170,16 +170,16 @@ Ammo bu yerda muhim farqlar mavjud:
 2.  Sinf usullarini sanab bo'lmaydi.
   Sinf ta'rifi `"prototype"` dagi barcha usullar uchun `enumerable` bayroqni `false` ga o'rnatadi.
 
-    That's good, because if we `for..in` over an object, we usually don't want its class methods. Bu yaxshi, chunki obyekt ustida `for..in` bo'lsa, bizga odatda uning sinf usullari kerak bo'lmaydi.
+    Bu yaxshi, chunki obyekt ustida `for..in` bo'lsa, bizga odatda uning sinf usullari kerak bo'lmaydi.
 
-3. Sinflar har doim `use strict` , qat'iy foydalanadi.
+3. Sinflar har doim `use strict`, qat'iy foydalaniladi.
      Sinf konstruktsiyasi ichidagi barcha kodlar avtomatik ravishda qattiq rejimda bo'ladi.
 
 Bundan tashqari, `class` sintaksisi biz keyinroq o'rganadigan boshqa ko'plab xususiyatlarga ega.
 
 ## Sinf Ifodasi
 
-Just like functions, classes can be defined inside another expression, passed around, returned, assigned, etc. Huddi funksiyalar kabi, sinflar ham boshqa ifoda ichida aniqlanishi, o'tkazilishi, qaytarilishi va tayinlanishi mumkin.
+Huddi funksiyalar kabi, sinflar ham boshqa ifoda ichida aniqlanishi, o'tkazilishi, qaytarilishi va tayinlanishi mumkin.
 
 Quyida sinf ifodasi bilan bog'liq bir misolni ko'ramiz:  
 
@@ -197,7 +197,7 @@ Agar sinf ifodasining nomi bo'lsa, u faqat sinf ichida ko'rinadi:
 
 ```js run
 // "Nomli sinf ifodasi"
-// (spetsda bunday atama yo'q, lekin bu nomlangan funktsiya ifodasiga o'xshaydi)
+// (spetsda bunday atama yo'q, lekin bu nomlangan funksiya ifodasiga o'xshaydi)
 let User = class *!*MyClass*/!* {
   sayHi() {
     alert(MyClass); // MyClass nomi faqatgina sinf ichida ko'rinadi.
@@ -228,11 +228,11 @@ new User().sayHi(); // Hello
 ```
 
 
-## Oluvchilar va o'rnatuvchilar
+## Oluvchilar va o'rnatuvchilar (getter va setter lar)
 
 Huddi so'zma-so'z obyektlar kabi, sinflar qabul qiluvchilar/o'rnatuvchilar, hisoblangan xususiyatlar va boshqalarni o'z ichiga olishi mumkin.
 
-Here's an example for `user.name` implemented using `get/set`: Mana, `get/set` yordamida amalga oshirilgan `user.name` uchun misol:
+Mana, `get/set` yordamida amalga oshirilgan `user.name` uchun misol:
 
 ```js run
 class User {
@@ -290,7 +290,7 @@ Bunday xususiyatlarni eslab qolish oson, chunki ular haqiqiy obyektlarga o'xshay
 
 ## Sinf maydonlari
 
-```ogohlantiruvchi sarlavha ="Eski brauzerlar uchun polifill, to'ldiruvchi maydon kerak bo'lishi mumkin"
+```warn header ="Eski brauzerlar uchun polifill, to'ldiruvchi maydon kerak bo'lishi mumkin"
 Sinf maydonlari tilga yaqinda qo'shilgan.
 ```
 
@@ -346,11 +346,11 @@ alert(user.name); // John
 
 ### Sinf maydonlari bilan bog'liq usullarni yaratish
 
-<info:bind> bobida ko'rsatilganidek, JavaScript-dagi funksiyalar `this` dinamigiga ega. Bu qo'ng'iroqning kontekstiga bog'liq.
+<info:bind> bobida ko'rsatilganidek, JavaScriptdagi funksiyalar `this` dinamikiga ega. Bu chaqiruvning kontekstiga bog'liq.
 
 Shunday qilib, agar obyekt usuli boshqa kontekstga o'tkazilsa va chaqirilsa, `this` endi uning obyektiga havola bo'lmaydi.
 
-Masalan, bu kod `aniqlanmagan`, deya ko'rsatadi:
+Masalan, bu kod `undefined`, ya'ni aniqlanmagan deya ko'rsatadi:
 
 ```js run
 class Button {
@@ -366,7 +366,7 @@ class Button {
 let button = new Button("hello");
 
 *!*
-setTimeout(button.click, 1000); // aniqlanmagan
+setTimeout(button.click, 1000); // undefined
 */!*
 ```
 
@@ -374,8 +374,8 @@ Ushbu masala " `this` ni yo'qotish" deb nomlanadi.
 
 <info:bind> bobida muhokama qilinganidek, uni hal qilishning ikkita usuli mavjud:
 
-1. `setTimeout(() => button.click(), 1000)` kabi oʻrash funksiyasini oʻtkazing.
-2. Usulni obyektga bog'lang, masalan. konstruktorda.
+1. `setTimeout(() => button.click(), 1000)` kabi o'rash funksiyasini o'tkazing.
+2. Usulni obyektga bog'lang, masalan, konstruktorga.
 
 Sinf maydonlari boshqa sintaksisni taqdim etadi:
 
@@ -417,10 +417,10 @@ class MyClass {
   get something(...) {} // qabul qiluvchi metod
   set something(...) {} // o'rnatuvchi metod
 
-  [Symbol.iterator]() {} // hisoblangan nomli usul (bu erda belgi)
+  [Symbol.iterator]() {} // hisoblangan nomli usul (bu yerda belgi)
   // ...
 }
 ```
-`MyClass` texnik jihatdan funksiyadir (biz `konstruktor` sifatida taqdim etamiz), usullar, qabul qiluvchilar va sozlagichlar esa `MyClass.prototype`ga yoziladi.
+`MyClass` texnik jihatdan funksiyadir (biz `constructor` sifatida taqdim etamiz), usullar, qabul qiluvchilar va sozlagichlar esa `MyClass.prototype` ga yoziladi.
 
  Keyingi boblarda biz sinflar, jumladan, meros va boshqa xususiyatlar haqida ko'proq bilib olamiz.
