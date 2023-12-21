@@ -1,11 +1,11 @@
 
 
-# Tanishtiruv: callbacks (qayta qo'ng'iroqlar)
+# Tanishtiruv: callbacks (qayta chaqiruvlar)
 
-```ogohlantiruvchi sar;avha="Biz bu yerdagi misollarda brauzer usullaridan foydalanamiz"
-Qayta qo'ng'iroqlar, va'dalar va boshqa mavhum tushunchalardan foydalanishni ko'rsatish uchun biz brauzerning ba'zi usullaridan foydalanamiz: xususan, skriptlarni yuklash va oddiy hujjatlarni manipulyatsiya qilish kabilardir.
+```warn header="Biz bu yerdagi misollarda brauzer usullaridan foydalanamiz"
+Qayta chaqiruvlar, va'dalar va boshqa mavhum tushunchalardan foydalanishni ko'rsatish uchun biz brauzerning ba'zi usullaridan foydalanamiz: xususan, skriptlarni yuklash va oddiy hujjatlarni manipulyatsiya qilish kabilar bunga misol bo'ladi.
 
-Agar siz ushbu usullar bilan tanish bo'lmasangiz va ularning misollarda qo'llanilishi chalkash bo'lsa, siz o'quv qo'llanmaning [keyingi qismi](/hujjat) dan bir necha bobni o'qib chiqishingiz mumkin.
+Agar siz ushbu usullar bilan tanish bo'lmasangiz va ularning misollarda qo'llanilishi sizni chalkashtirsa, siz o'quv qo'llanmaning [keyingi qismi](/hujjat) dan bir necha bobni o'qib chiqishingiz mumkin.
 
 Shunga qaramay, biz baribir narsalarni aniqlashtirishga harakat qilamiz. Brauzerda juda murakkab narsa bo'lmaydi.
 ```
@@ -16,7 +16,7 @@ Masalan, shunday funksiyalardan biri `setTimeout` funksiyasidir.
 
 Asinxron harakatlarning boshqa real misollari mavjud, masalan, skriptlar va modullarni yuklash (ularni keyingi boblarda ko'rib chiqamiz).
 
-Berilgan `src` bilan skriptni yuklaydigan `loadScript(src)` funksiyasini ko`rib chiqing:
+Berilgan `src` bilan skriptni yuklaydigan `loadScript(src)` funksiyasini ko'rib chiqing:
 
 ```js
 function loadScript(src) {
@@ -30,7 +30,7 @@ function loadScript(src) {
 
 U hujjatga yangi, dinamik ravishda yaratilgan, berilgan `src` bilan `<script src="...">` tegini kiritadi. Brauzer uni avtomatik ravishda yuklashni boshlaydi va tugallangandan keyin ishlaydi.
 
-Biz ushbu funktsiyadan quyidagicha foydalanishimiz mumkin:
+Biz ushbu funksiyadan quyidagicha foydalanishimiz mumkin:
 ```js
 // berilgan yo'lda skriptni yuklang va bajaring
 loadScript('/my/script.js');
@@ -38,7 +38,7 @@ loadScript('/my/script.js');
 
 Skript "asinxron" bajariladi, chunki u hozir yuklashni boshlaydi, lekin funksiya allaqachon tugaganidan keyin ishlaydi.
 
-Agar `loadScript(...)` ostida biron-bir kod bo'lsa, u skriptni yuklash tugashini kutmaydi.
+Agar `loadScript(...)` ostida biron-bir kod bo'lsa, u skriptni yuklashni tugatishini kutmaydi.
 
 ```js
 loadScript('/my/script.js');
@@ -88,7 +88,7 @@ loadScript('/my/script.js', function() {
 });
 ```
 
-Asosiy fikr: ikkinchi argument amal tugallangandan keyin ishlaydigan funksiya (odatda anonim) hisoblanadi.
+Asosiy fikr: ikkinchi argument vazifa tugallanganidan keyin ishlaydigan funksiya (odatda anonim) hisoblanadi.
 
 Mana haqiqiy skript bilan ishlaydigan misol:
 ```js run
@@ -109,11 +109,11 @@ loadScript('https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js', s
 
 Bu asinxron dasturlashning "callback' ka asoslangan" uslubi deb ataladi. Biror narsani asinxron tarzda bajaradigan funktsiya "callback" argumentini taqdim etishi kerak, bu yerda biz funksiyani tugallangandan keyin ishga tushiramiz.
 
-Bu yerda biz buni `loadScript` da qildik, lekin, albatta, bu umumiy yondashuv.
+Bu yerda biz buni `loadScript` da qildik, lekin, albatta, bu umumiy yondashuv edi.
 
 ## Callback da callback usulini amalga oshirish
 
-Qanday qilib ikkita skriptni ketma-ket yuklashimiz mumkin: birinchisidan boshlash kerakmi yoki ikkinchisi?
+Qanday qilib ikkita skriptni ketma-ket yuklashimiz mumkin: birinchisidan boshlash kerakmi yoki ikkinchisidanmi?
 
 Tabiiy yechim ikkinchi `loadScript` qo'ng'iroqni qayta qo'ng'iroqqa qo'yish bo'ladi, masalan:
 
@@ -172,7 +172,7 @@ function loadScript(src, callback) {
 }
 ```
 
-Muvaffaqiyatli yuklash uchun `callback (null, script)` va aks holda `callback (error)` ni chaqiradi.
+Muvaffaqiyatli yuklash uchun `callback (null, script)` va aks holda, `callback (error)` ni chaqiradi.
 
 Foydalanish:
 ```js
@@ -185,9 +185,9 @@ loadScript('/my/script.js', function(error, script) {
 });
 ```
 
-Yana bir bor, biz `loadScript` uchun ishlatgan retsepti aslida juda keng tarqalgan. Bu "error-birinchi callback" uslubi deb ataladi.
+Yana bir bor, biz `loadScript` uchun ishlatgan retsept aslida juda keng tarqalgan. Bu "error-birinchi callback" uslubi deb ataladi.
 
-Konventsiya quyidagilardan iborat:
+Konvensiya quyidagilardan iborat:
 1. `Callback` ning birinchi argumenti, agar u yuzaga kelgan bo'lsa, error uchun ajratilgan. Keyin `callback(err)` chaqiriladi.
 2. Ikkinchi dalil (agar kerak bo'lsa, keyingilari) muvaffaqiyatli natija uchun zarur. Keyin `callback(null, result1, result2…)`  chaqiriladi.
 
@@ -195,7 +195,7 @@ Yagona `callback` funksiyasi xatolar haqida xabar berish va natijalarni qaytaris
 
 ## Halokat piramidasi
 
-Bir qarashda, bu asenxron kodlash uchun qulay yondashuv kabi ko'rinadi. Va haqiqatan ham shunday. Bir yoki ikkita ichki callback'lar uchun u yaxshi ko'rinadi.
+Bir qarashda, bu asenxron kodlash uchun qulay yondashuv kabi ko'rinadi va haqiqatan ham shunday. Bir yoki ikkita ichki callback'lar uchun u yaxshi ko'rinadi. 
 
 Ammo birin-ketin bajariladigan bir nechta asinxron harakatlar uchun bizda shunday kod bo'ladi:
 
@@ -230,7 +230,7 @@ loadScript('1.js', function(error, script) {
 Yuqoridagi kodda:
 1. Biz `1.js` ni yuklaymiz, agar error bo'lmasa...
 2. Biz `2.js` ni yuklaymiz, agar error bo'lmasa...
-3. Biz `3.js` ni yuklaymiz, agar error bo'lmasa, boshqa `(*)` bajaring.
+3. Biz `3.js` ni yuklaymiz, agar error bo'lmasa, boshqa `(*)` ni bajaring.
 
 Qo'ng'iroqlar ko'proq o'rnatilgan bo'lsa, kod chuqurroq bo'lib boradi va uni boshqarish tobora qiyinlashadi, ayniqsa bizda `...` o'rniga haqiqiy kod mavjud bo'lsa, u ko'proq sikllar, shartli bayonotlar va hokazolarni o'z ichiga olishi mumkin.
 
@@ -298,11 +298,11 @@ function step3(error, script) {
 }
 ```
 
-Ko'rdingizmi? U xuddi shu ishni bajaradi va endi chuqur joylashtirish yo'q, chunki biz har bir amalni alohida yuqori darajadagi funksiyaga aylantirdik.
+Ko'rdingizmi? U xuddi shu ishni bajaradi va endi chuqur joylashtirishga hojat yo'q, chunki biz har bir amalni alohida yuqori darajadagi funksiyaga aylantirdik.
 
-U ishlaydi, lekin kod yirtilgan elektron jadvalga o'xshaydi. O'qish qiyin va siz uni o'qiyotganda bo'laklar orasida ko'z sakrash kerakligini payqagandirsiz. Bu hol ayniqsa o‘quvchi kod bilan tanish bo'lmasa va qayerga ko'z yugurtirishni bilmasa juda noqulay.
+U ishlaydi, lekin kod yirtilgan elektron jadvalga o'xshaydi. O'qish qiyin va uni o'qiyotganda bo'laklar orasida ko'z sakrash kerakligini payqagandirsiz. Bu hol ayniqsa o'quvchi kod bilan tanish bo'lmasa va qayerga ko'z yugurtirishni bilmasa juda noqulay.
 
-Shuningdek, `step*` nomli funksiyalarning barchasi bir martalik qoʻllaniladi, ular faqat "halokat piramidasi"dan qochish uchun yaratilgan. Hech kim ularni harakat zanjiridan tashqarida qayta ishlatmaydi. Demak, bu yerda bir oz nom maydoni chalkashliklari bor.
+Shuningdek, `step*` nomli funksiyalarning barchasi bir martalik qo'llaniladi, ular faqat "halokat piramidasi"dan qochish uchun yaratilgan. Hech kim ularni harakat zanjiridan tashqarida qayta ishlatmaydi. Demak, bu yerda bir oz nom maydoni chalkashliklari bor.
 
 Biz yaxshiroq narsaga ega bo'lishni xohlaymiz.
 
