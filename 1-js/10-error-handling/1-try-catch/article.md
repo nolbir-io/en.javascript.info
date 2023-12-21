@@ -1,7 +1,8 @@
-# Xatolarni nazorat qilish, "try...catch" (sinab ko'rish...tutish)
-Biz dasturlashda qanchalik zo'r bo'lishimizdan qat'iy nazar, ba'zida skriptlarimizda xatolar bo'ladi. Ular bizning xatolarimiz, kutilmagan foydalanuvchi kiritilishi, serverning noto'g'ri javobi va boshqa minglab sabablarga ko'ra yuzaga kelishi mumkin.
+# Xatolarni nazorat qilish, "try...catch" 
 
-Odatda, skript xatolik yuz berganda uni konsolga chop etayotganda "o'ladi" (darhol to'xtaydi).
+Dasturlashda qanchalik mahoratli bo'lishimizdan qat'iy nazar, ba'zida skriptlarimizda xatolar uchraydi. Kutilmagan foydalanuvchi kiritilishi, serverning noto'g'ri javobi va boshqa minglab sabablarga ko'ra xatolar yuzaga kelishi mumkin.
+
+Odatda, skript xatolik yuz bergan payti uni konsolga chop etayotganda "o'ladi", ya'ni darhol to'xtaydi.
 
 Ammo `try...catch` sintaksis konstruksiyasi mavjud bo'lib, u bizga xatolarni “tutib olish” imkonini beradi, shunda skript o'lish o'rniga yanada oqilona ishlay oladi.
 
@@ -55,7 +56,7 @@ Quyida bir nechta misollarni ko'rib chiqamiz.
     ```js run
     try {
 
-      ogohlantirish('try blokining boshlanishi');  // *!*(1) <--*/!*
+      alert('try blokining boshlanishi');  // *!*(1) <--*/!*
 
     *!*
       lalala; // xato, variable aniqlanmagan!
@@ -71,7 +72,7 @@ Quyida bir nechta misollarni ko'rib chiqamiz.
     ```
 
 
-````warn header (0gohlantiruvchi sarlavha)="`try...catch` faqatgina ish vaqtidagi xatolar uchun ishlaydi"
+````warn header ="`try...catch` faqatgina ish vaqtidagi xatolar uchun ishlaydi"
 `Try... catch` ishlashi uchun kod ishga tushirilishi kerak. Boshqacha qilib aytganda, u haqiqiy JavaScript bo'lishi kerak.
 
 Agar kod sintaktik jihatdan noto'g'ri bo'lsa, ishlamaydi, masalan, unda nomunosib figurali qavslar mavjud:
@@ -83,13 +84,13 @@ try {
   alert("Mexanizm bu kodni tushuna olmaydi, u yaroqsiz");
 }
 ```
-JavaScript mexanizmi avval kodni o'qiydi va keyin uni ishga tushiradi. O'qish bosqichida yuzaga keladigan xatolar "parse-time" xatolari deb ataladi va ularni tuzatib bo'lmaydi (kod ichidan). Buning sababi, mexanizm kodni tushunolmaydi.
+JavaScript mexanizmi avval kodni o'qiydi va keyin uni ishga tushiradi. O'qish bosqichida yuzaga keladigan xatolar "parse-time" xatolari deb ataladi va ularni kod ichida tuzatib bo'lmaydi. Buning sababi, mexanizm kodni tushunolmaydi.
 
 Shunday qilib, `try... catch` faqat haqiqiy kodda yuzaga keladigan xatolarni ko'rib chiqishi mumkin. Bunday xatolar "runtime errors" yoki ba'zan "exceptions", ya'ni istisnolar deb ataladi.
 ````
 
 
-````ogohlantiruvchi sarlavha="`try...catch` sinxron tarzda ishlaydi"
+````warn header="`try...catch` sinxron tarzda ishlaydi"
 Agar exception "rejalashtirilgan" kodda, masalan, "setTimeout" da sodir bo'lsa, "try...catch" buni tushunmaydi:
 
 ```js run
@@ -102,9 +103,9 @@ try {
 }
 ```
 
-Buning sababi, funksiyaning o'zi keyinroq, vosita allaqachon "try... catch" konstruktsiyasini tark etganda bajariladi.
+Buning sababi, funksiyaning o'zi keyinroq, vosita allaqachon "try... catch" konstruksiyasini tark etganda bajariladi.
 
-Rejalashtirilgan funktsiya ichidagi istisnoni olishi uchun "try... catch" ushbu funktsiya ichida bo'lishi kerak:
+Rejalashtirilgan funksiya ichidagi istisnoni olishi uchun "try... catch" ushbu funksiya ichida bo'lishi kerak:
 ```js run
 setTimeout(function() {
   try {    
@@ -195,13 +196,13 @@ alert( user.name ); // John
 alert( user.age );  // 30
 ```
 
- JSON haqida batafsil ma'lumotni <info:json> bo'limida topishingiz mumkin.
+ JSON haqida batafsil ma'lumotni <info:json> bo'limidan topishingiz mumkin.
 
-**Agar `json` not'o'g'ri tuzilgan bo'lsa, `JSON.parse` xatolik hosil qiladi, shuning uchun skript “o`ladi”.**
+**Agar `json` not'o'g'ri tuzilgan bo'lsa, `JSON.parse` xatolik hosil qiladi, shuning uchun skript “o'ladi”.**
 
 Faqat shu bilan kifoyalanamizmi? Albatta yo'q!
 
-Shunday qilib, agar ma'lumotlarda biror narsa noto'g'ri bo'lsa, ishlab chiquvchi konsoli ochilmaguncha tashrif buyuruvchi buni hech qachon bilmaydi. Va odamlar hech qanday xato xabarisiz biror narsa "shunchaki o'lganini" yoqtirmaydi.
+Shunday qilib, agar ma'lumotlarda biror narsa noto'g'ri bo'lsa, ishlab chiquvchi konsoli ochilmaguncha tashrif buyuruvchi buni hech qachon bilmaydi. Odamlar hech qanday xato xabarisiz biror narsa "shunchaki o'lganini" yoqtirmaydi.
 
 Xatoni tuzatish uchun `try... catch` dan foydalanamiz:
 
@@ -218,20 +219,20 @@ try {
 } catch (err) {
 *!*
   // ... .ijro bu yerga o'tadi
-  alert( "Uzr so'raymiz, ma'lumotlarda xatolik bor, biz bu haqda yana bir bor so'rashga harakat qilamiz." );
+  alert( "Uzr so'raymiz, ma'lumotlarda xatolik bor, biz bu vaziyatni aniqlashtirishga harakat qilamiz." );
   alert( err.name );
   alert( err.message );
 */!*
 }
 ```
 
-Bu yerda biz `catch` blokidan faqat xabarni ko'rsatish uchun foydalanamiz, lekin biz ko'proq narsani qila olamiz: yangi tarmoq so'rovini yuborish, tashrif buyuruvchiga muqobil taklif qilish, xato haqida ma'lumotni ro'yxatga olish vositasiga yuborish, ... . Hammasi shunchaki o'lishdan ko'ra yaxshiroq.
+Bu yerda biz `catch` blokidan faqat xabarni ko'rsatish uchun foydalanamiz, lekin biz ko'proq narsa qila olamiz: yangi tarmoq so'rovini yuborish, tashrif buyuruvchiga muqobil taklif qilish, xato haqida ma'lumotni ro'yxatga olish vositasiga yuborish... Hammasi shunchaki o'lishdan ko'ra yaxshiroq.
 
 ## O'z xatolarimizdan xalos bo'lish
 
  Agar `json` sintaktik jihatdan to'g'ri bo'lsa-da, lekin talab qilinadigan `name` xususiyatiga ega bo`lmasa-chi?
 
-Bunga o'xshab:
+Quyidagi kabi:
 
 ```js run
 let json = '{ "age": 30 }'; // tugallanmagan ma'lumot
@@ -261,9 +262,9 @@ Sintaksis:
 throw <error object>
 ```
 
-Texnik jihatdan biz har qanday narsani xato obyekti sifatida ishlatishimiz mumkin. Bu hatto raqam yoki satr kabi primitiv blok ham bo'lishi mumkin, lekin obyektlardan afzalroq `name` va `message` xususiyatlariga ega bo'lgan ma'qul (o'rnatilgan xatolarga biroz mos bo'lish uchun).
+Texnik jihatdan biz har qanday narsani xato obyekti sifatida ishlatishimiz mumkin. Bu hatto raqam yoki satr kabi primitiv blok ham bo'lishi mumkin, lekin o'rnatilgan xatolarga biroz mos bo'lish uchun `name` va `message` xususiyatlariga ega bo'lgan ma'qul.
 
-JavaScript-da standart xatolar uchun ko'plab o'rnatilgan konstruktorlar mavjud: `Error`, `SyntaxError`, `ReferenceError`, `TypeError` va boshqalar. Ulardan xato obyektlarini yaratishda ham foydalanishimiz mumkin.
+JavaScriptda standart xatolar uchun ko'plab o'rnatilgan konstruktorlar mavjud: `Error`, `SyntaxError`, `ReferenceError`, `TypeError` va boshqalar. Ulardan xato obyektlarini yaratishda ham foydalanishimiz mumkin.
 
 Ularning sintaksisi:
 
@@ -275,7 +276,7 @@ let error = new ReferenceError(message);
 // ...
 ```
 
-O'rnatilgan xatolar uchun (hech qanday obyekt uchun emas, faqat xatolar uchun) `name` xossasi aynan konstruktor nomidir. Va shuningdek, `message` argumentdan olingan.
+O'rnatilgan xatolar uchun (hech qanday obyekt uchun emas, faqat xatolar uchun) `name` xossasi aynan konstruktor nomidir. Va shuningdek,ular `message` argumentdan olingan.
 
 Masalan:
 
@@ -324,7 +325,7 @@ try {
   alert( "JSON Error: " + err.message ); // JSON Error: Nomukammal ma'lumot: name yo'q
 }
 ```
-`(*)` qatorida `throw` operatori berilgan `message`(xabar) bilan `SyntaxError` hosil qiladi, xuddi JavaScriptning o'zi uni yaratgandek. `try` ning bajarilishi darhol to'xtaydi va boshqaruv oqimi `catch` ga o'tadi.
+Xuddi JavaScriptning o'zi uni yaratgandek, `(*)` qatorida `throw` operatori berilgan `message`(xabar) bilan `SyntaxError` hosil qiladi. `try` ning bajarilishi darhol to'xtaydi va boshqaruv oqimi `catch` ga o'tadi.
 
 Endi `catch` barcha xatolar, `JSON.parse` ni ham qayta ishlash uchun yagona joyga aylandi.
 
@@ -347,16 +348,16 @@ try {
 ```
 Hamma narsa bo'lishi mumkin. Dasturchilar ham xato qiladi. Hatto millionlab odamlar tomonidan o'n yildan beri foydalanilayotgan ochiq manbali yordamchi dasturlarda ham to'satdan xato aniqlanishi mumkin, bu esa dahshatli xakerliklarga olib keladi.
 
-Bizning holatimizda "noto'g'ri ma'lumotlar" errorni topish uchun `try... catch` qo'yiladi. Lekin o'z tabiatiga ko'ra, `catch` `try`dan *barcha* errorni oladi. Bu yerda kutilmagan error yuz beradi, lekin baribir oʻsha `JSON Error` xabarini koʻrsatadi. Bu noto'g'ri va kodni disk raskadrovka qilishni qiyinlashtiradi.
+Bizning holatimizda "noto'g'ri ma'lumotlar" errorni topishi uchun `try... catch` qo'yiladi. `catch` `try`dan *barcha* error olinadi. Bu yerda kutilmagan error yuz beradi, lekin baribir o'sha `JSON Error` xabarini ko'rsatadi. Bu noto'g'ri va kodni disk raskadrovka qilishni qiyinlashtiradi.
 
 Bunday muammolarni oldini olish uchun biz "rethrowing" texnikasidan foydalanishimiz mumkin. Qoida esa oddiy:
 
-**Catch faqat o‘zi bilgan error larni qayta ishlashi va qolganlarini “rethrow” qilishi kerak.**
+**Catch faqat o'zi bilgan error larni qayta ishlashi va qolganlarini “rethrow” qilishi kerak.**
 
 "Rethrowing" texnikasini quyidagicha batafsilroq tushuntirish mumkin:
 
 1. Catch hamma error larni topadi.
-2. `catch (err) {...}` blokida we analyze the error object `err` error obyektini analiz qilamiz.
+2. `catch (err) {...}` blokida `err` error obyektini analiz qilamiz.
 3. Agar buni hal qilolmasak, `throw err` , ya'ni error ni qoldirib ketamiz.
 
 Odatda biz error ning turini `instanceof` operatoridan foydalangan holda tekshiramiz.
@@ -406,7 +407,7 @@ try {
 }
 ```
 
-`Catch` blokining ichidan `(*)` qatoriga yuborilgan xatolik `try...catch`dan “tushadi” va tashqi `try...catch` konstruksiyasi (agar mavjud bo‘lsa) tomonidan ushlanishi mumkin yoki skriptni o'ldiradi.
+`Catch` blokining ichidan `(*)` qatoriga yuborilgan xatolik `try...catch`dan “tushadi” va tashqi `try...catch` konstruksiyasi (agar mavjud bo'lsa) tomonidan ushlanishi mumkin yoki skriptni o'ldiradi. 
 
 Shunday qilib, `catch` bloki aslida qanday hal qilishni biladigan xatolarni ko'rib chiqadi va qolganlarini "o'tkazib yuboradi".
 
@@ -441,11 +442,11 @@ try {
 ```
  Yuqoridagi `readData` faqatgina `SyntaxError` ni nazorat qiloladi, tashqaridagi `try...catch` esa hamma bloklarni nazoratga oladi. 
 
-## try...catch...finally(vanihoyat)
+## try...catch...finally
 
 To'xtang, bu hali hammasi emas.
 
-`try... catch` konstruktsiyasida yana bitta kod bandi bo'lishi mumkin: `finally`.
+`try... catch` konstruksiyasida yana bitta kod bandi bo'lishi mumkin: `finally`.
 
 Agar u mavjud bo'lsa, u barcha sinflarda ishlaydi:
 
@@ -524,13 +525,13 @@ Kodni `prompt` ga `35` ni kiritish orqali tekshirishingiz mumkin – u `try` (si
 Boshqacha qilib aytganda, funksiya `return` yoki `throw` bilan tugashi mumkin, bu muhim emas. `Finally` bandi ikkala holatda ham bajariladi.
 
 
-```aqlli sarlavha ="Variables (o'zgaruvchilar) mahalliydir `try...catch...finally`"
+```smart header ="Variables (o'zgaruvchilar) mahalliydir `try...catch...finally`"
 E'tibor bering, yuqoridagi koddagi `result` va `diff` o'zgaruvchilari `try... catch` dan *oldin* e'lon qilingan.
 
-Aks holda, agar biz `try` blokida `let` deb e`lon qilsak, let faqat uning ichida ko'rinadi.
+Aks holda, agar biz `try` blokida `let` deb e'lon qilsak, let faqat uning ichida ko'rinadi.
 ```
 
-````aqlli sarlavha="`finally` va `return`"
+````smart header ="`finally` va `return`"
 “Finally” bandi “try...catch” dan *har qanday* chiqish uchun ishlaydi. Bunga aniq "return" kiradi.
 
  Quyidagi misolda “try” da “return” mavjud. Bunday holda, "finally" boshqaruv elementi tashqi kodga qaytishidan oldin bajariladi.
@@ -552,11 +553,11 @@ funksiya func() {
   }
 }
 
-alert( func() ); // Birinchi finally dan alert ishlaydi, keyin esa bu
+alert( func() ); // Birinchi finally da alert ishlaydi, keyin esa bu
 ```
 ````
 
-````aqlli sarlavha="`try...finally`"
+````smart header="`try...finally`"
 
 `catch` bandisiz `try...finally` konstruktsiyasi ham foydalidir. Biz buni bu yerda xatoliklarni bartaraf etishni istamaganimizda qo'llaymiz, lekin biz boshlagan jarayonlar yakunlanganiga ishonch hosil qilishni xohlaymiz.
 
@@ -575,14 +576,14 @@ Yuqoridagi kodda "try" ichidagi xatolik har doim paydo bo'ladi, chunki "catch" y
 
 ## Global catch
 
-```ogohlantiruvchi sarlavha="Atrof-muhitga xos"
+```warn header ="Atrof-muhitga xos"
 Ushbu bo'limdagi ma'lumotlar asosiy JavaScriptning bir qismi emas.
 ```
-Tasavvur qilaylik, bizda `try... catch` dan tashqari jiddiy xatolik yuz berdi va skript dasturlash xatosi yoki boshqa dahshatli narsa kabi o‘lib qoldi. 
+Tasavvur qilaylik, bizda `try... catch` dan tashqari jiddiy xatolik yuz berdi va skript dasturlash xatosi yoki boshqa dahshatli narsa tufayli o'lib qoldi. 
 
 Bunday hodisalarga munosabat bildirishning yo'li bormi? Biz xatoni qayd qilishni, foydalanuvchiga biror narsani ko'rsatishni xohlashimiz mumkin (odatda ular xato xabarlarini ko'rmaydi) va hokazo.
 
-Spetsifikatsiyada hech narsa yo'q, lekin muhitlar odatda buni ta'minlaydi, chunki bu haqiqatan ham foydali. Masalan, Node.js da buning uchun [`process.on("uncaughtException")`](https://nodejs.org/api/process.html#process_event_uncaughtexception) mavjud. Brauzerda esa, aniqlanmagan xatolik yuz berganda ishga tushadigan maxsus [window.onerror](mdn:api/GlobalEventHandlers/onerror) xususiyatiga funksiya belgilashimiz mumkin.
+Spesifikatsiyada hech narsa yo'q, lekin muhitlar odatda buni ta'minlaydi, chunki bu haqiqatan ham foydali. Masalan, Node.js da buning uchun [`process.on("uncaughtException")`](https://nodejs.org/api/process.html#process_event_uncaughtexception) mavjud. Brauzerda esa, aniqlanmagan xatolik yuz berganda ishga tushadigan maxsus [window.onerror](mdn:api/GlobalEventHandlers/onerror) xususiyatiga funksiya belgilashimiz mumkin.
 
 Sintaksis:
 
@@ -606,7 +607,7 @@ window.onerror = function(message, url, line, col, error) {
 
 Masalan:
 
-```html-da ishonchsiz yangilanish balandligi = 1
+```html da ishonchsiz yangilanish balandligi = 1
 <script>
 *!*
   window.onerror = function(message, url, line, col, error) {
@@ -648,19 +649,17 @@ try {
   // har qanday holatda ham urinib ko'ring / qo'lga oling (try/catch)
 }
 ```
-
-There may be no `catch` section or no `finally`, so shorter constructs `try...catch` and `try...finally` are also valid.
-`Catch` bo‘limi yoki `finally` mavjud bo‘lmasligi mumkin, shuning uchun qisqaroq `try... catch` va `try... finally` ham amal qiladi.
+`Catch` bo'limi yoki `finally` mavjud bo'lmasligi mumkin, shuning uchun qisqaroq `try... catch` va `try... finally` dan ham foydalansak bo'ladi.
 
 Error obyektlar quyidagi xususiyatlarga ega:
 
 - `message` -- inson tomonidan o'qilishi mumkin bo'lgan xato xabari.
-- `name` -- the string with error name (error constructor name). error name bilan satr (error konstruktor nomi).
+- `name` -- error name bilan satr (error konstruktor nomi).
 - `stack` (nostandart, lekin yaxshi qo'llab-quvvatlanadigan) -- error yaratish vaqtidagi stack.
 
 Agar error obyekti kerak bo'lmasa, `catch (err) {` o'rniga `catch {` dan foydalanib uni o'tkazib yuborishimiz mumkin.
 
-Shuningdek, biz `throw` operatori yordamida o'z xatolarimizni yaratishimiz mumkin. Texnik jihatdan `throw` argumenti har qanday bo'lishi mumkin, lekin odatda bu o'rnatilgan `Error` sinfidan meros bo'lgan xato obyektidir. Keyingi bobda xatolarni kengaytirish haqida ko'proq ma'lumotlarga ega bo'lamiz.
+Shuningdek, biz `throw` operatori yordamida o'z xatolarimizni yaratishimiz mumkin. Texnik jihatdan `throw` argumenti har qanaqa bo'lishi mumkin, lekin odatda bu o'rnatilgan `Error` sinfidan meros bo'lgan xato obyektidir. Keyingi bobda xatolarni kengaytirish haqida ko'proq ma'lumotlarga ega bo'lamiz.
 
 *Rethrowing* xatolarni qayta ishlashning juda muhim namunasidir: `catch` bloki odatda ma'lum bir xato turini qanday hal qilishni kutadi va biladi, shuning uchun u bilmagan xatolarni qayta tiklashi kerak.
 
