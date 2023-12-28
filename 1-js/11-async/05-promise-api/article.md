@@ -1,6 +1,6 @@
 # Promise API
 
-`Promise` sinfida 6 ta statik usul mavjud. Biz bu yerda ulardan foydalanish holatlarini tezda yoritamiz.
+`Promise` sinfida oltita statik usul mavjud. Biz bu yerda ulardan foydalanish holatlarini tezda yoritamiz.
 
 ## Promise.all
 
@@ -16,25 +16,25 @@ Sintaksis:
 let promise = Promise.all(iterable);
 ```
 
-`Promise.all` takrorlanadigan (odatda, bir qator promise'lar) oladi va yangi promise'ni qaytaradi.
+`Promise.all` iterable ni (odatda, bir qator promise'lar) oladi va yangi promise ni qaytaradi.
 
-Yangi promise barcha sanab o'tilgan promise'lar hal qilinganda hal bo'ladi va ularning natijalar qatori uning natijasiga aylanadi.
+Yangi promise barcha sanab o'tilgan promise lar bajarilganda hal bo'ladi va ularning natijalar qatori uning natijasiga aylanadi.
 
-Masalan, quyidagi `Promise.all` 3 soniyadan so‘ng o‘rnatiladi va natijada `[1, 2, 3]` massiv hosil bo‘ladi:
+Masalan, quyidagi `Promise.all` 3 soniyadan so'ng o'rnatiladi va natijada `[1, 2, 3]` massiv hosil bo'ladi:
 
 ```js run
 Promise.all([
   new Promise(resolve => setTimeout(() => resolve(1), 3000)), // 1
   new Promise(resolve => setTimeout(() => resolve(2), 2000)), // 2
   new Promise(resolve => setTimeout(() => resolve(3), 1000))  // 3
-]).then(alert); // 1,2,3 promise'lar tayyor bo'lganda: har bir promise massiv a'zosini qo'shadi
+]).then(alert); // 1,2,3 promise lar tayyor bo'lganda: har bir promise massiv a'zosini qo'shadi
 ```
 
-E'tibor bering, olingan massiv a'zolarining tartibi uning manba promiselari bilan bir xil. Garchi birinchi promiseni hal qilish eng uzoq vaqt talab qilsa ham, u hali ham natijalar qatorida birinchi o'rinda turadi.
+E'tibor bering, olingan massiv a'zolarining tartibi uning manba promise lari bilan bir xil. Garchi birinchi promise ni hal qilish eng uzoq vaqt talab qilsa ham, u hali ham natijalar qatorida birinchi o'rinda turadi.
 
 Umumiy hiyla - bu ish ma'lumotlari massivini promiselar qatoriga solish va keyin uni `Promise.all` ga o'rashdan iborat.
 
-Misol uchun, agar bizda bir qator URL manzillari bo'lsa, ularning barchasini quyidagicha olishimiz mumkin:
+Agar bizda bir qator URL manzillari bo'lsa, ularning barchasini quyidagicha olishimiz mumkin:
 
 ```js run
 let urls = [
@@ -69,7 +69,7 @@ Promise.all(requests)
 
     return responses;
   })
-  // Ularning mazmunini o‘qish uchun javoblar massivini respond.json() qatoriga joylashtiring
+  // Ularning mazmunini o'qish uchun javoblar massivini respond.json() qatoriga joylashtiring
   .then(responses => Promise.all(responses.map(r => r.json())))
   // barcha JSON javoblari tahlil qilinadi: "foydalanuvchilar" ularning massivi
   .then(users => users.forEach(user => alert(user.name)));
@@ -89,17 +89,17 @@ Promise.all([
 ]).catch(alert); // Error: Whoops!
 ```
 
-Bu yerda ikkinchi promise ikki soniya ichida rad etadi. Bu `Promise.all` ning darhol rad etilishiga olib keladi, shuning uchun `.catch` bajariladi: rad etish xatosi butun `Promise.all`ning natijasiga aylanadi.
+Bu yerda ikkinchi promise ikki soniya ichida rad etadi. Bu `Promise.all` ning darhol rad etilishiga olib keladi, shuning uchun `.catch` bajariladi: rad etish xatosi butun `Promise.all` ning natijasiga aylanadi.
 
-```ogohlantiruvchi sarlavha="Error mavjud bo'lsa, boshqa promiselar e'tiborga olinmaydi"
+```warn header="Error mavjud bo'lsa, boshqa promiselar e'tiborga olinmaydi"
 Agar bitta promise rad etilsa, `Promise.all` darhol rad etadi va ro'yxatdagi boshqalarini butunlay unutadi. Ularning natijalari e'tiborga olinmaydi.
 
-For example, if there are multiple `fetch` calls, like in the example above, and one fails, the others will still continue to execute, but `Promise.all` won't watch them anymore. They will probably settle, but their results will be ignored.
+Misol uchun, yuqoridagi misoldagi kabi bir nechta `fetch` qo'ng'iroqlari bo'lsa va ulardan biri bajarilmasa, qolganlari bajarishda davom etadi, lekin `Promise.all` ularni boshqa ko'rmaydi. Ular, ehtimol, hal qilinar, lekin ularning natijalari e'tiborga olinmaydi.
 
-`Promise.all` ularni bekor qilish uchun hech narsa qilmaydi, chunki promiselarda `bekor qilish` tushunchasi yo'q. [Boshqa bobda](info:fetch-abort) biz bu borada yordam berishi mumkin boʻlgan `AbortController`ni koʻrib chiqamiz, lekin bu Promise API ning bir qismi emas.
+`Promise.all` ularni bekor qilish uchun hech narsa qilmaydi, chunki promiselarda "bekor qilish" tushunchasi yo'q. [Boshqa bobda](info:fetch-abort) biz bu borada yordam berishi mumkin boʻlgan `AbortController`ni ko'rib chiqamiz, lekin bu Promise API ning bir qismi emas.
 ```
 
-````aqlli sarlavha="`Promise.all(iterable)` allows non-promise \"regular\" values in `iterable`" "`Promise.all(iterable)`non-promise \"regular\" value ga `iterable` da ruxsat beradi"
+````smart header="` "`Promise.all(iterable)`non-promise \"regular\" value ga `iterable` da ruxsat beradi"
 Odatda, `Promise.all(...)` takrorlanadigan (ko'p hollarda massiv) promiselarni qabul qiladi. Ammo agar ushbu obyektlardan birortasi promise bo'lmasa, u hosil bo'lgan massivga "xuddi shunday" o'tkaziladi.
 
 Masalan, bu yerda `[1, 2, 3]` natijalarni ko'rishingiz mumkin:
@@ -114,7 +114,7 @@ Promise.all([
 ]).then(alert); // 1, 2, 3
 ```
 
-Shunday qilib, biz qulay bo'lgan joyda `Promise.all` ga tayyor qiymatlarni o'tkazishimiz mumkin.
+Shunday qilib, biz qulay bo'lgan joyda `Promise.all` ga tayyor qiymatlarni o'tkazamiz.
 ````
 
 ## Promise.allSettled
@@ -131,7 +131,7 @@ Promise.all([
 ]).then(render); // render usuli barcha olingan natijalarni talab qiladi
 ```
 
-`Promise.allSettled` natijadan qat`iy nazar, barcha promise'lar bajarilishini kutadi. Olingan massiv quyidagilarga ega:
+`Promise.allSettled` natijadan qat'iy nazar, barcha promise'lar bajarilishini kutadi. Olingan massiv quyidagilarga ega:
 
 - `{status:"fulfilled", value:result}` muvaffaqiyatli javoblar uchun,
 - `{status:"rejected", reason:error}` errorlar uchun.
@@ -188,11 +188,11 @@ if (!Promise.allSettled) {
 }
 ```
 
-In this code, `promises.map` takes input values, turns them into promises (just in case a non-promise was passed) with `p => Promise.resolve(p)`, and then adds `.then` handler to every one. Ushbu kodda `promises.map` kirish qiymatlarini oladi, ularni `p => Promise.resolve(p)` bilan va’dalarga aylantiradi (va’da qilinmagan taqdirda) va keyin ularning har biriga `.then` ishlov beruvchisini qo‘shadi.
+Ushbu kodda `promises.map` kirish qiymatlarini oladi, ularni `p => Promise.resolve(p)` bilan promise larga aylantiradi (va'da qilinmagan taqdirda) va keyin ularning har biriga `.then` ishlov beruvchisini qo'shadi.
 
-Bu ishlov beruvchi muvaffaqiyatli natija `qiymat` `{status:'bajarildi', qiymat}`ga va error `sabab`ini{status:'rad etilgan', sabab}`ga aylantiradi. Bu aynan `Promise.allSettled` formati hisoblanadi.
+Bu ishlov beruvchi muvaffaqiyatli natija `value` `{status:'fulfilled', value}`ga va error `sabab`ini{status:'rejected', reason}`ga aylantiradi. Bu aynan `Promise.allSettled` formati hisoblanadi.
 
-Now we can use `Promise.allSettled` to get the results of *all* given promises, even if some of them reject. Hatto ulardan ba'zilari rad etsa ham, endi biz `Promise.allSettled` dan *barcha* berilgan va'dalarning natijalarini olish uchun foydalanishimiz mumkin. 
+Hatto ulardan ba'zilari rad etsa ham, endi biz `Promise.allSettled` dan *barcha* berilgan va'dalarning natijalarini olish uchun foydalanishimiz mumkin. 
 
 ## Promise.race (promise musobaqasi)
 
@@ -213,7 +213,7 @@ Promise.race([
 ]).then(alert); // 1
 ```
 
-Bu yerda birinchi promise eng tezi edi, shuning uchun natija bo'ldi. Birinchi "poygada g'alaba qozonadi" promisedan so'ng, barcha keyingi natijalar/errorlar e'tiborga olinmaydi.
+Bu yerda birinchi promise eng tezi edi, shuning uchun natija bo'ldi. Birinchi "wins the race" promisedan so'ng, barcha keyingi natijalar/errorlar e'tiborga olinmaydi.
 
 ## Promise.any
 
@@ -235,7 +235,7 @@ Promise.any([
 ]).then(alert); // 1
 ```
 
-Bu yerda birinchi promise eng tez edi, lekin u rad etildi, shuning uchun ikkinchi promise natija bo'ldi. Birinchi bajarilgan "poygada g'alaba qozonadi" promisedan so'ng, keyingi barcha natijalar e'tiborga olinmaydi.
+Bu yerda birinchi promise eng tez edi, lekin u rad etildi, shuning uchun ikkinchi promise natija bo'ldi. Birinchi bajarilgan "wins the race" promisedan so'ng, keyingi barcha natijalar e'tiborga olinmaydi.
 
 Mana, barcha promiselar bajarilmasa, misol:
 
@@ -270,7 +270,7 @@ let promise = new Promise(resolve => resolve(value));
 
  Agar funksiya promiseni qaytarishi kutilsa, usul moslik uchun ishlatiladi.
 
-Masalan, quyida joylashgan `loadCached` funksiyasi URL manzilini oladi va uning mazmunini eslab qoladi (keshlaydi). Xuddi shu URL bilan bo'lajak qo'ng'iroqlar uchun u darhol keshdan oldingi tarkibni oladi, lekin bu haqda promise berish uchun `Promise.resolve` dan foydalanadi, shuning uchun qaytarilgan qiymat har doim promise bo'ladi:
+Masalan, quyida joylashgan `loadCached` funksiyasi URL manzilini oladi va uning mazmunini eslab qoladi (keshlaydi). Xuddi shu URL bilan bo'lajak qo'ng'iroqlar uchun u darhol keshdan oldingi tarkibni oladi, lekin bu haqda promise berish uchun `Promise.resolve` dan foydalanadi, shuning uchun qaytarilgan qiymat har doim promise bo'ladi: 
 
 ```js
 let cache = new Map();
@@ -307,7 +307,7 @@ Amalda bu usul deyarli qo'llanilmaydi.
 
 ## Xulosa
 
-`Promise` sinfining 6 ta statik usullari mavjud:
+`Promise` sinfining oltita statik usullari mavjud:
 
 1. `Promise.all(promises)` --barcha promiselarning hal etilishini kutadi va ularning natijalari qatorini qaytaradi. Agar berilgan promiselardan birortasi rad etilsa, bu `Promise.all` erroriga aylanadi va boshqa barcha natijalar e'tiborga olinmaydi.
 2. `Promise.allSettled(promises)` (yaqinda qo'shilgan usul) -- barcha promiselarning bajarilishini kutadi va natijalarini obyektlar qatori sifatida qaytaradi:
