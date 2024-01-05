@@ -5,7 +5,7 @@
 
 Promise darhol hal qilingan bo'lsa ham, *quyida* `.then`/`.catch`/`.finally` satrlaridagi kod bu ishlovchilardan oldin bajariladi.
 
-Mana demo:
+Mana namuna:
 
 ```js run
 let promise = Promise.resolve();
@@ -15,7 +15,7 @@ promise.then(() => alert("promise bajarildi!"));
 alert("kod tugallandi"); // bu ogohlantirish birinchi bo'lib ko'rsatiladi
 ```
 
-Agar siz uni ishga tushirsangiz, avval `kod tugallandi`, keyin esa `promise bajarildi!` degan xabarni koʻrasiz.
+Agar siz uni ishga tushirsangiz, avval `kod tugallandi`, keyin esa `promise bajarildi!` degan xabarni ko'rasiz.
 
 Bu g'alati, chunki promise, albatta, boshidan amalga oshiriladi.
 
@@ -28,9 +28,9 @@ Asinxron vazifalar to'g'ri boshqaruvni talab qiladi. Buning uchun ECMA standarti
 [spetsifikatsiyada] aytilganidek (https://tc39.github.io/ecma262/#sec-jobs-and-job-queues):
 
 - Navbat birinchi bo'lib chiqadi: birinchi navbatda qo'yilgan vazifalar birinchi bo'lib bajariladi.
-- Vazifani bajarish faqat boshqa hech narsa ishlamayotganda boshlanadi.
+- Vazifani bajarish hech narsa ishlamayotganda boshlanadi.
 
-Yoki soddaroq qilib aytganda, promise tayyor bo‘lgach, uning `.then/catch/finally` ishlov beruvchilari navbatga qo‘yiladi; ular hali amalga oshirilmagan. JavaScript mexanizmi joriy koddan ozod bo'lganda, u navbatdan vazifani oladi va uni bajaradi.
+Yoki soddaroq qilib aytganda, promise tayyor bo'lgach, uning `.then/catch/finally` ishlov beruvchilari navbatga qo'yiladi; ular hali amalga oshirilmagan. JavaScript mexanizmi joriy koddan ozod bo'lganda, u navbatdan vazifani oladi va uni bajaradi.
 
 Shuning uchun yuqoridagi misolda "kod tugadi" birinchi bo'lib ko'rsatiladi.
 
@@ -56,7 +56,7 @@ Endi barchasi navbatda ko'rsatilgandek bo'ldi.
 
 <info:promise-error-handling> maqolasidagi `unhandledrejection` hodisasini eslaysizmi?
 
-Endi biz JavaScript-ning hal qilinmagan rad etish borligini qanday aniqlaganini ko'rishimiz mumkin.
+Endi biz JavaScriptning hal qilinmagan rad etish borligini qanday aniqlaganini ko'rishimiz mumkin.
 
 **Mikrovazifalar navbatining oxirida promise errori ishlanmasa, "ishlov berilmagan rad etish" sodir bo'ladi.**
 
@@ -93,17 +93,17 @@ setTimeout(() => promise.catch(err => alert('ushlandi')), 1000);
 window.addEventListener('unhandledrejection', event => alert(event.reason));
 ```
 
-Endi, agar biz uni ishga tushirsak, avval `promise bajarilmadi!`, keyin esa `caught`ni ko‘ramiz.
+Endi, agar biz uni ishga tushirsak, avval `promise bajarilmadi!`, keyin esa `caught`ni ko'ramiz.
 
-Agar biz mikrovazifalar navbati haqida bilmagan bo'lsak, biz hayron bo'lishimiz mumkin: "Nima uchun `unhandledrejection` ishlov beruvchisi ishga tushdi? Biz xatoni aniqladik va tuzatdik!"
+Agar biz mikrovazifalar navbati haqida bilmagan bo'lsak, biz hayron bo'lishimiz mumkin: "Nima uchun `unhandledrejection` ishlov beruvchisi ishga tushdi? Biz xatoni aniqladik va tuzatdik!" 
 
-Ammo endi biz tushunamizki, `unhandledrejection` mikrovazifalar navbati tugallanganda hosil bo‘ladi: vosita promiselarni tekshiradi va agar ulardan biri `rad etilgan` holatda bo‘lsa, hodisa tetiklanadi.
+Ammo endi biz tushunamizki, `unhandledrejection` mikrovazifalar navbati tugallanganda hosil bo'ladi: vosita promiselarni tekshiradi va agar ulardan biri `rejected` holatida bo'lsa, event harakatga keltiriladi. 
 
-Yuqoridagi misolda `setTimeout` tomonidan qo‘shilgan `.catch` ham ishga tushiriladi. Lekin buni keyinroq, `unhandledrejection` sodir bo'lgandan keyin qiladi, shuning uchun u hech narsani o'zgartirmaydi.
+Yuqoridagi misolda `setTimeout` tomonidan qo'shilgan `.catch` ham ishga tushiriladi. Lekin buni keyinroq, `unhandledrejection` sodir bo'lgandan keyin qiladi, shuning uchun u hech narsani o'zgartirmaydi.
 
 ## Xulosa
 
-Promiselarni ko'rib chiqish har doim asinxrondir, chunki barcha promiselar "mikrovazifa navbati" (V8 atamasi) deb ham ataladigan ichki "promise ishlari" navbati orqali o'tadi.
+Promiselarni ko'rib chiqish har doim asinxrondir, chunki barcha promiselar "mikrovazifa navbati" (V8 atamasi) deb ham ataladigan ichki "promise ishlari" navbati orqali o'tadi. 
 
 Shunday qilib, `.then/catch/finally` ishlov beruvchilari har doim joriy kod tugagandan so'ng chaqiriladi.
 
