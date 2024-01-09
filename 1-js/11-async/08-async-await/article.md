@@ -1,19 +1,19 @@
 # Async/await
 
-Promiselar bilan yanada qulayroq uslubda ishlash uchun maxsus "async/await" sintaksis mavjud. Uni tushunish va ishlatish hayratlanarli darajada oson.
+Promiselar bilan yanada qulayroq uslubda ishlash uchun maxsus "async/await" sintaksisi mavjud. Uni tushunish va ishlatish hayratlanarli darajada oson.
 
 ## Async funksiyalari
 
-Keling, `async` kalit so'zidan boshlaylik. Uni funktsiyadan oldin qo'yish mumkin, masalan:
+Keling, `async` kalit so'zidan boshlaylik. Uni funksiyadan oldin joylashtirish mumkin, masalan:
 
 ```js
 async function f() {
   return 1;
 }
 ```
-Funktsiya oldidagi `async` so'zi bitta oddiy narsani anglatadi: funksiya har doim promiseni qaytaradi. Boshqa qiymatlar avtomatik ravishda hal qilingan promisega o'raladi.
+Funksiya oldidagi `async` so'zi bitta oddiy narsani anglatadi: funksiya har doim promiseni qaytaradi. Boshqa qiymatlar avtomatik ravishda hal qilingan promise ga o'raladi.
 
-Masalan, bu funksiya `1` natijasi bilan hal qilingan va’dani qaytaradi; sinab ko'raylik:
+Masalan, bu funksiya `1` natijasi bilan hal qilingan promise ni qaytaradi; sinab ko'raylik:
 
 ```js run
 async function f() {
@@ -23,7 +23,7 @@ async function f() {
 f().then(alert); // 1
 ```
 
-...Biz promiseni aniq qaytarishimiz mumkin, bu xuddi shunday bo'ladi:
+...Biz promise ni aniq qaytarishimiz mumkin, bu xuddi shunday bo'ladi:
 
 ```js run
 async function f() {
@@ -33,7 +33,7 @@ async function f() {
 f().then(alert); // 1
 ```
 
-Shunday qilib, `async` funksiya promiseni qaytarishini ta'minlaydi va unga non-promise larni o'rab oladi. Yetarlicha oddiy, to'g'rimi? Lekin nafaqat bu, yana bir kalit so'z bor, `await`, u faqat `async` funksiyalarida ishlaydi va bu juda zo'r.
+Shunday qilib, `async` funksiya promise ni qaytarishini ta'minlaydi va non-promise larni o'rab oladi. Yetarlicha oddiy, to'g'rimi? Lekin nafaqat bu, yana bir kalit so'z bor, `await`, u faqat `async` funksiyalarida juda zo'r ishlaydi.
 
 ## Await
 
@@ -44,9 +44,9 @@ Sintaksis:
 let value = await promise;
 ```
 
-`await` kalit so‘zi JavaScript-ni promise bajarilguncha kutishga majbur qiladi va natijani qaytaradi.
+`await` kalit so'zi JavaScript-ni promise bajarilguncha kutishga majbur qiladi va natijani qaytaradi.
 
-1 soniyada hal bo'ladigan promiseli misol:
+1 soniyada hal bo'ladigan promise li misol:
 ```js run
 async function f() {
 
@@ -64,13 +64,13 @@ async function f() {
 f();
 ```
 
-Funksiyaning bajarilishi `(*)` qatorida “to'xtatiladi” va promise bajarilgandan so'ng davom etadi va `natija` uning natijasiga aylanadi. Shunday qilib, yuqoridagi kod "bajarildi!" bir soniyada.
+Funksiyaning bajarilishi `(*)` qatorida “to'xtatiladi” va promise bajarilgandan so'ng davom etadi va `result` uning natijasiga aylanadi. Shunday qilib, yuqoridagi kod bir soniyada "bajarildi!".
 
-Ta'kidlab o'tamiz: `await` so'zma-so'z promise bajarilgunga qadar funksiyaning bajarilishini to'xtatib turadi va keyin uni va'da qilingan natija bilan davom ettiradi. Bu protsessor resurslarini talab qilmaydi, chunki JavaScript dvigateli ayni paytda boshqa ishlarni ham bajarishi mumkin: boshqa skriptlarni bajarish, hodisalarni boshqarish va h.k.
+Ta'kidlab o'tamiz: `await` so'zma-so'z promise bajarilgunga qadar funksiyaning bajarilishini to'xtatib turadi va keyin uni va'da qilingan natija bilan davom ettiradi. Bu protsessor resurslarini talab qilmaydi, chunki JavaScript dvigateli ayni paytda boshqa ishlarni ham bajarishi mumkin: boshqa skriptlarni bajarish, hodisalarni boshqarish va hokazo.
 
-Bu `promise.then` dan ko'ra va'da qilingan natijani olishning yanada oqlangan sintaksisidir. Va o'qish va yozish osonroq.
+Bu `promise.then` dan ko'ra va'da qilingan natijani olishning isbotlangan sintaksisidir. Uni o'qish va yozish osonroq.
 
-````ogohlantiruvchi sarlavha= "Odat funksiyalarda await` ni ishlatib bo'lmaydi"
+````warn header= "Odatda funksiyalarda await` ni ishlatib bo'lmaydi"
 Agar biz sinxron bo'lmagan funksiyada "`await` dan foydalanmoqchi bo'lsak, sintaksis xatosi bo'ladi:
 
 ```js run
@@ -82,60 +82,60 @@ function f() {
 }
 ```
 
-Agar funktsiyadan oldin `async` ni qo'yishni unutib qo'ysak, bu xatoga duch kelishimiz mumkin. Yuqorida aytib o'tilganidek, `await` faqat `async` funksiyasi ichida ishlaydi.
+Agar funksiyadan oldin `async` ni qo'yishni unutib qo'ysak, bu xatoga duch kelishimiz mumkin. Yuqorida aytib o'tilganidek, `await` faqat `async` funksiyasi ichida ishlaydi.
 ````
 
 Keling, <info:promise-chaining> bo'limidagi `showAvatar()` misolini olaylik va uni `async/await` yordamida qayta yozamiz:
 
-1. `then` qo‘ng‘iroqlarini `await` bilan almashtirishimiz kerak bo‘ladi.
+1. `then` qo'ng'iroqlarini `await` bilan almashtirishimiz kerak bo'ladi.
 2. Shuningdek, ular ishlashi uchun `async` funksiyasini ham qilishimiz kerak.
 
-```js ishlaydi
-async funksiyasi showAvatar() {
+```js works
+async function showAvatar() {
 
-  // bizning JSON-ni o'qing
+  // read our JSON
    let respond = await fetch('/article/promise-chaining/user.json');
-   foydalanuvchi = javobni kutib tursin.json();
+   let user = await response.json();
 
-  // github userni o'qing
+  // read github user
   let githubResponse = await fetch(`https://api.github.com/users/${user.name}`);
   let githubUser = await githubResponse.json();
 
-  // avatarni ko'rsating
+  // show the avatar
   let img = document.createElement('img');
   img.src = githubUser.avatar_url;
   img.className = "promise-avatar-example";
   document.body.append(img);
 
-  // 3 sekund kuting
-  yangi Promiseni kuting((resolve, reject) => setTimeout(resolve, 3000));
+  // wait 3 seconds
+  await new Promise((resolve, reject) => setTimeout(resolve, 3000));
 
-  img.remove();
+   img.remove();
 
-   githubUser ni qaytaring;
+   return githubUser;
 }
 
 showAvatar();
 ```
 
-Juda toza va o'qish oson, to'g'rimi? Avvalgidan ancha yaxshi.
+Kodni o'qish oson, to'g'rimi? Avvalgidan ancha yaxshi.
 
-````aqlli sarlavha="Zamonaviy brauzerlar modullarda yuqori darajadagi `kutis` imkonini beradi"
-Zamonaviy brauzerlarda, modul ichida bo'lganimizda, yuqori darajadagi `kutish` juda yaxshi ishlaydi. Biz modullarni <info:modules-intro> maqolasida ko'rib chiqamiz.
+````smart header="Zamonaviy brauzerlar modullarda yuqori darajadagi `await` imkonini beradi"
+Zamonaviy brauzerlarda, modul ichida bo'lganimizda, yuqori darajadagi `await` juda yaxshi ishlaydi. Biz modullarni <info:modules-intro> maqolasida ko'rib chiqamiz.
 
 Masalan:
 
 ```js run module
-// biz ushbu kod modul ichida yuqori darajada ishlaydi deb taxmin qilamiz
+// biz ushbu kod modul ichida yuqori darajada ishlaydi deb tahmin qilamiz
 let response = await fetch('/article/promise-chaining/user.json');
 let user = await response.json();
 
 console.log(user);
 ```
 
-Agar biz modullardan foydalanmayotgan bo'lsak yoki [eski brauzerlar](https://caniuse.com/mdn-javascript_operators_await_top_level) qo'llab-quvvatlanishi kerak bo'lsa, universal retsept mavjud: ya'ni anonim asinx funksiyasiga o'rash.
+Agar biz modullardan foydalanmayotgan bo'lsak yoki [eski brauzerlar](https://caniuse.com/mdn-javascript_operators_await_top_level) qo'llab-quvvatlanishi kerak bo'lsa, universal retsept mavjud: ya'ni anonim async funksiyasiga o'rash.
 
-Mana bunga o'xshash:
+Quyida namuna berilgan:
 
 ```js
 (async () => {
@@ -148,7 +148,7 @@ Mana bunga o'xshash:
 ````
 
 ````smart header="await \thenables\""`ni qabul qiladi
-`Promise.then` kabi, `await` bizga keyin mumkin boʻlgan obyektlardan (chaqiriladigan `then` usuliga ega boʻlganlar) foydalanish imkonini beradi. G'oya shundaki, uchinchi tomon obyekti promise bo'lmasligi mumkin, lekin promisega mos keladi: agar u `.then` ni qo'llab-quvvatlasa, uni `await` bilan ishlatish kifoya.
+`Promise.then` kabi, `await` bizga keyin mumkin bo'lgan obyektlardan (chaqiriladigan `then` usuliga ega bo'lganlar) foydalanish imkonini beradi. G'oya shundaki, uchinchi tomon obyekti promise bo'lmasligi mumkin, lekin promisega mos keladi: agar u `.then` ni qo'llab-quvvatlasa, uni `await` bilan ishlatish kifoya. 
 
 Bu yerda `Thenable` demo sinfi; Quyidagi "`await` o'z misollarini qabul qiladi:
 
@@ -199,7 +199,7 @@ Ma'nosi bir xil: qaytarilgan qiymat promise bo'lishini ta'minlaydi va `await` ni
 
 Agar promise odatdagidek hal bo'lsa, `await promise` natijani qaytaradi. Ammo rad etilgan taqdirda, xuddi shu satrda `throw` iborasi mavjud bo'lganidek, xatoni chiqaradi.
 
-Bu kod:
+Quyida kod berilgan:
 
 ```js
 async function f() {
@@ -209,7 +209,7 @@ async function f() {
 }
 ```
 
-...shu kabi bir xil:
+...shu bilan bir xil:
 
 ```js
 async function f() {
@@ -219,7 +219,7 @@ async function f() {
 }
 ```
 
-Haqiqiy holatlarda, promise rad etilishidan oldin biroz vaqt talab qilinishi mumkin. Bunday holda, `await` xatolik yuz berishidan oldin kechikish bo'ladi.
+Haqiqiy holatlarda, promise rad etilishidan oldin biroz vaqt talab qilinishi mumkin. Bunday holda, `await` xatolik yuz berishidan oldin kechikish bo'ladi. 
 
 Biz bu xatoni oddiy `throw` kabi `try..catch` yordamida aniqlashimiz mumkin:
 
@@ -271,14 +271,14 @@ f().catch(alert); // TypeError: olib bo'lmadi // (*)
 Agar biz u yerga `.catch` qo'shishni unutib qo'ysak, biz ishlov berilmagan promise xatosini olamiz (konsolda ko'rish mumkin). Biz bunday xatolarni <info:promise-error-handling> bobida tasvirlanganidek, global `unhandledrejection` hodisasi ishlov beruvchisi yordamida aniqlashimiz mumkin.
 
 
-```aqlli sarlavha="async/await` va `promise.then/catch`"
-Biz `async/await` dan foydalansak, bizga kamdan-kam hollarda `.then` kerak bo'ladi, chunki `await` bizni kutish bilan shug'ullanadi. Va biz `.catch` o‘rniga oddiy `try..catch` dan foydalanishimiz mumkin. Bu odatda (lekin har doim emas) qulayroq.
+```smart header="async/await` va `promise.then/catch`"
+Biz `async/await` dan foydalansak, bizga kamdan-kam hollarda `.then` kerak bo'ladi, chunki `await` bizni kutish bilan shug'ullanadi. Va biz `.catch` o'rniga oddiy `try..catch` dan foydalanishimiz mumkin. Bu qulayroq usul, lekin har doim ham bunday emas.
 
-Lekin kodning yuqori darajasida, biz har qanday `async` funksiyasidan tashqarida bo‘lganimizda, biz sintaktik jihatdan `await` dan foydalana olmaymiz, shuning uchun yakuniy natijani boshqarish uchun `.then/catch` ni qo'shish yuqoridagi misolning `(*)` qatoridagi kabi pasayish xatosi kabi odatiy holdir. 
+Lekin kodning yuqori darajasida, biz har qanday `async` funksiyasidan tashqarida bo'lganimizda, biz sintaktik jihatdan `await` dan foydalana olmaymiz, shuning uchun yakuniy natijani boshqarish uchun `.then/catch` ni qo'shish yuqoridagi misolning `(*)` qatoridagi kabi pasayish xatosi kabi odatiy holdir. 
 ```
 
-````aqlli sarlavha="`async/await` `Promise.all` bilan yaxshi ishlaydi"
-Agar biz bir nechta promiselarni kutishimiz kerak bo'lsa, ularni `Promise.all` ga o'rashimiz va keyin "kutishimiz" mumkin:
+````smart header="`async/await` `Promise.all` bilan yaxshi ishlaydi"
+Agar biz bir nechta promiselarni kutishimiz kerak bo'lsa, ularni `Promise.all` ga o'rashimiz va keyin "await", ya'ni kutishimiz mumkin:
 
 ```js
 // natijalar to'plamini kuting
@@ -289,22 +289,22 @@ let results = await Promise.all([
 ]);
 ```
 
-Error bo'lsa, u odatdagidek, bajarilmagan promisedan `Promise.all`gacha tarqaladi va keyin biz qo'ng'iroq atrofida `try..catch` yordamida qo'lga olishimiz mumkin bo'lgan istisnoga aylanadi.
+Error bo'lsa, u odatdagidek, bajarilmagan promisedan `Promise.all` gacha tarqaladi va keyin biz qo'ng'iroq atrofida `try..catch` yordamida qo'lga olishimiz mumkin bo'lgan istisnoga aylanadi. 
 
 ````
 
 ## Xulosa
 
-Funksiya oldidagi `async` kalit so‘zi ikkita effektga ega:
+Funksiya oldidagi `async` kalit so'zi ikkita effektga ega:
 
-1. Har doim va'dasini qaytarishga majbur qiladi.
+1. Har doim promise ni qaytarishga majbur qiladi.
 2. Unda `await` dan foydalanishga ruxsat beradi.
 
 Promisedan oldin `await` kalit so'zi JavaScript-ni promise bajarilguncha kutishga majbur qiladi va keyin:
 
 1. Agar bu error bo'lsa, xuddi o'sha joyda `throw error` chaqirilgandek istisno hosil bo'ladi.
-2. Aks holda, natijani qaytaradi.
+2. Aks holda, natijani qaytaradi. 
 
 Ular birgalikda o'qish va yozish oson bo'lgan asinxron kodni yozish uchun ajoyib ramka yaratadilar.
 
-`Async/await` bilan biz kamdan-kam hollarda `promise.then/catch`ni yozishimiz kerak, lekin ular promiselarga asoslanganligini hali ham unutmasligimiz kerak, chunki ba'zan (masalan, eng chekka doirada) bu usullardan foydalanishga to'g'ri keladi. Bundan tashqari, biz bir vaqtning o'zida ko'plab vazifalarni kutayotganimizda `Promise.all` ajoyib usul hisoblanadi.
+`Async/await` bilan biz kamdan-kam hollarda `promise.then/catch`ni yozishimiz kerak, lekin ular promise larga asoslanganligini hali ham unutmasligimiz kerak, chunki ba'zan (masalan, eng chekka doirada) bu usullardan foydalanishga to'g'ri keladi. Bundan tashqari, biz bir vaqtning o'zida ko'plab vazifalarni kutayotganimizda `Promise.all` ajoyib usul hisoblanadi.
