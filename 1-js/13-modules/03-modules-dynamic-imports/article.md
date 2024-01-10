@@ -3,13 +3,13 @@ Oldingi boblarda ko'rib chiqilgan eksport va import bayonotlari "statik" deb ata
 
 Birinchidan, biz `import` parametrlarini dinamik ravishda yarata olmaymiz.
 
-Modul yo'li primitiv satr bo'lishi kerak, funksiya chaqiruvi bo'lishi mumkin emas. Bu ishlamaydi:
+Modul yo'li primitiv satr bo'lishi kerak, funksiya chaqiruvi bo'lishi mumkin emas. Aks holda bu ishlamaydi:
 
 ```js
-import ... from *!*getModuleName()*/!*; // Error, faqat "string" dan ruxsat berilgan
+import ... from *!*getModuleName()*/!*; // Error, faqat "string" da ruxsat berilgan
 ```
 
-Ikkinchidan, biz shartli yoki ish vaqtida import qila olmaymiz:
+Ikkinchidan, biz shartli ish vaqtida import qila olmaymiz:
 
 ```js
 if(...) {
@@ -23,13 +23,13 @@ if(...) {
 
 Buning sababi, `import`/`eksport` kod tuzilishi uchun asos yaratishni maqsad qilgan. Bu yaxshi narsa, chunki kod strukturasini tahlil qilish, modullarni maxsus vositalar yordamida bir faylga yig'ish va to'plash, foydalanilmagan eksportlarni olib tashlash mumkin ("tree-shaken"). Bu faqat import/eksport tuzilishi oddiy va qat'iy bo'lgani uchun mumkin.
 
-Ammo modulni dinamik ravishda, talab bo'yicha qanday import qilishimiz mumkin?
+Ammo modulni talab bo'yicha dinamik ravishda qanday import qilishimiz mumkin?
 
 ## import() ifodasi
 
-`Import(modul)` ifodasi modulni yuklaydi va uning barcha eksportlarini o'z ichiga olgan modul obyektiga hal qiluvchi va'dani qaytaradi. Uni kodning istalgan joyidan chaqirish mumkin.
+`Import(modul)` ifodasi modulni yuklaydi va uning barcha eksportlarini o'z ichiga olgan modul obyektiga hal qiluvchi promise ni qaytaradi. Uni kodning istalgan joyidan chaqirish mumkin.
 
-Biz uni kodning istalgan joyida dinamik ravishda ishlatishimiz mumkin, masalan:
+Biz uni kodning istalgan joyida dinamik ravishda ishlatamiz, masalan:
 
 ```js
 let modulePath = prompt("Qaysi modulni yuklash kerak?");
@@ -39,7 +39,7 @@ import(modulePath)
   .catch(err => <loading error, e.g. if no such module>)
 ```
 
-Yoki asinxron funksiyasi ichida bo‘lsa, `let modul = await import(modulePath)` dan foydalanishimiz mumkin.
+Yoki asinxron funksiyasi ichida bo'lsa, `let modul = await import(modulePath)` dan foydalanishimiz mumkin.
 
 Masalan, agar bizda `say.js` moduli mavjud bo'lsa:
 
@@ -82,7 +82,7 @@ let say = obj.default;
 say();
 ```
 
-Mana toʻliq misol:
+Mana to'liq misol:
 
 [codetabs src="say" current="index.html"]
 
@@ -91,7 +91,7 @@ Dinamik importlar oddiy skriptlarda ishlaydi, ular `script type="module"` talab 
 ```
 
 ```smart
-`import()` funksiya chaqiruviga o'xshab ko'rinsa-da, bu maxsus sintaksis bo`lib, qavslardan foydalaniladi («super()`ga o`xshash).
+`import()` funksiya chaqiruviga o'xshab ko'rinsa-da, bu maxsus sintaksis bo'lib, qavslardan foydalaniladi («super()`ga o'xshash).
 
 Shuning uchun biz `import` ni o'zgaruvchiga ko'chira olmaymiz yoki u bilan `call/apply` dan foydalana olmaymiz. Bu funksiya emas.
 ```
