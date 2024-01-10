@@ -3,12 +3,12 @@
 
 Asinxron iteratsiya bizga talab bo'yicha asinxron ravishda keladigan ma'lumotlarni takrorlash imkonini beradi. Masalan, biz tarmoq orqali biror narsani bo'laklarga bo'lib yuklab olganimizda asinxron generatorlar uni yanada qulayroq qiladi.
 
-Keling, sintaksisni tushunish uchun avval oddiy misol ko'ramiz, so'ngra real hayotda foydalanish misolini ko'rib chiqamiz.
+Keling, sintaksisni tushunish uchun avval oddiy misol, keyin real hayotda foydalanish misolini ko'rib chiqamiz.
 
 ## Takrorlanuvchilarni eslang
-Kelng, iterable'lar, ya'ni takrorlanuvchilar mavzusini yodga olaylik.
+Keling, iterable lar, ya'ni takrorlanuvchilar mavzusini yodga olaylik.
 
-G'oya shundan iboratki, bizda `range` kabi obyekt mavjud:
+G'oya shundan iboratki, bizda `range` obyekti mavjud:
 ```js
 let range = {
   from: 1,
@@ -24,7 +24,7 @@ Buni `Symbol.iterator` nomi bilan maxsus usul yordamida amalga oshirish mumkin:
 
 - Bu usul sikl boshlanganda `for..of` konstruksiyasi orqali chaqiriladi va u `next` usuli bilan obyektni qaytarishi kerak.
 - Har bir iteratsiya uchun `next` usuli keyingi qiymat uchun chaqiriladi.
-- The `next()` should return a value in the form `{done: true/false, value:<loop value>}`, where `done:true` means the end of the loop. `Next()` usuli `{done: true/false, value:<loop value>}` ko'rinishidagi qiymatni qaytarishi kerak, bu yerda `done:true` siklning oxirini bildiradi.
+- `Next()` usuli `{done: true/false, value:<loop value>}` ko'rinishidagi qiymatni qaytarishi kerak, bu yerda `done:true` siklning oxirini bildiradi.
 
 Mana, takrorlanadigan `range` uchun dastur:
 
@@ -34,14 +34,14 @@ let range = {
   to: 5,
 
 *!*
-  [Symbol.iterator]() { // bir marta for..of boshida chaqirilgan
+  [Symbol.iterator]() { // for..of boshida bir marta chaqirilgan
 */!*
     return {
       current: this.from,
       last: this.to,
 
 *!*
-      next() { // keyingi qiymatni olish uchun har bir iteratsiyani chaqirdi
+      next() { // keyingi qiymatni olish uchun har bir iteratsiyani chaqiradi
 */!*
         if (this.current <= this.last) {
           return { done: false, value: this.current++ };
@@ -58,18 +58,18 @@ for(let value of range) {
 }
 ```
 
-Agar biror narsa tushunarsiz bo'lsa, iltimos, [](info:iterable) bo'limiga tashrif buyuring, unda muntazam takrorlanuvchilar haqida barcha tafsilotlar berilgan.
+Agar biror narsa tushunarsiz bo'lsa, iltimos, [](info:iterable) bo'limiga tashrif buyuring, unda muntazam iterable lar haqida barcha tafsilotlar berilgan.
 
 ## Asinxron takrorlanuvchilar
 
  Asinxron iteratsiya qiymatlar asinxron kelganda: `setTimeout` yoki boshqa turdagi kechikishdan keyin kerak bo'ladi.
- Eng keng tarqalgan holat shundaki, obyekt keyingi qiymatni yetkazib berish uchun tarmoq so'rovini amalga oshirishi kerak, biz uning hayotiy misolini birozdan keyin ko'ramiz.
+ Eng keng tarqalgan holat shundaki, obyekt keyingi qiymatni yetkazib berish uchun tarmoq so'rovini amalga oshirishi kerak, biz uning hayotiy misolini birozdan keyin ko'ramiz. 
 
 Obyektni asinxron ravishda takrorlanadigan qilish uchun:
 
 1. `Symbol.iterator`ning o'rniga `Symbol.asyncIterator` ni ishlating. 
-2. `Next ()` usuli va'dani qaytarishi kerak (keyingi qiymat bilan bajarilishi kerak).
-    - `Async` kalit so‘zi uni boshqaradi, biz shunchaki `async next()` ni yaratishimiz mumkin.
+2. `Next ()` usuli va'dani qaytarishi lozim (keyingi qiymat bilan birga bajarilishi kerak).
+    - `Async` kalit so'zi uni boshqaradi, biz shunchaki `async next()` ni yaratishimiz mumkin.
 3. Bunday obyektni takrorlash uchun biz `for await (iterable elementi)` siklidan foydalanishimiz kerak.
     - `await` so'ziga e'tibor bering.
 
@@ -122,8 +122,8 @@ let range = {
 Ko'rib turganimizdek, struktura oddiy iteratorlarga o'xshaydi:
 
 1. Obyektni asinxron ravishda takrorlanadigan qilish uchun u `Symbol.asyncIterator` `(1)` usuliga ega bo'lishi kerak.
-2. Bu usul `(2)` promise'ni qaytaruvchi `next()` usuli bilan obyektni qaytarishi kerak.
-3. `Next()` usuli `async` bo'lishi shart emas, bu va'dani qaytaruvchi oddiy usul bo'lishi mumkin, lekin `async` bizga `await` dan foydalanishga imkon beradi, shuning uchun bu qulay. Bu yerda biz `3` ni bir soniya kechiktiramiz.
+2. Bu usul `(2)` promise ni qaytaradigan `next()` usuli bilan obyektni qaytarishi kerak.
+3. `Next()` usuli `async` bo'lishi shart emas, bu promise ni qaytaruvchi oddiy usul bo'lishi mumkin, lekin `async` bizga `await` dan foydalanishga imkon beradi, shuning uchun bu qulay. Bu yerda biz `3` ni bir soniya kechiktiramiz.
 4. Takrorlash uchun biz `for await(Let value of range)` va `(4)` dan foydalanamiz, ya'ni "for" dan keyin "await" ni qo'shamiz. U bir marta `range[Symbol.asyncIterator]()` ni, keyin esa qiymatlar uchun `next()` ni chaqiradi.
 
 Quyida farqlar bilan kichik jadval berilgan:
@@ -132,9 +132,9 @@ Quyida farqlar bilan kichik jadval berilgan:
 |-------|-----------|-----------------|
 | Iteratorni ta'minlash uchun obyekt usuli| `Symbol.iterator` | `Symbol.asyncIterator` |
 | `next()` qaytish qiymati hisoblanadi        | istalgan qiymat          | `Promise`  |
-| loop uchun quyidagilardan foydalaning                          | `for..of`         | `for await..of` |
+| loop uchun quyidagilardan foydalaning:                         | `for..of`         | `for await..of` |
 
-````ogohlantiruvchi sarlavha=" tarqalish sintaksisi `...` asinxron tarzda ishlamaydi"
+````warn header=" tarqalish sintaksisi `...` asinxron tarzda ishlamaydi"
 Muntazam, sinxron iteratorlarni talab qiladigan funksiyalar asinxronlar bilan ishlamaydi.
 
 Masalan, tarqalish sintaksisi ishlamaydi:
@@ -144,7 +144,7 @@ alert( [...range] ); // Error, Symbol.iterator mavjud emas
 
 Bu tabiiy holat, chunki u `Symbol.asyncIterator` ni emas, `Symbol.iterator` ni topishni kutadi.
 
-Bu `for..of` uchun ham shunday: `await`siz sintaksis uchun `Symbol.iterator` kerak.
+Bu `for..of` uchun ham shunday: `await` siz sintaksis uchun `Symbol.iterator` kerak.
 ````
 
 ## Generatorlarni eslang
@@ -153,9 +153,9 @@ Endi generatorlarni eslaylik, chunki ular iteratsiya kodini ancha qisqartirishga
 
 Oddiylik uchun, ba'zi muhim narsalarni hisobga olmaganda, ular "qiymatlarni yaratuvchi (hosildorlik) funksiyalari" dir. Ular [](info:generators) bobida batafsil yoritilgan.
 
-Generatorlar `funksiya*` (yulduzchaga e`tibor bering) bilan etiketlanadi va qiymat hosil qilish uchun `yield` dan foydalanamiz, keyin biz ularni aylantirish uchun `for..of` dan foydalanishimiz mumkin.
+Generatorlar `function*` (yulduzchaga e`tibor bering) bilan etiketlanadi va qiymat hosil qilish uchun `yield` dan foydalanamiz, keyin biz ularni aylantirish uchun `for..of` dan foydalanishimiz mumkin.
 
-Bu misol `start`dan `end`gacha bo‘lgan qiymatlar ketma-ketligini hosil qiladi:
+Bu misol `start`dan `end`gacha bo'lgan qiymatlar ketma-ketligini hosil qiladi:
 
 ```js run
 function* generateSequence(start, end) {
@@ -177,13 +177,13 @@ let range = {
   to: 5,
 *!*
   [Symbol.iterator]() {
-  range ni takrorlanadigan qilish uchun <obyektni next bilan qaytaring
+  range ni takrorlanadigan qilish uchun obyektni next bilan qaytaring
   }
 */!*
 }
 ```
 
-`Symbol.iterator` uchun keng tarqalgan amaliyot generatorni qaytarishdir, ko`rib turganingizdek bu kodni qisqartiradi:
+`Symbol.iterator` uchun keng tarqalgan amaliyot generatorni qaytarishdir, ko'rib turganingizdek bu kodni qisqartiradi:
 
 ```js run
 let range = {
@@ -202,18 +202,18 @@ for(let value of range) {
 }
 ```
 
-Batafsil ma’lumot olishni istasangiz, [](info:generators) bobini ko;'rib chiqing.
+Batafsil ma’lumot olishni istasangiz, [](info:generators) bobini ko'rib chiqing.
 
 Oddiy generatorlarda biz `await` dan foydalana olmaymiz. Barcha qiymatlar `for..of` konstruksiyasini talab qilganidek, ular sinxron tarzda kelishi kerak.
 
-Agar biz asinxron qiymatlarni yaratmoqchi bo'lsak-chi? Masalan, tarmoq so'rovlaridan.
+Agar biz asinxron qiymatlarni yaratmoqchi bo'lsakchi? Masalan, tarmoq so'rovlari orqali bajarmoqchimiz.
 
 Buni amalga oshirish uchun asinxron generatorlarga o'tamiz.
-## Asinxron generatorlar (vanihoyat)
+## Asinxron generatorlar (vanihoyat).
 
-Aksariyat amaliy ilovalar uchun, biz asinxron ravishda qiymatlar ketma-ketligini yaratadigan obyektni yaratmoqchi bo'lsak, biz asinxron generatordan foydalanishimiz mumkin.
+Aksariyat amaliy ilovalar uchun biz asinxron ravishda qiymatlar ketma-ketligini yaratadigan obyektni yaratmoqchi bo'lsak, biz asinxron generatordan foydalanishimiz mumkin.
 
-Sintaksis oddiy: `funksiya*`ni `async` bilan oldinga qo'ying. Bu generatorni asinxron qiladi.
+Sintaksis oddiy: `function*`ni `async` bilan oldinga qo'ying. Bu generatorni asinxron qiladi.
 
 Va keyin uni takrorlash uchun `for await (...)` dan foydalaning, masalan:
 ```js run
@@ -241,14 +241,14 @@ Va keyin uni takrorlash uchun `for await (...)` dan foydalaning, masalan:
 })();
 ```
 
-Generator asinxron bo'lgani uchun biz uning ichida `await` dan foydalanishimiz, va'dalarga tayanishimiz, tarmoq so'rovlarini bajarishimiz lozim va hokazo.
+Generator asinxron bo'lgani uchun biz uning ichida `await` dan foydalanishimiz, promise larga tayanishimiz, tarmoq so'rovlarini bajarishimiz lozim va hokazo.
 
-````aqlli sarlavha="hood ostidagi farq"
+````smart header="hood ostidagi farq"
 Agar siz generatorlar haqidagi tafsilotlarni texnik jihatdan eslab qoladigan ilg'or o'quvchi bo'lsangiz, ichki farq mavjud.
 
-Asinxron generatorlar uchun `generator.next()` usuli asinxron bo'lib, va promise'larni qaytaradi.
+Asinxron generatorlar uchun `generator.next()` usuli asinxron bo'lib, promise larni qaytaradi.
 
-Oddiy generatorda qiymatlarni olish uchun `result = generator.next()` dan foydalanamiz. Asinxron generatorida biz `await` ni qo'shishimiz kerak, masalan:
+Oddiy generatorda qiymatlarni olish uchun `result = generator.next()` dan foydalanamiz. Asinxron generatorida biz `await` ni qo'shishimiz kerak, masalan: 
 
 ```js
 natija = await generator.next(); // natija = {value: ..., bajarildi: true/false}
@@ -256,13 +256,13 @@ natija = await generator.next(); // natija = {value: ..., bajarildi: true/false}
 Shuning uchun ham asinxron generatorlar `for await...of` bilan ishlaydi.
 ````
 
-### Asinxron takrorlanadigan diapazon
+### Asinxron takrorlanadigan range (async iterable range) 
 
 Takrorlash kodini qisqartirish uchun oddiy generatorlardan `Symbol.iterator` sifatida foydalanish mumkin.
 
-Shunga o'xshab, asinxron generatorlar asinxron iteratsiyani amalga oshirish uchun `Symbol.asyncIterator` sifatida ishlatilishi mumkin.
+Shunga o'xshab, asinxron generatorlar asinxron iteratsiyani amalga oshirish uchun `Symbol.asyncIterator` sifatida ishlatiladi.
 
-Masalan, sinxron `Symbol.iterator` ni asinxron `Symbol.asyncIterator` bilan almashtirib, biz `range` obyektini sekundiga bir marta asinxron qiymatlarni yaratishimiz mumkin:
+Masalan, sinxron `Symbol.iterator` ni asinxron `Symbol.asyncIterator` bilan almashtirib, biz `range` obyektini sekundiga bir marta asinxron qiymatlarni yarata olamiz:
 
 ```js run
 let range = {
@@ -294,18 +294,18 @@ let range = {
 
 Endi qiymatlar ular orasida 1 soniya kechikish bilan keladi.
 
-```smart
+```smart header``
 Texnik jihatdan obyektga `Symbol.iterator` va `Symbol.asyncIterator` ni qo'shishimiz mumkin, shuning uchun u sinxron (`for..of`) va asinxron (`for await..of`) takrorlanadi.
 Amalda esa bu g'alati ish bo'lardi.
 ```
 
 ## Haqiqiy misol: sahifalangan ma'lumotlar
 
-Hozirgacha biz tushunish uchun asosiy misollarni ko'rdik. Keling, haqiqiy hayotda foydalanish misolini ko'rib chiqaylik.
+Hozirgacha biz tushunish uchun asosiy misollarni ko'rdik. Keling, haqiqiy hayotda foydalanish mumkin bo'lgan misolni ko'rib chiqaylik.
 
 Sahifali ma'lumotlarni yetkazib beradigan ko'plab onlayn xizmatlar mavjud. Misol uchun, bizga foydalanuvchilar ro'yxati kerak bo'lganda, so'rov oldindan belgilangan sonni (masalan, 100ta foydalanuvchi) qaytaradi - "bir sahifa" va keyingi sahifaga URL manzilini beradi.
 
-Ushbu usul juda keng tarqalgan. Bu foydalanuvchilar haqida emas, balki hamma narsa haqidadir.
+Ushbu usul juda keng tarqalgan. Bu faqat foydalanuvchilar haqida emas.
 
 Misol uchun, GitHub bizga majburiyatlarni bir xil, sahifalangan tarzda olish imkonini beradi:
 
@@ -317,7 +317,7 @@ Bizning kodimiz uchun biz majburiyatlarni olishning oddiyroq usuliga ega bo'lish
 
 Keling, biz uchun majburiyatlarni oladigan, kerak bo'lganda so'rovlar yuboradigan `fetchCommits(repo)` funksiyasini yarataylik. Va u barcha sahifalash ishlari haqida qayg'ursin. Biz uchun bu `wait..of` uchun oddiy asinxron iteratsiya bo'ladi.
 
-Shunday qilib, foydalanish quyidagicha bo'ladi:
+Shunday qilib, foydalanish quyida ko'rsatilgan: 
 
 ```js
 for await (let commit of fetchCommits("username/repository")) {
@@ -357,9 +357,9 @@ Bu qanday ishlashi haqida ko'proq ma'lumotlar:
 
     - Dastlabki URL manzili `https://api.github.com/repos/<repo>/commits`, keyingi sahifa esa javobning `Link` sarlavhasida bo'ladi.
     - `Fetch` usuli bizga kerak bo'lganda avtorizatsiya va boshqa sarlavhalarni taqdim etish imkonini beradi -- bu erda GitHub `User-Agent` ni talab qiladi.
-2. Commit'lar JSON formatida qaytariladi.
+2. Commit lar JSON formatida qaytariladi.
 3. Javobning `Link` sarlavhasidan keyingi sahifa URL manzilini olishimiz kerak. Uning maxsus formati bor, biz buning uchun oddiy iboradan foydalanamiz (biz bu xususiyatni [Regular expressions](ma'lumot:regular-expressions) da o'rganamiz).
-    - Keyingi sahifa URL manzili `https://api.github.com/repositories/93253246/commits?page=2` kabi ko'rinishi mumkin. U GitHub tomonidan yaratilgan.
+    - Keyingi sahifa URL manzili `https://api.github.com/repositories/93253246/commits?page=2` kabi ko'rinishi mumkin. U GitHub tomonidan yaratilgan. 
 4. Keyin biz qabul qilingan majburiyatlarni birma-bir beramiz va ular tugagach, navbatdagi `while(url)` iteratsiyasi ishga tushadi va yana bitta so'rov yuboriladi.
 
 Foydalanish misoli (konsolda mualliflarni topshirishni ko'rsatadi):
@@ -373,7 +373,7 @@ Foydalanish misoli (konsolda mualliflarni topshirishni ko'rsatadi):
 
     console.log(commit.author.login);
 
-    if (++count == 100) { // keling, 100 ta commit'da to'xtaylik
+    if (++count == 100) { // keling, 100 ta commit da to'xtaylik
       break;
     }
   }
@@ -391,7 +391,7 @@ Sahifali so'rovlarning ichki mexanikasi tashqaridan ko'rinmaydi. Biz uchun bu sh
 
 Muntazam iteratorlar va generatorlar yaratish uchun vaqt talab qilmaydigan ma'lumotlar bilan yaxshi ishlaydi.
 
-Ma'lumotlar asinxron, kechikishlar bilan kelishini kutganimizda, `for..of` o'rniga `for await..of` asinxron hamkasblaridan foydalanish mumkin.
+Ma'lumotlar asinxron, kechikishlar bilan kelishini kutganimizda `for..of` o'rniga `for await..of` asinxron hamkasblaridan foydalanish mumkin.
 
 Asinxron va oddiy iteratorlar o'rtasidagi sintaktik farqlar:
 
@@ -404,8 +404,8 @@ Asinxron va oddiy generatorlar o'rtasidagi sintaktik farqlar:
 |       | Generatorlar | Asinxron generatorlar |
 |-------|-----------|-----------------|
 | Deklaratsiya | `function*` | `async function*` |
-| `next()` return value is          | `{value:…, done: true/false}`         | `{value:…, done: true/false}` ni hal qiladigan `promise`  |
+| `next()` return value          | `{value:…, done: true/false}`         | `{value:…, done: true/false}` ni hal qiladigan `promise`  |
 
-Veb dasturlashda biz ko'pincha ma'lumotlar oqimini uchratamiz, ular bo'lakma-bo'lak oqadi. Masalan, katta faylni yuklab olish yoki yuklash.
+Veb dasturlashda biz ko'pincha ma'lumotlar oqimini uchratamiz, ular bo'lakma-bo'lak ko'rinishda. Katta faylni yuklab olish yoki yuklash bunga yorqin misol bo'la oladi.
 
-Bunday ma'lumotlarni qayta ishlash uchun asinxron generatorlardan foydalanishimiz mumkin. Shunisi e'tiborga loyiqki, ba'zi muhitlarda, masalan, brauzerlarda, bunday oqimlar bilan ishlash, ma'lumotlarni o'zgartirish va uni bir oqimdan boshqasiga o'tkazish uchun maxsus interfeyslarni ta'minlaydigan Streams deb nomlangan yana bir API ham mavjud.(masalan, bir joydan yuklab olib va darhol boshqa joyga yuborish mumkin).
+Bunday ma'lumotlarni qayta ishlash uchun asinxron generatorlardan foydalanishimiz mumkin. Shunisi e'tiborga loyiqki, ba'zi muhitlarda, masalan, brauzerlarda, bunday oqimlar bilan ishlash, ma'lumotlarni o'zgartirish va uni bir oqimdan boshqasiga o'tkazish uchun maxsus interfeyslarni ta'minlaydigan Streams deb nomlangan yana bir API ham mavjud. (masalan, bir joydan yuklab olib va darhol boshqa joyga yuborish mumkin).
