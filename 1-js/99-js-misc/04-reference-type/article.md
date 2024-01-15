@@ -1,7 +1,7 @@
 
 # Havola turi
 
-```ogohlantiruvchi sarlavha="Chuqur til xususiyati"
+```warn header="Chuqur til xususiyati"
 Ushbu maqola ba'zi chekka holatlarni yaxshiroq tushunish uchun ilg'or mavzuni qamrab oladi.
 
 Bu muhim emas. Ko'pgina tajribali ishlab chiquvchilar buni bilmagan holda yaxshi yashaydilar. Ishlarning kaput ostida qanday ishlashini bilmoqchi bo'lsangiz, o'qing.
@@ -28,7 +28,7 @@ user.hi(); // ishlaydi
 
 Oxirgi qatorda `user.hi` yoki `user.bye` ni tanlaydigan shartli operator mavjud. Bu holda natija `user.hi` bo'ladi.
 
-Keyin usul darhol `()` qavslar bilan chaqiriladi. Lekin u to'g'ri ishlamayapti!
+Keyin usul darhol `()` qavslar bilan chaqiriladi, lekin u to'g'ri ishlamayapti!
 
 Ko'rib turganingizdek, chaqiruv xatolikka olib keladi, chunki qo'ng'iroq ichidagi `this` qiymati `undefined` bo'ladi.
 
@@ -44,12 +44,12 @@ Bu ishlamaydi (baholangan usul):
 
 Nega? Agar bu nima uchun sodir bo'lishini tushunmoqchi bo'lsak, keling, `obj.method()` chaqiruvi qanday ishlashini ko'rib chiqaylik.
 
-## Ma'lumot turi tushuntirilgan
+## Tushuntirilgan ma'lumot turi 
 
 Diqqat bilan qaraydigan bo'lsak, `obj.method()` iborasida ikkita operatsiyani ko'rishimiz mumkin:
 
 1. Birinchidan, nuqta `'.'` `obj.method` xususiyatini qaytarib oladi.
-2. Keyin `()` qavslar uni bajaradi.
+2. Keyin `()` qavslar uni bajaradi. 
 
 Xo'sh, `this` haqidagi ma'lumot birinchi qismdan ikkinchi qismga qanday o'tadi?
 
@@ -74,7 +74,7 @@ Bu yerda `hi = user.hi` funksiyani o'zgaruvchiga qo'yadi, so'ngra oxirgi qatorda
 
 Malumot turi "spetsifikatsiya turi" dir. Biz uni aniq ishlata olmaymiz, lekin u til tomonidan ichki tarzda ishlatiladi.
 
-Havola turi qiymati uch qiymatli `(base,name, strict)` birikmasidir, bu yerda:
+Havola turi qiymati uch qiymatli `(base, name, strict)` birikmasidir:
 
 - `base` obyekt.
 - `name` xususiyat nomi.
@@ -89,11 +89,11 @@ Havola turi qiymati uch qiymatli `(base,name, strict)` birikmasidir, bu yerda:
 
 Qavslar `()` Reference Type bo'yicha chaqirilganda, ular obyekt va uning usuli haqida to'liq ma'lumot oladi va o'ng `this` (bu holda `user`) ni o'rnatishi mumkin.
 
-Ma'lumot turi maxsus "vositachi" ichki tip bo'lib, ma'lumotni nuqta `.` dan `()` chaqiruvchi qavslarga o'tkazish uchun mo'ljallangan.
+Ma'lumot turi maxsus "vositachi" ichki tipi bo'lib, ma'lumotni nuqta `.` dan `()` chaqiruvchi qavslarga o'tkazish uchun mo'ljallangan.
 
 `hi = user.hi` ni tayinlash kabi har qanday boshqa amal mos yozuvlar turini bir butun sifatida bekor qiladi, `user.hi` (funksiya) qiymatini oladi va uni uzatadi. Shunday qilib, keyingi har qanday operatsiya `this` ni "yo'qotadi".
 
-Natijada, funksiya to'g'ridan-to'g'ri nuqta `obj.method()` yoki kvadrat qavslar `obj['method']()` sintaksisi (ular bu yerda ham xuddi shunday ishlaydi). Ushbu muammoni hal qilishning turli usullari mavjud, masalan, [func.bind()](/bind#solution-2-bind).
+Natijada, funksiya to'g'ridan-to'g'ri nuqta `obj.method()` yoki kvadrat qavslar obj['method']() sintaksisi yordamida chaqirilsa, bu qiymat faqat to'g'ri yo'l bilan o'tkaziladi (ular bu erda ham xuddi shunday qilishadi). Bu muammoni hal qilishning [func.bind()](/bind#solution-2-bind) kabi turli usullari mavjud.
 
 ## Xulosa
 
