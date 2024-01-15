@@ -5,10 +5,11 @@ libs:
 
 # Currying
 
-[Currying](https://en.wikipedia.org/wiki/Currying) funksiyalar bilan ishlashning ilg'or usulidir. U nafaqat JavaScript-da, balki boshqa tillarda ham qo'llaniladi.
+[Currying](https://en.wikipedia.org/wiki/Currying) funksiyalar bilan ishlashning ilg'or usulidir. U nafaqat JavaScriptda, balki boshqa dasturlash tillarda ham qo'llaniladi.
+
 Currying - funksiyani `f(a, b, c)` deb chaqiriladigan funksiyadan `f(a)(b)(c)` sifatida chaqiriladigan funksiyaga aylantiruvchi funksiyalarni tarjima qilish.
 
-Currying funktsiyani chaqirmaydi, u shunchaki o'zgartiradi.
+Currying funksiyani chaqirmaydi, shunchaki uni o'zgartiradi.
 
 Keling, nima haqida gapirayotganimizni yaxshiroq tushunish uchun avval bir misolni, keyin esa amaliy qo'llanmalarni ko'rib chiqaylik.
 
@@ -36,11 +37,11 @@ alert( curriedSum(1)(2) ); // 3
 ```
 
 Ko'rib turganingizdek, amalga oshirish juda oddiy: bu faqat ikkita o'rashdan iborat.
-- `Curry(func)` ning natijasi `function(a)` o`ramidir.
+- `Curry(func)` ning natijasi `function(a)` o'ramidir.
 - U `curriedSum(1)` kabi chaqirilsa, argument leksik muhitda saqlanadi va yangi o'ramga `function(b)` qaytariladi.
-- Keyin bu o'ram argument sifatida `2` bilan chaqiriladi va u chaqiruvni asl `sum`ga uzatadi.
+- Keyin bu o'ram argument sifatida `2` bilan chaqiriladi va u chaqiruvni asl `sum` ga uzatadi.
 
-Lodash kutubxonasidan [_.curry](https://lodash.com/docs#curry) kabi currying'ning yanada ilg'or ilovalari funksiyani ham normal, ham qisman chaqirish imkonini beruvchi o'ramni qaytaradi:
+Lodash kutubxonasidan [_.curry](https://lodash.com/docs#curry) kabi currying ning yanada ilg'or ilovalari funksiyani ham normal, ham qisman chaqirish imkonini beruvchi o'ramni qaytaradi:
 
 ```js run
 function sum(a, b) {
@@ -55,7 +56,7 @@ alert( curriedSum(1)(2) ); // 3, qisman chaqiriladi
 
 ## Currying? Nima uchun?
 
-Currying'ning foydali tomonlarini tushunish uchun bizga munosib haqiqiy misol kerak.
+Currying ning foydali tomonlarini tushunish uchun bizga munosib haqiqiy misol kerak.
 
 Masalan, bizda ma'lumotni formatlaydigan va chiqaradigan `log (date, importance, message)` jurnali funksiyasi mavjud. Haqiqiy loyihalarda bunday funksiyalar tarmoq orqali jurnallarni yuborish kabi juda ko'p foydali xususiyatlarga ega, bu yerda biz `alert` dan foydalanamiz:
 
@@ -93,7 +94,7 @@ let logNow = log(new Date());
 logNow("INFO", "message"); // [HH:mm] INFO message
 ```
 
-Endi `logNow` birinchi argumentga ega bo'lgan `log`dir, boshqacha qilib aytganda, "qisman qo'llaniladigan funksiya" yoki qisqacha aytganda "qisman" deb ataladi.
+Endi `logNow` birinchi argumentga ega bo'lgan `log` dir, boshqacha qilib aytganda, "qisman qo'llaniladigan funksiya" yoki qisqacha aytganda "qisman" deb ataladi.
 
  Biz oldinga borishimiz va joriy debug log lari uchun qulaylik funksiyasini yaratishimiz mumkin:
 
@@ -105,7 +106,7 @@ debugNow("message"); // [HH:mm] DEBUG message
 
 Demak:
 1. Curryingdan keyin biz hech narsani yo'qotmadik: `log` hali ham odatdagidek chaqirilishi mumkin.
-2. Bugungi loglar kabi qisman funktsiyalarni osongina yaratishimiz mumkin.
+2. Bugungi loglar kabi qisman funksiyalarni osongina yaratishimiz mumkin.
 
 ## Kengaytirilgan curry ni amalga oshirish
 
@@ -145,10 +146,10 @@ alert( curriedSum(1)(2)(3) ); // 6, to'liq currying qilish
 
 Yangi `curry` murakkab ko'rinishi mumkin, lekin aslida uni tushunish oson.
 
-The result of `curry(func)` call is the wrapper `curried` that looks like this: `Curry(func)` chaqiruvining natijasi `curried` o'rami bo'lib, u quyidagicha ko'rinadi:
+`Curry(func)` chaqiruvining natijasi `curried` o'rami bo'lib, u quyidagicha ko'rinadi:
 
 ```js
-// func - bu o'zgartirish funktsiyasi
+// func - bu o'zgartirish funksiyasi
 function curried(...args) {
   if (args.length >= func.length) { // (1)
     return func.apply(this, args);
@@ -162,25 +163,25 @@ function curried(...args) {
 
 Uni ishga tushirganimizda ikkita `if` ijro bo'limlari mavjud:
 
-1. Agar o'tkazilgan `args` soni asl funksiyaning ta'rifidagi (`func.length`) bilan bir xil yoki undan ko'p bo'lsa, unga `func.apply` orqali qo'ng'iroqni o'tkazing.
+1. Agar o'tkazilgan `args` soni asl funksiyaning ta'rifidagi (`func.length`) bilan bir xil yoki undan ko'p bo'lsa, unga `func.apply` orqali qo'ng'iroqni o'tkazing. 
 2. Demak, qisman misol olamiz: biz hozircha `func` ni chaqirmaymiz. Buning o'rniga oldingi argumentlar bilan birga yangi argumentlarni taqdim etgan holda `curried` qayta qo'llaniladigan boshqa o'ram qaytariladi.
 
-Agar biz uni yana chaqirsak, biz yangi qism (agar yetarli dalillar bo'lmasa) yoki to'liq natijani olamiz.
+Agar biz uni yana chaqirsak, biz yangi qismni (agar yetarli dalillar bo'lmasa) yoki to'liq natijani olamiz.
 
-```aqlli sarlavha="Faqat tuzattilgan uzunlikdagi funksiyalar"
+```smart header="Faqat tuzattilgan uzunlikdagi funksiyalar"
 Currying funksiyadan qat'iy argumentlar soni bo'lishini talab qiladi.
 
 `f(...args)` kabi dam olish parametrlaridan foydalanadigan funksiyani bu tarzda o'rnatib bo'lmaydi.
 ```
 
-```aqlli sarlavha="Currying dan biroz ko'proq"
+```smart header="Currying dan biroz ko'proq"
 Ta'rifga ko'ra, currying `sum(a, b, c)`ni `sum(a)(b)(c)` ga aylantirishi kerak.
 
-Ammo JavaScriptda ko'rishning aksariyat ilovalari, ta'riflanganidek, ilg'or: ular funksiyani ko'p argumentli variantda ham chaqirish imkoniyatini saqlab qoladilar.
+Ammo JavaScriptda ko'rishning aksariyat ilovalari, ta'riflanganidek, ilg'or: ular funksiyani ko'p argumentli variantda ham chaqirish imkoniyatini saqlab qoladilar. 
 ```
 
 ## Xulosa
 
-*Currying* - `f(a,b,c)` ni `f(a)(b)(c)` sifatida chaqirish mumkin bo'lgan transformatsiya. JavaScript ilovalari odatda funktsiyani an'anaviy tarzda chaqirish imkoniyatini saqlab qoladi va agar argumentlar soni yetarli bo'lmasa, qisman qaytaradi.
+*Currying* - `f(a,b,c)` ni `f(a)(b)(c)` sifatida chaqirish mumkin bo'lgan transformatsiya. JavaScript ilovalari odatda funktsiyani an'anaviy tarzda chaqirish imkoniyatini saqlab qoladi va agar argumentlar soni yetarli bo'lmasa, qisman qaytaradi. 
 
 Currying bizga qismlarni osongina olish imkonini beradi. Logging misolida ko'rganimizdek, uchta argumentli universal funksiya `log (date, importance, message)` bir argument (masalan, `log (date)`) yoki ikkita argument (masalan `log(date, importance)`) bilan chaqirilganda bizga qismlarni beradi.
