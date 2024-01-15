@@ -1,6 +1,6 @@
 # Proxy va Reflect
 
-`Proxy` obyekti boshqa obyektni o'rab oladi va o'qish/yozish xususiyatlari va boshqa operatsiyalarni to'xtatadi, ixtiyoriy ravishda ularni mustaqil ravishda boshqarish yoki obyektga ularni boshqarishga shaffof ruxsat beradi.
+`Proxy` obyekti boshqa obyektni o'raydi, o'qish/yozish xususiyatlari va boshqa operatsiyalarni to'xtatadi hamda ixtiyoriy ravishda ularni mustaqil ravishda boshqarish yoki obyektga ularni boshqarishga shaffof ruxsat beradi.
 
 Proksi-serverlar ko'plab kutubxonalarda va ba'zi brauzer ramkalarida qo'llaniladi. Ushbu maqolada biz ko'plab amaliy dasturlarni ko'rib chiqamiz.
 
@@ -12,12 +12,12 @@ Sintaksis:
 let proxy = new Proxy(target, handler)
 ```
 
-- `target` -- o'rash uchun obyekt boʻlib, har qanday narsa, jumladan, funksiyalar ham boʻlishi mumkin.
-- `handler` -- proksi-server konfiguratsiyasi: "tuzoqlarga" ega obyekt, operatsiyalarni to'xtatuvchi usullar. - masalan. `target` xususiyatini o'qish uchun `get` trap, `target`ga xususiyat yozish uchun `set` trap va hokazo.
+- `target` -- o'rash uchun obyekt hisoblanib, har qanday narsa, jumladan, funksiyalar ham bo'lishi mumkin.
+- `handler` -- proksi-server konfiguratsiyasi: "tuzoqlarga" ega obyekt, operatsiyalarni to'xtatuvchi usullardan biri - masalan, `target` xususiyatini o'qish uchun `get` trap, `target`ga xususiyat yozish uchun `set` trap kerak va hokazo.
 
 `Proxy` bo'yicha operatsiyalar uchun, agar `handler`da mos keladigan trap bo'lsa, u ishlaydi va proksi-server uni boshqarish imkoniyatiga ega bo'ladi, aks holda operatsiya `target` bo'yicha amalga oshiriladi.
 
-Boshlang'ich misol sifatida, keling, hech qanday tuzoqsiz proksi yarataylik:
+Boshlang'ich misol sifatida, keling, hech qanday tuzoqsiz proxy yarataylik:
 
 ```js run
 let target = {};
@@ -51,7 +51,7 @@ Obyektlardagi ko'pgina operatsiyalar uchun JavaScript spetsifikatsiyasida uning 
 
 Proksi tuzoqlari ushbu usullarning chaqiruvlarini to'xtatadi. Ular [Proksi spetsifikatsiyasi](https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots) va quyidagi jadvalda keltirilgan.
 
-Har bir ichki usul uchun ushbu jadvalda tuzoq mavjud: operatsiyani to‘xtatish uchun biz `new proxy` ning `handler` parametriga qo‘shishimiz mumkin bo'lgan usulning nomi:
+Har bir ichki usul uchun ushbu jadvalda tuzoq mavjud: operatsiyani to'xtatish uchun biz `new proxy` ning `handler` parametriga qo'shishimiz mumkin bo'lgan usulning nomi:
 
 | Ichki metod | Handler metodi | Harakatlanadi, qachonki... |
 |-----------------|----------------|-------------|
@@ -59,7 +59,7 @@ Har bir ichki usul uchun ushbu jadvalda tuzoq mavjud: operatsiyani to‘xtatish 
 | `[[Set]]` | `set` | xususiyatni yozish |
 | `[[HasProperty]]` | `has` | `in` operator |
 | `[[Delete]]` | `deleteProperty` | `delete` operator |
-| `[[Call]]` | `apply` | function call |
+| `[[Call]]` | `apply` | funksiya chaqiruvi |
 | `[[Construct]]` | `construct` | `new` operator |
 | `[[GetPrototypeOf]]` | `getPrototypeOf` | [Object.getPrototypeOf](mdn:/JavaScript/Reference/Global_Objects/Object/getPrototypeOf) |
 | `[[SetPrototypeOf]]` | `setPrototypeOf` | [Object.setPrototypeOf](mdn:/JavaScript/Reference/Global_Objects/Object/setPrototypeOf) |
@@ -69,7 +69,7 @@ Har bir ichki usul uchun ushbu jadvalda tuzoq mavjud: operatsiyani to‘xtatish 
 | `[[GetOwnProperty]]` | `getOwnPropertyDescriptor` | [Object.getOwnPropertyDescriptor](mdn:/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor), `for..in`, `Object.keys/values/entries` |
 | `[[OwnPropertyKeys]]` | `ownKeys` | [Object.getOwnPropertyNames](mdn:/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames), [Object.getOwnPropertySymbols](mdn:/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols), `for..in`, `Object.keys/values/entries` |
 
-```ogohlantiruvchi sarlavha="Invariantlar"
+```warn header="Invariantlar"
 JavaScript ba'zi invariantlarni qo'llaydi -- shartlar ichki usullar va tuzoqlar bilan bajarilishi kerak.
 
 Ularning aksariyati qaytarish qiymatlari uchundir:
@@ -83,7 +83,7 @@ Boshqa invariantlar ham mavjud, masalan:
 
 Tuzoqlar bu operatsiyalarni ushlab turishi mumkin, ammo ular ushbu qoidalarga rioya qilishlari kerak.
 
-Invariantlar til xususiyatlarining to'g'ri va izchil harakatini ta'minlaydi. To'liq invariantlar ro'yxati [spetsifikatsiyada] (https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots) mavjud. Agar siz g'alati ish qilmasangiz, ehtimol siz ularni buzmaysiz.
+Invariantlar til xususiyatlarining to'g'ri va izchil harakatini ta'minlaydi. To'liq invariantlar ro'yxati [spetsifikatsiyada] (https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots) mavjud. Agar siz g'alati ish qilmasangiz, ular buzilmaydi.
 ```
 
 Keling, bu qanday ishlashini amaliy misollarda ko'rib chiqaylik.
@@ -141,7 +141,7 @@ alert( dictionary['Hello'] ); // Hola
 alert( dictionary['Welcome'] ); // undefined
 ```
 
-Hozirda, agar ibora bo'lmasa, `dictionary` dan o'qish `undefined`ni qaytaradi. Lekin amalda iborani tarjimasiz qoldirish odatda `undefined`dan ko'ra yaxshiroqdir. Shunday qilib, keling, u holda `undefined` o'rniga tarjima qilinmagan iborani qaytaraylik.
+Hozirda, agar ibora bo'lmasa, `dictionary` dan o'qish `undefined`ni qaytaradi, lekin amalda iborani tarjimasiz qoldirish odatda `undefined` dan ko'ra yaxshiroqdir. Shunday qilib, keling, u holda `undefined` o'rniga tarjima qilinmagan iborani qaytaraylik.
 
 Bunga erishish uchun biz `dictionary`ni o'qish operatsiyalarini to'xtatuvchi proksi-serverga o'rab olamiz:
 
@@ -186,7 +186,7 @@ Proksi-server hamma joyda maqsadli obyektni to'liq almashtirishi kerak. Proksi-s
 
 Aytaylik, biz faqat raqamlar uchun massivni xohlaymiz. Agar boshqa turdagi qiymat qo'shilsa, error bo'lishi kerak.
 
-Xususiyat yozilganda `set` tuzog'i ishga tushadi.
+Xususiyat yozilganda `set` tuzog'i ishga tushadi. 
 
 `set(target, property, value, receiver)`:
 
@@ -232,17 +232,17 @@ Cheklarni qo'shish uchun `push` va `unshift` kabi qo'shimcha qiymatli massiv usu
 
 Shunday qilib, kod aniq va qisqa.
 
-```ogohlantiruvchi sarlavha = `true` ni qaytarishni unutmang`
-Yuqorida aytib o'tilganidek, o'zgarmaydigan invariant'lar mavjud.
+```warn header`` = `true` ni qaytarishni unutmang`
+Yuqorida aytib o'tilganidek, o'zgarmaydigan invariant lar mavjud.
 
 Muvaffaqiyatli yozishda `set` uchun `true` qiymatini qaytarish kerak.
 
-Agar biz buni qilishni unutib qo'ysak yoki biron bir noto'g'ri qiymatni qaytarsak, operatsiya `TypeError` ni ishga tushiradi.
+Agar biz buni qilishni unutib qo'ysak yoki birorta noto'g'ri qiymatni qaytarsak, operatsiya `TypeError` ni ishga tushiradi.
 ```
 
 ## "ownKeys" va "getOwnPropertyDescriptor" bilan iteratsiya
 
-`Object.keys`, `for..in` sikli va obyekt xususiyatlari bo'yicha takrorlanadigan boshqa ko'plab usullar xususiyatlarning ro'yxatini olish uchun `[[OwnPropertyKeys]]` ichki usulidan (`ownKeys` tuzog'i tomonidan tutiladi) foydalanadi.
+`Object.keys`, `for..in` sikli va obyekt xususiyatlari bo'yicha takrorlanadigan boshqa ko'plab usullar xususiyatlarning ro'yxatini olish uchun `[[OwnPropertyKeys]]` ichki usulidan (`ownKeys` tuzog'i tomonidan tutiladi) foydalanadi. 
 
 Bunday usullar tafsilotlarda farqlanadi:
 - `Object.getOwnPropertyNames(obj)` belgilarsiz kalitlarni qaytaradi.
@@ -252,7 +252,7 @@ Bunday usullar tafsilotlarda farqlanadi:
 
 ...Ammo ularning barchasi shu ro'yxat bilan boshlanadi.
 
-In the example below we use `ownKeys` trap to make `for..in` loop over `user`, and also `Object.keys` and `Object.values`, to skip properties starting with an underscore `_`: Quyidagi misolda biz `for..in` ni `user` ustidan aylanish uchun `ownKeys` tuzog'idan, shuningdek pastki chiziq `_` bilan boshlanadigan xususiyatlarni o'tkazib yuborish uchun `Object.keys` va `Object.values`dan foydalanamiz:
+Quyidagi misolda biz `for..in` ni `user` ustidan aylanish uchun `ownKeys` tuzog'idan, shuningdek pastki chiziq `_` bilan boshlanadigan xususiyatlarni o'tkazib yuborish uchun `Object.keys` va `Object.values`dan foydalanamiz:
 
 ```js run
 let user = {
@@ -295,9 +295,9 @@ user = new Proxy(user, {
 alert( Object.keys(user) ); // <bo'sh>
 ```
 
-Nega? Sababi oddiy: `Object.keys` faqat `enumerable` bayrog'i bilan xossalarni qaytaradi. Buni tekshirish uchun u har bir xususiyat [uning identifikatorini] olish uchun `[[GetOwnProperty]]` ichki usulini chaqiradi (info:property-descriptors). Va bu yerda, hech qanday xususiyat yo'qligi sababli, uning deskriptori bo'sh, `enumerable` bayrog'i yo'q, shuning uchun u o'tkazib yuborilgan.
+Nega? Sababi oddiy: `Object.keys` faqat `enumerable` bayrog'i bilan xossalarni qaytaradi. Buni tekshirish uchun u har bir xususiyatni [uning identifikatorini] olish uchun `[[GetOwnProperty]]` ichki usulini chaqiradi (info:property-descriptors). Va bu yerda, hech qanday xususiyat yo'qligi sababli, uning deskriptori bo'sh, `enumerable` bayrog'i yo'q, shuning uchun u o'tkazib yuborilgan.
 
-`Object.keys` xususiyatini qaytarishi uchun u obyektda `enumerable` bayrog'i bilan mavjud bo'lishi kerak yoki biz `[[GetOwnProperty]]`ga qo'ng'iroqlarni to'xtata olamiz (`getOwnPropertyDescriptor` tuzog'i buni amalga oshiradi) , va `enumerable: true` bilan tavsiflovchini qaytaring.
+`Object.keys` xususiyatini qaytarishi uchun u obyektda `enumerable` bayrog'i bilan mavjud bo'lishi kerak yoki biz `[[GetOwnProperty]]`ga qo'ng'iroqlarni to'xtata olamiz (`getOwnPropertyDescriptor` tuzog'i buni amalga oshiradi). `enumerable: true` bilan tavsiflovchini qaytaring.
 
 Quyida shunga doir misolni ko'rib chiqamiz:
 
@@ -326,9 +326,9 @@ Yana bir bor eslatib o'tamiz: agar obyektda xususiyat mavjud bo'lmasa, biz faqat
 
 ## "deleteProperty" va boshqa tuzoqlar bilan himoyalangan xususiyatlar
 
-Pastki chiziqli `_` prefiksli xususiyatlar va usullar ichki ekanligi haqida keng tarqalgan konventsiya mavjud. Ularga obyekt tashqarisidan kirish mumkin emas.
+Pastki chiziqli `_` prefiksli xususiyatlar va usullar ichki ekanligi haqida keng tarqalgan konvensiya mavjud. Ularga obyekt tashqarisidan kirish mumkin emas.
 
-Texnik jihatdan bu mumkin:
+Texnik jihatdan buning iloji bor:
 
 ```js run
 let user = {
@@ -408,8 +408,7 @@ try {
 // "ownKeys" _passwordni filtrlaydi
 for(let key in user) alert(key); // name
 ```
-
-Please note the important detail in the `get` trap, in the line `(*)`:
+Iltimos, `(*)` qatoridagi `get` tuzog'idagi muhim tafsilotga e'tibor bering:
 
 ```js
 get(target, prop) {
@@ -421,22 +420,22 @@ get(target, prop) {
 }
 ```
 
- Nima uchun bizga `value.bind(target)` ni chaqirish funksiyasi kerak?
+ Nima uchun bizga `value.bind(target)` ni chaqirish funksiyasi zarur?
 
-Sababi, `user.checkPassword()` kabi obyekt usullari `_password` ga kirish imkoniyatiga ega bo`lishi kerak: 
+Sababi, `user.checkPassword()` kabi obyekt usullari `_password` ga kirish imkoniyatiga ega bo'lishi kerak: 
 
 ```js
 user = {
   // ...
   checkPassword(value) {
-    // ob'ekt usuli _password o'qiy olishi kerak
+    // obyekt usuli _password o'qiy olishi kerak
     return value === this._password;
   }
 }
 ```
 
 
-`user.checkPassword()` ga chaqiruv `user`ga `this` (nuqtadan oldingi obyekt `this` bo'ladi) sifatida proksilangan bo‘ladi, shuning uchun u `this._password` ga kirishga harakat qilganda `get` tuzog'i faollashadi (u o'qilgan har qanday xususiyatni ishga tushiradi) va xatoni yo'qotadi.
+`user.checkPassword()` ga chaqiruv `user`ga `this` (nuqtadan oldingi obyekt `this` bo'ladi) sifatida proksilangan bo'ladi, shuning uchun u `this._password` ga kirishga harakat qilganda `get` tuzog'i faollashadi (u o'qilgan har qanday xususiyatni ishga tushiradi) va xatoni yo'qotadi.
 
 Shunday qilib, biz obyekt usullari kontekstini `(*)` qatoridagi `target` asl obyektiga bog'laymiz. Keyin ularning kelajakdagi qo'ng'iroqlari hech qanday tuzoqsiz `target` dan `this` sifatida foydalanadi.
 
@@ -446,7 +445,7 @@ Bundan tashqari, obyekt bir necha marta proksilangan bo'lishi mumkin (ko'plab pr
 
 Shunday qilib, bunday proksi-server hamma joyda qo'llanilmasligi kerak.
 
-```aqlli sarlavha="Class ning shaxsiy xususiyatlari"
+```smart header="Class ning shaxsiy xususiyatlari"
 Zamonaviy JavaScript dvigatellari `#` prefiksli sinflardagi shaxsiy xususiyatlarni qo'llab-quvvatlaydi. Ular <info:private-protected-properties-methods> maqolasida tasvirlangan. Proksi-server talab qilinmaydi.
 
 Bunday xususiyatlarning o'ziga xos muammolari bor. Xususan, ular meros qilib olinmaydi.
@@ -499,7 +498,7 @@ alert(50 in range); // false
 Yaxshi sintaktik sugar, ya'ni shakar, shunday emasmi? Va amalga oshirish ham juda oddiy.
 ## Wrapping, ya'ni o'rash funksiyalari: "apply" [#proxy-apply]
 
-Biz proksi-serverni funksiya atrofida ham o'rashimiz mumkin.
+Biz proksi-serverni funksiya atrofida ham o'rashimiz mumkin. 
 
 `apply(target, thisArg, args)` tuzog'i proksi-serverni funksiya sifatida chaqirishni boshqaradi:
 
@@ -511,7 +510,7 @@ Masalan, <info:call-apply-decorators> maqolasida qilgan `delay(f, ms)` dekorator
 
 Ushbu maqolada biz buni proksisiz bajardik. `delay(f, ms)` ga qo'ng'iroq barcha qo'ng'iroqlarni `ms` millisekunddan keyin `f` ga yo'naltiruvchi funksiyani qaytardi.
 
-Mana quyida oldingi funktsiyaga asoslangan dastur berilgan:
+Mana quyida oldingi funksiyaga asoslangan dastur berilgan:
 
 ```js run
 function delay(f, ms) {
@@ -533,7 +532,7 @@ sayHi("John"); // Hello, John! (3 soniyadan keyin)
 
 Ko'rib turganimizdek, bu ko'p hollarda ishlaydi. `(*)` o'rash funksiyasi qo'ng'iroqni kutish vaqti tugaganidan keyin amalga oshiradi.
 
-But a wrapper function does not forward property read/write operations or anything else. After the wrapping, the access is lost to properties of the original functions, such as `name`, `length` and others: Lekin o'rash funktsiyasi xususiyatni o'qish/yozish operatsiyalarini yoki boshqa narsalarni uzatmaydi. O'rashdan so'ng, `name`, `length` va boshqalar kabi asl funktsiyalarning xususiyatlariga kirish yo'qoladi:
+Lekin o'rash funksiyasi xususiyatni o'qish/yozish operatsiyalarini yoki boshqa narsalarni uzatmaydi. O'rashdan so'ng, `name`, `length` va boshqalar kabi asl funktsiyalarning xususiyatlariga kirish yo'qoladi:
 
 ```js run
 function delay(f, ms) {
@@ -583,7 +582,7 @@ alert(sayHi.length); // 1 (*) proksi-server "uzunlikni olish" operatsiyasini maq
 sayHi("John"); // Hello, John! (3 soniyadan keyin)
 ```
 
-Natija bir xil, ammo endi nafaqat qo'ng'iroqlar, balki proxy-serverdagi barcha operatsiyalar asl funksiyaga yo'naltiriladi. Shunday qilib, `sayHi.length` `(*)` qatoriga o'ralganidan keyin to'g'ri qaytariladi.
+Natija bir xil, ammo endi nafaqat qo'ng'iroqlar, balki proxy-serverdagi barcha operatsiyalar asl funksiyaga yo'naltiriladi. Shunday qilib, `sayHi.length` `(*)` qatoriga o'ralganidan keyin to'g'ri qaytariladi. 
 
 Bizda "boyroq" o'ram bor.
 
@@ -617,11 +616,11 @@ Reflect.set(user, 'name', 'John');
 alert(user.name); // John
 ```
 
-Xususan, `Reflect` operatorlarni (`new`, `delete`...) funksiya sifatida chaqirish imkonini beradi (`Reflect.construct`, `Reflect.deleteProperty`, ...). Bu qiziqarli qobiliyat, lekin bu yerda yana bir muhim narsa bor.
+Xususan, `Reflect` operatorlarni (`new`, `delete`...) funksiya sifatida chaqirish imkonini beradi (`Reflect.construct`, `Reflect.deleteProperty`, ...). Bu qiziqarli qobiliyat, lekin bu yerda yana bir muhim narsa bor. 
 
 **`Proxy` tomonidan tutib olinadigan har bir ichki usul uchun `Reflect` da `Proxy` tuzog'i bilan bir xil nom va argumentlarga ega mos keladigan usul mavjud.**
 
-Shunday qilib, operatsiyani asl obyektga yo'naltirish uchun `Reflect` dan foydalanishimiz mumkin.
+Shunday qilib, operatsiyani asl obyektga yo'naltirish uchun `Reflect` dan foydalanishimiz mumkin. 
 
 Ushbu misolda ikkala `get` va `set` shaffof tarzda (go'yo ular mavjud emasdek) o'qish/yozish operatsiyalarini obyektga yo'naltiradi va xabarni ko'rsatadi:
 
@@ -656,13 +655,13 @@ Quyidagilarni eslab qolamiz:
 
 Hamma narsa oddiy, ya'ni: agar tuzoq qo'ng'iroqni obyektga yo'naltirmoqchi bo'lsa, xuddi shu argumentlar bilan `Reflect.<metod>` ni chaqirish kifoya.
 
-Aksariyat hollarda biz `Reflect`siz ham xuddi shunday qilishimiz mumkin, masalan, `Reflect.get(target, prop, receiver)` xususiyatini o‘qish `target[prop]` bilan almashtirilishi mumkin. Biroq, muhim nyuanslar ham mavjud.
+Aksariyat hollarda biz `Reflect`siz ham xuddi shunday qilishimiz mumkin, masalan, `Reflect.get(target, prop, receiver)` xususiyatini o'qish `target[prop]` bilan almashtirilishi mumkin. Biroq, muhim nyuanslar ham mavjud.
 
 ### Getterni proksilash
 
-Keling, `Reflect.get` nima uchun yaxshiroq ekanligini ko'rsatadigan misolni ko'rib chiqaylik. Bundan tashqari, nima uchun `get/set` ning biz ilgari ishlatmagan uchinchi `receiver`, ya'ni qabul qiluvchi argumenti borligini ham bilib olamiz.
+Keling, `Reflect.get` nima uchun yaxshiroq ekanligini ko'rsatadigan misolni ko'rib chiqaylik. Bundan tashqari, nima uchun `get/set` ning biz ilgari ishlatmagan uchinchi `receiver`, ya'ni qabul qiluvchi argumenti borligini ham bilib olamiz. 
 
-Bizda `_name` xususiyatiga ega `user` obyekti va uning oluvchisi mavjud.
+Bizda `_name` xususiyatiga ega `user` obyekti va uning oluvchisi bor.
 
 Uning atrofida proxy mavjud:
 
@@ -687,7 +686,7 @@ alert(userProxy.name); // Guest
 
 Bu yerda `get` tuzog'i "shaffof" bo'lib, u asl xususiyatni qaytaradi va boshqa hech narsa qilmaydi. Bizning misolimiz uchun bu yetarli.
 
-Bizga hammasi joyida bo'lib tuyilyapti. Ammo keling, misolni biroz murakkablashtiramiz.
+Bizga hammasi yaxshidek tuyilyapti. Ammo keling, misolni biroz murakkablashtiramiz. 
 
 `User` dan boshqa `admin` obyektini meros qilib olgandan so'ng, biz noto'g'ri xatti-harakatni kuzatishimiz mumkin:
 
@@ -716,7 +715,7 @@ alert(admin.name); // outputs: Guest (?!?)
 */!*
 ```
 
-`admin.name` ni o'qish `"Guest"` emas, `"Admin"`ni qaytarishi kerak!
+`admin.name` ni o'qish lozim, `"Guest"` ni emas, `"Admin"`ni qaytarishi kerak!
 
 Nima bo'ldi? Balki biz meros bilan noto'g'ri ish qilgandirmiz?
 
@@ -724,11 +723,11 @@ Ammo proxyni olib tashlasak, hamma narsa kutilganidek ishlaydi.
 
 Muammo aslida proxydagi `(*)` qatorida.
 
-1. Biz `admin.name`ni o'qiganimizda, `admin` obyektining o'ziga xos xususiyati yo'qligi sababli, qidiruv uning prototipiga o‘tadi.
+1. Biz `admin.name`ni o'qiganimizda, `admin` obyektining o'ziga xos xususiyati yo'qligi sababli, qidiruv uning prototipiga o'tadi.
 2. `userProxy` prototip hisoblanadi.
 3. Proxydan `name` xususiyatini o'qiyotganda, uning `get` tuzog'i ishga tushiriladi va uni `(*)` qatorida `target[prop]` sifatida asl obyektdan qaytaradi.
 
-    `target[prop]`ga qo'ng'iroq, `prop` oluvchi bo'lsa, o'z kodini `this=target` kontekstida ishga tushiradi. Demak, natija asl obyekt `target`dan `thhis._name`, ya'ni: `user`dan.
+    `target[prop]`ga qo'ng'iroq, `prop` oluvchi bo'lsa, o'z kodini `this=target` kontekstida ishga tushiradi. Demak, natija asl obyekt `target`dan `thhis._name`, ya'ni: `user`dan olinadi.
 
 Bunday vaziyatlarni tuzatish uchun bizga `receiver`, ya'ni qabul qiluvchi, `get` trapning uchinchi argumenti kerak. Bu oluvchiga uzatiladigan to'g'ri `this`ni saqlaydi. Bizning holatlarimizda bu `admin` hisoblanadi.
 
@@ -781,17 +780,17 @@ Shunday qilib, `Return Reflect...` operatsiyani oldinga siljitish va bu bilan bo
 
 ## Proxy cheklovlari
 
-Proxylar mavjud obyektlarning xatti-harakatlarini eng past darajada o'zgartirish yoki sozlashning noyob usulini ta'minlaydi. Shunga qaramay, u mukammal emas, ba'zi cheklovlar mavjud.
+Proxylar mavjud obyektlarning xatti-harakatlarini eng past darajada o'zgartirish yoki sozlashning noyob usulini ta'minlaydi. Shunga qaramay, u mukammal emas, ba'zi cheklovlar mavjud. 
 
 ### O'rnatilgan obyektlar: Ichki slotlar (uyalar)
 
 Ko'pgina o'rnatilgan obyektlar, masalan, `Map`, `Set`, `Data`, `Promise` va boshqalar "ichki slot"lardan foydalanadi.
 
-Bu xususiyatlarga o'xshash, lekin faqat ichki spetsifikatsiya maqsadlari uchun ajratilgan. Masalan, `Map` elementlarni ``[[MapData]]`` ichki uyasiga saqlaydi. O'rnatilgan usullar ularga `[[Get]]/[[Set]]` ichki usullari orqali emas, balki bevosita kirishadi. Shunday qilib, `Proxy` buni to'xtata olmaydi.
+Bu xususiyatlarga o'xshash, lekin faqat ichki spetsifikatsiya maqsadlari uchun ajratilgan. Masalan, `Map` elementlarni ``[[MapData]]`` ichki uyasiga saqlaydi. O'rnatilgan usullar ularga `[[Get]]/[[Set]]` ichki usullari orqali emas, balki bevosita kirishadi. Shunday qilib, `Proxy` buni to'xtata olmaydi. 
 
-Nima uchun xavotirlanasiz? Ular baribir ichki!
+Nima uchun xavotirlanasiz? Ular baribir ichki usullar!
 
-Xo'sh, masalani ko'rib chiqamiz. Bunday o'rnatilgan obyekt proxyga ulangandan so'ng, proxyda bunday ichki slotlar yo'q, shuning uchun o'rnatilgan usullar muvaffaqiyatsiz bo'ladi.
+Xo'sh, masalani ko'rib chiqamiz. Bunday o'rnatilgan obyekt proxyga ulangandan so'ng, proxyda bunday ichki slotlar yo'q, shuning uchun o'rnatilgan usullar muvaffaqiyatsiz bo'ladi. 
 
 Masalan:
 
@@ -825,11 +824,11 @@ proxy.set('test', 1);
 alert(proxy.get('test')); // 1 (ishlaydi!)
 ```
 
-Endi u yaxshi ishlaydi, chunki `get` trap `map.set` kabi funksiya xususiyatlarini maqsadli obyektning (`map`) o'ziga bog`laydi.
+Endi u yaxshi ishlaydi, chunki `get` trap `map.set` kabi funksiya xususiyatlarini maqsadli obyektning (`map`) o'ziga bog'laydi.
 
 Oldingi misoldan farqli o'laroq, `proxy.set(...)` ichidagi `this` qiymati `proxy` emas, balki asl `map` bo'ladi. Shunday qilib, `set` ning ichki ilovasi `this.[[MapData]]` ichki uyasiga kirishga harakat qilsa, u muvaffaqiyatli bo'ladi.
 
-```aqlli sarlavha="` `Array` da hech qanday ichki slot mavjud emas"
+```smart header="` `Array` da hech qanday ichki slot mavjud emas"
 E'tiborli istisno: o'rnatilgan `Array` ichki slotlardan foydalanmaydi. Bu tarixiy sabablarga ko'ra juda uzoq vaqt oldin paydo bo'lgan. 
 
 Shunday qilib, arrayni proksilashda bunday muammo yo'q.
@@ -917,7 +916,7 @@ alert(allUsers.has(user)); // false
 
 Ko'rib turganimizdek, proksi-serverdan so'ng biz `allUsers` to'plamida `user` ni topa olmaymiz, chunki proxy boshqa obyektdir.
 
-```ogohlantiruvchi sarlavha="Proxylar qat'iy tenglik testini to'xtata olmaydi `===`"
+```warn header="Proxylar qat'iy tenglik testini to'xtata olmaydi `===`"
 Proxylar ko'plab operatorlarni to'xtatib qo'yishi mumkin, masalan, `new` (`construct` bilan), `in` (`has` bilan), `delete` (`deleteProperty` bilan) va boshqalar.
 
 Ammo obyektlar uchun qat'iy tenglik testini to'xtatib turishning iloji yo'q. Obyekt qat'iy ravishda faqat o'ziga teng va boshqa qiymat mavjud emas.
@@ -929,7 +928,7 @@ Shunday qilib, obyektlarni tenglik uchun taqqoslaydigan barcha operatsiyalar va 
 
 *Revocable* proxy o'chirib qo'yilishi mumkin bo'lgan proxydir.
 
-Aytaylik, bizda resurs bor va istalgan vaqtda unga kirishni yopishni xohlaymiz.
+Aytaylik, bizda resurs bor va istalgan vaqtda unga kirishn imkonini yopishni xohlaymiz.
 
 Biz qila oladigan narsa, uni hech qanday tuzoqsiz, qaytarib olinadigan proxyga o'rashdir. Bunday proxy operatsiyalarni obyektga yo'naltiradi va biz uni istalgan vaqtda o'chirib qo'yishimiz mumkin.
 
@@ -962,7 +961,7 @@ alert(proxy.data); // Error
 
 `Revoke()` ga qo'ng'iroq proxydan maqsadli obyektga barcha ichki havolalarni olib tashlaydi, shuning uchun ular endi ulanmagan hisoblanadi. 
 
-Dastlab, `revoke` `proxy` dan alohida bo'lib, biz `revoke` ni joriy doirada qoldirib, `proxy` ni o'tkazishimiz mumkin.
+Dastlab, `revoke` `proxy` dan alohida bo'lib, biz `revoke` ni joriy doirada qoldirib, `proxy` ni o'tkazamiz.
 
 Shuningdek, biz `revoke` usulini proksi-serverga `proxy.revoke = revoke` belgilash orqali bog'lashimiz mumkin.
 
@@ -999,7 +998,7 @@ Bu yerda `Map` o'rniga `WeakMap` dan foydalanamiz, chunki u axlat yig'ishni to's
 
 `Proxy` - obyekt atrofidagi o'ram bo'lib, u ustidagi operatsiyalarni obyektga yo'naltiradi va ixtiyoriy ravishda ulardan ba'zilarini ushlab turadi.
 
-U har qanday obyektni, jumladan sinflar va funksiyalarni o'rashi mumkin.
+U har qanday obyektni, jumladan, sinflar va funksiyalarni o'rashi mumkin.
 
 Sintaksis:
 
@@ -1019,7 +1018,7 @@ Biz quyidagilarni trap qilishimiz mumkin:
 
 Bu bizga "virtual" xususiyatlar va usullarni yaratish, standart qiymatlarni, kuzatilishi mumkin bo'lgan obyektlarni, funksiya dekoratorlarini va boshqalarni amalga oshirish imkonini beradi.
 
-Shuningdek, biz obyektni turli xil proxylarga bir necha marta o'rashimiz va uni turli xil funksional jihatlari bilan bezashimiz mumkin.
+Shuningdek, biz obyektni turli xil proxylarga bir necha marta o'rashimiz va uni turli xil funksional jihatlar bilan bezashimiz mumkin.
 
 [Reflect](mdn:/JavaScript/Reference/Global_Objects/Reflect) API [Proxy](mdn:/JavaScript/Reference/Global_Objects/Proksi) ni to'ldirish uchun mo'ljallangan. Har qanday `Proxy` tuzog'i uchun bir xil argumentlarga ega `Reflect` chaqiruvi mavjud. Biz ulardan qo'ng'iroqlarni maqsadli obyektlarga yo'naltirish uchun ishlatishimiz kerak.
 
@@ -1027,5 +1026,5 @@ Proxylarda ba'zi cheklovlar mavjud:
 
 - O'rnatilgan obyektlarda "ichki slotlar" mavjud bo'lib, ularga kirishni proxy orqali ulash mumkin emas. Yuqoridagi vaqtinchalik yechimga qarang.
 - Xuddi shu narsa xususiy klass maydonlari uchun ham amal qiladi, chunki ular slotlar yordamida ichki tarzda amalga oshiriladi. Shunday qilib, proxylangan usul qo'ng'iroqlari ularga kirish uchun maqsadli obyektga ega bo'lishi kerak.
-- `===` obyekt tengligi testlarini tutib boʻlmaydi.
+- `===` obyekt tengligi testlarini tutib bo'lmaydi.
 - Ishlash: ko'rsatkichlar dvigatelga bog'liq, lekin odatda eng oddiy proxy yordamida mulkka kirish bir necha baravar ko'proq vaqtni oladi. Amalda, bu faqat ba'zi "bottleneck", ya'ni torbo'yli obyektlar uchun ahamiyatga ega.
