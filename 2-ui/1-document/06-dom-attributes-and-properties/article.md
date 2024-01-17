@@ -1,6 +1,6 @@
 # Atributlar va xususiyatlar
 
-Brauzer sahifani yuklaganida, u HTMLni "o'qiydi" (boshqa so'z: "ajraladi") va undan DOM obyektlarini yaratadi. Element nodelari uchun ko'pgina standart HTML atributlari avtomatik ravishda DOM obyektlarining xususiyatlariga aylanadi.
+Brauzer sahifani yuklaganida, u HTMLni "o'qiydi" (boshqa so'z: "ajraladi") va undan DOM obyektlarini yaratadi. Element node lari uchun ko'pgina standart HTML atributlari avtomatik ravishda DOM obyektlarining xususiyatlariga aylanadi.
 
 Masalan, teg `<body id="page">` bo'lsa, DOM obyektida `body.id="page"` bo'ladi.
 
@@ -8,7 +8,7 @@ Lekin atribut-xususiyat xaritasi birma-bir emas! Ushbu bobda biz bu ikki tushunc
 
 ## DOM xususiyatlari
 
-Biz allaqachon o'rnatilgan DOM xususiyatlarini ko'rganmiz. Ko'p bor. Lekin texnik jihatdan hech kim bizni cheklamaydi va agar yetarli bo'lmasa, biz o'zimiznikini qo'shishimiz mumkin.
+Biz allaqachon o'rnatilgan DOM xususiyatlarini ko'p marta ko'rganmiz, lekin texnik jihatdan hech kim bizni cheklamaydi va agar yetarli bo'lmasa, biz o'zimiznikini qo'shishimiz mumkin.
 
 DOM tugunlari oddiy JavaScript obyektlaridir. Biz ularni o'zgartirishimiz mumkin.
 
@@ -53,7 +53,7 @@ Shunday qilib, DOM xossalari va usullari xuddi oddiy JavaScript obyektlari kabi 
 
 HTMLda teglar atributlarga ega bo'lishi mumkin. Brauzer teglar uchun DOM obyektlarini yaratish uchun HTMLni tahlil qilganda, u *standart* atributlarni taniydi va ulardan DOM xususiyatlarini yaratadi.
 
-Shunday qilib, element `id` yoki boshqa *standart* atribyutiga ega bo'lsa, tegishli xususiyat yaratiladi. Ammo atribut nostandart bo'lsa, bu sodir bo'lmaydi.
+Shunday qilib, element `id` yoki boshqa *standart* atribyutiga ega bo'lsa, tegishli xususiyat yaratiladi, ammo atribut nostandart bo'lsa, bu sodir bo'lmaydi.
 
 Masalan:
 ```html run
@@ -96,7 +96,7 @@ Ushbu usullar HTMLda yozilgan narsalar bilan to'liq ishlaydi.
 
 Shuningdek, `elem.attributes` yordamida barcha atributlarni o'qish mumkin: o'rnatilgan [Attr](https://dom.spec.whatwg.org/#attr) sinfiga tegishli obyektlar to'plami, `name` va `qiymat` xususiyatlari.
 
-Bu yerda nostandart xususiyatni o'qish demosi:
+Quyida nostandart xususiyatni o'qish namunasi berilgan:
 
 ```html run
 <body something="non-standard">
@@ -113,7 +113,7 @@ HTML atributlari quyidagi xususiyatlarga ega:
 - Ularning nomi katta-kichik harflarni sezmaydi (`id` `ID` bilan bir xil).
 - Ularning qiymatlari doimo satrdir.
 
-Mana atributlar bilan ishlashning kengaytirilgan demosi:
+Mana atributlar bilan ishlashning kengaytirilgan namunasi:
 
 ```html run
 <body>
@@ -135,16 +135,16 @@ Mana atributlar bilan ishlashning kengaytirilgan demosi:
 
 Esda tuting:
 
-1. `getAttribute('About')` -- bu yerda birinchi harf katta, HTMLda esa hammasi kichik. Lekin bu muhim emas: atribyut nomlari katta-kichik harflarga sezgir emas.
+1. `getAttribute('About')` -- bu yerda birinchi harf katta, HTMLda esa hammasi kichik, lekin bu muhim ahamiyat kasb etmaydi, atribyut nomlari katta-kichik harflarga sezgir emas.
 2. Biz atribyutga har qanday narsani belgilashimiz mumkin, lekin u satrga aylanadi. Shunday qilib, bizda qiymat sifatida "123" mavjud.
-3. Barcha atributlar, jumladan, biz oʻrnatgan atributlar `outerHTML` da koʻrinadi.
+3. Barcha atributlar, jumladan, biz o'rnatgan atributlar `outerHTML` da ko'rinadi. 
 4. `Atribyutlar` to'plami takrorlanadi va elementning barcha atribyutlariga (standart va nostandart) `name` va `value` xususiyatlariga obyektlar sifatida ega.
 
 ## Xususiyat-atribyutlarni sinxronlashtirish
 
 Standart atribut o'zgarganda, tegishli xususiyat avtomatik yangilanadi va (ba'zi istisnolardan tashqari) aksincha yangilanmaydi.
 
-Quyidagi misolda `id` atribyut sifatida o'zgartirilgan va biz xususiyat ham o'zgarganini ko'rishimiz mumkin. Va keyin bir xil orqaga qaytaramiz:
+Quyidagi misolda `id` atribyut sifatida o'zgartirilgan va biz xususiyat ham o'zgarganini ko'rishimiz mumkin. Keyin bir xil orqaga qaytaramiz:
 
 ```html run
 <input>
@@ -186,7 +186,7 @@ Yuqoridagi misolda:
 - `value` atribyutini o'zgartirish xususiyatni yangilaydi.
 - Lekin xususiyat o'zgarishi atribyutga ta'sir qilmaydi.
 
-Bu "xususiyat" aslida foydali bo'lishi mumkin, chunki foydalanuvchi harakatlari `value` ning o'zgarishiga olib kelishi mumkin va undan keyin, agar biz HTML'dan "asl" qiymatni tiklamoqchi bo'lsak, u atribyutda bo'ladi.
+Bu "xususiyat" aslida foydali bo'lishi mumkin, chunki foydalanuvchi harakatlari `value` ning o'zgarishiga olib keladi va undan keyin, agar biz HTML'dan "asl" qiymatni tiklamoqchi bo'lsak, u atribyutda bo'ladi.
 
 ## DOM xususiyatlari yoziladi
 
@@ -218,7 +218,7 @@ Boshqa misollar ham bor. `style` atributi qatordir, lekin `style` xususiyati oby
 
 Aksariyat xususiyatlar qatorlardir.
 
-Juda kamdan-kam hollarda, hatto DOM xossa turi qator bo'lsa ham, u atributdan farq qilishi mumkin. Masalan, `href` DOM xususiyati har doim *to'liq* URL bo'ladi, hatto atributda nisbiy URL yoki shunchaki `#hash` bo'lsa ham.
+Juda kamdan-kam hollarda, hatto DOM xossa turi qator bo'lsa ham, u atributdan farq qilishi mumkin. Masalan, `href` DOM xususiyati har doim *to'liq* URL bo'ladi, hatto atributda nisbiy URL yoki shunchaki `#hash` bo'lsa ham. 
 
 Quyida misol keltirilgan:
 
@@ -238,9 +238,9 @@ Agar bizga HTMLda yozilganidek `href` yoki boshqa atribut qiymati kerak bo'lsa, 
 
 ## Nostandart atributlar, ma'lumotlar to'plami
 
-HTML yozishda biz juda ko'p standart atributlardan foydalanamiz. Lekin nostandart, odatiy bo'lganlar haqida nima deyish mumkin? Birinchidan, ular foydali yoki yo'qligini bilib olaylik. Nima uchun?
+HTML yozishda biz juda ko'p standart atributlardan foydalanamiz, lekin nostandart, odatiy bo'lganlar haqida nima deyish mumkin? Birinchidan, ular foydali yoki yo'qligini bilib olaylik. Nima uchun?
 
-Ba'zan nostandart atributlar HTML-dan JavaScript-ga maxsus ma'lumotlarni uzatish yoki JavaScript-ning HTML-elementlarini "belgilash" uchun ishlatiladi.
+Ba'zan nostandart atributlar HTMLdan JavaScriptga maxsus ma'lumotlarni uzatish yoki JavaScript-ning HTML-elementlarini "belgilash" uchun ishlatiladi.
 
 Mana bunday:
 
@@ -300,7 +300,7 @@ Masalan, bu yerda tartib holati uchun `order-state` atribyuti ishlatiladi:
 
 Nima uchun atributdan foydalanish `.order-state-new`, `.order-state-pending`, `.order-state-canceled` kabi sinflarga ega bo'lishdan afzalroq bo'ladi ?
 
-Chunki atributni boshqarish qulayroqdir. Holatni o'zgartirish oson:
+Chunki atributni boshqarish qulayroq, holatni o'zgartirish oson:
 
 ```js
 // eskisini olib tashlash/yangi sinf qo'shishdan ko'ra biroz oddiyroq
@@ -309,7 +309,7 @@ div.setAttribute('order-state', 'canceled');
 
 Lekin maxsus atributlar bilan bog'liq muammo bo'lishi mumkin. Agar biz o'z maqsadlarimiz uchun nostandart atributdan foydalansak va keyinroq standart uni kiritib, biror narsa qilishga majbur qilsa nima bo'ladi? HTML tili tirik, u o'sib boradi va ishlab chiquvchilarning ehtiyojlariga mos keladigan ko'proq atributlar paydo bo'ladi. Bunday holatda kutilmagan oqibatlar bo'lishi mumkin.
 
-Mojarolarni oldini olish uchun [data-*](https://html.spec.whatwg.org/ mavjud. #embedding-custom-non-visible-data-with-the-data-*-attributes) attributes.
+Mojarolarni oldini olish uchun [data-*](https://html.spec.whatwg.org/ mavjud. #embedding-custom-non-visible-data-with-the-data-*-attributes) attributes. 
 
 **"Data-" bilan boshlangan barcha atributlar dasturchilar foydalanishi uchun ajratilgan. Ular `dataset` xususiyatida mavjud.**
 
@@ -326,7 +326,7 @@ Mana bunday:
 
 `Data-order-state` kabi ko'p so'z atributlari tuya shaklida bo'ladi: `dataset.orderState`.
 
-Bu yerda qayta yozilgan "order state" misoli:
+Bu yerda qayta yozilgan "order state" misoli: 
 
 ```html run
 <style>
@@ -374,13 +374,13 @@ Kichik taqqoslash:
 
 Atributlar bilan ishlash usullari:
 
-- `elem.hasAttribute(name)` -- mavjudlikni tekshiradi.
-- `elem.getAttribute(name)` -- qiymatni oladi.
-- `elem.setAttribute(name, value)` -- qiymatni o'rnatadi.
-- `elem.removeAttribute(name)` -- atribyutni qaytarib oladi.
-- `elem.attributes` barcha atribbyutlarning to'plami.
+- `elem.hasAttribute(name)` -- mavjudlikni tekshiradi,
+- `elem.getAttribute(name)` -- qiymatni oladi,
+- `elem.setAttribute(name, value)` -- qiymatni o'rnatadi,
+- `elem.removeAttribute(name)` -- atribyutni qaytarib oladi,
+- `elem.attributes` barcha atribbyutlarning to'plami,
 
 Aksariyat hollarda DOM xususiyatlaridan foydalanish afzalroqdir. Biz atributlarga faqat DOM xossalari bizga mos kelmasa, atributlar kerak bo'lganda murojaat qilishimiz kerak, masalan:
 
-- Bizga nostandart atribut kerak. Ammo agar u `data-` bilan boshlansa, biz `dataset` dan foydalanishimiz kerak.
-- Biz HTMLda "yozilgan" qiymatini o'qishni xohlaymiz. DOM xususiyatining qiymati boshqacha bo'lishi mumkin, masalan, `href` xususiyati har doim to'liq URL bo'ladi va biz "asl" qiymatni olishni xohlashimiz mumkin.
+- Bizga nostandart atribut kerak. Agar u `data-` bilan boshlansa, biz `dataset` dan foydalanamiz.
+- Biz HTMLda "yozilgan" qiymatini o'qishni xohlaymiz. DOM xususiyatining qiymati boshqacha bo'lish ehtimoli mavjud, masalan, `href` xususiyati har doim to'liq URL bo'ladi va biz "asl" qiymatni olishni xohlashimiz mumkin.
