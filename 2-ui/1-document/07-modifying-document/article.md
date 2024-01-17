@@ -39,7 +39,7 @@ DOM tugunlarini yaratish uchun ikkita usul mavjud:
     ```
 
 `document.createTextNode(text)`
-: Berilgan matn bilan yangi *matn tugunini* yaratadi:
+: Berilgan matn bilan yangi *text node* ni yaratadi:
 
     ```js
     let textNode = document.createTextNode('Here I am');
@@ -49,24 +49,24 @@ Ko'pincha biz xabar uchun `div` kabi element tugunlarini yaratishimiz kerak.
 
 ### Xabar yaratish
 
-Div xabarini yaratish 3 bosqichdan iborat:
+Div xabarini yaratish uch bosqichdan iborat:
 
 ```js
 // 1. <div> elementni yarating
 let div = document.createElement('div');
 
-// 2. Uning class'ini "alert" ga o'rnating
+// 2. Uning class ini "alert" ga o'rnating
 div.className = "alert";
 
 // 3.Uni tarkib bilan to'ldiring
 div.innerHTML = "<strong>Hi there!</strong> You've read an important message.";
 ```
 
-Biz elementni yaratdik. Lekin hozircha u sahifada emas, faqat `div` nomli o'zgaruvchida. Shuning uchun biz buni ko'ra olmaymiz.
+Biz elementni yaratdik, lekin hozircha u sahifada emas, faqat `div` nomli o'zgaruvchida. Shuning uchun biz buni ko'ra olmaymiz.
 
 ## Kiritish usullari
 
-`Div` ko'rinishi uchun uni `document` ning biron bir joyiga kiritishimiz kerak. Masalan, `document.body` tomonidan havola qilingan `<body>` elementiga.
+`Div` ko'rinishi uchun uni `document` ning biron bir joyiga kiritishimiz kerak, masalan, `document.body` tomonidan havola qilingan `<body>` elementiga.
 
 Buning uchun maxsus `append`, ya'ni qo'shish usuli mavjud: `document.body.append(div)`.
 
@@ -94,21 +94,21 @@ Mana to'liq kod:
 </script>
 ```
 
-Bu yerda biz `document.body` da `append` deb nom oldik, lekin boshqa elementga boshqa element qo'yish uchun `append` usulini chaqirishimiz mumkin. Masalan, biz `<div>` ga `div.append(anotherElement)` ni chaqirish orqali biror narsa qo`shishimiz mumkin.
+Bu yerda biz `document.body` da `append` deb nom oldik, lekin boshqa elementga boshqa element qo'yish uchun `append` usulini chaqirishimiz mumkin. Masalan, biz `<div>` ga `div.append(anotherElement)` ni chaqirish orqali biror narsa qo`shsak bo'ladi.
 
 Bu yerda qo'shimcha kiritish usullari mavjud, ular qayerga qo'yish kerakligini ko'rsatadilar:
 
-- `node.append(...nodes or strings)` -- `node` *oxirida* nodelar yoki satrlarni qo'shing,
-- `node.prepend(...nodes or strings)` -- nodelar yoki satrlarni `node` ning *boshiga* kiriting,
-- `node.before(...nodes or strings)` –- nodelar yoki satrlarni `node` dan *oldin* kiriting,
-- `node.after(...nodes or strings)` –- nodelar yoki satrlarni `node`dan *keyin* qo'ying,
-- `node.replaceWith(...nodes or strings)` –- `node` ni berilgan nodelar yoki satrlar bilan almashtiradi.
+- `node.append(...nodes or strings)` -- `node` *oxirida* node lar yoki satrlarni qo'shing,
+- `node.prepend(...nodes or strings)` -- node lar yoki satrlarni `node` ning *boshiga* kiriting,
+- `node.before(...nodes or strings)` –- node lar yoki satrlarni `node` dan *oldin* kiriting,
+- `node.after(...nodes or strings)` –- node lar yoki satrlarni `node` dan *keyin* qo'ying,
+- `node.replaceWith(...nodes or strings)` –- `node` ni berilgan node lar yoki satrlar bilan almashtiradi.
 
-Ushbu usullarning argumentlari kiritish uchun DOM tugunlarining ixtiyoriy ro'yxati yoki matn satrlaridir (ular avtomatik ravishda matn node'lariga aylanadi).
+Ushbu usullarning argumentlari kiritish uchun DOM tugunlarining ixtiyoriy ro'yxati yoki matn satrlaridir (ular avtomatik ravishda matn node'lariga aylanadi). 
 
 Keling, ularni amalda ko'ramiz.
 
-Ro'yxatga elementlarni va undan oldingi/keyin matnni qoʻshish uchun ushbu usullardan foydalanishga misol:
+Ro'yxatga elementlarni va undan oldingi/keyin matnni qo'shish uchun ushbu usullardan foydalanishga misol:
 
 ```html autorun
 <ol id="ol">
@@ -176,22 +176,22 @@ Boshqacha qilib aytganda, satrlar xavfsiz tarzda kiritiladi, masalan, `elem.text
 
 Shunday qilib, bu usullar faqat DOM tugunlari yoki matn qismlarini kiritish uchun ishlatilishi mumkin.
 
-Lekin, agar biz HTML qatorini barcha teglar va ma'lumotlar `elem.innerHTML` bilan bir xil tarzda ishlaydigan "as hmtl", html sifatida kiritmoqchi bo'lsak-chi?
+Agar biz HTML qatorini barcha teglar va ma'lumotlar `elem.innerHTML` bilan bir xil tarzda ishlaydigan "as hmtl", html sifatida kiritmoqchi bo'lsakchi?
 
-## insertAdjacentHTML/Text/Element
+## insertAdjacentHTML/Text/Element    
 
-Buning uchun biz boshqa, juda ko'p qirrali usuldan foydalanishimiz mumkin: `elem.insertAdjacentHTML(qayerda, html)`.
+Buning uchun biz boshqa, juda ko'p qirrali usuldan foydalanishimiz mumkin: `elem.insertAdjacentHTML(qayerda, html)`. 
 
-Birinchi parametr `elem` ga nisbatan qayerga kiritish kerakligini ko'rsatuvchi kod so'zidir. Quyidagilardan biri bo'lishi kerak:
+Birinchi parametr `elem` ga nisbatan qayerga kiritish kerakligini ko'rsatuvchi kod so'zidir. Quyidagilardan biri bo'lishi kerak: 
 
-- `"beforebegin"` -- `elem` dan oldin darhol `html` ni qo'ying,
+- `"beforebegin"` -- `elem` dan oldin darhol `html` ni qo'ying, 
 - `"afterbegin"` -- boshida `elem` ga `html` ni kiriting,
 - `"beforeend"` -- oxirida `elem` ga `html` ni kiriting,
-- `"afterend"` -- `elem` dan keyin darhol `html` ni qo'ying.
+- `"afterend"` -- `elem` dan keyin darhol `html` ni qo'ying. 
 
-Ikkinchi parametr HTML qatori bo'lib, u "HTML sifatida" kiritiladi.
+Ikkinchi parametr HTML qatori bo'lib, u "HTML sifatida" kiritiladi. 
 
-Masalan:
+Masalan:        
 
 ```html run
 <div id="div"></div>
@@ -201,7 +201,7 @@ Masalan:
 </script>
 ```
 
-...Bunga olib keladi:
+...Quyidagi holatga olib keladi:
 
 ```html run
 <p>Hello</p>
@@ -216,12 +216,12 @@ Qo'shish variantlari rasmi:
 
 Bu va oldingi rasm o'rtasidagi o'xshashlikni osongina payqashimiz mumkin. Qo'shish nuqtalari aslida bir xil, ammo bu usul HTMLni kiritadi.
 
-Usulning ikkita ukasi bor:
+Usulda ikkita sibling mavjud:
 
 - `elem.insertAdjacentText(where, text)` -- bir xil sintaksis, lekin HTML o'rniga `text` qatori "as text" deb kiritiladi,
-- `elem.insertAdjacentElement(where, elem)` -- bir xil sintaksis, lekin elementni kiritadi.
+- `elem.insertAdjacentElement(where, elem)` -- bir xil sintaksis, ammo elementni kiritadi.
 
-Ular asosan sintaksisni "uniform" qilish uchun mavjud. Amalda ko'pincha faqat `insertAdjacentHTML` ishlatiladi. Chunki elementlar va matn uchun bizda `append/prepend/before/after` usullari mavjud -- ular yozish uchun qisqaroq va nodelarni/matn qismlarini kiritishi mumkin.
+Ular asosan sintaksisni "uniform" qilish uchun mavjud. Amalda ko'pincha faqat `insertAdjacentHTML` ishlatiladi, chunki elementlar va matn uchun bizda `append/prepend/before/after` usullari mavjud -- ular yozish uchun qisqaroq va nodelarni/matn qismlarini kiritishi mumkin.
 
 Shunday qilib, xabarni ko'rsatishning muqobil varianti:
 
@@ -243,9 +243,9 @@ Shunday qilib, xabarni ko'rsatishning muqobil varianti:
 </script>
 ```
 
-## Node'ni olib tashlash
+## Node ni olib tashlash
 
-Node'ni olib tashlash uchun `node.remove()` usuli mavjud.
+Node ni olib tashlash uchun `node.remove()` usuli mavjud.
 
 Keling, xabarimizni bir soniyadan keyin yo'q qilaylik:
 
@@ -287,11 +287,11 @@ Masalan, elementlarni almashtiramiz:
 </script>
 ```
 
-## Nodelarni klonlash: cloneNode
+## Node larni klonlash: cloneNode
 
 Yana bir shunga o'xshash xabarni qanday kiritish kerak?
 
-Biz funktsiyani yaratib, kodni u yerga qo'yishimiz mumkin. Biroq, muqobil yo'l - mavjud `div` ni *klonlash* va uning ichidagi matnni o'zgartirish (agar kerak bo'lsa).
+Biz funksiyani yaratib, kodni u yerga qo'yishimiz mumkin. Biroq, muqobil yo'l - mavjud `div` ni *klonlash* va uning ichidagi matnni o'zgartirish (agar kerak bo'lsa).
 
 Ba'zan bizda katta element bo'lsa, bu tezroq va sodda bo'lishi mumkin.
 
@@ -326,7 +326,7 @@ Xabarni nusxalash misoli:
 
 ## DocumentFragment [#document-fragment]
 
-`DocumentFragment` - bu nodelar ro'yxatini o'tkazish uchun o'rash vazifasini bajaradigan maxsus DOM node hisoblanadi.
+`DocumentFragment` - bu node lar ro'yxatini o'tkazish uchun o'rash vazifasini bajaradigan maxsus DOM node hisoblanadi.
 
 Biz unga boshqa nodelarni qo'shishimiz mumkin, lekin biz uni biror joyga qo'shganimizda, uning o'rniga uning kontenti kiritiladi.
 
@@ -363,7 +363,7 @@ E'tibor bering, oxirgi `(*)` qatoriga biz `DocumentFragment` qo'shamiz, lekin u 
 </ul>
 ```
 
-`DocumentFragment`kamdan-kam hollarda aniq ishlatiladi. Agar biz nodelar qatorini qaytarishimiz mumkin bo'lsa, nima uchun maxsus turdagi nodega qo'shiladi? Qayta yozilgan misol:
+`DocumentFragment` kamdan-kam hollarda aniq ishlatiladi. Agar biz nodelar qatorini qaytarishimiz mumkin bo'lsa, nima uchun maxsus turdagi nodega qo'shiladi? Qayta yozilgan misol:
 
 ```html run
 <ul id="ul"></ul>
@@ -387,7 +387,7 @@ ul.append(...getListContent()); // append + "..." operatori = friends!
 </script>
 ```
 
-Biz `DocumentFragment` ni, asosan, [template](info:template-element) elementi kabi ba'zi tushunchalar borligi uchun eslatib o'tamiz, biz ularni keyinroq ko'rib chiqamiz.
+Biz `DocumentFragment` ni, asosan, [template](info:template-element) elementi kabi ba'zi tushunchalar borligi uchun eslatib o'tamiz, biz ularni keyinroq ko'rib chiqamiz. 
 
 ## Old school, ya'ni eski maktab qo'shish/o'chirish usullari
 
@@ -466,7 +466,7 @@ Ushbu usullarni bu yerda sanab o'tishimizning yagona sababi shundaki, siz ularni
     </script>
     ```
 
-Ushbu usullarning barchasi kiritilgan/olib tashlangan nodeni qaytaradi. Boshqacha qilib aytganda, `parentElem.appendChild(node)` `node`ni qaytaradi. Lekin odatda qaytarilgan qiymat ishlatilmaydi, biz faqat usulni ishga tushiramiz.
+Ushbu usullarning barchasi kiritilgan/olib tashlangan nodeni qaytaradi. Boshqacha qilib aytganda, `parentElem.appendChild(node)` `node`ni qaytaradi, lekin odatda qaytarilgan qiymat ishlatilmaydi, biz faqat usulni ishga tushiramiz.
 
 ## "document.write" haqida bir so'z
 
@@ -484,7 +484,7 @@ Sintaksis:
 <p>The end</p>
 ```
 
-`document.write(html)` ga qo'ng'iroq `html` ni "hozir va shu yerda" sahifasiga yozadi. `html` qatori dinamik ravishda yaratilishi mumkin, shuning uchun u qandaydir moslashuvchan. To'liq veb-sahifa yaratish va uni yozish uchun JavaScriptdan foydalanishimiz mumkin.
+`document.write(html)` ga qo'ng'iroq `html` ni "hozir va shu yerda" sahifasiga yozadi. `html` qatori dinamik ravishda yaratilishi mumkin, shuning uchun u anchagina moslashuvchan. To'liq veb-sahifa yaratish va uni yozish uchun JavaScriptdan foydalanishimiz mumkin.
 
 Usul DOM, standartlar bo'lmagan eski vaqtlardan kelib chiqadi...  U hali ham yashaydi, chunki undan foydalanadigan skriptlar mavjud.
 
@@ -494,7 +494,7 @@ Muhim cheklovlar sabab zamonaviy skriptlarda biz uni kamdan-kam ko'rishimiz mumk
 
 Agar biz uni keyinroq chaqirsak, mavjud hujjat tarkibi o'chiriladi.    
 
-masalan:
+Masalan:
 
 ```html run
 <p>Bir soniyadan keyin bu sahifaning kontenti almashtiriladi...
@@ -509,21 +509,21 @@ masalan:
 */!*
 ```
 
-Shunday qilib, biz yuqorida aytib o'tgan boshqa DOM usullaridan farqli ravishda "after loaded", ya'ni (yuklangandan keyin) bosqichda foydalanish mumkin emas.
+Shunday qilib, biz yuqorida aytib o'tgan boshqa DOM usullaridan farqli ravishda "after loaded", ya'ni (yuklangandan keyin) bosqichda foydalanish mumkin emas. 
 
 Salbiy tomoni shu.
 
-O'ziga xos tomoni ham bor. Texnik jihatdan, brauzer kiruvchi HTMLni o'qiyotganda ("tahlil") `document.write` chaqirilsa va u biror narsa yozsa, brauzer uni xuddi HTML matnida bo'lgani kabi iste'mol qiladi.
+Biroq buning o'ziga xos tomoni ham bor. Texnik jihatdan, brauzer kiruvchi HTMLni o'qiyotganda ("tahlil") `document.write` chaqirilsa va u biror narsa yozsa, brauzer uni xuddi HTML matnida bo'lgani kabi iste'mol qiladi.
 
-Shunday qilib, u juda tez ishlaydi, chunki *hech qanday DOM modifikatsiyasi mavjud emas*. U to'g'ridan-to'g'ri sahifa matniga yozadi, DOM hali qurilmagan.
+Shunday qilib, u juda tez ishlaydi, chunki *hech qanday DOM modifikatsiyasi mavjud emas*. U to'g'ridan-to'g'ri sahifa matniga yozadi, DOM hali qurilmagan. 
 
-Shunday qilib, agar biz HTMLga dinamik ravishda ko'p matn qo'shishimiz kerak bo'lsa va biz sahifani yuklash bosqichida bo'lsak va tezlik muhim bo'lsa, bu yordam berishi mumkin. Ammo amalda bu talablar kamdan-kam uchraydi. Va odatda biz bu usulni skriptlarda eski bo'lgani uchun ko'rishimiz mumkin.
+Shunday qilib, agar biz HTMLga dinamik ravishda ko'p matn qo'shishimiz kerak bo'lsa, biz sahifani yuklash bosqichida bo'lsak va tezlik muhim bo'lsa, bu yordam berishi mumkin. Ammo amalda bu talablar kamdan-kam uchraydi. Odatda biz bu usulni skriptlarda eski bo'lgani uchun ko'rishimiz mumkin.
 
 ## Xulosa
 
-- Yangi nodelarni yaratish usullari:
+- Yangi node larni yaratish usullari:
     - `document.createElement(tag)` -- berilgan teg bilan element yaratadi,
-    - `document.createTextNode(value)` -- matn node'ni yaratadi (kamdan-kam ishlatiladi),
+    - `document.createTextNode(value)` -- matn node ni yaratadi (kamdan-kam ishlatiladi),
     - `elem.cloneNode(deep)` -- agar `deep==true` bo'lsa barcha avlodlar bilan elementni klonlaydi.
 
 - O'rnatish va olib tashlash:
