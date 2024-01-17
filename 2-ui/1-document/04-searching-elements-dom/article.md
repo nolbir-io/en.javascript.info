@@ -6,7 +6,7 @@ Buning uchun qo'shimcha qidiruv usullari mavjud.
 
 ## document.getElementById yoki shunchaki id
 
-Agar element `id` atributiga ega bo'lsa, qayerda bo'lishidan qat'i nazar, biz elementni `document.getElementById(id)` usuli yordamida olishimiz mumkin.
+Agar element `id` atributiga ega bo'lsa, qayerda bo'lishidan qat'iy nazar, biz elementni `document.getElementById(id)` usuli yordamida olishimiz mumkin. 
 
 Masalan:
 
@@ -54,29 +54,29 @@ Bundan tashqari, elementga havola qiluvchi `id` nomi bilan atalgan global o'zgar
 </script>
 ```
 
-```ogohlantiruvchi sarlavha="Iltimos, elementlarga kirish uchun id nomli global oʻzgaruvchilardan foydalanmang”
+```warn header="Iltimos, elementlarga kirish uchun id nomli global oʻzgaruvchilardan foydalanmang”
 Bu xatti-harakat [spetsifikatsiyada] tasvirlangan (https://html.spec.whatwg.org/multipage/window-object.html#named-access-on-the-window-object), lekin u asosan moslik uchun qo'llab-quvvatlanadi. .
 
-Brauzer JS va DOM nom maydonlarini aralashtirish orqali bizga yordam berishga harakat qiladi. Bu HTML ichiga kiritilgan oddiy skriptlar uchun yaxshi, lekin umuman olganda yaxshi narsa emas. Nomlashda ziddiyatlar bo'lishi mumkin. Bundan tashqari, JS kodini o'qiganda va HTML ko'rinmasa, o'zgaruvchining qayerdan kelgani aniq bo'lmaydi.
+Brauzer JS va DOM nom maydonlarini aralashtirish orqali bizga yordam berishga harakat qiladi. Bu HTML ichiga kiritilgan oddiy skriptlar uchun mos, lekin umuman olganda yaxshi narsa emas. Nomlashda ziddiyatlar paydo bo'lishi mumkin. Bundan tashqari, JS kodini o'qiganda va HTML ko'rinmasa, o'zgaruvchining qayerdan kelgani aniq bo'lmaydi. 
 
-Agar element qayerdan kelgani aniq bo'lsa, bu yerda o'quv qo'llanmada biz qisqalik uchun elementga to'g'ridan-to'g'ri murojaat qilish uchun `id` dan foydalanamiz.
+Agar element qayerdan kelgani aniq bo'lsa, bu yerda o'quv qo'llanmada biz qisqalik uchun elementga to'g'ridan-to'g'ri murojaat qilish uchun `id` dan foydalanamiz. 
 
-Haqiqiy hayotda "document.getElementById" afzal ko'rilgan usul.
+Real hayotda "document.getElementById" afzal ko'rilgan usul.
 ```
 
-```aqlli sarlavha="`Id` noyob bo'lishi kerak`
-`Id` noyob bo'lishi kerak. Hujjatda berilgan `id` bilan faqat bitta element bo'lishi mumkin.
+```smart header="`Id` noyob bo'lishi kerak`
+`Id` noyob bo'lishi lozim. Hujjatda berilgan `id` bilan faqat bitta element bo'lishi mumkin.
 
 Agar bir xil `id` ga ega bo'lgan bir nechta elementlar mavjud bo'lsa, uni ishlatadigan usullarning xatti-harakatlarini oldindan aytib bo'lmaydi, masalan, `document.getElementById`. Bunday elementlardan istalgan birini tasodifiy qaytarishi mumkin. Shuning uchun, iltimos, qoidaga rioya qiling va `id` ni noyob saqlang.
 ```
 
-```ogohlantiruvchi sarlavha="Faqat `document.getElementById`, `anyElem.getElementById` emas"
+```warn header="Faqat `document.getElementById`, `anyElem.getElementById` emas"
 `getElementById` usuli faqat `document` obyektida chaqirilishi mumkin. U butun hujjatda berilgan `id` ni qidiradi.
 ```
 
 ## querySelectorAll [#querySelectorAll]
 
-Hozirgacha eng ko'p qirrali usul `elem.querySelectorAll(css)` berilgan CSS selektoriga mos keladigan `elem` ichidagi barcha elementlarni qaytaradi.
+Hozirgacha eng ko'p qirrali usul `elem.querySelectorAll(css)` berilgan CSS selektoriga mos keladigan `elem` ichidagi barcha elementlarni qaytaradi. 
 
 Bu yerda biz oxirgi bolalar bo'lgan barcha `<li>` elementlarni qidiramiz:
 
@@ -102,7 +102,7 @@ Bu yerda biz oxirgi bolalar bo'lgan barcha `<li>` elementlarni qidiramiz:
 
 Bu usul haqiqatan ham kuchli, chunki har qanday CSS selektoridan foydalanish mumkin.
 
-```aqlli sarlavha="Pseudo-sinflardan ham foydalanishi mumkin"
+```smart header="Pseudo-sinflardan ham foydalanishi mumkin"
 CSS selektoridagi `:hover` va `:active` kabi psevdosinflar ham qo`llab-quvvatlanadi. Masalan, `document.querySelectorAll(':hover')` to'plamni ko'rsatgich hozir tugagan elementlar bilan qaytaradi (ichiga joylashtirish tartibida: eng tashqi `<html>`dan eng ko'p o'rnatilganiga).
 ```
 
@@ -110,13 +110,13 @@ CSS selektoridagi `:hover` va `:active` kabi psevdosinflar ham qo`llab-quvvatlan
 
 `elem.querySelector(css)` ga qo'ng'iroq berilgan CSS selektori uchun birinchi elementni qaytaradi.
 
-Boshqacha qilib aytganda, natija `elem.querySelectorAll(css)[0]` bilan bir xil, lekin ikkinchisi *barcha* elementlarni qidiradi va birini tanlaydi, `elem.querySelector` esa faqat bittasini qidiradi. Shunday qilib, yozish tezroq va qisqaroq.
+Boshqacha qilib aytganda, natija `elem.querySelectorAll(css)[0]` bilan bir xil, lekin ikkinchisi *barcha* elementlarni qidiradi va birini tanlaydi, `elem.querySelector` esa faqat bittasini qidiradi. Shunday qilib, yozish tezroq va qisqaroq davom etadi.
 
 ## matches
 
-Avvalgi usullar DOMni qidirishayotgan edi.
+Avvalgi usullar DOMni qidirishayotgan edi. 
 
-[elem.matches(css)](https://dom.spec.whatwg.org/#dom-element-matches) hech narsani qidirmaydi, u faqat `elem` berilgan CSS-selektorga mos kelishini tekshiradi. U `true` yoki `false` ni qaytaradi.
+[elem.matches(css)](https://dom.spec.whatwg.org/#dom-element-matches) hech narsani qidirmaydi, u faqat `elem` berilgan CSS selektoriga mos kelishini tekshiradi. U `true` yoki `false` ni qaytaradi.
 
 Usul biz elementlarni (masalan, massivda yoki biror narsada) takrorlayotganimizda va bizni qiziqtirgan narsalarni filtrlashga harakat qilganimizda foydali bo'ladi.
 
@@ -127,7 +127,7 @@ Masalan:
 <a href="http://ya.ru">...</a>
 
 <script>
-  // document.body.children o'rniga har qanday to'plam boʻlishi mumkin
+  // document.body.children o'rniga har qanday to'plam bo'lishi mumkin
   for (let elem of document.body.children) {
 *!*
     if (elem.matches('a[href$="zip"]')) {
@@ -140,13 +140,13 @@ Masalan:
 
 ## closest
 
-Elementning *ajdodlari*: ota-ona, ota-onaning ota-onasi, uning ota-onasi va boshqalar. Ajdodlar birgalikda elementdan tepaga qadar ota-onalar zanjirini tashkil qiladi.
+Elementning *ajdodlari*: ota-ona, ota-onaning ota-onasi, uning ota-onasi va boshqalardir. Ajdodlar birgalikda elementdan tepaga qadar ota-onalar zanjirini tashkil qiladi. 
 
-`elem.closest(css)` usuli CSS-selektorga mos keladigan eng yaqin ajdodni qidiradi. `Elem` ning o'zi ham qidiruvga kiritilgan.
+`elem.closest(css)` usuli CSS selektorga mos keladigan eng yaqin ajdodni qidiradi. `Elem` ning o'zi ham qidiruvga kiritilgan.
 
-Boshqacha qilib aytganda, `closest` usuli elementdan yuqoriga ko'tariladi va har bir ota-onani tekshiradi. Agar u selektorga mos kelsa, qidiruv to'xtaydi va ajdod qaytariladi.
+Boshqacha qilib aytganda, `closest` usuli elementdan yuqoriga ko'tariladi va har bir ota-onani tekshiradi. Agar u selektorga mos kelsa, qidiruv to'xtaydi va ajdod qaytariladi. 
 
-For instance:
+Masalan:
 
 ```html run
 <h1>Contents</h1>
@@ -178,15 +178,15 @@ Shunday qilib, biz ularni asosan to'liqligi uchun ko'rib chiqamiz, siz ularni ha
 
 - `elem.getElementsByTagName(tag)` berilgan teg bilan elementlarni qidiradi va ularning to'plamini qaytaradi. `Tag` parametri, shuningdek, "har qanday teglar" uchun yulduz `"*"` bo'lishi mumkin.
 - `elem.getElementsByClassName(className)` berilgan CSS sinfiga ega elementlarni qaytaradi.
-- `document.getElementsByName(name)` berilgan `name` atribyutiga ega bo'lgan elementlarni hujjat bo'ylab qaytaradi. Juda kam ishlatiladi.
+- `document.getElementsByName(name)` berilgan `name` atribyutiga ega bo'lgan elementlarni hujjat bo'ylab qaytaradi. Ular juda kam ishlatiladi.
 
-For instance:
+Masalan:
 ```js
 //hujjatdagi barcha divlarni oling
 let divs = document.getElementsByTagName('div');
 ```
 
-Let's find all `input` tags inside the table:
+Jadval ichidagi barcha `input` teglarini topamiz:
 
 ```html run height=50
 <table id="table">
@@ -195,13 +195,13 @@ Let's find all `input` tags inside the table:
 
     <td>
       <label>
-        <input type="radio" name="age" value="young" checked> less than 18
+        <input type="radio" name="age" value="young" checked> 18 dan kamroq
       </label>
       <label>
-        <input type="radio" name="age" value="mature"> from 18 to 50
+        <input type="radio" name="age" value="mature"> 18 dan 50 gacha
       </label>
       <label>
-        <input type="radio" name="age" value="senior"> more than 60
+        <input type="radio" name="age" value="senior"> 60 dan ko'proq
       </label>
     </td>
   </tr>
@@ -218,13 +218,13 @@ Let's find all `input` tags inside the table:
 </script>
 ```
 
-```ogohlantiruvchi sarlavha=" `\"s\"` harfini unutmang!
-Ayrim developerlar ba'zan `"s"` harfini unutishadi. Ya'ni, ular <code>getElement<b>s</b>ByTagName</code> o'rniga `getElementByTagName` ni chaqirishga harakat qilishadi.
+```warn header=" `\"s\"` harfini unutmang!
+Ayrim dasturchilar ba'zan `"s"` harfini unutadi, ya'ni, ular <code>getElement<b>s</b>ByTagName</code> o'rniga `getElementByTagName` ni chaqirishga harakat qilishadi.
 
 `getElementById` da `"s"` harfi mavjud emas, chunki u bitta elementni qaytaradi. Ammo `getElementsByTagName` elementlar to'plamini qaytaradi, shuning uchun ichida `"s"` mavjud.
 ```
 
-````ogohlantiruvchi sarlavha="Bu element emas, balki to'plamni qaytaradi!"
+````warn header="Bu element emas, balki to'plamni qaytaradi!"
 Yana bir keng tarqalgan xato - bu yozish:
 
 ```js
@@ -312,7 +312,7 @@ Endi biz farqni osongina ko'rishimiz mumkin. Hujjatda yangi `div` paydo bo'lgand
 
 ## Xulosa
 
-DOM-da node'larni qidirishning 6 ta asosiy usuli mavjud:
+DOM da node larni qidirishning 6 ta asosiy usuli mavjud:
 
 <table>
 <thead>
@@ -368,7 +368,7 @@ Hozirgacha eng ko'p ishlatiladiganlar `querySelector` va `querySelectorAll`dir, 
 Shuningdek:
 
 - `elem` berilgan CSS selektoriga mos kelishini tekshirish uchun `elem.matches(css)` mavjud.
-- Berilgan CSS-selektorga mos keladigan eng yaqin ajdodni izlash uchun `elem.closest(css)` mavjud. `Elem` ning o'zi ham tekshiriladi.
+- Berilgan CSS selektorga mos keladigan eng yaqin ajdodni izlash uchun `elem.closest(css)` ishlatiladi. `Elem` ning o'zi ham tekshiriladi.
 
 Keling, bu yerda bolaning ota-ona munosabatlarini tekshirishning yana bir usulini eslatib o'tamiz, chunki bu ba'zan foydalidir:
 - `elemA.contains(elemB)`, agar `elemB` `elemA` (`elemA` avlodi) ichida bo'lsa yoki `elemA==elemB` bo'lsa, true ni qaytaradi.
