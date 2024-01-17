@@ -1,27 +1,27 @@
 # Brauzer muhiti, texnik xususiyatlari
 
-JavaScript tili dastlab veb-brauzerlar uchun yaratilgan. O'shandan beri u ko'plab foydalanish va platformalarga ega bo'lgan tilga aylandi.
+JavaScript tili dastlab veb-brauzerlar uchun yaratilgan. O'shandan beri u ko'p foydalaniladigan va platformalarga ega bo'lgan tilga aylandi.
 
-Platforma brauzer, veb-server yoki boshqa *host* yoki JavaScript-ni ishga tushira olsa, hatto "aqlli" qahva mashinasi bo'lishi mumkin. Ularning har biri platformaga xos funksiyalarni ta'minlaydi. JavaScript spetsifikatsiyasi buni *host muhiti* deb ataydi.
+Platforma brauzer, veb-server yoki boshqa *host* yoki JavaScriptni ishga tushira olsa, hatto "aqlli" qahva mashinasi bo'lishi mumkin. Ularning har biri platformaga xos funksiyalarni ta'minlaydi. JavaScript spetsifikatsiyasi buni *host muhiti* deb ataydi.
 
-Xost muhiti til yadrosiga qo'shimcha ravishda o'z obyektlari va funktsiyalarini ta'minlaydi. Veb-brauzerlar veb-sahifalarni boshqarish vositalarini beradi. Node.js server tomonidagi xususiyatlarni taqdim etadi va hokazo.
+Host muhiti til yadrosiga qo'shimcha ravishda o'z obyektlari va funktsiyalarini ta'minlaydi, veb-brauzerlar veb-sahifalarni boshqarish vositalarini beradi, node.js server tomonidagi xususiyatlarni taqdim etadi va hokazo.
 
-JavaScript veb-brauzerda ishlayotganida bizda nima borligini qushning nazari bilan ko'rib chiqamiz:
+JavaScript veb-brauzerda ishlayotganida bizda nima borligini ko'rib chiqamiz:
 
 ![](windowObjects.svg)
  
-It has two roles: `window` deb nomlangan "ildiz" obyekti mavjud. Uning ikkita roli bor:
+`window` deb nomlangan "ildiz" obyekti mavjud. Uning ikkita roli bor:
 
 1. Birinchidan, bu <info:global-object> bobida tavsiflanganidek, JavaScript kodi uchun global obyektdir.
 2. Ikkinchidan, u "brauzer oynasi" ni ifodalaydi va uni boshqarish usullarini taqdim etadi.
-Masalan, biz uni global obyekt sifatida ishlatishimiz mumkin:
+Masalan, biz uni global obyekt sifatida ishlatishimiz mumkin: 
 
 ```js run global
 function sayHi() {
   alert("Hello");
 }
 
-// global funktsiyalar global obyektning usullari:
+// global funksiyalar global obyektning usullari:
 window.sayHi();
 ```
 
@@ -50,16 +50,16 @@ setTimeout(() => document.body.style.background = "", 1000);
 
 Bu yerda biz `document.body.style` dan foydalandik, lekin yana ko'p narsa bor. Xususiyatlar va usullar spetsifikatsiyada tasvirlangan: [DOM Living Standard](https://dom.spec.whatwg.org).
 
-```aqlli sarlavha="DOM faqatgina brauzerlar uchun mo'ljallanmagan"
-DOM spetsifikatsiyasi hujjatning tuzilishini tushuntiradi va uni boshqarish uchun obyektlarni taqdim etadi. DOM-dan foydalanadigan brauzer bo'lmagan asboblar ham mavjud.
+```smart header="DOM faqatgina brauzerlar uchun mo'ljallanmagan"
+DOM spetsifikatsiyasi hujjatning tuzilishini tushuntiradi va uni boshqarish uchun obyektlarni taqdim etadi. DOM dan foydalanadigan brauzer bo'lmagan asboblar ham mavjud.
 
-Masalan, HTML-sahifalarni yuklaydigan va ularni qayta ishlovchi server tomonidagi skriptlar ham DOM-dan foydalanishi mumkin. Ular spetsifikatsiyaning faqat bir qismini qo'llab-quvvatlashi mumkin.
+Masalan, HTML sahifalarni yuklaydigan va ularni qayta ishlovchi server tomonidagi skriptlar ham DOM dan foydalanishi mumkin. Ular spetsifikatsiyaning faqat bir qismini qo'llab-quvvatlashi mumkin.
 ```
 
-```aqlli sarlavha="Styling uchun CSSOM"
-Bundan tashqari, CSS qoidalari va uslublar jadvallari uchun [CSS Object Model (CSSOM)](https://www.w3.org/TR/cssom-1/) alohida spetsifikatsiya mavjud bo'lib, ular qanday qilib obyektlar sifatida ko'rsatilishini va qanday amalga oshirilishini, qanday o'qilishi va yozilishini tushuntiradi.
+```smart header ="Styling uchun CSSOM"
+Bundan tashqari, CSS qoidalari va uslublar jadvallari uchun [CSS Object Model (CSSOM)](https://www.w3.org/TR/cssom-1/) alohida spetsifikatsiya mavjud bo'lib, ular qanday qilib obyektlar sifatida ko'rsatilishini va qanday amalga oshirilishini, qanday o'qilishi va yozilishini tushuntiradi. 
 
-Hujjat uchun uslub qoidalarini o'zgartirganda CSSOM DOM bilan birgalikda ishlatiladi. Amalda, CSSOM kamdan-kam talab qilinadi, chunki biz kamdan-kam hollarda JavaScript-dan CSS qoidalarini o'zgartirishimiz kerak (odatda biz CSS sinflarini qo'shamiz/o'chiramiz, ularning CSS qoidalarini o'zgartirmaymiz), lekin bu ham mumkin.
+Hujjat uchun uslub qoidalarini o'zgartirganda CSSOM DOM bilan birgalikda ishlatiladi. Amalda, CSSOM kamdan-kam talab qilinadi, chunki biz ayrim hollarda JavaScriptdan CSS qoidalarini o'zgartirishimiz kerak (odatda biz CSS sinflarini qo'shamiz/o'chiramiz, ularning CSS qoidalarini o'zgartirmaymiz), lekin bunday qilish ham mumkin.
 ```
 
 ## BOM (Brauzer Obyekt Modeli)
@@ -68,8 +68,8 @@ Brauzer obyekt modeli (BOM) hujjatdan tashqari hamma narsa bilan ishlash uchun b
 
 Masalan:
 
-- [navigator](mdn:api/Window/navigator) obyekti brauzer va operatsion tizim haqida fon ma'lumotlarini taqdim etadi. Ko'pgina xususiyatlar mavjud, ammo eng mashhur ikkitasi: `navigator.userAgent` -- joriy brauzer haqida va `navigator.platform` -- platforma haqida (Windows/Linux/Mac va boshqalarni farqlashga yordam beradi).
-- [location](mdn:api/Window/location) obyekti bizga joriy URL manzilini o‘qish imkonini beradi va brauzerni yangisiga yo‘naltirishi mumkin.
+- [navigator](mdn:api/Window/navigator) obyekti brauzer va operatsion tizim haqida fon ma'lumotlarini taqdim etadi. Ko'pgina xususiyatlar mavjud, ammo eng mashhur ikkitasi: `navigator.userAgent` -- joriy brauzer va `navigator.platform` -- platforma haqida (Windows/Linux/Mac va boshqalarni farqlashga yordam beradi).
+- [location](mdn:api/Window/location) obyekti bizga joriy URL manzilini o'qish imkonini beradi va brauzerni yangisiga yo'naltirishi mumkin.
 
 Quyida `locaton`, ya'ni joylashuv obyektidan qanday foydalanishimiz mumkinligi tushuntirilgan:
 
@@ -82,7 +82,7 @@ if (confirm("Go to Wikipedia?")) {
 
 `alert/confirm/prompt` funksiyalari ham BOMning bir qismidir: ular hujjat bilan bevosita bog'liq emas, balki foydalanuvchi bilan muloqot qilishning sof brauzer usullarini ifodalaydi.
 
-```aqlli sarlavha ="Spesifikatsiyalar"
+```smart header ="Spesifikatsiyalar"
 BOM umumiy [HTML spetsifikatsiyasining] bir qismidir (https://html.spec.whatwg.org).
 
  Ha, siz buni to'g'ri eshitdingiz. <https://html.spec.whatwg.org> saytidagi HTML spetsifikatsiyasi nafaqat "HTML tili" (teglar, atributlar) haqida, balki bir qator obyektlar, usullar va brauzerga xos DOM kengaytmalarini ham qamrab oladi. Bu "keng ma'noda HTML". Bundan tashqari, ba'zi qismlar <https://spec.whatwg.org> ro'yxatida qo'shimcha xususiyatlar mavjud.
@@ -103,9 +103,9 @@ HTML spesifikatsiyasi
 
 Bundan tashqari, ba'zi sinflar <https://spec.whatwg.org/> da alohida tavsiflangan.
 
-Iltimos, ushbu havolalarga e'tibor bering, chunki o'rganish uchun juda ko'p narsa borki, hamma narsani qamrab olish va hammasini eslab qolish mumkin emas.
+Iltimos, ushbu havolalarga e'tibor bering, chunki o'rganish uchun juda ko'p narsa borki, hamma narsani qamrab olish va hammasini eslab qolish mumkin emas. 
 
-Xususiyat yoki usul haqida oʻqishni istasangiz, <https://developer.mozilla.org/en-US/> manzilidagi Mozilla qoʻllanmasi ham yaxshi manbadir, lekin mos keladigan xususiyatlar yaxshiroq boʻlishi mumkin: u ko'pincha murakkab va o'qish uchun uzoqroq, lekin sizning fundamental bilimlaringizni mustahkam va to'liq qiladi.
+Xususiyat yoki usul haqida o'qishni istasangiz, <https://developer.mozilla.org/en-US/> manzilidagi Mozilla qo'llanmasi ham yaxshi manbadir, lekin mos keladigan xususiyatlar yaxshiroq bo'lishi mumkin: u ko'pincha murakkab va o'qish uchun uzoq vaqt talab etadi, lekin sizning fundamental bilimlaringizni mustahkamlaydi.
 
 Biror narsani topish uchun ko'pincha "WHATWG [term]" yoki "MDN [term]" internet qidiruvidan foydalanish qulay, masalan, <https://google.com?q=whatwg+localstorage>, <https://google. com?q=mdn+localstorage>.
 
