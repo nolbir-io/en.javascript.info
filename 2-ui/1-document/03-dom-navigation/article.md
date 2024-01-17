@@ -9,9 +9,9 @@ libs:
 
 DOM bizga elementlar va ularning mazmuni bilan hamma narsani qilish imkonini beradi, lekin birinchi navbatda tegishli DOM obyektiga erishishimiz kerak.
 
-DOMdagi barcha operatsiyalar `document` obyektidan boshlanadi. Bu DOMga asosiy "kirish nuqtasi". Undan biz istalgan node'ga kirishimiz mumkin.
+DOMdagi barcha operatsiyalar `document` obyektidan boshlanadi. Bu DOMga asosiy "kirish nuqtasi" hisoblanadi. Undan biz istalgan node ga kirishimiz mumkin.
 
-Bu yerda DOM node'lari o'rtasida sayohat qilish imkonini beruvchi havolalar rasmi:
+Quyida DOM node lari o'rtasida sayohat qilish imkonini beruvchi havolalar rasmi berilgan:
 
 ![](dom-links.svg)
 
@@ -19,10 +19,10 @@ Keling, ularni batafsilroq muhokama qilamiz.
 
 ## Yuqorida: hujjat elementi va tanasi
 
-Eng yuqori daraxt node'lari to'g'ridan-to'g'ri `document` xususiyatlari sifatida mavjud:
+Eng yuqori daraxt node lari to'g'ridan-to'g'ri `document` xususiyatlari sifatida mavjud:
 
 `<html>` = `document.documentElement`
-: Hujjatning eng yuqori node'lari `document.documentElement` hisoblanadi. Bu `<html>` tegining DOM tugunidir.
+: Hujjatning eng yuqori node lari `document.documentElement` hisoblanadi. Bu `<html>` tegining DOM tugunidir.
 
 `<body>` = `document.body`
 : Yana bir keng tarqalgan DOM tugunlari `<body>` elementidir -- `document.body`.
@@ -30,7 +30,7 @@ Eng yuqori daraxt node'lari to'g'ridan-to'g'ri `document` xususiyatlari sifatida
 `<head>` = `document.head`
 : `<head>` tegi `document.head` sifatida mavjud.
 
-````ogohlantiruvchi sarlavha=`"E'tibor beramiz: `document.body` `null` bo'lishi mumkin"`
+````warn header=`"E'tibor beramiz: `document.body` `null` bo'lishi mumkin"`
 Skript ishlayotgan vaqtda mavjud bo'lmagan elementga kira olmaydi.
 
 Xususan, agar skript `<head>` ichida bo'lsa, u holda `document.body` mavjud emas, chunki brauzer uni hali o'qimagan hisoblanadi.
@@ -59,18 +59,18 @@ Shunday qilib, quyidagi misolda birinchi `alert` `null` ni ko'rsatadi:
 ```
 ````
 
-```aqlli sarlavha="DOM dunyosida `null` \"mavjud emas\" degan ma'noni anglatadi.
+```smart header="DOM dunyosida `null` \"mavjud emas\" degan ma'noni anglatadi.
 DOMda "null" qiymati "mavjud emas" yoki "bunday node yo'q" degan ma'noni anglatadi.
 ```
 
 ## Children: childNodes, firstChild, lastChild
 
-Biz bundan keyin ikkita atamani ishlatamiz:
+Biz bundan keyin ikkita atamani ishlatamiz: 
 
 - **Child nodes (yoki children)** -- bevosita bola bo'lgan elementlar. Boshqacha qilib aytganda, ular aynan berilgan joyga joylashtirilgan. Masalan, `<head>` va `<body>` `<html>` elementining bolalaridir.
-- **Descendants** (avlodlar) -- berilgan bir joyga joylashtirilgan barcha elementlar, shu jumladan bolalar, ularning bolalari va boshqalar.
+- **Descendants** (avlodlar) -- berilgan bir joyga joylashtirilgan barcha elementlar, shu jumladan, bolalar, ularning bolalari va boshqalar.
 
-Masalan, bu yerda `<body>` `<div>` va `<ul>` bolalari (va bir nechta bo`sh matn nodelari) mavjud:
+Masalan, bu yerda `<body>` `<div>` va `<ul>` bolalari (va bir nechta bo'sh matn node lari) mavjud:
 
 ```html run
 <html>
@@ -119,7 +119,7 @@ Bu yerda qiziqarli tafsilotga e'tibor bering. Agar yuqoridagi misolni ishlatsak,
 
 **`firstChild` va `lastChild` xususiyatlari birinchi va oxirgi bolalarga tezkor kirish imkonini beradi.**
 
-Ular shunchaki qisqartmalar. Agar bola nodelari mavjud bo'lsa, unda quyidagilar har doim to'g'ri bo'ladi:
+Ular shunchaki qisqartmalar. Agar bola node lari mavjud bo'lsa, unda quyidagilar har doim to'g'ri bo'ladi:
 ```js
 elem.childNodes[0] === elem.firstChild
 elem.childNodes[elem.childNodes.length - 1] === elem.lastChild
@@ -129,9 +129,9 @@ Bundan tashqari, har qanday bola nodelari mavjudligini tekshirish uchun `elem.ha
 
 ### DOM to'plamlari
 
-Ko'rib turganimizdek, `childNodes` massivga o'xshaydi. Lekin aslida bu massiv emas, balki *to'plam* -- massivga o'xshash maxsus takrorlanadigan obyektdir.
+Ko'rib turganimizdek, `childNodes` massivga o'xshaydi, lekin aslida bu massiv emas, balki *to'plam* -- massivga o'xshash maxsus takrorlanadigan obyektdir.
 
-Ikkita muhim oqibatlar mavjud:
+Ikkita muhim natijalar mavjud:
 
 1. Biz uni takrorlash uchun `for..of` dan foydalanishimiz mumkin:
   ```js
@@ -152,21 +152,21 @@ Ikkita muhim oqibatlar mavjud:
   alert( Array.from(document.body.childNodes).filter ); // function
   ```
 
-```ogohlantiruvchi sarlavha="DOM to'plamlari faqat o'qish uchun"
+```warn header="DOM to'plamlari faqat o'qish uchun"
 DOM to'plamlari va yana ko'p narsalar -- bu bobda keltirilgan *barcha* navigatsiya xususiyatlari faqat o'qish uchun mo'ljallangan.
 
 Biz `childNodes[i] = ...`ni belgilab, bolani boshqa narsa bilan almashtira olmaymiz.
 
-DOMni o'zgartirish boshqa usullarni talab qiladi. Biz ularni keyingi bobda ko'ramiz.
+DOMni o'zgartirish boshqa usullarni talab qiladi, biz ularni keyingi bobda ko'ramiz.
 ```
 
-```ogohlantiruvchi sarlavha="DOM to'plamlari jonli"
+```warn header="DOM to'plamlari jonli"
 Kichik istisnolardan tashqari deyarli barcha DOM to'plamlari *jonli*. Boshqacha qilib aytganda, ular DOMning hozirgi holatini aks ettiradi.
 
-Agar biz `elem.childNodes` havolasini saqlasak va DOMga node'larni qo'shsak/o'chirsak, ular avtomatik ravishda to'plamda paydo bo'ladi.
+Agar biz `elem.childNodes` havolasini saqlasak va DOMga node larni qo'shsak/o'chirsak, ular avtomatik ravishda to'plamda paydo bo'ladi.
 ```
 
-````ogohlantiruvchi sarlavha="To'plamlarni ko'chirish uchun `for..in` dan foydalanmang"
+````warn header="To'plamlarni ko'chirish uchun `for..in` dan foydalanmang"
 To'plamlar `for..of` yordamida takrorlanadi. Ba'zan odamlar buning uchun `for..in` dan foydalanishga harakat qilishadi.
 
 Iltimos, bunday qilmang. `For..in` sikli barcha sanab o'tiladigan xususiyatlarni takrorlaydi. To'plamlarda biz odatda olishni istamaydigan kamdan-kam ishlatiladigan "qo'shimcha" xususiyatlar mavjud:
@@ -182,7 +182,7 @@ Iltimos, bunday qilmang. `For..in` sikli barcha sanab o'tiladigan xususiyatlarni
 
 ## Siblings, ya'ni (birodarlar) va ota-onalar
 
-*Siblings* bir ota-onaning farzandlari bo'lgan nodelardir.
+*Siblings* bir ota-onaning farzandlari bo'lgan node lardir.
 
 Masalan, bu yerda `<head>` va `<body>` siblings hisoblanadi:
 
@@ -192,10 +192,10 @@ Masalan, bu yerda `<head>` va `<body>` siblings hisoblanadi:
 </html>
 ```
 
-- `<body>` `<head>`ning "keyingi" yoki "o'ng" sibling i deb aytiladi,
-- `<head>` `<body>`ning "oldingi" yoki "chap" ukasi deb aytiladi.
+- `<body>` `<head>`ning "keyingi" yoki "o'ng" sibling deb aytiladi,
+- `<head>` `<body>`ning "oldingi" yoki "chap" sibling deb aytiladi.
 
-Keyingi sibling `nextSibling` xususiyatida, oldingisi esa `previousSibling`da.
+Keyingi sibling `nextSibling` xususiyatida, oldingisi esa `previousSibling` da.
 
 Ota-ona `parentNode` sifatida mavjud.
 
@@ -229,7 +229,7 @@ Havolalar yuqorida keltirilganlarga o'xshash, faqat ichida `Element` so'zi mavju
 - `previousElementSibling`, `nextElementSibling` -- qo'shni elementlar.
 - `parentElement` -- ota-ona elementi.
 
-````aqlli sarlavha="Nega `parentElement`?Ota-ona element *bo'lmasligi* mumkinmi?»
+````smart header="Nega `parentElement`?Ota-ona element *bo'lmasligi* mumkinmi?»
 `parentElement` xususiyati "element" ota-onasini, `parentNode` esa "har qanday node" ota-onasini qaytaradi. Bu xususiyatlar odatda bir xil: ikkalasi ham ota-onani oladi.
 
 Bunda `document.documentElement` da istisno mavjud:
@@ -239,7 +239,7 @@ alert( document.documentElement.parentNode ); // document
 alert( document.documentElement.parentElement ); // null
 ```
 
-Sababi `document.documentElement` (`<html>`) da ildiz nodening ota-onasi sifatida `document` mavjud. Lekin `document` element node emas, shuning uchun `parentNode` uni qaytaradi, `parentElement` esa qaytarmaydi.
+Sababi `document.documentElement` (`<html>`) da ildiz nodening ota-onasi sifatida `document` mavjud, lekin `document` element node emas, shuning uchun `parentNode` uni qaytaradi, `parentElement` esa qaytarmaydi.
 
 Bu tafsilot biz ixtiyoriy element `elem`dan `<html>`ga o'tishni xohlaganimizda foydali bo'lishi mumkin, lekin `document`ga emas:
 ```js
@@ -249,7 +249,7 @@ while(elem = elem.parentElement) { // <html> gacha ko'taring
 ```
 ````
 
-Yuqoridagi misollardan birini o'zgartiramiz: `childNodes` ni `bolalar` bilan almashtiring. Endi u faqat elementlarni ko'rsatadi:
+Yuqoridagi misollardan birini o'zgartiramiz: `childNodes` ni `children` bilan almashtiring. Endi u faqat elementlarni ko'rsatadi:
 
 ```html run
 <html>
@@ -274,7 +274,7 @@ Yuqoridagi misollardan birini o'zgartiramiz: `childNodes` ni `bolalar` bilan alm
 </html>
 ```
 
-## Ko'proq havolalar: table'lar [#dom-navigation-tables]
+## Ko'proq havolalar: table lar [#dom-navigation-tables]
 
 Hozirgacha biz asosiy navigatsiya xususiyatlarini tasvirlab berdik.
 DOM elementlarining ayrim turlari qulaylik uchun ularning turiga xos qo'shimcha xususiyatlarni taqdim etishi mumkin.
@@ -284,7 +284,7 @@ Jadvallar bunga ajoyib misol bo'lib, ayniqsa muhim ishni ifodalaydi:
 **`<table>`** elementi (yuqorida keltirilganlarga qo'shimcha ravishda) quyidagi xususiyatlarni qo'llab-quvvatlaydi:
 - `table.rows` -- jadvalning `<tr>` elementlari to`plami.
 - `table.caption/tHead/tFoot` -- `<caption>`, `<thead>`, `<tfoot>` elementlariga havolalar.
-- `table.tBodies` -- `<tbody>` elementlar to'plami (standartga ko'ra ko'p bo'lishi mumkin, lekin har doim kamida bitta bo'ladi -- HTML manbasida bo'lmasa ham, brauzer uni DOMga joylashtiradi).
+- `table.tBodies` -- `<tbody>` elementlar to'plami (standartga ko'ra ko'p bo'lishi mumkin, lekin har doim kamida bitta bo'ladi -- HTML manbasida bo'lmasa ham, brauzer uni DOMga joylashtiradi). 
 
 **`<thead>`, `<tfoot>`, `<tbody>`** elementlar `rows`, ya'ni satrlar xususiyatini ta'minlaydi:
 - `tbody.rows` -- ichidagi `<tr>` to'plami.
@@ -310,9 +310,9 @@ Foydalanish misoli:
 </table>
 
 <script>
-  // get td with "two" (first row, second column)
+  // get td with "two" (birinchi qator, ikkinchi ustun)
   let td = table.*!*rows[0].cells[1]*/!*;
-  td.style.backgroundColor = "red"; // highlight it
+  td.style.backgroundColor = "red"; // uni belgilab o'ting
 </script>
 ```
 
@@ -324,9 +324,9 @@ HTML shakllari uchun qo'shimcha navigatsiya xususiyatlari ham mavjud. Biz ularni
 
 DOM tugunini hisobga olgan holda, biz navigatsiya xususiyatlaridan foydalanib, uning yaqin qo'shnilariga borishimiz mumkin.
 
-Ularning ikkita asosiy to'plami mavjud:
+Ularning ikkita asosiy to'plami mavjud: 
 
-- Hamma node'lar uchun: `parentNode`, `childNodes`, `firstChild`, `lastChild`, `previousSibling`, `nextSibling`.
-- For element nodes only: `parentElement`, `children`, `firstElementChild`, `lastElementChild`, `previousElementSibling`, `nextElementSibling`.
+- Hamma node lar uchun: `parentNode`, `childNodes`, `firstChild`, `lastChild`, `previousSibling`, `nextSibling`.
+- Faqat element node lari uchun: `parentElement`, `children`, `firstElementChild`, `lastElementChild`, `previousElementSibling`, `nextElementSibling`.
 
 DOM elementlarining ayrim turlari, masalan, jadvallar, ularning tarkibiga kirish uchun qo'shimcha xususiyatlar va to'plamlarni taqdim eting.
