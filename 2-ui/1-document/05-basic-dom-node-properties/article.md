@@ -1,14 +1,14 @@
 # Node xususiyatlari: turi, teglari va mazmuni
 
-Keling, DOM nodelarini chuqurroq ko'rib chiqaylik.
+Keling, DOM node larini chuqurroq ko'rib chiqaylik.
 
 Ushbu bobda biz ularning nima ekanligini va eng ko'p ishlatiladigan xususiyatlarini bilib olamiz.
 
 ## DOM node klasslari
 
-Turli DOM nodelari turli xil xususiyatlarga ega bo'lishi mumkin. Masalan, `<a>` tegiga mos keladigan element tuguni havola bilan, `<input>` ga mos keladigan element esa kiritish bilan bog`liq va hokazo xususiyatlarga ega. Matn tugunlari element tugunlari bilan bir xil emas. Ammo ularning barchasi o'rtasida umumiy xususiyatlar va usullar ham mavjud, chunki DOM nodelarining barcha sinflari yagona ierarxiyani tashkil qiladi.
+Turli DOM nodelari turli xil xususiyatlarga ega bo'lishi mumkin. Masalan, `<a>` tegiga mos keladigan element node havola bilan, `<input>` ga mos keladigan element esa kiritish bilan bog'liq va ko'plab xususiyatlarga ega. Matn tugunlari element tugunlari bilan bir xil emas, ammo ularning barchasi o'rtasida umumiy xususiyatlar va usullar ham mavjud, chunki DOM nodelarining barcha sinflari yagona ierarxiyani tashkil qiladi. 
 
-Har bir DOM node tegishli o'rnatilgan klassga mansub.
+Har bir DOM node tegishli o'rnatilgan klassga mansub. 
 
 Ierarxiyaning ildizi [EventTarget](https://dom.spec.whatwg.org/#eventtarget), [Node](https://dom.spec.whatwg.org/#interface-node) tomonidan meros qilib olingan va boshqa DOM nodelari undan meros oladi.
 
@@ -24,17 +24,17 @@ Sinflar:
 
 - [Node](https://dom.spec.whatwg.org/#interface-node) -- shuningdek, DOM nodelari uchun asos bo'lib xizmat qiladigan "abstract" sinfdir.
 
-  U asosiy daraxt funksiyalarini ta'minlaydi: `parentNode`, `nextSibling`, `childNodes` va boshqalar (ular oluvchilar). `Node` sinfining obyektlari hech qachon yaratilmaydi. Ammo undan meros oladigan boshqa sinflar ham bor (va shuning uchun `Node` funksiyasini meros qilib oladi).
+  U asosiy daraxt funksiyalarini ta'minlaydi: `parentNode`, `nextSibling`, `childNodes` va boshqalar (ular oluvchilar). `Node` sinfining obyektlari hech qachon yaratilmaydi, ammo undan meros oladigan boshqa sinflar ham bor (va shuning uchun `Node` funksiyasini meros qilib oladi). 
 
-- [Document](https://dom.spec.whatwg.org/#interface-document), tarixiy sabablarga ko'ra ko'pincha `HTMLDocument` tomonidan meros qilib olinadi (garchi so'nggi spetsifikatsiyalar buni talab qilmasa ham) - bu butun hujjat hisoblanadi.
+- [Document](https://dom.spec.whatwg.org/#interface-document), tarixiy sabablarga ko'ra ko'pincha `HTMLDocument` tomonidan meros qilib olinadi (garchi so'nggi spetsifikatsiyalar buni talab qilmasa ham) - bu butun hujjat hisoblanadi. 
 
     `document` global obyekti aynan shu sinfga tegishli. U DOMga kirish nuqtasi bo'lib xizmat qiladi.
 
 - [CharacterData](https://dom.spec.whatwg.org/#interface-characterdata) -- meros qilib olingan "abstract" sinf.
-    - [Text](https://dom.spec.whatwg.org/#interface-text) --  elementlar ichidagi matnga mos keladigan sinf, masalan. `<p>Hello</p>` ichida `Hello`.
+    - [Text](https://dom.spec.whatwg.org/#interface-text) --  elementlar ichidagi matnga mos keladigan sinf, masalan, `<p>Hello</p>` ichida `Hello`.
     - [Comment](https://dom.spec.whatwg.org/#interface-comment) -- sharhlar uchun sinf. Ular ko'rsatilmaydi, lekin har bir sharh DOM a'zosiga aylanadi.
 
-- [Element](https://dom.spec.whatwg.org/#interface-element) -- DOM elementlari uchun asosiy sinfdir.
+- [Element](https://dom.spec.whatwg.org/#interface-element) -- DOM elementlari uchun asosiy sinfdir. 
 
   
    U `nextElementSibling`, `children` kabi element darajasida navigatsiyani va `getElementsByTagName`, `querySelector` kabi qidiruv usullarini taqdim etadi.
@@ -45,12 +45,12 @@ Sinflar:
     U aniq HTML elementlari tomonidan meros qilib olingan:
     - [HTMLInputElement](https://html.spec.whatwg.org/multipage/forms.html#htmlinputelement) -- `<input>` elementlari uchun sinf,
     - [HTMLBodyElement](https://html.spec.whatwg.org/multipage/semantics.html#htmlbodyelement) -- `<body>` elementlari uchun sinf,
-    - [HTMLAnchorElement](https://html.spec.whatwg.org/multipage/semantics.html#htmlanchorelement) -- `<a>` elementlari uchun sinf
+    - [HTMLAnchorElement](https://html.spec.whatwg.org/multipage/semantics.html#htmlanchorelement) -- `<a>` elementlari uchun sinf,
     - ...va boshqalar.
 
 O'ziga xos xususiyat va usullarga ega bo'lishi mumkin, o'z sinflari bor bo'lgan boshqa ko'plab teglar mavjud, ammo ba'zi elementlar, masalan, `<span>`, `<section>`, `<article>` da o'ziga xos xususiyatlar mavjud emas, shuning uchun ular `HTMLElement` klassi misollari hisoblanadi.
 
-Demak, berilgan nodening xossalari va usullarining to'liq to'plami meros zanjiri natijasida yuzaga keladi.
+Demak, berilgan node ning xossalari va usullarining to'liq to'plami meros zanjiri natijasida yuzaga keladi.
 
 Masalan, `<input>` elementi uchun DOM obyektini ko'rib chiqaylik. U [HTMLInputElement](https://html.spec.whatwg.org/multipage/forms.html#htmlinputelement) sinfiga tegishli.
 
@@ -89,10 +89,10 @@ Ko'rib turganimizdek, DOM tugunlari oddiy JavaScript obyektlaridir. Ular meros u
 
 Brauzerda `console.dir(elem)` bilan elementni chiqarish orqali ham buni ko'rish oson. Konsolda siz `HTMLElement.prototype`, `Element.prototype` va hokazolarni ko`rishingiz mumkin.
 
-```aqlli sarlavha="`console.dir(elem)` versus `console.log(elem)`"
+```smart header="`console.dir(elem)` versus `console.log(elem)`"
 Ko'pgina brauzerlar ishlab chiquvchi vositalarida ikkita buyruq: `console.log` va `console.dir` ni qo'llab-quvvatlaydi. Ular o'z argumentlarini konsolga chiqaradilar. JavaScript obyektlari uchun ham bu buyruqlar odatda xuddi shunday qiladi.
 
-Ammo DOM elementlari uchun ular boshqacha:
+Ammo DOM elementlari uchun ular boshqacha: 
 
 - `console.log(elem)` DOM daraxti elementini ko'rsatadi.
 - `console.dir(elem)` elementni DOM obyekti sifatida ko'rsatadi, uning xususiyatlarini o'rganish uchun yaxshi.
@@ -100,10 +100,10 @@ Ammo DOM elementlari uchun ular boshqacha:
 Buni `document.body` da sinab ko'ring.
 ```
 
-````aqlli sarlavha="spek da IDL"
-Spetsifikatsiyada DOM sinflari JavaScript yordamida tasvirlanmagan, lekin odatda tushunish oson boʻlgan maxsus [Interfeys tavsifi tili](https://en.wikipedia.org/wiki/Interface_description_language) (IDL) bilan tavsiflanadi.
+````smart header="spek da IDL"
+Spetsifikatsiyada DOM sinflari JavaScript yordamida tasvirlanmagan, lekin odatda tushunish oson bo'lgan maxsus [Interfeys tavsifi tili](https://en.wikipedia.org/wiki/Interface_description_language) (IDL) bilan tavsiflanadi.
 
-IDL da barcha xossalar o'z turlari bilan oldinga qo'yiladi. Masalan, `DOMString`, `boolean` va boshqalar.
+IDL da barcha xossalar o'z turlari bilan oldinga qo'yiladi, masalan, `DOMString`, `boolean` va boshqalar.
 
 Undan bir parcha, izohlar bilan:
 
@@ -139,7 +139,7 @@ interface HTMLInputElement: HTMLElement {
 
 ## "nodeType" xususiyati
 
-The `nodeType` property provides one more, "old-fashioned" way to get the "type" of a DOM node. `NodeType` xususiyati DOM tugunining "turini" olishning yana bir "eski uslub" usulini taqdim etadi.
+`NodeType` xususiyati DOM tugunining "turini" olishning yana bir "eski uslub" usulini taqdim etadi.
 
 U raqamli qiymatga ega:
 - `elem.nodeType == 1` element node lar uchun,
@@ -170,7 +170,7 @@ Zamonaviy skriptlarda node turini ko'rish uchun `instanceof` va boshqa sinfga as
 
 ## Tag: nodeName va tagName
 
-DOM tugunini hisobga olsak, biz uning teg nomini `nodeName` yoki `tagName` xususiyatlaridan o‘qishimiz mumkin:
+DOM tugunini hisobga olsak, biz uning teg nomini `nodeName` yoki `tagName` xususiyatlaridan o'qishimiz mumkin:
 
 Masalan:
 
@@ -208,9 +208,9 @@ Misol uchun, keling, `tagName` va `nodeName`ni `document` va kommentariya, ya'ni
 </body>
 ```
 
-Agar biz faqat elementlar bilan shug'ullanadigan bo'lsak, biz `tagName` va `nodeName` dan foydalanishimiz mumkin - buning farqi yo'q.
+Agar biz faqat elementlar bilan shug'ullanadigan bo'lsak, biz `tagName` va `nodeName` dan foydalanishimiz mumkin, buning farqi yo'q.
 
-```aqlli sarlavha="Teg nomi XML rejimidan tashqari har doim katta harf bo'ladi"
+```smart header="Teg nomi XML rejimidan tashqari har doim katta harf bo'ladi"
 Brauzerda hujjatlarni qayta ishlashning ikkita rejimi mavjud: HTML va XML. Odatda HTML rejimi veb-sahifalar uchun ishlatiladi. XML rejimi brauzer sarlavhali XML-hujjatni olganida yoqiladi: `Content-Type: application/xml+xhtml`.
 
 HTML rejimida `tagName/nodeName` har doim katta harf bilan yoziladi: Ushbu `<body>` yoki `<BoDy>` uchun.
@@ -221,11 +221,11 @@ XML rejimida ish "xuddi shunday" saqlanadi. Hozirgi kunda XML rejimi kamdan-kam 
 
 ## innerHTML (ichkiHTML): mazmunlari
 
-The [innerHTML](https://w3c.github.io/DOM-Parsing/#the-innerhtml-mixin) xususiyat HTMLni element ichidagi satr, ya'ni string sifatida olish imkonini beradi.
+UShbu [innerHTML](https://w3c.github.io/DOM-Parsing/#the-innerhtml-mixin) xususiyat HTMLni element ichidagi satr, ya'ni string sifatida olish imkonini beradi.
 
 Biz ham uni o'zgartirishimiz mumkin. Shunday qilib, bu sahifani o'zgartirishning eng kuchli usullaridan biridir.
 
-The example shows the contents of `document.body` and then replaces it completely: Namuna `document.body` ning mazmunini ko'rsatadi va keyin uni to'liq almashtiradi:
+Namuna `document.body` ning mazmunini ko'rsatadi va keyin uni to'liq almashtiradi:
 
 ```html run
 <body>
@@ -287,15 +287,15 @@ Boshqacha qilib aytganda, `innerHTML+=` bunday qiladi:
 
 Kontent "nollangan" va noldan qayta yozilganligi sababli barcha rasmlar va boshqa resurslar qayta yuklanadi**.
 
-Yuqoridagi `chatDiv` misolida `chatDiv.innerHTML+="How goes?"` qatori HTML tarkibini qayta yaratadi va `smile.gif`ni qayta yuklaydi (u keshlangan deb umid qilaman). Agar `chatDiv` da boshqa matn va tasvirlar ko'p bo'lsa, qayta yuklash aniq ko'rinadi.
+Yuqoridagi `chatDiv` misolida `chatDiv.innerHTML+="How goes?"` qatori HTML tarkibini qayta yaratadi va `smile.gif`ni qayta yuklaydi (u keshlangan deb umid qilamiz). Agar `chatDiv` da boshqa matn va tasvirlar ko'p bo'lsa, qayta yuklash aniq ko'rinadi.
 
-Ba'zi kamchiliklar ham mavjud. Misol uchun, agar mavjud matn sichqoncha bilan tanlangan bo'lsa, ko'pchilik brauzerlar `innerHTML` ni qayta yozishda tanlovni olib tashlaydi. Va agar tashrif buyuruvchi tomonidan kiritilgan matn bilan `<input>` bo'lsa, u holda matn o'chiriladi va hokazo.
+Ba'zi kamchiliklar ham mavjud. Misol uchun, agar mavjud matn sichqoncha bilan tanlangan bo'lsa, ko'pchilik brauzerlar `innerHTML` ni qayta yozishda tanlovni olib tashlaydi. Va agar tashrif buyuruvchi tomonidan kiritilgan matn bilan `<input>` bo'lsa, u holda matn o'chiriladi va hokazo. 
 
-Yaxshiyamki, `innerHTML`dan tashqari HTML qo'shishning boshqa usullari ham bor va biz ularni tez orada o'rganib chiqamiz.
+Yaxshiyamki, `innerHTML`dan tashqari HTML qo'shishning boshqa usullari ham mavjud va biz ularni tez orada o'rganib chiqamiz.
 
 ## outerHTML (tashqi HTML): elementdagi to'liq HTML
 
-The `outerHTML` property contains the full HTML of the element. That's like `innerHTML` plus the element itself. `OuterHTML` xususiyati elementning to'liq HTMLni o'z ichiga oladi. Bu `innerHTML` va elementning o'ziga o'xshash.
+`OuterHTML` xususiyati elementning to'liq HTMLni o'z ichiga oladi. Bu `innerHTML` va elementning o'ziga o'xshash.
 
 Quyida misol keltirilgan:
 
@@ -309,7 +309,7 @@ Quyida misol keltirilgan:
 
 **Beware: `innerHTML` dan farqli o'laroq, `outerHTML` ga yozish elementni o'zgartirmaydi. Buning o'rniga, uni DOMda almashtiradi.**
 
-Yeah, sounds strange, and strange it is, that's why we make a separate note about it here. Take a look. Ha, bu biroz g'alati tuyuladi, shuning uchun biz bu yerda alohida eslatma yaratamiz. E'tibor bering.
+Ha, bu biroz g'alati tuyuladi, shuning uchun biz bu yerda alohida eslatma yaratamiz. E'tibor bering.
 
 Misolni ko'rib chiqing:
 
@@ -342,17 +342,17 @@ Shunday qilib, `div.outerHTML=...` da nima sodir bo'ldi:
 -  Uning o'rniga yana bir HTML `<p>A New element</p>` qo'yildi.
 - `div` hali ham eski qiymatiga ega. Yangi HTML hech qanday o'zgaruvchiga saqlanmadi.
 
-Bu yerda xato qilish juda oson: `div.outerHTML` ni o'zgartiring va `div` bilan xuddi yangi tarkibga egadek ishlashda davom eting. Lekin bunday narsa `innerHTML` uchun to'g'ri, lekin `outerHTML` uchun emas.
+Bu yerda xato qilish juda oson: `div.outerHTML` ni o'zgartiring va `div` bilan xuddi yangi tarkibga egadek ishlashda davom eting. Lekin bunday narsa `innerHTML` uchun to'g'ri, lekin `outerHTML` uchun emas. 
  
-Biz `elem.outerHTML` ga yozishimiz mumkin, lekin shuni yodda tutishimiz kerakki, u biz yozayotgan elementni (`elem`) o‘zgartirmaydi. Uning o'rniga yangi HTMLni qo'yadi. DOM so'rovi orqali yangi elementlarga havolalar olishimiz mumkin.
+Biz `elem.outerHTML` ga yozishimiz mumkin, lekin shuni yodda tutishimiz kerakki, u biz yozayotgan elementni (`elem`) o'zgartirmaydi. Uning o'rniga yangi HTMLni qo'yadi. DOM so'rovi orqali yangi elementlarga havolalar olishimiz mumkin.
 
 ## nodeValue/data: text node tarkibi
 
-`innerHTML` xususiyati faqat element node'lari uchun amal qiladi.
+`innerHTML` xususiyati faqat element node lari uchun amal qiladi.
 
-Matn node'lari kabi boshqa node turlari ham o'xshash xususiyatlarga ega, masalan: `nodeValue` va `data` xususiyatlari. Bu ikkalasi amaliy foydalanish uchun deyarli bir xil, faqat kichik spetsifikatsiyada farqlar mavjud. Shunday qilib, biz `data` dan foydalanamiz, chunki u qisqaroq.
+Matn node lari kabi boshqa node turlari ham o'xshash xususiyatlarga ega, masalan: `nodeValue` va `data` xususiyatlari. Bu ikkalasi amaliy foydalanish uchun deyarli bir xil, faqat kichik spetsifikatsiyada farqlar mavjud. Shunday qilib, biz `data` dan foydalanamiz, chunki u qisqaroq.
 
-Matn node'ning mazmunini va sharhni o'qishga misol:
+Matn node ning mazmunini va sharhni o'qishga misol:
 
 ```html run height="50"
 <body>
@@ -372,7 +372,7 @@ Matn node'ning mazmunini va sharhni o'qishga misol:
 </body>
 ```
 
-Matn node'lari uchun biz ularni o'qish yoki o'zgartirish sababni tasavvur qilishimiz mumkin, lekin nima uchun bizga sharhlar kerak?
+Matn node lari uchun biz ularni o'qish yoki o'zgartirish sababni tasavvur qilishimiz mumkin, lekin nima uchun bizga sharhlar kerak?
 
 Ba'zida dasturchilar HTML ichiga ma'lumot yoki shablon ko'rsatmalarini joylashtiradilar, masalan:
 
@@ -382,11 +382,11 @@ Ba'zida dasturchilar HTML ichiga ma'lumot yoki shablon ko'rsatmalarini joylashti
 <!-- /if -->
 ```
 
-...Keyin JavaScript uni `data  xususiyatidan o'qiy oladi va o'rnatilgan ko'rsatmalarni qayta ishlaydi.
+...Keyin JavaScript uni `data`  xususiyatidan o'qiy oladi va o'rnatilgan ko'rsatmalarni qayta ishlaydi.
 
 ## textContent: sof matn
 
-The `textContent` provides access to the *text* inside the element: only text, minus all `<tags>`. `TextContent` element ichidagi *matn* ga, ya'ni faqat matn, barcha minus `<teglar>` ga kirish imkonini beradi:.
+`TextContent` element ichidagi *matn* ga, ya'ni faqat matn, barcha minus `<teglar>` ga kirish imkonini beradi.
 
 Masalan:
 
@@ -402,7 +402,7 @@ Masalan:
 </script>
 ```
 
-Ko'rib turganimizdek, faqat matn qaytariladi, go'yo barcha `<teglar>` kesilgandek, lekin ulardagi matn saqlanib qolgan.
+Ko'rib turganimizdek, faqat matn qaytariladi, go'yo barcha `<teg>` lar  kesilgandek, lekin ulardagi matn saqlanib qolgan.
 
 Amalda bunday matnni o'qish kamdan-kam hollarda kerak.
 
@@ -427,10 +427,10 @@ Ikkalasini solishtiring:
 </script>
 ```
 
-1. The first `<div>` gets the name "as HTML": all tags become tags, so we see the bold name. Birinchi `<div>` "as HTMl", ya'ni "HTML sifatida" nomini oladi: barcha teglar tegga aylanadi, shuning uchun biz qalin (bold) ismni ko'ramiz.
+1. Birinchi `<div>` "as HTMl", ya'ni "HTML sifatida" nomini oladi: barcha teglar tegga aylanadi, shuning uchun biz qalin (bold) ismni ko'ramiz.
 2. Ikkinchi `<div>` "matn sifatida" nomini oladi, shuning uchun biz tom ma'noda `<b>Winnie-Puh!</b>`ni ko'ramiz.
 
-Ko'p hollarda biz foydalanuvchidan matnni kutamiz va uni matn sifatida ko'rib chiqamiz. Biz saytimizda kutilmagan HTMLni xohlamaymiz. `TextContent` ga berilgan topshiriq aynan shunday qiladi.
+Ko'p hollarda biz foydalanuvchidan matnni kutamiz va uni matn sifatida ko'rib chiqamiz. Biz saytimizda kutilmagan HTMLni xohlamaymiz. `TextContent` ga berilgan topshiriq aynan shunday qiladi. 
 
 ## "hidden", ya'ni yashirin xususiyat
 
@@ -450,7 +450,7 @@ Biz uni HTMLda ishlatishimiz yoki JavaScriptdan foydalanib belgilashimiz mumkin,
 </script>
 ```
 
-Texnik jihatdan `hidden` `style="display:none"` bilan bir xil ishlaydi. Lekin yozish uchun qisqaroq.
+Texnik jihatdan `hidden` `style="display:none"` bilan bir xil ishlaydi, lekin yozish uchun qisqaroq.
 
 Mana miltillovchi (blinking) element:
 
@@ -488,11 +488,11 @@ Ko'pgina standart HTML atribyutlari mos keladigan DOM xususiyatiga ega va biz un
 
 Agar biz ma'lum bir sinf uchun qo'llab-quvvatlanadigan xususiyatlarning to'liq ro'yxatini bilmoqchi bo'lsak, ularni spetsifikatsiyada topishimiz mumkin. Masalan, `HTMLInputElement` <https://html.spec.whatwg.org/#htmlinputelement> da hujjatlashtirilgan.
 
-Yoki biz ularni tezda olishni istasak yoki aniq brauzer spetsifikatsiyasiga qiziqsak -- biz har doim `console.dir(elem)` yordamida elementni chiqarishimiz va xususiyatlarni o'qishimiz mumkin. Yoki brauzer ishlab chiquvchi vositalarining Elementlar yorlig'ida "DOM xususiyatlari" bilan tanishing.
+Yoki biz ularni tezda olishni istasak yoki aniq brauzer spetsifikatsiyasiga qiziqsak -- biz har doim `console.dir(elem)` yordamida elementni chiqarishimiz va xususiyatlarni o'qishimiz mumkin. Brauzer ishlab chiquvchi vositalarining Elementlar yorlig'ida "DOM xususiyatlari" bilan tanishing. 
 
-## Xulosa
+## Xulosa 
 
-Har bir DOMdagi node ma'lum bir classga tegishli. Class'lar ierarxiyani tashkil qiladi. Xususiyat va usullarning to'liq to'plami meros natijasida yuzaga keladi.
+Har bir DOMdagi node ma'lum bir classga tegishli. Class lar ierarxiyani tashkil qiladi. Xususiyat va usullarning to'liq to'plami meros natijasida yuzaga keladi.
 
 DOM node ning asosiy xususiyatlari:
 
@@ -517,6 +517,6 @@ DOM node ning asosiy xususiyatlari:
 `hidden`
 : `True` ga sozlanganda, CSS `display:none` bilan bir xil ishlaydi.
 
-DOM node'lari class'ga qarab boshqa xususiyatlarga ham ega. Masalan, `<input>` elementlari (`HTMLInputElement`) `value`, `type` ni qo`llab-quvvatlaydi, `<a>` elementlari (`HTMLanchorElement`) `href` va boshqalarni qo`llab-quvvatlaydi. Ko'pgina standart HTML atribyutlari mos keladigan DOM xususiyatiga ega.
+DOM node lari class dan tashqari boshqa xususiyatlarga ham ega. Masalan, `<input>` elementlari (`HTMLInputElement`) `value`, `type` ni qo`llab-quvvatlaydi, `<a>` elementlari (`HTMLanchorElement`) `href` va boshqalarni qo`llab-quvvatlaydi. Ko'pgina standart HTML atribyutlari mos keladigan DOM xususiyatiga ega.
 
 Biroq, HTML atribyutlari va DOM xossalari har doim ham bir xil emas, buni keyingi bobda ko'rib chiqamiz.
