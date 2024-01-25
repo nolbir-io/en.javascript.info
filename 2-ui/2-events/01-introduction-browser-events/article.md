@@ -1,56 +1,54 @@
-# Introduction to browser events
+# Brauzer hodisalari bilan tanishuv
 
-*An event* is a signal that something has happened. All DOM nodes generate such signals (but events are not limited to DOM).
+*Hodisa* nimadir sodir bo'lganligi haqidagi signaldir. Barcha DOM tugunlari bunday signallarni yaratadi (lekin voqealar DOM bilan cheklanmaydi).
 
-Here's a list of the most useful DOM events, just to take a look at:
+Quyida eng foydali DOM voqealari ro'yxati keltirilgan, ularni ko'rib chiqishingiz mumkin:
 
-**Mouse events:**
-- `click` -- when the mouse clicks on an element (touchscreen devices generate it on a tap).
-- `contextmenu` -- when the mouse right-clicks on an element.
-- `mouseover` / `mouseout` -- when the mouse cursor comes over / leaves an element.
-- `mousedown` / `mouseup` -- when the mouse button is pressed / released over an element.
-- `mousemove` -- when the mouse is moved.
+**Sichqoncha hodisalari:**
+- `click` -- sichqoncha elementni bosganda (sensorli ekranli qurilmalar uni teginish orqali hosil qiladi).
+- `contextmenu` -- sichqoncha elementni o'ng tugmasini bosganda,
+- `mouseover` / `mouseout` -- sichqoncha kursori elementga kelganda/qolganida,
+- `mousedown` / `mouseup` -- element ustida sichqoncha tugmasi bosilganda / qo'yib yuborilganda,
+- `mousemove` -- sichqonchani harakatlantirilganida ishlaydi.
 
-**Keyboard events:**
-- `keydown` and `keyup` -- when a keyboard key is pressed and released.
+**Klaviatura hodisalari:**
+- `keydown` va `keyup` -- klaviatura tugmasi bosilganda va qo'yib yuborilganda ishlaydi.
 
-**Form element events:**
-- `submit` -- when the visitor submits a `<form>`.
-- `focus` --  when the visitor focuses on an element, e.g. on an `<input>`.
+**Shakl elementi hodisalari:**
+- `submit` -- tashrif buyuruvchi `<form>` ni topshirganda.
+- `focus` -- tashrif buyuruvchi diqqatni biror elementga qaratganda, masalan, `<input>`da ishlaydi.
 
-**Document events:**
-- `DOMContentLoaded` -- when the HTML is loaded and processed, DOM is fully built.
+**Dokument hodisalari:**
+- `DOMContentLoaded` -- HTML yuklangan va ishlov berilganda, DOM to'liq qurilgan hisoblanadi.
+**CSS hodisalari:**
+- `transitionend` -- CSS-animatsiya yakunlanganda.
 
-**CSS events:**
-- `transitionend` -- when a CSS-animation finishes.
+Yana boshqa ko'plab hodisalar mavjud. Muayyan hodisalar haqida keyingi boblarda batafsilroq ma'lumot beramiz.
 
-There are many other events. We'll get into more details of particular events in upcoming chapters.
+## Hodisalar boshqaruvchilari
 
-## Event handlers
+Hodisalarga munosabat bildirish uchun biz *handler* ni belgilashimiz mumkin -- voqea sodir bo'lganda ishlaydigan funksiya.
 
-To react on events we can assign a *handler* -- a function that runs in case of an event.
+Ishlovchilar foydalanuvchi harakatlarida JavaScript kodini ishga tushirish usulidir.
 
-Handlers are a way to run JavaScript code in case of user actions.
+Ishlovchini tayinlashning bir necha yo'li mavjud. Keling, ularni eng oddiyidan boshlab ko'rib chiqamiz.
 
-There are several ways to assign a handler. Let's see them, starting from the simplest one.
+### HTML-attribyuti
 
-### HTML-attribute
+Ishlovchi HTML da `on<event>` nomli atribyut bilan o'rnatilishi mumkin.
 
-A handler can be set in HTML with an attribute named `on<event>`.
-
-For instance, to assign a `click` handler for an `input`, we can use `onclick`, like here:
+Masalan, `input` uchun `click` ishlov beruvchisini belgilayotganda `onclick` dan foydalanishimiz mumkin, quyidagi misolga e'tibor bering:
 
 ```html run
 <input value="Click me" *!*onclick="alert('Click!')"*/!* type="button">
 ```
+Sichqonchani bosgandan so'ng, `onclick` ichidagi kod ishlaydi.
 
-On mouse click, the code inside `onclick` runs.
+E'tibor bering, `onclick` ichida biz bitta tirnoqdan foydalanamiz, chunki atributning o'zi qo'shtirnoq ichida. Agar biz kod atribut ichida ekanligini unutib qo'ysak va uning ichida qo'shtirnoq qo'shsak, masalan: `onclick="alert("Click!")"`, u to'g'ri ishlamaydi.
 
-Please note that inside `onclick` we use single quotes, because the attribute itself is in double quotes. If we forget that the code is inside the attribute and use double quotes inside, like this:  `onclick="alert("Click!")"`, then it won't work right.
+HTML-atribyut juda ko'p kod yozish uchun qulay joy emas, shuning uchun biz JavaScript funksiyasini yaratib, uni o'sha yerda chaqirganimiz ma'qul.
 
-An HTML-attribute is not a convenient place to write a lot of code, so we'd better create a JavaScript function and call it there.
-
-Here a click runs the function `countRabbits()`:
+Bu yerda click `countRabbits()` funksiyasini ishga tushiradi:
 
 ```html autorun height=50
 <script>
@@ -63,14 +61,13 @@ Here a click runs the function `countRabbits()`:
 
 <input type="button" *!*onclick="countRabbits()"*/!* value="Count rabbits!">
 ```
+Bizga ma'lumki, HTML atributlari nomlari katta-kichik harflarga bog'liq emas, shuning uchun `ONCLICK` ham `onClick` va `onCLICK` kabi ishlaydi... Lekin odatda atributlar kichik harflar bilan yoziladi: `onclick`.
 
-As we know, HTML attribute names are not case-sensitive, so `ONCLICK` works as well as `onClick` and `onCLICK`... But usually attributes are lowercased: `onclick`.
+### DOM xususiyati
 
-### DOM property
+Biz `on<event>` DOM xususiyatidan foydalanib ishlov beruvchini tayinlashimiz mumkin.
 
-We can assign a handler using a DOM property `on<event>`.
-
-For instance, `elem.onclick`:
+Masalan, `elem.onclick`:
 
 ```html autorun
 <input id="elem" type="button" value="Click me">
@@ -82,14 +79,13 @@ For instance, `elem.onclick`:
 */!*
 </script>
 ```
+Agar ishlov beruvchi HTML-atribyut yordamida tayinlangan bo'lsa, u holda brauzer uni o'qiydi, atribyut tarkibidan yangi funksiya yaratadi va uni DOM xususiyatiga yozadi.
 
-If the handler is assigned using an HTML-attribute then the browser reads it, creates a new function from the attribute content and writes it to the DOM property.
+Shunday qilib, bu yo'l aslida oldingisiga o'xshaydi.
 
-So this way is actually the same as the previous one.
+Ushbu ikkita kod qismi bir xil ishlaydi:
 
-These two code pieces work the same:
-
-1. Only HTML:
+1. Faqat HTML:
 
     ```html autorun height=50
     <input type="button" *!*onclick="alert('Click!')"*/!* value="Button">
@@ -107,40 +103,39 @@ These two code pieces work the same:
     </script>
     ```
 
-In the first example, the HTML attribute is used to initialize the `button.onclick`, while in the second example -- the script, that's all the difference.
+Birinchi misolda HTML atributi `button.onclick` ni ishga tushirish uchun ishlatiladi, ikkinchi misolda esa -- skript, ikkalasining farqi shu.
 
-**As there's only one `onclick` property, we can't assign more than one event handler.**
+**Faqat bitta `onclick` xususiyati mavjud bo‘lgani uchun biz bir nechta hodisa ishlov beruvchisini tayinlay olmaymiz.**
 
-In the example below adding a handler with JavaScript overwrites the existing handler:
+Quyidagi misolda JavaScript bilan ishlov beruvchini qo'shish mavjud ishlov beruvchini qayta yozadi:
 
 ```html run height=50 autorun
 <input type="button" id="elem" onclick="alert('Before')" value="Click me">
 <script>
 *!*
-  elem.onclick = function() { // overwrites the existing handler
-    alert('After'); // only this will be shown
+  elem.onclick = function() { // mavjud ishlov beruvchining ustiga yozadi
+    alert('After'); // faqat shu ko'rsatiladi
   };
 */!*
 </script>
 ```
+Handler ni olib tashlash uchun -- `elem.onclick = null` ni belgilang.
 
-To remove a handler -- assign `elem.onclick = null`.
+## Elementga kirish: this
 
-## Accessing the element: this
+Ishlovchi ichidagi `this` qiymati element hisoblanadi. Unda ishlov beruvchi bor.
 
-The value of `this` inside a handler is the element. The one which has the handler on it.
-
-In the code below `button` shows its contents using `this.innerHTML`:
+Quyidagi kodda `button` o'z tarkibini `this.innerHTML` yordamida ko'rsatadi:
 
 ```html height=50 autorun
 <button onclick="alert(this.innerHTML)">Click me</button>
 ```
 
-## Possible mistakes
+## Yuz berish ehtimoli bor xatolar
 
-If you're starting to work with events -- please note some subtleties.
+Agar siz hodisalar bilan ishlashni boshlayotgan bo'lsangiz -- ba'zi nozikliklarga e'tibor bering.
 
-We can set an existing function as a handler:
+Biz mavjud funksiyani ishlov beruvchi sifatida o'rnatishimiz mumkin:
 
 ```js
 function sayThanks() {
@@ -150,103 +145,99 @@ function sayThanks() {
 elem.onclick = sayThanks;
 ```
 
-But be careful: the function should be assigned as `sayThanks`, not `sayThanks()`.
+Ammo ehtiyot bo'ling: funksiya `sayThanks()` emas, balki `sayThanks` sifatida tayinlanishi kerak.
 
 ```js
-// right
+// to'g'ri
 button.onclick = sayThanks;
 
-// wrong
+// xato
 button.onclick = sayThanks();
 ```
+Qavslar qo'shsak, `sayThanks()` funksiya chaqiruviga aylanadi. Demak, oxirgi satr aslida funksiya bajarilishining *natijasini* oladi, ya’ni `undefined` (funksiya hech narsani qaytarmaydi) va uni `onclick` ga tayinlaydi. Bu ishlamayapti.
 
-If we add parentheses, then `sayThanks()` becomes a function call. So the last line actually takes the *result* of the function execution, that is `undefined` (as the function returns nothing), and assigns it to `onclick`. That doesn't work.
-
-...On the other hand, in the markup we do need the parentheses:
+...Boshqa tomondan, belgilashda bizga qavslar kerak:
 
 ```html
 <input type="button" id="button" onclick="sayThanks()">
 ```
+Farqni tushuntirish oson. Brauzer atribyutni o'qiganda, atribut tarkibidan tanasi bilan ishlov beruvchi funksiyasini yaratadi.
 
-The difference is easy to explain. When the browser reads the attribute, it creates a handler function with body from the attribute content.
+Shunday qilib, belgilash quyidagi xususiyatni yaratadi:
 
-So the markup generates this property:
 ```js
 button.onclick = function() {
 *!*
-  sayThanks(); // <-- the attribute content goes here
+  sayThanks(); // <-- atribut mazmuni bu yerga tushadi
 */!*
 };
 ```
 
-**Don't use `setAttribute` for handlers.**
+**Ishlov beruvchilar uchun `setAttribute` dan foydalanmang**
 
-Such a call won't work:
+Bunday chaqiruv ishlamaydi:
 
 ```js run no-beautify
-// a click on <body> will generate errors,
-// because attributes are always strings, function becomes a string
+// <body> dagi click xatolarni keltirib chiqaradi
+// atributlar har doim satr bo'lgani uchun funksiya satrga aylanadi
 document.body.setAttribute('onclick', function() { alert(1) });
 ```
+**DOM-xususiyat ishi muhim.**
 
-**DOM-property case matters.**
-
-Assign a handler to `elem.onclick`, not `elem.ONCLICK`, because DOM properties are case-sensitive.
+Handlerni `elem.ONCLICK` emas, balki `elem.onclick` ga tayinlang, chunki DOM xususiyatlari katta-kichik harflarga sezgir.
 
 ## addEventListener
 
-The fundamental problem of the aforementioned ways to assign handlers is that we *can't assign multiple handlers to one event*.
+Ishlovchilarni tayinlashning yuqorida aytib o'tilgan usullarining asosiy muammosi shundaki, biz *bitta hodisaga bir nechta ishlov beruvchilarni tayinlay olmaymiz*.
 
-Let's say, one part of our code wants to highlight a button on click, and another one wants to show a message on the same click.
+Aytaylik, bizning kodimizning bir qismi bosish tugmachasini ajratib ko'rsatishni xohlaydi, ikkinchisi esa xuddi shu bosish orqali xabarni ko'rsatishni xohlaydi.
 
-We'd like to assign two event handlers for that. But a new DOM property will overwrite the existing one:
+Buning uchun biz ikkita hodisa ishlov beruvchisini tayinlamoqchimiz. Ammo yangi DOM xususiyati mavjud elementning ustiga yoziladi:
 
 ```js no-beautify
 input.onclick = function() { alert(1); }
 // ...
-input.onclick = function() { alert(2); } // replaces the previous handler
+input.onclick = function() { alert(2); } // avvalgi handlerni almashtiring
 ```
+Veb-standartlarni ishlab chiquvchilar buni uzoq vaqt oldin tushunishgan va bunday cheklovlar bilan bog'liq bo'lmagan `addEventListener` va `removeEventListener` maxsus usullaridan foydalangan holda ishlov beruvchilarni boshqarishning muqobil usulini taklif qilishgan.
 
-Developers of web standards understood that long ago and suggested an alternative way of managing handlers using the special methods `addEventListener` and `removeEventListener` which aren't bound by such constraint.
-
-The syntax to add a handler:
+Ishlovchi qo'shish uchun sintaksis:
 
 ```js
 element.addEventListener(event, handler, [options]);
 ```
 
 `event`
-: Event name, e.g. `"click"`.
+: Event nomi, masalan, `"click"`.
 
 `handler`
-: The handler function.
+: Handler funksiyasi.
 
 `options`
-: An additional optional object with properties:
-    - `once`: if `true`, then the listener is automatically removed after it triggers.
-    - `capture`: the phase where to handle the event, to be covered later in the chapter <info:bubbling-and-capturing>. For historical reasons, `options` can also be `false/true`, that's the same as `{capture: false/true}`.
-    - `passive`: if `true`, then the handler will not call `preventDefault()`, we'll explain that later in <info:default-browser-action>.
+: Xususiyatlarga ega qo'shimcha ixtiyoriy obyekt:
+     - `once`: agar `true` bo'lsa, u ishga tushirilgandan so'ng tinglovchi avtomatik ravishda o'chiriladi.
+     - `capture`: voqeani boshqarish bosqichi, bu mavzu keyinroq <info:bubbling-and-capturing> bobida yoritiladi. Tarixiy sabablarga ko'ra, `options` ham `false/true` bo'lishi mumkin, bu `{capture: false/true}` bilan bir xil.
+     - `passive`: agar `true` bo'lsa, ishlov beruvchi `preventDefault()` ni chaqirmaydi, buni keyinroq <info:default-browser-action> da tushuntiramiz.
 
-To remove the handler, use `removeEventListener`:
+Ishlovchini olib tashlash uchun "removeEventListener" dan foydalaning:
 
 ```js
 element.removeEventListener(event, handler, [options]);
 ```
 
-````warn header="Removal requires the same function"
-To remove a handler we should pass exactly the same function as was assigned.
+````warn header="Olib tashlash bir xil funksiyani talab qiladi"
+Ishlovchini olib tashlash uchun biz tayinlangan funksiyani o'tkazishimiz kerak.
 
-This doesn't work:
+Bu ishlamaydi:
 
 ```js no-beautify
 elem.addEventListener( "click" , () => alert('Thanks!'));
 // ....
 elem.removeEventListener( "click", () => alert('Thanks!'));
 ```
+Ishlovchi olib tashlanmaydi, chunki `removeEventListener` boshqa funksiyani oladi -- xuddi shu kod bilan, lekin bu muhim emas, chunki u boshqa funksiya obyekti hisoblanadi.
 
-The handler won't be removed, because `removeEventListener` gets another function -- with the same code, but that doesn't matter, as it's a different function object.
-
-Here's the right way:
+Mana to'g'ri yo'l:
 
 ```js
 function handler() {
@@ -258,10 +249,9 @@ input.addEventListener("click", handler);
 input.removeEventListener("click", handler);
 ```
 
-Please note -- if we don't store the function in a variable, then we can't remove it. There's no way to "read back" handlers assigned by `addEventListener`.
+Iltimos, diqqat qiling -- agar biz funksiyani o'zgaruvchida saqlamasak, uni o'chira olmaymiz. `addEventListener` tomonidan tayinlangan ishlov beruvchilarni "qayta o'qish" uchun hech qanday usul yo'q.
 ````
-
-Multiple calls to `addEventListener` allow it to add multiple handlers, like this:
+`addEventListener` ga bir nechta qo'ng'iroqlar unga bir nechta ishlov beruvchilarni qo'shish imkonini beradi, masalan:
 
 ```html run no-beautify
 <input id="elem" type="button" value="Click me"/>
@@ -282,79 +272,76 @@ Multiple calls to `addEventListener` allow it to add multiple handlers, like thi
 */!*
 </script>
 ```
+Yuqoridagi misolda ko'rib turganimizdek, biz DOM-xususiyati va `addEventListener` yordamida *ikkalasi*ning ishlov beruvchilarini o'rnatishimiz mumkin. Ammo, biz ushbu usullardan faqat bittasini ishlatamiz.
 
-As we can see in the example above, we can set handlers *both* using a DOM-property and `addEventListener`. But generally we use only one of these ways.
+````warn header="Ba'zi hodisalar uchun ishlov beruvchilar faqat `addEventListener` bilan ishlaydi"
+DOM-xususiyati orqali tayinlab bo'lmaydigan hodisalar mavjud. Faqat `addEventListener` bilan buni bajarishimiz mumkin.
 
-````warn header="For some events, handlers only work with `addEventListener`"
-There exist events that can't be assigned via a DOM-property. Only with `addEventListener`.
-
-For instance, the `DOMContentLoaded` event, that triggers when the document is loaded and the DOM has been built.
-
+Hujjat yuklanganda va DOM qurilganda ishga tushadigan `DOMContentLoaded` hodisasi bunga yorqin misol.
 ```js
-// will never run
+// hech qachon ishlamaydi
 document.onDOMContentLoaded = function() {
   alert("DOM built");
 };
 ```
 
 ```js
-// this way it works
+// bunday usulda ishlaydi
 document.addEventListener("DOMContentLoaded", function() {
   alert("DOM built");
 });
 ```
-So `addEventListener` is more universal. Although, such events are an exception rather than the rule.
+Demak, `addEventListener` eng universal variant. Garchi bunday hodisalar qoida emas, balki istisno hisoblanadi.
 ````
 
-## Event object
+## Hodisa obyekti
 
-To properly handle an event we'd want to know more about what's happened. Not just a "click" or a "keydown", but what were the pointer coordinates? Which key was pressed? And so on.
+Hodisani to'g'ri boshqarish uchun biz nima bo'lganligi haqida ko'proq bilishni xohlaymiz, faqat "click" yoki "keydown" emas, balki ko'rsatgich koordinatalari qanaqaligi, qaysi tugma bosilgani Va hokazo.
 
-When an event happens, the browser creates an *event object*, puts details into it and passes it as an argument to the handler.
+Voqea sodir bo'lganda, brauzer *hodisa obyektini* yaratadi, unga tafsilotlarni kiritadi va ishlov beruvchiga argument sifatida uzatadi.
 
-Here's an example of getting pointer coordinates from the event object:
+Hodisa obyektidan ko'rsatgich koordinatalarini olish misoli:
 
 ```html run
 <input type="button" value="Click me" id="elem">
 
 <script>
   elem.onclick = function(*!*event*/!*) {
-    // show event type, element and coordinates of the click
+    // hodisa turini, elementni va bosish koordinatalarini ko'rsatish
     alert(event.type + " at " + event.currentTarget);
     alert("Coordinates: " + event.clientX + ":" + event.clientY);
   };
 </script>
 ```
 
-Some properties of `event` object:
+`event` obyektining ayrim xususiyatlari:
 
 `event.type`
-: Event type, here it's `"click"`.
+: Event type, bu yerda u `"click"`.
 
 `event.currentTarget`
-: Element that handled the event. That's exactly the same as `this`, unless the handler is an arrow function, or its `this` is bound to something else, then we can get the element from  `event.currentTarget`.
+:Eventni boshqargan element. Bu aynan `this` bilan bir xil, agar ishlov beruvchi arrow funksiyasi bo'lmasa yoki undagi `this` boshqa biror narsa bilan bog'langan bo'lmasa, biz `event.currentTarget` dan elementni olishimiz mumkin.
 
 `event.clientX` / `event.clientY`
-: Window-relative coordinates of the cursor, for pointer events.
+: Kursorning oynaga nisbiy koordinatalari, ko'rsatgich hodisalari uchun.
 
-There are more properties. Many of them depend on the event type: keyboard events have one set of properties, pointer events - another one, we'll study them later when as we move on to the details of different events.
+Ko'proq xususiyatlar mavjud. Ularning ko'pchiligi hodisa turiga bog'liq: klaviatura hodisalari bir xususiyatlar to'plamiga ega, ko'rsatgich hodisalari - boshqasi, biz ularni keyinroq turli hodisalar tafsilotlariga o'tganimizda o'rganamiz.
 
-````smart header="The event object is also available in HTML handlers"
-If we assign a handler in HTML, we can also use the `event` object, like this:
+````smart header="Event obyekti HTML handler larida ham mavjud"
+Agar biz HTMLda ishlov beruvchini tayinlasak, biz `event` obyektidan ham foydalanishimiz mumkin, masalan:
 
 ```html autorun height=60
 <input type="button" onclick="*!*alert(event.type)*/!*" value="Event type">
 ```
-
-That's possible because when the browser reads the attribute, it creates a handler like this:  `function(event) { alert(event.type) }`. That is: its first argument is called `"event"`, and the body is taken from the attribute.
+Bunday qilish mumkin, chunki brauzer atributni o'qiganda, u shunday ishlov beruvchini yaratadi: `function(event) { alert(event.type) }`. Ya'ni: uning birinchi argumenti `"event"` deb ataladi va tanasi atribyutdan olinadi.
 ````
 
 
-## Object handlers: handleEvent
+## Obyekt ishlovchilari: handleEvent
 
-We can assign not just a function, but an object as an event handler using `addEventListener`. When an event occurs, its `handleEvent` method is called.
+ Biz `addEventListener` yordamida faqat funksiyani emas, balki obyektni hodisa ishlovchisi sifatida belgilashimiz mumkin. Voqea sodir bo'lganda, uning `handleEvent` usuli chaqiriladi.
 
-For instance:
+Masalan:
 
 
 ```html run
@@ -370,10 +357,9 @@ For instance:
   elem.addEventListener('click', obj);
 </script>
 ```
+Ko'rib turganimizdek, `addEventListener` obyektni ishlov beruvchi sifatida qabul qilganda, voqea sodir bo'lgan taqdirda `obj.handleEvent(event)` ni chaqiradi.
 
-As we can see, when `addEventListener` receives an object as the handler, it calls `obj.handleEvent(event)` in case of an event.
-
-We could also use objects of a custom class, like this:
+Shuningdek, biz maxsus sinf obyektlaridan foydalanishimiz mumkin, masalan:
 
 
 ```html run
@@ -401,10 +387,9 @@ We could also use objects of a custom class, like this:
 */!*
 </script>
 ```
+Bu yerda bir xil obyekt ikkala hodisani ham boshqaradi. Iltimos, `addEventListener` yordamida tinglash uchun voqealarni aniq sozlashimiz kerakligini unutmang. `menu` obyekti bu yerda faqat `mousedown` va `mouseup`ni oladi, boshqa turdagi hodisalarni emas.
 
-Here the same object handles both events. Please note that we need to explicitly setup the events to listen using `addEventListener`. The `menu` object only gets `mousedown` and `mouseup` here, not any other types of events.
-
-The method `handleEvent` does not have to do all the job by itself. It can call other event-specific methods instead, like this:
+`handleEvent` usuli barcha ishni mustaqil bajarishi shart emas. Buning o'rniga boshqa hodisaga xos usullarni chaqirishi mumkin, masalan:
 
 ```html run
 <button id="elem">Click me</button>
@@ -431,23 +416,22 @@ The method `handleEvent` does not have to do all the job by itself. It can call 
   elem.addEventListener('mouseup', menu);
 </script>
 ```
+Endi voqea ishlov beruvchilari aniq ajratilgan, buni qo'llab-quvvatlash osonroq bo'lishi mumkin.
 
-Now event handlers are clearly separated, that may be easier to support.
+## Xulosa
 
-## Summary
+Hodisa ishlov beruvchilarini tayinlashning 3 usuli mavjud:
 
-There are 3 ways to assign event handlers:
+1. HTML atributi: `onclick="..."`.
+2. DOM xususiyati: `elem.onclick = function`.
+3. Usullar: qo'shish uchun `elem.addEventListener(event, handler[, phase])`, olib tashlash uchun `removeEventListener`.
 
-1. HTML attribute: `onclick="..."`.
-2. DOM property: `elem.onclick = function`.
-3. Methods: `elem.addEventListener(event, handler[, phase])` to add, `removeEventListener` to remove.
+HTML atributlari juda kam ishlatiladi, chunki HTML tegining o'rtasida joylashgan JavaScript biroz g'alati va begona ko'rinadi. Shuningdek, u yerda juda ko'p kod yozish mumkin emas.
 
-HTML attributes are used sparingly, because JavaScript in the middle of an HTML tag looks a little bit odd and alien. Also can't write lots of code in there.
+DOM xususiyatlaridan foydalanish mumkin, lekin biz muayyan hodisa uchun bir nechta ishlov beruvchini tayinlay olmaymiz. Ko'p hollarda bu cheklov bosilmaydi. 
 
-DOM properties are ok to use, but we can't assign more than one handler of the particular event. In many cases that limitation is not pressing.
+Oxirgi yo'l eng moslashuvchan, lekin yozish uchun ham eng uzundir. Faqatgina u bilan ishlaydigan bir nechta hodisalar mavjud, masalan, `transitionend` va `DOMContentLoaded` (qoplanadi). Bundan tashqari, `addEventListener` obyektlarni hodisalarni qayta ishlovchi sifatida qo'llab-quvvatlaydi. Bunday holda, hodisa sodir bo'lganda `handleEvent` usuli chaqiriladi.
 
-The last way is the most flexible, but it is also the longest to write. There are few events that only work with it, for instance `transitionend` and `DOMContentLoaded` (to be covered). Also `addEventListener` supports objects as event handlers. In that case the method `handleEvent` is called in case of the event.
+Ishlovchini qanday tayinlaganingizdan qat'iy nazar, u birinchi argument sifatida hodisa obyektini oladi. Ushbu obyekt nima sodir bo'lganligi haqidagi tafsilotlarni o'z ichiga oladi.
 
-No matter how you assign the handler -- it gets an event object as the first argument. That object contains the details about what's happened.
-
-We'll learn more about events in general and about different types of events in the next chapters.
+Biz keyingi boblarda umumiy voqealar va turli xil voqealar haqida ko'proq bilib olamiz.
