@@ -1,98 +1,96 @@
 
-# Mouse events
+# Sichqoncha hodisalari
 
-In this chapter we'll get into more details about mouse events and their properties.
+Ushbu bobda biz sichqoncha hodisalari va ularning xususiyatlari haqida batafsilroq ma'lumotga ega bo'lamiz.
 
-Please note: such events may come not only from "mouse devices", but are also from other devices, such as phones and tablets, where they are emulated for compatibility.
+Iltimos, diqqat qiling: bunday hodisalar nafaqat "sichqoncha qurilmalari" dan, balki moslik uchun taqlid qilingan telefonlar va planshetlar kabi boshqa qurilmalarida ham sodir bo'lishi mumkin.
 
-## Mouse event types
+## Sichqoncha hodisasi turlari
 
-We've already seen some of these events:
+Biz bu voqealarning ba'zilarini allaqachon ko'rganmiz:
 
 `mousedown/mouseup`
-: Mouse button is clicked/released over an element.
+: Sichqoncha tugmasi element ustida bosiladi/qo'yib yuboriladi.
 
 `mouseover/mouseout`
-: Mouse pointer comes over/out from an element.
+: Sichqoncha ko'rsatkichi elementdan yuqoriga/tashqariga chiqadi.
 
 `mousemove`
-: Every mouse move over an element triggers that event.
+: Har bir sichqonchaning element ustida harakatlanishi ushbu hodisani keltirib chiqaradi.
 
 `click`
-: Triggers after `mousedown` and then `mouseup` over the same element if the left mouse button was used.
+: Agar sichqonchaning chap tugmasi ishlatilsa, bir xil element ustida `mousedown`, keyin esa `mouseup` ni qo'yishdan keyin ishga tushadi.
 
 `dblclick`
-: Triggers after two clicks on the same element within a short timeframe. Rarely used nowadays.
+: Qisqa vaqt oralig'ida bir xil elementni ikki marta bosgandan keyin ishga tushadi. Hozirgi kunda kamdan-kam qo'llaniladi.
 
 `contextmenu`
-: Triggers when the right mouse button is pressed. There are other ways to open a context menu, e.g. using a special keyboard key, it triggers in that case also, so it's not exactly the mouse event.
+: Sichqonchaning o'ng tugmasi bosilganda ishga tushadi. Kontekst menyusini ochishning boshqa usullari mavjud, masalan, maxsus klaviatura tugmasidan foydalanib, u bu holatda ham ishga tushadi, shuning uchun bu sichqoncha hodisasi emas.
 
-...There are several other events too, we'll cover them later.
+...Yana bir qancha hodisalar ham bor, ularni keyinroq yoritamiz.
 
-## Events order
+## Hodisalar tartibi
 
-As you can see from the list above, a user action may trigger multiple events.
+Yuqoridagi ro'yxatda ko'rib turganingizdek, foydalanuvchi harakati bir nechta hodisalarni keltirib chiqarishi mumkin.
 
-For instance, a left-button click first triggers `mousedown`, when the button is pressed, then `mouseup` and `click` when it's released.
+Masalan, chap tugmachani bosish avval `mousedown`, tugma bosilganda `mouseup` va qo'yib yuborilganda `click` ni ishga tushiradi.
 
-In cases when a single action initiates multiple events, their order is fixed. That is, the handlers are called in the order `mousedown` -> `mouseup` -> `click`.
+Bitta harakat bir nechta hodisalarni boshlagan hollarda, ularning tartibi belgilanadi. Ya'ni, ishlov beruvchilar `mousedown` -> `mouseup` -> `click` tartibida chaqiriladi.
 
 ```online
-Click the button below and you'll see the events. Try double-click too.
+Quyidagi tugmani bosing va voqealarni ko'rasiz. Ikki marta bosishni ham sinab ko'ring.
 
-On the teststand below, all mouse events are logged, and if there is more than a 1 second delay between them, they are separated by a horizontal rule.
+Quyidagi test stendida sichqonchaning barcha hodisalari qayd qilinadi va ular orasida 1 soniyadan ortiq kechikish bo'lsa, ular gorizontal qoida bilan ajratiladi.
 
-Also, we can see the `button` property that allows us to detect the mouse button; it's explained below.
+Shuningdek, biz sichqoncha tugmachasini aniqlash imkonini beruvchi `button` xususiyatini ko'rishimiz mumkin; u haqida quyida tushuntirilgan.
 
 <input onmousedown="return logMouse(event)" onmouseup="return logMouse(event)" onclick="return logMouse(event)" oncontextmenu="return logMouse(event)" ondblclick="return logMouse(event)" value="Click me with the right or the left mouse button" type="button"> <input onclick="logClear('test')" value="Clear" type="button"> <form id="testform" name="testform"> <textarea style="font-size:12px;height:150px;width:360px;"></textarea></form>
 ```
+## Sichqoncha tugmasi
 
-## Mouse button
+Bosish bilan bog'liq hodisalar har doim `button` xususiyatiga ega, bu esa sichqonchaning aniq tugmachasini olish imkonini beradi.
 
-Click-related events always have the `button` property, which allows to get the exact mouse button.
+Biz odatda uni `click` va `contextmenu` hodisalari uchun ishlatmaymiz, chunki birinchisi faqat sichqonchaning chap tugmachasini bosganda, ikkinchisi esa faqat o'ng tugmani bosganda sodir bo'ladi.
 
-We usually don't use it for `click` and `contextmenu` events, because the former happens only on left-click, and the latter -- only on right-click.
+Boshqa tomondan, `mousedown` va `mouseup` ishlov beruvchilari uchun `event.button` kerak bo'lishi mumkin, chunki bu hodisalar har qanday tugmani ishga tushiradi, shuning uchun `button` "right-mousedown" va "left-mousedown" o'rtasida farqlash imkonini beradi.
 
-On the other hand, `mousedown` and `mouseup` handlers may need `event.button`, because these events trigger on any button, so `button` allows to distinguish between "right-mousedown" and "left-mousedown".
+`event.button` ning ehtimoliy qiymatlari:
 
-The possible values of `event.button` are:
-
-| Button state | `event.button` |
+| Tugma holati | `event.button` |
 |--------------|----------------|
-| Left button (primary) | 0 |
-| Middle button (auxiliary) | 1 |
-| Right button (secondary) | 2 |
-| X1 button (back) | 3 |
-| X2 button (forward) | 4 |
+| Chap tugma (asosiy) | 0 |
+| O'rta tugma (yordamchi) | 1 |
+| O'ng tugma (ikkinchi darajali) | 2 |
+| X1 tugma (orqaga) | 3 |
+| X2 tugma (oldinga) | 4 |
 
-Most mouse devices only have the left and right buttons, so possible values are `0` or `2`. Touch devices also generate similar events when one taps on them.
+Ko'pgina sichqoncha qurilmalarida faqat chap va o'ng tugmalar mavjud, shuning uchun mumkin bo'lgan qiymatlar `0` yoki `2` dir. Sensorli qurilmalar ham ularga tegilganda shunga o'xshash hodisalarni keltirib chiqaradi.
 
-Also there's `event.buttons` property that has all currently pressed buttons as an integer, one bit per button. In practice this property is very rarely used, you can find details at [MDN](mdn:/api/MouseEvent/buttons) if you ever need it.
+Shuningdek, `event.buttons` xususiyati mavjud bo'lib, unda hozirda bosilgan barcha tugmalar butun son sifatida, har bir tugma uchun bir bitdan iborat. Amalda bu xususiyat juda kam qo'llaniladi, agar kerak bo'lsa, tafsilotlarni [MDN](mdn:/api/MouseEvent/buttons) da topishingiz mumkin.
 
-```warn header="The outdated `event.which`"
-Old code may use `event.which` property that's an old non-standard way of getting a button, with possible values:
+```warn header="Eskirgan `event.which`"
+Eski kod `event.which` xususiyatidan foydalanishi mumkin, bu tugmani olishning eski nostandart usuli bo'lib, mumkin bo'lgan qiymatlarga ega:
 
-- `event.which == 1` – left button,
-- `event.which == 2` – middle button,
-- `event.which == 3` – right button.
+- `event.which == 1` – chap tugma,
+- `event.which == 2` – o'rta tugma,
+- `event.which == 3` – o'ng tugma.
 
-As of now, `event.which` is deprecated, we shouldn't use it.
+Hozircha `event.which` eskirgan, biz undan foydalanmasligimiz kerak.
 ```
+## Modifikatorlar: shift, alt, ctrl va meta
 
-## Modifiers: shift, alt, ctrl and meta
+Sichqonchaning barcha hodisalari bosilgan modifikator tugmalari haqidagi ma'lumotlarni o'z ichiga oladi.
 
-All mouse events include the information about pressed modifier keys.
+Tadbir xususiyatlari:
 
-Event properties:
+- `shiftKey`: `key: Shift`
+- `altKey`: `key: Alt` (yoki Mac uchun `key: Opt`)
+- `ctrlKey`: `key: Ctrl`
+- `metaKey`: Mac uchun `key:Cmd`
 
-- `shiftKey`: `key:Shift`
-- `altKey`: `key:Alt` (or `key:Opt` for Mac)
-- `ctrlKey`: `key:Ctrl`
-- `metaKey`: `key:Cmd` for Mac
+Agar hodisa davomida tegishli tugma bosilsa, ular `true` hisoblanadi.
 
-They are `true` if the corresponding key was pressed during the event.
-
-For instance, the button below only works on `key:Alt+Shift`+click:
+Masalan, quyidagi tugma faqat `key:Alt+Shift`+click bilan ishlaydi:
 
 ```html autorun height=60
 <button id="button">Alt+Shift+Click on me!</button>
@@ -108,66 +106,64 @@ For instance, the button below only works on `key:Alt+Shift`+click:
 </script>
 ```
 
-```warn header="Attention: on Mac it's usually `Cmd` instead of `Ctrl`"
-On Windows and Linux there are modifier keys `key:Alt`, `key:Shift` and `key:Ctrl`. On Mac there's one more: `key:Cmd`, corresponding to the property `metaKey`.
+```warn header="Diqqat: Mac-da odatda `Ctrl` o'rniga `Cmd` bo'ladi"
+Windows va Linuxda `key:Alt`, `key:Shift` va `key:Ctrl` o'zgartirish tugmalari mavjud. Macda yana bittasi bor: `key:Cmd`, `metaKey` xususiyatiga mos keladi.
 
-In most applications, when Windows/Linux uses `key:Ctrl`, on Mac `key:Cmd` is used.
+Ko'pgina ilovalarda Windows/Linux `key:Ctrl` dan foydalanganda, Macda `key:Cmd` ishlatiladi.
 
-That is: where a Windows user presses `key:Ctrl+Enter` or `key:Ctrl+A`, a Mac user would press `key:Cmd+Enter` or `key:Cmd+A`, and so on.
+Ya'ni, Windows foydalanuvchisi `key:Ctrl+Enter` yoki `key:Ctrl+A` tugmachalarini bosganda, Mac foydalanuvchisi `key:Cmd+Enter` yoki `key:Cmd+A` va hokazolarni bosadi.
 
-So if we want to support combinations like `key:Ctrl`+click, then for Mac it makes sense to use `key:Cmd`+click. That's more comfortable for Mac users.
+Shunday qilib, agar biz `key:Ctrl`+click kabi kombinatsiyalarni qo'llab-quvvatlamoqchi bo'lsak, Mac uchun `key:Cmd`+click dan foydalanish mantiqan to'g'ri keladi. Bu Mac foydalanuvchilari uchun qulayroq.
 
-Even if we'd like to force Mac users to `key:Ctrl`+click -- that's kind of difficult. The problem is: a left-click with `key:Ctrl` is interpreted as a *right-click* on MacOS, and it generates the `contextmenu` event, not `click` like Windows/Linux.
+Agar biz Mac foydalanuvchilarini `key:Ctrl`+click lariga majburlamoqchi bo'lsak ham -- bu juda qiyin. Muammo shundaki: `key: Ctrl` bilan sichqonchaning chap tugmasi MacOSda *o'ng tugmasini bosish* sifatida talqin qilinadi va u Windows/Linux kabi `click` emas, balki `contextmenu` hodisasini yaratadi.
 
-So if we want users of all operating systems to feel comfortable, then together with `ctrlKey` we should check `metaKey`.
+Shunday qilib, agar biz barcha operatsion tizim foydalanuvchilari o'zlarini qulay his qilishlarini istasak, u holda `ctrlKey` bilan birga `metaKey` ni tekshirishimiz kerak.
 
-For JS-code it means that we should check `if (event.ctrlKey || event.metaKey)`.
+JS-kod uchun bu `if (event.ctrlKey || event.metaKey)` ni tekshirishimiz kerakligini anglatadi.
 ```
 
-```warn header="There are also mobile devices"
-Keyboard combinations are good as an addition to the workflow. So that if the visitor uses a keyboard -- they work. 
+```warn header="Mobil ilovalar ham mavjud"
+Klaviatura kombinatsiyalari ish jarayoniga qo'shimcha sifatida yaxshi. Shunday qilib, agar tashrif buyuruvchi klaviaturadan foydalansa - ular ishlaydi.
 
-But if their device doesn't have it -- then there should be a way to live without modifier keys.
+Ammo agar ularning qurilmasida u yo'q bo'lsa, unda modifikator kalitlarisiz yashashning yo'li bo'lishi kerak.
 ```
 
-## Coordinates: clientX/Y, pageX/Y
+## Koordinatalar: clientX/Y, pageX/Y
 
-All mouse events provide coordinates in two flavours:
+Barcha sichqoncha hodisalari koordinatalarni ikki xilda beradi:
 
-1. Window-relative: `clientX` and `clientY`.
-2. Document-relative: `pageX` and `pageY`.
+1. Oynaga nisbatan: `clientX` va `clientY`.
+2. Hujjatga nisbatan: `pageX` va `pageY`.
 
-We already covered the difference between them in the chapter <info:coordinates>.
+Biz allaqachon <info:koordinatalar> bobida ular orasidagi farqni ko'rib chiqdik.
 
-In short, document-relative coordinates `pageX/Y` are counted from the left-upper corner of the document, and do not change when the page is scrolled, while `clientX/Y` are counted from the current window left-upper corner. When the page is scrolled, they change.
+Xulosa qilib aytganda, `pageX/Y` hujjatning nisbiy koordinatalari hujjatning yuqori chap burchagidan hisoblanadi va sahifa aylantirilganda o'zgarmaydi, `clientX/Y` esa joriy oynaning chap yuqori burchagidan hisoblanadi. . Sahifani aylantirganda, ular o'zgaradi.
 
-For instance, if we have a window of the size 500x500, and the mouse is in the left-upper corner, then `clientX` and `clientY` are `0`, no matter how the page is scrolled. 
+Misol uchun, agar bizda 500x500 o'lchamdagi oyna bo'lsa va sichqoncha chap-yuqori burchakda bo'lsa, sahifa qanday aylantirilishidan qat'iy nazar, `clientX` va `clientY` `0` bo'ladi.
 
-And if the mouse is in the center, then `clientX` and `clientY` are `250`, no matter what place in the document it is. They are similar to `position:fixed` in that aspect.
+Va agar sichqoncha markazda bo'lsa, hujjatning qaysi joyida bo'lishidan qat'iy nazar, `clientX` va `clientY` `250` dir. Ular shu jihati bo'yicha `position:fixed` ga o'xshaydi.
 
 ````online
-Move the mouse over the input field to see `clientX/clientY` (the example is in the `iframe`, so coordinates are relative to that `iframe`):
+`clientX/clientY` ni ko'rish uchun sichqonchani kiritish maydoni ustiga suring (misol `iframe` da, shuning uchun koordinatalar `iframe` ga bog'liq):
 
 ```html autorun height=50
 <input onmousemove="this.value=event.clientX+':'+event.clientY" value="Mouse over me">
 ```
 ````
+## Sichqonchani bosish orqali tanlashning oldini olish
 
-## Preventing selection on mousedown
+Sichqonchani ikki marta bosish ba'zi interfeyslarda bezovta bo'lishi mumkin bo'lgan yon ta'sirga ega: u matnni tanlaydi.
 
-Double mouse click has a side effect that may be disturbing in some interfaces: it selects text.
-
-For instance, double-clicking on the text below selects it in addition to our handler:
+Misol uchun, quyidagi matnni ikki marta bosish bizning ishlov beruvchimizdan tashqari uni tanlaydi:
 
 ```html autorun height=50
 <span ondblclick="alert('dblclick')">Double-click me</span>
 ```
+Agar biror kishi sichqonchaning chap tugmachasini bosgan bo'lsa va uni qo'yib yubormasdan sichqonchani harakatlantirsa, bu ham tanlovni ko'pincha keraksiz qiladi.
 
-If one presses the left mouse button and, without releasing it, moves the mouse, that also makes the selection, often unwanted.
+Tanlovni oldini olishning bir necha yo'li mavjud, ularni <info:selection-range> bo'limida o'qishingiz mumkin.
 
-There are multiple ways to prevent the selection, that you can read in the chapter <info:selection-range>.
-
-In this particular case the most reasonable way is to prevent the browser action on `mousedown`. It prevents both these selections:
+Bunday holda, eng oqilona yo'l `mousedown` da brauzer harakatini oldini olishdir. Bu ikkala tanlovni ham oldini oladi:
 
 ```html autorun height=50
 Before...
@@ -176,37 +172,36 @@ Before...
 </b>
 ...After
 ```
+Endi qalin element ikki marta bosish orqali tanlanmaydi va undagi chap tugmani bosish tanlovni boshlamaydi.
 
-Now the bold element is not selected on double clicks, and pressing the left button on it won't start the selection.
+Iltimos, diqqat qiling: uning ichidagi matn hali ham tanlanishi mumkin. Biroq, tanlov matnning o'zidan emas, balki undan oldin yoki keyin boshlanishi kerak. Odatda foydalanuvchilar uchun bu yaxshi.
 
-Please note: the text inside it is still selectable. However, the selection should start not on the text itself, but before or after it. Usually that's fine for users.
-
-````smart header="Preventing copying"
-If we want to disable selection to protect our page content from copy-pasting, then we can use another event: `oncopy`.
+````smart header="Nusxa ko'chirishning oldini olish"
+Agar sahifamiz tarkibini nusxa ko'chirishdan himoya qilish uchun tanlovni o'chirib qo'ymoqchi bo'lsak, boshqa hodisadan foydalanishimiz mumkin: `oncopy`.
 
 ```html autorun height=80 no-beautify
 <div *!*oncopy="alert('Copying forbidden!');return false"*/!*>
-  Dear user,
-  The copying is forbidden for you.
-  If you know JS or HTML, then you can get everything from the page source though.
+  Hurmatli foydalanuvchi,
+  Nusxa ko'chirish qat'iyan ta'qiqlangan.
+  Agar siz JS yoki HTMLni bilsangiz, hamma narsani sahifa manbasidan olishingiz mumkin.
 </div>
 ```
-If you try to copy a piece of text in the `<div>`, that won't work, because the default action `oncopy` is prevented.
+Agar siz `<div>` da matn qismini nusxalashga harakat qilsangiz, bu ishlamaydi, chunki standart `oncopy` amali oldini oladi.
 
-Surely the user has access to HTML-source of the page, and can take the content from there, but not everyone knows how to do it.
+Albatta, foydalanuvchi sahifaning HTML-manbasiga kirish huquqiga ega va u yerdan tarkibni olishi mumkin, lekin buni qanday qilishni hamma ham bilmaydi.
 ````
 
-## Summary
+## Xulosa
 
-Mouse events have the following properties:
+Sichqoncha hodisalari quyidagi xususiyatlarga ega:
 
-- Button: `button`.
-- Modifier keys (`true` if pressed): `altKey`, `ctrlKey`, `shiftKey` and `metaKey` (Mac).
-  - If you want to handle `key:Ctrl`, then don't forget Mac users, they usually use `key:Cmd`, so it's better to check `if (e.metaKey || e.ctrlKey)`.
+- Tugma: `button`.
+- Modifikator kalitlar (`true` agar bosilsa): `altKey`, `ctrlKey`, `shiftKey` va `metaKey` (Mac).
+  - Agar siz `key:Ctrl` ni ishlatmoqchi bo'lsangiz, Mac foydalanuvchilarini unutmang, ular odatda `key:Cmd` dan foydalanadilar, shuning uchun `if (e.metaKey || e.ctrlKey)` ni tekshirgan ma'qul.
 
-- Window-relative coordinates: `clientX/clientY`.
-- Document-relative coordinates: `pageX/pageY`.
+- Window-relative koordinatalar: `clientX/clientY`.
+- Document-relative koordinatalar: `pageX/pageY`.
 
-The default browser action of `mousedown` is text selection, if it's not good for the interface, then it should be prevented.
+`mousedown` brauzerining standart harakati matn tanlashdir, agar u interfeys uchun mos bo'lmasa, uning oldini olish kerak.
 
-In the next chapter we'll see more details about events that follow pointer movement and how to track element changes under it.
+Keyingi bobda biz ko'rsatgich harakatidan keyin sodir bo'ladigan hodisalar va uning ostidagi element o'zgarishlarini qanday kuzatish haqida batafsilroq ma'lumot beramiz.
