@@ -16,9 +16,9 @@ Agar HTML `form` elementi taqdim etilgan bo'lsa, u avtomatik ravishda o'z maydon
 
 Server nuqtai nazaridan, bu odatiy shaklni yuborishga o'xshaydi.
 
-## Oddiy form'ni yuborish
+## Oddiy formni yuborish
 
-Avval oddiy form'ni yuboramiz.
+Avval oddiy formni yuboramiz.
 
 Ko'rib turganingizdek, bu deyarli bitta chiziqli:
 
@@ -54,7 +54,7 @@ Ushbu misolda server kodi ko'rsatilmagan, chunki u bizning doiramizdan tashqarid
 `FormData`dagi maydonlarni quyidagi usullar bilan o'zgartirishimiz mumkin:
 
 - `formData.append(name, value)` - berilgan `name` va `value` bilan shakl maydonini qo'shing,
-- `formData.append(name, blob, fileName)` - maydonni xuddi `<input type="file">` kabi qo'shing, uchinchi argument `fileName` fayl nomini belgilaydi (shakl maydoni nomi emas), chunki u foydalanuvchi fayl tizimidagi fayl nomi,
+- `formData.append(name, blob, fileName)` - maydonni xuddi `<input type="file">` kabi qo'shing, uchinchi argument `fileName` fayl nomini belgilaydi (shakl maydoni nomi emas), chunki u foydalanuvchi fayl tizimidagi faylning nomi,
 - `formData.delete(name)` - berilgan `name` bilan maydonni olib tashlang,
 - `formData.get(name)` - berilgan `name` bilan maydon qiymatini oling,
 - `formData.has(name)` - agar berilgan `name` bilan maydon mavjud bo'lsa, `true` ni qaytaradi, aks holda `false`
@@ -176,9 +176,9 @@ Biz HTML shaklidan `new FormData(form)` yoki umuman formasiz obyekt yaratishimiz
 - `formData.set(name, value)`
 - `formData.set(name, blob, fileName)`
 
-Bu erda ikkita o'ziga xos xususiyatga e'tibor qaratamiz:
+Bu yerda ikkita o'ziga xos xususiyatga e'tibor qaratamiz:
 
-1. `Set` usuli bir xil nomdagi maydonlarni olib tashlaydi, `append` esa yo‘q. Bu ularning orasidagi yagona farq hisoblanadi.
+1. `Set` usuli bir xil nomdagi maydonlarni olib tashlaydi, `append` esa yo'q. Bu holat ular orasidagi yagona farq hisoblanadi.
 2. Faylni yuborish uchun 3 argumentli sintaksis kerak, oxirgi argument odatda `<input type="file">` uchun foydalanuvchi fayl tizimidan olinadigan fayl nomidir.
 
 Quyida boshqa usullarni ko'rishimiz mumkin:
