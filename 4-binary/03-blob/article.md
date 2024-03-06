@@ -1,68 +1,68 @@
 # Blob
 
-`ArrayBuffer` and views are a part of ECMA standard, a part of JavaScript.
+`ArrayBuffer` va ko'rinishlar ECMA standarti va JavaScriptning bir qismidir.
 
-In the browser, there are additional higher-level objects, described in [File API](https://www.w3.org/TR/FileAPI/), in particular `Blob`.
+Brauzerda [File API](https://www.w3.org/TR/FileAPI/), xususan, `Blob` da tasvirlangan qo'shimcha yuqori darajadagi obyektlar mavjud.
 
-`Blob` consists of an optional string `type` (a MIME-type usually), plus `blobParts` -- a sequence of other `Blob` objects, strings and `BufferSource`.
+`Blob` ixtiyoriy `type` (odatda MIME turi), shuningdek `blobParts` -- boshqa `Blob` obyektlari, satrlari va `BufferSource` ketma-ketligidan iborat.
 
 ![](blob.svg)
 
-The constructor syntax is:
+Konstruktor sintaksisi:
 
 ```js
 new Blob(blobParts, options);
 ```
 
-- **`blobParts`** is an array of `Blob`/`BufferSource`/`String` values.
-- **`options`** optional object:
-  - **`type`** -- `Blob` type, usually MIME-type, e.g. `image/png`,
-  - **`endings`** -- whether to transform end-of-line to make the `Blob` correspond to current OS newlines (`\r\n` or `\n`). By default `"transparent"` (do nothing), but also can be `"native"` (transform).
+- **`blobParts`** bu `Blob`/`BufferSource`/`String` qiymatlari massivi.
+- **`variantlar`** ixtiyoriy obyekt:
+   - **`tur`** -- `Blob` turi, odatda MIME-turi, masalan, `tasvir/png`,
+   - **`tugashlari`** -- `Blob` joriy OS yangi qatorlariga (`\r\n` yoki `\n`) mos kelishi uchun qator oxirini o'zgartirish kerak. Bu odatiy holat `"transparent"` (hech narsa qilmang), balki `"native"` (o'zgartirish) ham bo'lishi mumkin.
 
-For example:
+Masalan:
 
 ```js
-// create Blob from a string
+// satrdan Blob yarating
 let blob = new Blob(["<html>…</html>"], {type: 'text/html'});
-// please note: the first argument must be an array [...]
+// Iltimos, diqqat qiling: birinchi argument massiv bo'lishi kerak [...]
 ```
 
 ```js
-// create Blob from a typed array and strings
-let hello = new Uint8Array([72, 101, 108, 108, 111]); // "Hello" in binary form
+// terilgan massiv va satrlardan Blob yaratish
+let hello = new Uint8Array([72, 101, 108, 108, 111]); // "Hello" ikkilik shaklda
 
 let blob = new Blob([hello, ' ', 'world'], {type: 'text/plain'});
 ```
 
 
-We can extract `Blob` slices with:
+Biz `Blob` bo'laklarini quyidagi bilan ajratib olishimiz mumkin:
 
 ```js
 blob.slice([byteStart], [byteEnd], [contentType]);
 ```
 
-- **`byteStart`** -- the starting byte, by default 0.
-- **`byteEnd`** -- the last byte (exclusive, by default till the end).
-- **`contentType`** -- the `type` of the new blob, by default the same as the source.
+- **`byteStart`** -- boshlang'ich bayt, sukut bo'yicha 0.
+- **`byteEnd`** -- oxirgi bayt (eksklyuziv, sukut bo'yicha oxirigacha).
+- **`contentType`** -- yangi blokdagi `type`, sukut bo'yicha manbaa bilan bir xil.
 
-The arguments are similar to `array.slice`, negative numbers are allowed too.
+Argumentlar `array.slice` ga o'xshaydi, manfiy raqamlarga ham ruxsat beriladi.
 
-```smart header="`Blob` objects are immutable"
-We can't change data directly in a `Blob`, but we can slice parts of a `Blob`, create new `Blob` objects from them, mix them into a new `Blob` and so on.
+```smart header="`Blob` obyektlari o'zgarmasdir"`
+Biz to'g'ridan-to'g'ri `Blob` da ma'lumotlarni o'zgartira olmaymiz, lekin biz `Blob` qismlarini kesishimiz, ulardan yangi `Blob` obyektlarini yaratishimiz, ularni yangi `Blob` ga aralashtirishimiz mumkin va hokazo.
 
-This behavior is similar to JavaScript strings: we can't change a character in a string, but we can make a new corrected string.
+Ushbu xatti-harakatlar JavaScript satrlariga o'xshaydi: biz satrdagi belgini o'zgartira olmaymiz, lekin biz yangi tuzatilgan qatorni yaratolamiz.
 ```
 
-## Blob as URL
+## URL sifatida Blob
 
-A Blob can be easily used as a URL for `<a>`, `<img>` or other tags, to show its contents.
+Blob `<a>`, `<img>` yoki boshqa teglar uchun URL manzili sifatida uning mazmunini ko'rsatish uchun osongina ishlatilishi mumkin.
 
-Thanks to `type`, we can also download/upload `Blob` objects, and the `type` naturally becomes `Content-Type` in network requests.
+`type` tufayli biz `Blob` obyektlarini ham yuklab olishimiz/yuklashimiz mumkin va `type` tarmoq so'rovlarida tabiiy ravishda `Content-Type`ga aylanadi.
 
-Let's start with a simple example. By clicking on a link you download a dynamically-generated `Blob` with `hello world` contents as a file:
+Oddiy misol bilan boshlaylik. Havolani bosish orqali siz dinamik tarzda yaratilgan `Blob`ni `hello world` mazmuni bilan fayl sifatida yuklab olasiz:
 
 ```html run
-<!-- download attribute forces the browser to download instead of navigating -->
+<!-- download atributi brauzerni navigatsiya o'rniga yuklab olishga majbur qiladi -->
 <a download="hello.txt" href='#' id="link">Download</a>
 
 <script>
@@ -72,9 +72,9 @@ link.href = URL.createObjectURL(blob);
 </script>
 ```
 
-We can also create a link dynamically in JavaScript and simulate a click by `link.click()`, then download starts automatically.
+Shuningdek, biz JavaScriptda dinamik ravishda havola yaratishimiz va `link.click()` orqali bosishni simulyatsiya qilishimiz mumkin, keyin yuklab olish avtomatik ravishda boshlanadi.
 
-Here's the similar code that causes user to download the dynamically created `Blob`, without any HTML:
+Mana shunga o'xshash kod, foydalanuvchi dinamik ravishda yaratilgan `Blob` ni hech qanday HTMLsiz yuklab olishiga sabab bo'ladi:
 
 ```js run
 let link = document.createElement('a');
@@ -89,50 +89,49 @@ link.click();
 URL.revokeObjectURL(link.href);
 ```
 
-`URL.createObjectURL` takes a `Blob` and creates a unique URL for it, in the form `blob:<origin>/<uuid>`.
+`URL.createObjectURL` `Blob` oladi va uning uchun `blob:<origin>/<uuid>` shaklida yagona URL-manzil yaratadi.
 
-That's what the value of `link.href` looks like:
+`link.href` qiymati shunday ko'rinishga ega:
 
 ```
 blob:https://javascript.info/1e67e00e-860d-40a5-89ae-6ab0cbee6273
 ```
 
-For each URL generated by `URL.createObjectURL` the browser stores a URL -> `Blob` mapping internally. So such URLs are short, but allow to access the `Blob`.
+`URL.createObjectURL` tomonidan yaratilgan har bir URL uchun brauzer ichki URL -> `Blob` xaritasini saqlaydi. Shunday qilib, bunday URL manzillar qisqa, ammo `Blob` ga kirishga ruxsat beradi.
 
-A generated URL (and hence the link with it) is only valid within the current document, while it's open. And it allows to reference the `Blob` in `<img>`, `<a>`, basically any other object that expects a URL.
+Yaratilgan URL (va shuning uchun u bilan bog'langan havola) faqat joriy hujjatda, u ochiq bo'lganda amal qiladi. Va u `<img>`, `<a>`dagi `Blob`ga, asosan URL manzilini kutayotgan boshqa obyektga murojaat qilish imkonini beradi.
 
-There's a side effect though. While there's a mapping for a `Blob`, the `Blob` itself resides in the memory. The browser can't free it.
+Buning salbiy ta'siri bor. `Blob` uchun xaritalash mavjud bo'lsada, `Blob` o'zi xotirada joylashgan. Brauzer uni bo'shata olmaydi.
 
-The mapping is automatically cleared on document unload, so `Blob` objects are freed then. But if an app is long-living, then that doesn't happen soon.
+Hujjat yuklanganda xaritalash avtomatik ravishda o'chiriladi, shuning uchun `Blob` obyektlari bo'shatiladi. Agar ilova uzoq umr ko'rsa, bu tez orada sodir bo'lmaydi.
 
-**So if we create a URL, that `Blob` will hang in memory, even if not needed any more.**
+**Shunday qilib, agar biz URL manzil yaratsak, hatto kerak bo'lmasa ham o'sha `Blob` xotirada qoladi.**
 
-`URL.revokeObjectURL(url)` removes the reference from the internal mapping, thus allowing the `Blob` to be deleted (if there are no other references), and the memory to be freed.
+`URL.revokeObjectURL(url)` ichki xaritalashdan havolani olib tashlaydi, shu bilan `Blob`ni o'chirish (agar boshqa havolalar bo'lmasa) va xotirani bo'shatish imkonini beradi.
 
-In the last example, we intend the `Blob` to be used only once, for instant downloading, so we call `URL.revokeObjectURL(link.href)` immediately.
+Oxirgi misolda biz `Blob`ni bir marta, bir lahzada yuklab olish uchun ishlatishni maqsad qilganmiz, shuning uchun biz darhol `URL.revokeObjectURL(link.href)` deb chaqiramiz.
 
-In the previous example with the clickable HTML-link, we don't call `URL.revokeObjectURL(link.href)`, because that would make the `Blob` url invalid. After the revocation, as the mapping is removed, the URL doesn't work any more.
+Oldingi misolda bosiladigan HTML-havolada biz `URL.revokeObjectURL(link.href)` deb chaqirmaymiz, chunki bu `Blob` URL manzilini yaroqsiz qiladi. Bekor qilingandan so'ng, xaritalash olib tashlanganligi sababli, URL boshqa ishlamaydi.
 
-## Blob to base64
+## Base64 ga Blob
 
-An alternative to `URL.createObjectURL` is to convert a `Blob` into a base64-encoded string.
+`URL.createObjectURL` ga alternativ `Blob` ni base64-kodlangan qatorga aylantirishdir.
 
-That encoding represents binary data as a string of ultra-safe "readable" characters with ASCII-codes from 0 to 64. And what's more important -- we can use this encoding in "data-urls".
+Bu kodlash ikkilik ma'lumotni 0 dan 64 gacha ASCII kodlari bilan o'ta xavfsiz "o'qilishi mumkin bo'lgan" belgilar qatori sifatida ifodalaydi. Eng muhimi shundaki, biz bu kodlashdan "ma'lumotlar-url" da foydalanishimiz mumkin.
 
-A [data url](mdn:/http/Data_URIs) has the form `data:[<mediatype>][;base64],<data>`. We can use such urls everywhere, on par with "regular" urls.
+[Data url](mdn:/http/Data_URIs) `data:[<mediatype>][;base64],<data>` ko'rinishiga ega. Biz bunday urllardan hamma joyda, "oddiy" urllar bilan teng foydalanishimiz mumkin.
 
-For instance, here's a smiley:
+Masalan, bu yerda tabassum:
 
 ```html
 <img src="data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7">
 ```
 
-The browser will decode the string and show the image: <img src="data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7">
+Brauzer satrni dekodlaydi va rasmni ko'rsatadi: <img src="data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7">
 
+`Blob` ni base64 ga aylantirish uchun biz o'rnatilgan `FileReader` obyektidan foydalanamiz. U Blobsdan ma'lumotlarni bir nechta formatda o'qiy oladi. [Keyingi bobda](ma'lumot:fayl) biz buni chuqurroq yoritamiz.
 
-To transform a `Blob` into base64, we'll use the built-in `FileReader` object. It can read data from Blobs in multiple formats. In the [next chapter](info:file) we'll cover it more in-depth.
-
-Here's the demo of downloading a blob, now via base-64:
+Mana 64-bazasi orqali blobni yuklab olish namunasi:
 
 ```js run
 let link = document.createElement('a');
@@ -142,7 +141,7 @@ let blob = new Blob(['Hello, world!'], {type: 'text/plain'});
 
 *!*
 let reader = new FileReader();
-reader.readAsDataURL(blob); // converts the blob to base64 and calls onload
+reader.readAsDataURL(blob); // blobni base64 ga aylantiradi va yuklashni chaqiradi
 */!*
 
 reader.onload = function() {
@@ -150,117 +149,116 @@ reader.onload = function() {
   link.click();
 };
 ```
+`Blob` URL manzilini yaratishning ikkala usuli ham foydalanish mumkin. Lekin odatda `URL.createObjectURL(blob)` oddiyroq va tezroq.
 
-Both ways of making a URL of a `Blob` are usable. But usually `URL.createObjectURL(blob)` is simpler and faster.
-
-```compare title-plus="URL.createObjectURL(blob)" title-minus="Blob to data url"
-+ We need to revoke them if care about memory.
-+ Direct access to blob, no "encoding/decoding"
-- No need to revoke anything.
-- Performance and memory losses on big `Blob` objects for encoding.
+```taqqoslash title-plus="URL.createObjectURL(blob)" title-minus="Blob to data url"
++ Xotira haqida qayg'uradigan bo'lsak, ularni bekor qilishimiz kerak.
++ Blobga to'g'ridan-to'g'ri kirish mavjud, "kodlash/dekodlash" yo'q
+- Hech narsani bekor qilish kerak emas.
+- Kodlash uchun katta `Blob` obyektlarida ishlash va xotira yo'qotishlari.
 ```
 
-## Image to blob
+## Blob uchun rasm
 
-We can create a `Blob` of an image, an image part, or even make a page screenshot. That's handy to upload it somewhere.
+Biz tasvirning `Blob` qismini, rasm qismini yaratishimiz yoki hatto sahifa skrinshotini yaratishimiz mumkin. Buni biror joyga yuklash qulay.
 
-Image operations are done via `<canvas>` element:
+Tasvir operatsiyalari `<canvas>` elementi orqali amalga oshiriladi:
 
-1. Draw an image (or its part) on canvas using [canvas.drawImage](mdn:/api/CanvasRenderingContext2D/drawImage).
-2. Call canvas method [.toBlob(callback, format, quality)](mdn:/api/HTMLCanvasElement/toBlob) that creates a `Blob` and runs `callback` with it when done.
+1. [canvas.drawImage](mdn:/api/CanvasRenderingContext2D/drawImage) yordamida rasmni (yoki uning qismini) chizing.
+2. `Blob` yaratadigan va bajarilgandan so'ng u bilan `callback`ni ishga tushiradigan [.toBlob(callback, format, quality)](mdn:/api/HTMLCanvasElement/toBlob) qo'ng'iroq qilish usuli.
 
-In the example below, an image is just copied, but we could cut from it, or transform it on canvas prior to making a blob:
+Quyidagi misolda rasm shunchaki ko'chiriladi, lekin biz undan kesishimiz yoki blob yaratishdan oldin uni o'zgartirishimiz mumkin:
 
 ```js run
-// take any image
+// istalgan rasmni oling
 let img = document.querySelector('img');
 
-// make <canvas> of the same size
+// bir xil o'lchamdagi <canva>lar yasang
 let canvas = document.createElement('canvas');
 canvas.width = img.clientWidth;
 canvas.height = img.clientHeight;
 
 let context = canvas.getContext('2d');
 
-// copy image to it (this method allows to cut image)
+// unga rasmni nusxalash (bu usul tasvirni kesish imkonini beradi)
 context.drawImage(img, 0, 0);
-// we can context.rotate(), and do many other things on canvas
+// biz context.rotate()ni va boshqa ko'p narsalarni canvada bajarishimiz mumkin
 
-// toBlob is async operation, callback is called when done
+// toBlob asinxron operatsiya bo'lib, bajarilganda qayta qo'ng'iroq chaqiriladi
 canvas.toBlob(function(blob) {
-  // blob ready, download it
+  // blob tayyor, uni yuklab oling
   let link = document.createElement('a');
   link.download = 'example.png';
 
   link.href = URL.createObjectURL(blob);
   link.click();
 
-  // delete the internal blob reference, to let the browser clear memory from it
+  // Brauzer xotirani undan tozalashga ruxsat berish uchun ichki blob havolasini o'chiring
   URL.revokeObjectURL(link.href);
 }, 'image/png');
 ```
 
-If we prefer `async/await` instead of callbacks:
+Agar biz qayta qo'ng'iroqlar o'rniga `async/await` ni tanlasak:
 ```js
 let blob = await new Promise(resolve => canvasElem.toBlob(resolve, 'image/png'));
 ```
 
-For screenshotting a page, we can use a library such as <https://github.com/niklasvh/html2canvas>. What it does is just walks the page and draws it on `<canvas>`. Then we can get a `Blob` of it the same way as above.
+ Sahifani skrinshot qilish uchun biz <https://github.com/niklasvh/html2canvas> kabi kutubxonadan foydalanishimiz mumkin. U faqat sahifani kezadi va uni `<canvas>` ustiga chizadi. Keyin biz yuqoridagi kabi `Blob` ni olishimiz mumkin.
 
-## From Blob to ArrayBuffer
+## Blob dan ArrayBuffer ga
 
-The `Blob` constructor allows to create a blob from almost anything, including any `BufferSource`.
+`Blob` konstruktori deyarli hamma narsadan, shu jumladan har qanday `BufferSource` dan blob yaratishga imkon beradi.
 
-But if we need to perform low-level processing, we can get the lowest-level `ArrayBuffer` from `blob.arrayBuffer()`:
+Agar biz past darajadagi ishlov berishni amalga oshirishimiz kerak bo'lsa, biz eng past darajadagi `ArrayBuffer` ni `blob.arrayBuffer()` dan olishimiz mumkin:
 
 ```js
-// get arrayBuffer from blob
+// blobdan arrayBufferni oling
 const bufferPromise = await blob.arrayBuffer();
 
-// or
-blob.arrayBuffer().then(buffer => /* process the ArrayBuffer */);
+// yoki
+blob.arrayBuffer().then(buffer => /* ArrayBufferni qayta ishlang */);
 ```
 
-## From Blob to stream
+## Blobdan streamga
 
-When we read and write to a blob of more than `2 GB`, the use of `arrayBuffer` becomes more memory intensive for us. At this point, we can directly convert the blob to a stream.
+Biz `2 GB` dan ortiq blokni o'qiganimizda va yozganimizda, `arrayBuffer` dan foydalanish biz uchun xotirani ko'proq talab qiladi. Ushbu nuqtada biz to'g'ridan-to'g'ri blobni oqimga aylantirishimiz mumkin.
 
-A stream is a special object that allows to read from it (or write into it) portion by portion. It's outside of our scope here, but here's an example, and you can read more at <https://developer.mozilla.org/en-US/docs/Web/API/Streams_API>. Streams are convenient for data that is suitable for processing piece-by-piece.
+Oqim - bu undan qisman o'qish (yoki unga yozish) imkonini beruvchi maxsus obyekt. Bu bizning doiramizdan tashqarida, lekin bu yerda unga misol berilgan va uni batafsilroq o'qishingiz mumkin <https://developer.mozilla.org/en-US/docs/Web/API/Streams_API>. Oqimlar parchalab ishlov berish uchun mos bo'lgan ma'lumotlar uchun qulaydir.
 
-The `Blob` interface's `stream()` method returns a `ReadableStream` which upon reading returns the data contained within the `Blob`.
+`Blob` interfeysining `stream()` usuli `ReadableStream` ni qaytaradi, bu o'qish paytida `Blob` ichidagi ma'lumotlarni qaytaradi.
 
-Then we can read from it, like this:
+Keyin biz undan quyidagicha o'qiymiz:
 
 ```js
-// get readableStream from blob
+// blobdan readableStreamni oling
 const readableStream = blob.stream();
 const stream = readableStream.getReader();
 
 while (true) {
-  // for each iteration: value is the next blob fragment
+  // har bir iteratsiya uchun: qiymat keyingi blob fragmentidir
   let { done, value } = await stream.read();
   if (done) {
-    // no more data in the stream
+    // streamda hech qanday ma'lumot yo'q
     console.log('all blob processed.');
     break;
   }
 
-   // do something with the data portion we've just read from the blob
+   // Blobdan o'qilgan ma'lumotlar qismi bilan biror narsa qiling
   console.log(value);
 }
 ```
 
-## Summary
+## Xulosa
 
-While `ArrayBuffer`, `Uint8Array` and other `BufferSource` are "binary data", a [Blob](https://www.w3.org/TR/FileAPI/#dfn-Blob) represents "binary data with type".
+`ArrayBuffer`, `Uint8Array` va boshqa `BufferSource` "ikkilik ma'lumotlar" bo'lsa, [Blob](https://www.w3.org/TR/FileAPI/#dfn-Blob) "binary data with type"ni ifodalaydi. 
 
-That makes Blobs convenient for upload/download operations, that are so common in the browser.
+Bu Blobs-ni brauzerda keng tarqalgan yuklash/yuklab olish operatsiyalari uchun qulay qiladi.
 
-Methods that perform web-requests, such as [XMLHttpRequest](info:xmlhttprequest), [fetch](info:fetch) and so on, can work with `Blob` natively, as well as with other binary types.
+[XMLHttpRequest](info:xmlhttprequest), [fetch](info:fetch) va boshqalar kabi veb-so'rovlarni bajaradigan usullar `Blob` bilan ham, boshqa ikkilik turlar bilan ham ishlashi mumkin.
 
-We can easily convert between `Blob` and low-level binary data types:
+Biz `Blob` va past darajadagi ikkilik ma'lumotlar turlarini osongina o'zgartira olamiz:
 
-- We can make a `Blob` from a typed array using `new Blob(...)` constructor.
-- We can get back `ArrayBuffer` from a Blob using `blob.arrayBuffer()`, and then create a view over it for low-level binary processing.
+- Biz `new Blob(...)` konstruktori yordamida terilgan massivdan `Blob` yasashimiz mumkin.
+- Biz Blobdan `ArrayBuffer`ni `blob.arrayBuffer()` yordamida qaytarib olishimiz va keyin past darajadagi ikkilik ishlov berish uchun uning ustida ko'rinish yaratishimiz mumkin.
 
-Conversion streams are very useful when we need to handle large blob. You can easily create a `ReadableStream` from a blob. The `Blob` interface's `stream()` method returns a `ReadableStream` which upon reading returns the data contained within the blob.
+Konversiya oqimlari biz katta blob bilan ishlashimiz kerak bo'lganda juda foydali. Blobdan osongina `ReadableStream` ni yaratishingiz mumkin. `Blob` interfeysining `stream()` usuli `ReadableStream` ni qaytaradi, bu o'qish paytida blob ichidagi ma'lumotlarni qaytaradi.
