@@ -1,7 +1,7 @@
 
 # Fetch: Abort (Bekor qilish)
 
-Ma'lumki, `fetch` promise'ni qaytaradi. Va JavaScriptda umuman promise'ni "aborting", ya'ni bekor qilish tushunchasi yo'q. Masalan, agar bizning saytimizdagi foydalanuvchi harakatlari `fetch` endi kerak emasligini ko'rsatsa, qanday qilib davom etayotgan `fetch` ni bekor qilishimiz mumkin?
+Ma'lumki, `fetch` promiseni qaytaradi. Va JavaScriptda umuman promiseni "aborting", ya'ni bekor qilish tushunchasi yo'q. Masalan, agar bizning saytimizdagi foydalanuvchi harakatlari `fetch` endi kerak emasligini ko'rsatsa, qanday qilib davom etayotgan `fetch` ni bekor qilishimiz mumkin?
 
 Bunday maqsadlar uchun maxsus o'rnatilgan `AbortController` obyekti mavjud. U nafaqat `fetch` ni, balki boshqa asinxron vazifalarni ham bekor qilish uchun ishlatilishi mumkin.
 
@@ -48,13 +48,13 @@ alert(signal.aborted); // true
 
 Ko'rib turganimizdek, `AbortController` bu `abort()` chaqirilganda `abort` hodisalarini o'tkazish uchun vositadir.
 
-Biz xuddi shunday eventi o'z kodimizda tinglashda `AbortController` obyektisiz amalga oshirishimiz mumkin.
+Biz xuddi shunday eventni o'z kodimizda tinglashda `AbortController` obyektisiz amalga oshirishimiz mumkin.
 
 Eng muhimi shundaki, `fetch` `AbortController` obyekti bilan qanday ishlashni biladi. Ikkalasi birlashtirilgan.
 
 ## Fetch bilan foydalanish
 
-`fetch` ni bekor qilish uchun `AbortController`ning `signal` xususiyatini `fetch` opsiyasi sifatida o‘tkazing:
+`fetch` ni bekor qilish uchun `AbortController`ning `signal` xususiyatini `fetch` opsiyasi sifatida o'tkazing:
 
 ```js
 let controller = new AbortController();
@@ -65,7 +65,7 @@ fetch(url, {
 
 `Fetch` usuli `AbortController` bilan qanday ishlashni biladi. U `signal` bo'yicha `abort` hodisalarini tinglaydi.
 
-Endi bekor qilish uchun `controller.abort()` ga qo'ng'iroq qiling:
+Endi bekor qilish uchun `controller.abort()` ni chaqiring:
 
 ```js
 controller.abort();
@@ -78,7 +78,7 @@ Qachon qabul qilish to'xtatilsa, uning va'dasi `AbortError` xatosi bilan rad eti
 Mana, 1 soniyadan so'ng bekor qilingan `fetch` bilan to'liq misol:
 
 ```js run async
-// abort in 1 second
+// 1 soniyada bekor qiling
 let controller = new AbortController();
 setTimeout(() => controller.abort(), 1000);
 
@@ -114,7 +114,7 @@ let fetchJobs = urls.map(url => fetch(url, {
 let results = await Promise.all(fetchJobs);
 
 // agar controller.abort() istalgan joydan chaqirilsa,
-// u barcha fetch'larni bekor qiladi
+// u barcha fetchlarni bekor qiladi
 ```
 
 Agar bizda `fetch` dan farqli o'z asinxron vazifalarimiz bo'lsa, biz ularni olib tashlash bilan birga to'xtatish uchun bitta `AbortController` dan foydalanishimiz mumkin.
@@ -125,7 +125,7 @@ Biz faqat vazifalarimizda uning `abort` hodisasini tinglashimiz kerak:
 let urls = [...];
 let controller = new AbortController();
 
-let ourJob = new Promise((resolve, reject) => { // our task
+let ourJob = new Promise((resolve, reject) => { // bizning vazifalarimiz
   ...
   controller.signal.addEventListener('abort', reject);
 });
@@ -134,15 +134,15 @@ let fetchJobs = urls.map(url => fetch(url, { // fetches
   signal: controller.signal
 }));
 
-// Fetch va our tasks'ni parallel ravishda kuting
+// Fetch va bizning vazifalarimizni parallel ravishda kuting
 let results = await Promise.all([...fetchJobs, ourJob]);
 
 // agar controller.abort() istalgan joydan chaqirilsa,
-// u barcha fetch'ni va ourJob ni bekor qiladi
+// u barcha fetchni va ourJob ni bekor qiladi
 ```
 
 ## Xulosa
 
-- `AbortController` oddiy obyekt bo'lib, `abort()` usuli chaqirilganda o'zining `signal` xususiyatida `abort` hodisasini hosil qiladi (shuningdek, `signal.aborted` ni `true`ga o`rnatadi).
-- `fetch` u bilan birlashadi: biz `signal` xususiyatini variant sifatida o'tkazamiz, so'ngra `fetch` uni tinglaydi, shuning uchun `fetch` ni bekor qilish mumkin.
+- `AbortController` oddiy obyekt bo'lib, `abort()` usuli chaqirilganda o'zining `signal` xususiyatida `abort` hodisasini hosil qiladi (shuningdek, `signal.aborted` ni `true`ga o'rnatadi).
+- `fetch` u bilan birlashadi: biz `signal` xususiyatini variant sifatida o'tkazamiz, so'ngra `fetch` uni tinglaydi, shuning uchun `fetch` ni bekor qiladi. 
 - Kodimizda `AbortController` dan foydalanishimiz mumkin. "Call `abort()`" -> "listen to `abort` event" o'zaro ta'siri oddiy va universaldir. Biz uni `fetch`siz ham ishlatishimiz mumkin.
