@@ -3,7 +3,7 @@
 
 JavaScript serverga tarmoq so'rovlarini yubora oladi va kerak bo'lganda yangi ma'lumotlarni yuklashi mumkin.
 
-Misol uchun, biz tarmoq so'rovidan quyidagi maqsadlarda foydalanishimiz mumkinfoydalanishimiz mumkin:
+Misol uchun, biz tarmoq so'rovidan quyidagi maqsadlarda foydalanishimiz mumkin:
 
 - Buyurtma berish,
 - Foydalanuvchi ma'lumotlarini yuklash,
@@ -16,7 +16,7 @@ JavaScriptdagi tarmoq so'rovlari uchun "AJAX" (qisqartirilgan <b>A</b>sinxron <b
 
 Tarmoq so'rovini yuborish va serverdan ma'lumot olishning bir necha yo'li mavjud.
 
-`Fetch()` usuli zamonaviy va ko'p qirrali, shuning uchun biz undan boshlaymiz. Bu eski brauzerlar tomonidan qo'llab-quvvatlanmaydi (polyfilled bo'lishi mumkin), lekin zamonaviy brauzerlar orasida juda yaxshi qo'llab-quvvatlanadi.
+`Fetch()` usuli zamonaviy va ko'p qirralidir, shuning uchun biz undan boshlaymiz. Bu eski brauzerlar tomonidan qo'llab-quvvatlanmaydi (polyfilled bo'lishi mumkin), lekin zamonaviy brauzerlar orasida juda yaxshi foydalaniladi.
 
 Asosiy sintaksis:
 
@@ -27,15 +27,15 @@ let promise = fetch(url, [options])
 - **`url`** -- kirish uchun URL.
 - **`options`** -- ixtiyoriy parametrlar: usul, sarlavhalar va boshqalar.
 
-`options`, ya'ni variantlarsiz bu oddiy GET so'rovi boʻlib, `url` mazmunini yuklab oladi.
+`options`, ya'ni variantlarsiz bu oddiy GET so'rovi bo'lib, `url` mazmunini yuklab oladi.
 
-Brauzer so'rovni darhol boshlaydi va natijani olish uchun qo'ng'iroq kodi foydalanishi kerak bo'lgan va'dani qaytaradi.
+Brauzer so'rovni darhol boshlaydi va natijani olish uchun qo'ng'iroq kodi foydalanishi kerak bo'lgan promiseni qaytaradi.
 
 Javob olish odatda ikki bosqichli jarayondir.
 
-**Birinchidan, `fetch` orqali qaytarilgan `promise` o'rnatilgan [Response](https://fetch.spec.whatwg.org/#response-class) class'ning obyekti bilan hal qilinadi, server sarlavhalar bilan javob beradi.**
+**Birinchidan, `fetch` orqali qaytarilgan `promise` o'rnatilgan [Response](https://fetch.spec.whatwg.org/#response-class) classning obyekti bilan hal qilinadi, server sarlavhalar bilan javob beradi.**
 
-Ushbu bosqichda biz HTTP holatini tekshirishimiz mumkin, u muvaffaqiyatli yoki yo'qligini bilish uchun, sarlavhalarni tekshiring, lekin u hali tanaga ega emas.
+Ushbu bosqichda biz HTTP holatini tekshirishimiz mumkin, u muvaffaqiyatliligini bilish uchun, sarlavhalarni tekshiring, lekin u hali tanaga ega emas.
 
 Agar `fetch` HTTP so'rovini amalga oshira olmasa, promise rad etiladi, masalan, tarmoq muammolari yoki bunday sayt yo'q. 404 yoki 500 kabi g'ayritabiiy HTTP holatlari xatolikka olib kelmaydi.
 
@@ -57,18 +57,18 @@ if (response.ok) { // agar HTTP holati 200-299 bo'lsa
 }
 ```
 
-**Ikkinchidan, javob organini olish uchun qo'shimcha chaqiruv usulidan foydalanishimiz kerak.**
+**Ikkinchidan, javob tanasini olish uchun qo'shimcha chaqiruv usulidan foydalanishimiz kerak.**
 
-`Response` turli formatlarda tanaga kirish uchun promise'ga asoslangan bir nechta usullarni taqdim etadi:
+`Response` turli formatlarda tanaga kirish uchun promisega asoslangan bir nechta usullarni taqdim etadi:
 
-- **`response.text()`** -- javobni o'qing va matn sifatida qayting,
+- **`response.text()`** -- javobni o'qish va matn sifatida qaytarish
 - **`response.json()`** -- javobni JSON sifatida tahlil qilish,
-- **`response.formData()`** -- javobni `FormData` obyekti sifatida qaytaring ([keyingi bobda tushuntirilgan] (ma'lumot:formdata))
-- **`response.blob()`** -- javobni [Blob](info:blob) sifatida qaytaring (ikkilik sanoq sistemasidagi ma'lumotlar),
-- **`response.arrayBuffer()`** -- javobni [ArrayBuffer] (info:arraybuffer-binary-arrays) sifatida qaytaring (ikkilik ma'lumotlarning past darajadagi namoyishi),
-- qo'shimcha ravishda, `response.body` [ReadableStream](https://streams.spec.whatwg.org/#rs-class) obyekti bo'lib, u tanani bo'lakma-bo'lak o'qish imkonini beradi, keyinroq bunga doir misollar ko'ramiz.
+- **`response.formData()`** -- javobni `FormData` obyekti sifatida qaytarishs ([keyingi bobda tushuntirilgan] (ma'lumot:formdata))
+- **`response.blob()`** -- javobni [Blob](info:blob) sifatida qaytarish (ikkilik sanoq sistemasidagi ma'lumotlar),
+- **`response.arrayBuffer()`** -- javobni [ArrayBuffer] (info:arraybuffer-binary-arrays) sifatida qaytarish (ikkilik ma'lumotlarning past darajadagi namoyishi),
+- qo'shimcha ravishda, `response.body` [ReadableStream](https://streams.spec.whatwg.org/#rs-class) obyekti ham mavjud bo'lib, u tanani bo'lakma-bo'lak o'qish imkonini beradi, keyinroq bunga doir misollar ko'ramiz.
 
-Masalan, GitHubdan so'nggi topshiriqlarga ega JSON-obyektini olaylik:
+Masalan, GitHubdan so'nggi topshiriqlarga ega JSON obyektini olaylik:
 
 ```js run async
 let url = 'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits';
@@ -81,7 +81,7 @@ let commits = await response.json(); // javob tanasini o'qing va JSON sifatida t
 alert(commits[0].author.login);
 ```
 
-Yoki `await`siz ham xuddi shunday, sof promise'lar sintaksisi yordamida bajarish mumkin:
+Yoki `await`siz ham xuddi shunday, vazifani sof promiselar sintaksisi yordamida bajarish mumkin:
 
 ```js run
 fetch('https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits')
@@ -133,9 +133,9 @@ let parsed = await response.json(); // fail bo'ladi (allaqachon iste'mol qilinga
 ```
 ````
 
-## Response headers
+## Javob sarlavhalari
 
-Javob sarlavhalari `response.headers` da xaritaga o'xshash sarlavhalar obyektida mavjud.
+Javob sarlavhalari `response.headers` da xaritaga o'xshash sarlavhalar obyektida bor.
 
 Bu aynan xarita emas, lekin unda alohida sarlavhalarni nomi bo'yicha olish yoki ularni takrorlashning o'xshash usullari mavjud:
 
@@ -151,7 +151,7 @@ for (let [key, value] of response.headers) {
 }
 ```
 
-## request headers
+## So'roq sarlavhalari
 
 `Fetch` da so'rov sarlavhasini o'rnatish uchun `headers` opsiyasidan foydalanishimiz mumkin. Unda quyidagi kabi chiquvchi sarlavhali obyekt mavjud:
 
@@ -163,7 +163,7 @@ let response = fetch(protectedUrl, {
 });
 ```
 
-...Lekin [`forbidden HTTP headers`] (https://fetch.spec.whatwg.org/#forbidden-header-name) ta'qiqlangan sarlavhalar ro'yxati mavjud, biz ularni o'rnata olmaymiz:
+...Lekin [`forbidden HTTP headers`] (https://fetch.spec.whatwg.org/#forbidden-header-name) ta'qiqlangan sarlavhalar ro'yxatida, biz ularni o'rnata olmaymiz:
 
 - `Accept-Charset`, `Accept-Encoding`
 - `Access-Control-Request-Headers`
@@ -188,12 +188,12 @@ let response = fetch(protectedUrl, {
 
 Ushbu sarlavhalar to'g'ri va xavfsiz HTTPni ta'minlaydi, shuning uchun ular faqat brauzer tomonidan boshqariladi.
 
-## POST requests (so'rovlari)
+## POST so'rovlari (request)
 
 `POST` so'rovi yoki boshqa usul bilan so'rov yuborish uchun biz `fetch` opsiyalaridan foydalanishimiz kerak:
 
 - **`method`** -- HTTP-usuli, masalan, `POST`,
-- **`body`** -- so'rov organi, ulardan biri:
+- **`body`** -- so'rov tanasi, ulardan biri:
   - qator (masalan, JSON bilan kodlangan),
   - `FormData` obyekti, ma'lumotlarni  `multipart/form-data` sifatida yuborish,
   - `Blob`/`BufferSource` ikkilik ma'lumotlarni yuborish uchun,
@@ -223,15 +223,15 @@ let result = await response.json();
 alert(result.message);
 ```
 
-Esda tuting, agar `body` so'rovi satr bo'lsa, `Content-Type` sarlavhasi sukut boʻyicha `text/plain;charset=UTF-8` ga o'rnatiladi.
+Esda tuting, agar `body` so'rovi satr bo'lsa, `Content-Type` sarlavhasi sukut bo'yicha `text/plain;charset=UTF-8` ga o'rnatiladi.
 
-Lekin, biz JSON yubormoqchi bo'lganimizda, biz JSON kodlangan ma'lumotlar uchun to'g'ri `Content-Type` ni `application/json` yuborish uchun `headers` variantidan foydalanamiz.
+Lekin, biz JSON yubormoqchi bo'lganimizda, biz JSON kodlangan ma'lumotlar uchun to'g'ri `Content-Type` ni `application/json` yuborish uchun `headers` variantidan foydalanamiz. 
 
 ## Rasm yuborish
 
-Shuningdek, biz ikkilik maʼlumotlarni `Fetch` yordamida `Blob` yoki `BufferSource` obyektlari yordamida yuborishimiz mumkin.
+Shuningdek, biz ikkilik ma'lumotlarni `Fetch` yordamida `Blob` yoki `BufferSource` obyektlari yordamida yuborishimiz mumkin.
 
-Ushbu misolda `<canvas>` mavjud bo'lib, biz uning ustiga sichqonchani siljitish orqali chizishimiz mumkin. "Submit" tugmasini bosish tasvirni serverga yuboradi:
+Ushbu misolda `<canvas>` mavjud bo'lib, biz uning ustiga sichqonchani siljitish orqali chizishimiz mumkin. "Submit" tugmasini bosish tasvirni serverga yuboradi: 
 
 ```html run autorun height="90"
 <body style="margin:0">
@@ -305,12 +305,12 @@ Javob tanasini olish usullari:
 - **`response.text()`** -- javobni matn sifatida qaytarish,
 - **`response.json()`** -- javobni JSON obyekti sifatida tahlil qilish,
 - **`response.formData()`** -- javobni `FormData` obyekti sifatida qaytarish (`multipart/form-data` kodlash, keyingi bobda berilgan),
-- **`response.blob()`** -- javobni [Blob](info:blob) sifatida qaytaring (ikkilik ma'lumotlar),
+- **`response.blob()`** -- javobni [Blob](info:blob) sifatida qaytarish (ikkilik ma'lumotlar),
 - **`response.arrayBuffer()`** -- javobni [ArrayBuffer] (info:arraybuffer-binary-arrays) (past darajadagi ikkilik ma'lumotlar) sifatida qaytarish
 
 Hozir mavjud fetch variantlari:
 - `method` -- HTTP-usuli,
 - `headers` -- so'rov sarlavhalari bo'lgan obyekt (har qanday sarlavhaga ruxsat berilmaydi),
-- `body` -- `string`, `FormData`, `BufferSource`, `Blob` yoki `UrlSearchParams` obyekti sifatida yuboriladigan (so`rov tanasi) ma'lumotlar.
+- `body` -- `string`, `FormData`, `BufferSource`, `Blob` yoki `UrlSearchParams` obyekti sifatida yuboriladigan (so'rov tanasi) ma'lumotlar.
 
 Keyingi boblarda biz ko'proq variantlarni ko'ramiz va `fetch` holatlaridan foydalanamiz.
