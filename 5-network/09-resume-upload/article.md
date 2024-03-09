@@ -12,9 +12,9 @@ Yuklashni davom ettirish uchun ulanish uzilib qolguncha qancha yuklanganligini b
 
 Yuklash jarayonini kuzatish uchun `xhr.upload.onprogress` mavjud.
 
-Afsuski, bu yerda yuklashni davom ettirish bizga yordam bermaydi, chunki u maʼlumotlar *sent* qilinganda, ya'ni yuborilganda ishga tushadi, lekin u server tomonidan qabul qilinganmi? Brauzer buni bilmaydi.
+Afsuski, bu yerda yuklashni davom ettirish bizga yordam bermaydi, chunki u ma'lumotlar *sent* qilinganda, ya'ni yuborilganda ishga tushadi, lekin u server tomonidan qabul qilinganmi? Brauzer buni bilmaydi.
 
-Ehtimol, u mahalliy tarmoq proksi-serveri tomonidan buferlangan bo'lishi mumkin yoki masofaviy server jarayoni o'lib qolgan va ularni qayta ishlay olmadi yoki u o'rtada yo'qolgan va qabul qiluvchiga etib bormagan.
+Ehtimol, u mahalliy tarmoq proksi-serveri tomonidan buferlangan bo'lishi yoki masofaviy server jarayoni o'lib qolgan bo'lishi mumkin va ularni qayta ishlay olmadi yoki u o'rtada yo'qolgan hamda qabul qiluvchiga etib bormagan.
 
 Shuning uchun bu hodisa faqat yaxshi taraqqiyot satrini ko'rsatish uchun foydalidir.
 
@@ -50,10 +50,10 @@ Yuklashni davom ettirish uchun biz server tomonidan qabul qilingan baytlar sonin
     ```js
     xhr.open("POST", "upload");
 
-    // Fayl identifikatori, shuning uchun server qaysi faylni yuklashimizni biladi
+    // Fayl identifikatori, erver qaysi faylni yuklashimizni biladi
     xhr.setRequestHeader('X-File-Id', fileId);
 
-    // Biz davom ettirayotgan bayt, shuning uchun server davom etayotganimizni biladi
+    // Biz davom ettirayotgan bayt, server davom etayotganimizni biladi
     xhr.setRequestHeader('X-Start-Byte', startByte);
 
     xhr.upload.onprogress = (e) => {
@@ -64,9 +64,9 @@ Yuklashni davom ettirish uchun biz server tomonidan qabul qilingan baytlar sonin
     xhr.send(file.slice(startByte));
     ```
 
-    Bu yerda biz serverga ikkala fayl identifikatorini `X-File-Id` sifatida yuboramiz, shuning uchun u qaysi faylni yuklayotganimizni biladi, va boshlang'ich baytni `X-Start-Byte` deb biladi, shuning uchun biz uni dastlab yuklamayotganimizni biladi, lekin jarayon davom etmoqda.
+    Bu yerda biz serverga ikkala fayl identifikatorini `X-File-Id` sifatida yuboramiz, u qaysi faylni yuklayotganimizdan xabardor va boshlang'ich baytni `X-Start-Byte` deb biladi, shuning uchun biz uni dastlab yuklamayotganimizni biladi, lekin jarayon davom etmoqda.
 
-    Server o'z yozuvlarini tekshirishi kerak va agar ushbu fayl yuklangan bo'lsa va joriy yuklangan o'lcham aynan `X-Start-Bayt` bo'lsa, unga ma'lumotlarni qo'shing.
+    Server o'z yozuvlarini tekshirishi kerak va agar ushbu fayl yuklangan va joriy yuklangan o'lcham aynan `X-Start-Bayt` bo'lsa, unga ma'lumotlarni qo'shing.
 
 
 Bu yerda Node.js da yozilgan mijoz va server kodi bilan demo berilgan.
@@ -77,6 +77,6 @@ Ammo siz uni yuklab olishingiz va to'liq namoyish qilish uchun mahalliy ravishda
 
 [codetabs src="upload-resume" height=200]
 
-Ko'rib turganimizdek, zamonaviy tarmoq usullari o'z imkoniyatlari bo'yicha fayl menejerlariga yaqin -- sarlavhalar ustidan nazorat, taraqqiyot ko'rsatkichi, fayl qismlarini yuborish va boshqalar.
+Ko'rib turganimizdek, zamonaviy tarmoq usullari o'z imkoniyatlari: sarlavhalar ustidan nazorat, taraqqiyot ko'rsatkichi, fayl qismlarini yuborish va boshqalar bo'yicha fayl menejerlariga yaqin.
 
 Biz qayta yuklash va boshqa ko'p narsalarni amalga oshirishimiz mumkin.
