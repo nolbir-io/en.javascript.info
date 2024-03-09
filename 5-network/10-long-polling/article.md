@@ -2,7 +2,7 @@
 
 Long polling server bilan doimiy ulanishning eng oddiy usuli bo'lib, u WebSocket yoki Server Side Events kabi maxsus protokollardan foydalanmaydi.
 
-Amalga oshirish juda oson bo'lib, u ko'p hollarda ham yetarli darajada yaxshi amalga oshiriladi.
+Amalga oshirish juda oson bo'lib, u ko'p hollarda ham yetarli darajada yaxshi bajariladi.
 
 ## Muntazam Polling
 
@@ -10,7 +10,7 @@ Serverdan yangi ma'lumotlarni olishning eng oddiy usuli bu davriy pollingdir. Ya
 
 Bunga javoban, server birinchi navbatda mijozning onlayn ekanligi haqida xabar oladi, ikkinchidan - shu paytgacha olingan xabarlar paketini yuboradi.
 
-Bu ishlaydi, ammo kamchiliklar mavjud:
+Bu ishlaydi, ammo bir-nechta kamchiliklar mavjud:
 1. Xabarlar 10 soniyagacha kechikish bilan uzatiladi (so'rovlar orasida).
 2. Xabarlar bo'lmasa ham, foydalanuvchi boshqa joyga o'tgan yoki uxlab yotgan bo'lsa ham, server har 10 soniyada so'rovlar bilan bombalanadi. Ishlash nuqtai nazaridan aytganda, bu juda katta yukdir.
 
@@ -65,7 +65,7 @@ async function subscribe() {
 subscribe();
 ```
 
-Ko'rib turganingizdek, `subscribe` funksiyasi yuklaydi, keyin javobni kutadi, uni boshqaradi va yana o'zini chaqiradi.
+Ko'rib turganingizdek, `subscribe` funksiyasi yuklanadi, keyin javobni kutadi, uni boshqaradi va yana o'zini chaqiradi.
 
 ```warn header="Server ko'plab kutilayotgan ulanishlar bilan yaxshi bo'lishi kerak"
 
@@ -80,13 +80,13 @@ Node.js yordamida yozilgan serverlarda odatda bunday muammolar bo'lmaydi.
 Ya'ni, bu dasturlash tili muammosi emas. Ko'pgina zamonaviy tillar, shu jumladan PHP va Ruby backendni to'g'ri amalga oshirishga imkon beradi. Iltimos, server arxitekturasi bir vaqtning o'zida bir nechta ulanishlar bilan yaxshi ishlashiga ishonch hosil qiling.
 ```
 
-## Demo: a chat
+## Namuna: chat
 
 Bu yerda demo chat mavjud, siz uni yuklab olishingiz va mahalliy ravishda ishga tushirishingiz mumkin (agar siz Node.js bilan tanish bo'lsangiz va modullarni o'rnata olsangiz):
 
 [codetabs src="longpoll" height=500]
 
-Brauzer kodi `browser.js` da.
+Brauzer kodi `browser.js` da berilgan.
 
 ## Foydalanish sohasi
 
