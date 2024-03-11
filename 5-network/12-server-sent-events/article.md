@@ -1,8 +1,8 @@
 # Server sent events (server tomonidan jo'natilgan hodisalar)
 
-[Server sent events](https://html.spec.whatwg.org/multipage/comms.html#the-eventsource-interface) spetsifikatsiyasi server va server bilan aloqani saqlaydigan o'rnatilgan `EventSource` sinfini tavsiflaydi, undan hodisalarni olish imkonini beradi.
+[Server sent events](https://html.spec.whatwg.org/multipage/comms.html#the-eventsource-interface) spesifikatsiyasi server va server bilan aloqani saqlaydigan o'rnatilgan `EventSource` sinfini tavsiflaydi, undan hodisalarni olish imkonini beradi.
 
-`WebSocket`ga o'xshab, ulanish doimiydir.
+`WebSocket` ga o'xshab, ulanish doimiydir.
 
 Ammo bir nechta muhim farqlar mavjud:
 
@@ -18,7 +18,7 @@ Nima uchun uni ishlatish kerak?
 
 Asosiy sabab: bu oddiyroq. Ko'pgina ilovalarda `WebSocket` ning kuchi biroz ortiqcha.
 
-Biz serverdan ma'lumotlar oqimini olishimiz kerak: chat xabarlari yoki bozor narxlari yoki boshqalar. `EventSource` aynan shu narsada yaxshi. Bundan tashqari, u avtomatik qayta ulanishni qo'llab-quvvatlaydi, biz uni `WebSocket` yordamida qo'lda amalga oshirishimiz kerak. Bundan tashqari, bu yangi protokol emas, oddiy eski HTTP hisoblanadi.
+Biz serverdan ma'lumotlar oqimini olishimiz kerak: chat xabarlari, bozor narxlari yoki boshqalar. `EventSource` aynan shu narsada yaxshi. Bundan tashqari, u avtomatik qayta ulanishni qo'llab-quvvatlaydi, biz uni `WebSocket` yordamida qo'lda amalga oshirishimiz kerak. Bundan tashqari, bu yangi protokol emas, oddiy eski HTTP hisoblanadi.
 
 ## Getting messages
 
@@ -49,7 +49,7 @@ Masalan:
 data: {"user":"John","message":"First line*!*\n*/!* Second line"}
 ```
 
-...Shunday qilib, bitta `data:` aynan bitta xabarni o'z ichiga oladi deb taxmin qilishimiz mumkin.
+...Shunday qilib, bitta `data:` aynan bitta xabarni o'z ichiga oladi, deb tahmin qilishimiz mumkin.
 
 Har bir bunday xabar uchun `message` hodisasi yaratiladi:
 
@@ -64,7 +64,7 @@ eventSource.onmessage = function(event) {
 // yoki eventSource.addEventListener('message', ...)
 ```
 
-### Cross-origin requests
+### O'zaro kelib chiqish so'rovlari (Cross origin requests)
 
 `EventSource` o'zaro kelib chiqish so'rovlarini qo'llab-quvvatlaydi, masalan, `fetch` va boshqa tarmoq usullari. Biz har qanday URL manzilidan foydalanishimiz mumkin:
 
@@ -72,9 +72,9 @@ eventSource.onmessage = function(event) {
 let source = new EventSource("https://another-site.com/events");
 ```
 
-Masofaviy server `Origin` sarlavhasini oladi va davom etish uchun `Access-Control-Allow-Origin`  bilan javob berishi kerak.
+Masofaviy server `Origin` sarlavhasini oladi va davom etish uchun `Access-Control-Allow-Origin` bilan javob berishi kerak.
 
-Hisob ma'lumotlarini topshirish uchun biz qo'shimcha `withCredentials` opsiyasini o'rnatishimiz kerak, masalan:
+Hisob ma'lumotlarini topshirish uchun biz qo'shimcha `withCredentials` opsiyasini o'rnatishimiz lozim, masalan:
 
 ```js
 let source = new EventSource("https://another-site.com/events", {
@@ -82,7 +82,7 @@ let source = new EventSource("https://another-site.com/events", {
 });
 ```
 
-O'zaro kelib chiqish sarlavhalari haqida batafsil maʼlumot olish uchun <info:fetch-crossorigin> bobiga qarang.
+O'zaro kelib chiqish sarlavhalari haqida batafsil ma'lumot olish uchun <info:fetch-crossorigin> bobiga qarang.
 
 
 ## Reconnection (qayta ulanish)
@@ -102,7 +102,7 @@ data: Hello, I set the reconnection delay to 15 seconds
 
 `retry:` ikkalasi ham ba'zi ma'lumotlar bilan birga yoki mustaqil xabar sifatida kelishi mumkin.
 
-Brauzer qayta ulanishdan oldin shuncha millisekund kutishi kerak. Yoki uzoqroq, masalan, agar brauzer hozirda tarmoqqa ulanish yo'qligini bilsa (OSdan), u ulanish paydo bo'lguncha kutib, keyin qayta urinib ko'rishi mumkin.
+Brauzer qayta ulanishdan oldin shuncha millisekund kutishi kerak. Yoki uzoqroq, masalan, agar brauzer hozirda tarmoqqa ulanish yo'qligini bilsa (OSdan), u ulanish paydo bo'lguncha kutib, keyin qayta urinib ko'radi.
 
 - Agar server brauzer qayta ulanishni to'xtatishni xohlasa, u HTTP holati 204 bilan javob berishi kerak.
 - Agar brauzer ulanishni yopmoqchi bo'lsa, u `eventSource.close()` ni chaqirishi kerak:
@@ -210,12 +210,12 @@ Keyin brauzer avtomatik ravishda qayta ulanadi.
 
 `EventSource` obyekti avtomatik ravishda doimiy ulanishni o'rnatadi va serverga u orqali xabarlar yuborish imkonini beradi.
 
-U taklif qiladi:
-- Avtomatik qayta ulanish, sozlanishi `retry` vaqti tugashi bilan.
+U quyidagilarni taklif qiladi:
+- `retry` sozlanish vaqti tugashi bilan avtomatik qayta ulanish.
 - Voqealarni davom ettirish uchun xabar identifikatorlari, oxirgi qabul qilingan identifikator qayta ulanganda `Last-Event-ID` sarlavhasiga yuboriladi.
 - Joriy holat `readyState` xususiyatida.
 
-Bu `EventSource` ni `WebSocket` ga munosib muqobil qiladi, chunki ikkinchisi past darajadagi va bunday o'rnatilgan funktsiyalarga ega emas (garchi ularni amalga oshirish mumkin bo'lsa ham).
+Bu `EventSource` ni `WebSocket` ga munosib muqobil qiladi, chunki ikkinchisi past darajadagi va bunday o'rnatilgan funksiyalarga ega emas (garchi ularni amalga oshirish mumkin bo'lsa ham).
 
 Haqiqiy hayotdagi ko'plab ilovalarda `EventSource` ning kuchi yetarli.
 
@@ -265,7 +265,7 @@ Xabarda quyidagi maydonlar bo'lishi mumkin:
 
 - `data:` -- Xabar tanasida bir nechta `data` ketma-ketligi qismlar orasida `\n` bo'lgan yagona xabar sifatida talqin qilinadi.
 - `id:` -- qayta ulanganda `Last-Event-ID` yuborilganda `lastEventId` yangilanadi.
-- `retry:` -- ms da qayta ulanishlar uchun qayta urinish kechikishini tavsiya qiladi. Uni JavaScript-dan o'rnatishning hech qanday usuli yo'q.
+- `retry:` -- ms da qayta ulanishlar uchun qayta urinish kechikishini tavsiya qiladi. Uni JavaScriptdan o'rnatishning hech qanday usuli yo'q.
 - `event:` -- hodisa nomi, `data:` oldidan kelishi kerak.
 
 Xabar istalgan tartibda bir yoki bir nechta maydonlarni o'z ichiga olishi mumkin, lekin odatda `id:` oxirgi bo'ladi.
