@@ -1,207 +1,205 @@
-# Bezier curve
+# Bezier egri chizig'i
 
-Bezier curves are used in computer graphics to draw shapes, for CSS animation and in many other places.
+Bezier egri chiziqlari kompyuter grafikasida shakllarni chizish, CSS animatsiyasi va boshqa ko'plab joylarda qo'llaniladi.
 
-They are a very simple thing, worth to study once and then feel comfortable in the world of vector graphics and advanced animations.
+Ular juda oddiy narsa, bir marta o'rganishga arziydi va keyin vektor grafikasi va ilg'or animatsiyalar dunyosida o'zingizni qulay his qilasiz.
 
-```smart header="Some theory, please"
-This article provides a theoretical, but very needed insight into what Bezier curves are, while [the next one](info:css-animations#bezier-curve) shows how we can use them for CSS animations.
+```smart header="Iltimos, qandaydir nazariya"
+Ushbu maqolada Bezier egri chiziqlari nima ekanligi haqida nazariy, ammo juda zarur tushuncha berilgan, [keyingi] (info:css-animations#bezier-curve) esa ularni CSS animatsiyalari uchun qanday ishlatishimiz mumkinligini ko'rsatadi.
 
-Please take your time to read and understand the concept, it'll serve you well.
+Iltimos, kontseptsiyani o'qish va tushunish uchun vaqt ajrating, bu sizga yaxshi xizmat qiladi.
 ```
 
-## Control points
+## Boshqarish nuqtalari
 
-A [bezier curve](https://en.wikipedia.org/wiki/B%C3%A9zier_curve) is defined by control points.
+[Bezier egri](https://en.wikipedia.org/wiki/B%C3%A9zier_curve) nazorat nuqtalari bilan aniqlanadi.
 
-There may be 2, 3, 4 or more.
+2, 3, 4 yoki undan ko'p bo'lishi mumkin.
 
-For instance, two points curve:
+Masalan, ikkita nuqta egri chizig'i:
 
 ![](bezier2.svg)
 
-Three points curve:
+Uch nuqtali egri chiziq:
 
 ![](bezier3.svg)
 
-Four points curve:
+To'rt nuqta egri chizig'i:
 
 ![](bezier4.svg)
 
-If you look closely at these curves, you can immediately notice:
+Agar siz ushbu egri chiziqlarga diqqat bilan qarasangiz, darhol ko'rishingiz mumkin:
 
-1. **Points are not always on curve.** That's perfectly normal, later we'll see how the curve is built.
-2. **The curve order equals the number of points minus one**.
-For two points we have a linear curve (that's a straight line), for three points -- quadratic curve (parabolic), for four points -- cubic curve.
-3. **A curve is always inside the [convex hull](https://en.wikipedia.org/wiki/Convex_hull) of control points:**
+1. **Nuqtalar har doim ham egri chiziqda bo'lavermaydi.** Bu mutlaqo normal holat, keyinroq egri chiziq qanday qurilganini ko'ramiz.
+2. **Egri chiziqning tartibi nuqtalar soniga minus bittaga teng**.
+Ikki nuqta uchun chiziqli egri chiziq (bu to'g'ri chiziq), uchta nuqta uchun - kvadratik egri (parabolik), to'rt nuqta uchun - kub egri.
+3. **Egri chiziq har doim nazorat nuqtalarining [qavariq korpusi](https://en.wikipedia.org/wiki/Convex_hull) ichida joylashgan:**
 
     ![](bezier4-e.svg) ![](bezier3-e.svg)
 
-Because of that last property, in computer graphics it's possible to optimize intersection tests. If convex hulls do not intersect, then curves do not either. So checking for the convex hulls intersection first can give a very fast "no intersection" result. Checking the intersection of convex hulls is much easier, because they are rectangles, triangles and so on (see the picture above), much simpler figures than the curve.
+Ushbu oxirgi xususiyat tufayli kompyuter grafikasida kesishish testlarini optimallashtirish mumkin. Qavariq korpuslar kesishmasa, egri chiziqlar ham kesishmaydi. Shunday qilib, birinchi navbatda qavariq korpuslarning kesishishini tekshirish juda tez "kesishmasiz" natijani berishi mumkin. Qavariq korpuslarning kesishishini tekshirish ancha oson, chunki ular to'rtburchaklar, uchburchaklar va boshqalar (yuqoridagi rasmga qarang), egri chiziqqa qaraganda ancha sodda raqamlar hisoblanadi.
 
-**The main value of Bezier curves for drawing -- by moving the points the curve is changing *in intuitively obvious way*.**
+**Bezier egri chizmalarining asosiy qiymati -- nuqtalarni siljitish orqali egri chiziq *intuitiv ravishda ravshan tarzda o'zgaradi*.**
 
-Try to move control points using a mouse in the example below:
+Quyidagi misolda sichqoncha yordamida boshqaruv nuqtalarini siljitishga harakat qiling:
 
 [iframe src="demo.svg?nocpath=1&p=0,0,0.5,0,0.5,1,1,1" height=370]
 
-**As you can notice, the curve stretches along the tangential lines 1 -> 2 and 3 -> 4.**
+**E'tibor berganingizdek, egri chiziq 1 -> 2 va 3 -> 4 tangensial chiziqlar bo'ylab cho'zilgan.**
 
-After some practice it becomes obvious how to place points to get the needed curve. And by connecting several curves we can get practically anything.
+Biroz mashqdan so'ng kerakli egri chiziqni olish uchun nuqtalarni qanday joylashtirish kerakligi aniq bo'ladi. Va bir nechta egri chiziqlarni birlashtirib, biz deyarli hamma narsani olishimiz mumkin.
 
-Here are some examples:
+Mana, quyida bir nechta misollar berilgan:
 
 ![](bezier-car.svg) ![](bezier-letter.svg) ![](bezier-vase.svg)
 
-## De Casteljau's algorithm
+## De Casteljau algoritmi
 
-There's a mathematical formula for Bezier curves, but let's cover it a bit later, because
-[De Casteljau's algorithm](https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm) is identical to the mathematical definition and visually shows how it is constructed.
+Bezier egri chiziqlari uchun matematik formula bor, lekin keling, uni biroz keyinroq yoritamiz, chunki
+[De Casteljau algoritmi](https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm) matematik ta'rif bilan bir xil bo'lib, uning qanday tuzilganligini vizual ravishda ko'rib chiqamiz.
 
-First let's see the 3-points example.
+Avval 3 nuqtali misolni ko'rib chiqaylik.
 
-Here's the demo, and the explanation follow.
+Mana demo va tushuntirish.
 
-Control points (1,2 and 3) can be moved by the mouse. Press the "play" button to run it.
+Boshqaruv nuqtalarini (1,2 va 3) sichqoncha bilan siljitish mumkin. Uni ishga tushirish uchun "play" tugmasini bosing.
 
 [iframe src="demo.svg?p=0,0,0.5,1,1,0&animate=1" height=370]
 
-**De Casteljau's algorithm of building the 3-point bezier curve:**
+**De Casteljauning 3 nuqtali bezier egri chizig'ini qurish algoritmi:**
 
-1. Draw control points. In the demo above they are labeled: `1`, `2`, `3`.
-2. Build segments between control points 1 -> 2 -> 3. In the demo above they are <span style="color:#825E28">brown</span>.
-3. The parameter `t` moves from `0` to `1`. In the example above the step `0.05` is used: the loop goes over `0, 0.05, 0.1, 0.15, ... 0.95, 1`.
+1. Nazorat nuqtalarini chizing. Yuqoridagi demoda ular etiketlangan: `1`, `2`, `3`.
+2. 1 -> 2 -> 3 nazorat nuqtalari orasidagi segmentlarni yarating. Yuqoridagi namoyishda ular <span style="color:#825E28">jigarrang</span>.
+3. `t` parametri `0` dan `1` ga o'tadi. Yuqoridagi misolda `0,05` qadami qo'llaniladi: tsikl `0, 0,05, 0,1, 0,15, ... 0,95, 1` dan oshib ketadi.
 
-    For each of these values of `t`:
+   Ushbu `t` qiymatlarining har biri uchun:
 
-    - On each <span style="color:#825E28">brown</span> segment we take a point located on the distance proportional to `t` from its beginning. As there are two segments, we have two points.
+    - Har bir <span style="color:#825E28">jigarrang</span> segmentida biz boshidan `t` ga proportsional masofada joylashgan nuqtani olamiz. Ikki segment bo'lgani uchun bizda ikkita nuqta bor.
 
-        For instance, for `t=0` -- both points will be at the beginning of segments, and for `t=0.25` -- on the 25% of segment length from the beginning, for `t=0.5` -- 50%(the middle), for `t=1` -- in the end of segments.
+        Masalan, `t=0` uchun -- ikkala nuqta segmentlar boshida, `t=0,25` uchun esa -- boshidan segment uzunligining 25% ida, `t=0,5` uchun -- 50 bo'ladi. %(o'rtada), `t=1` uchun -- segmentlar oxirida.
 
-    - Connect the points. On the picture below the connecting segment is painted <span style="color:#167490">blue</span>.
+    - Nuqtalarni ulang. Quyidagi rasmda birlashtiruvchi segment <span style="color:#167490">ko'k</span> rangga bo'yalgan.
 
 
-| For `t=0.25`             | For `t=0.5`            |
+| `t=0.25` uchun             | `t=0.5` uchun            |
 | ------------------------ | ---------------------- |
 | ![](bezier3-draw1.svg)   | ![](bezier3-draw2.svg) |
 
-4. Now in the <span style="color:#167490">blue</span> segment take a point on the distance proportional to the same value of `t`. That is, for `t=0.25` (the left picture) we have a point at the end of the left quarter of the segment, and for `t=0.5` (the right picture) -- in the middle of the segment. On pictures above that point is <span style="color:red">red</span>.
+4. Endi <span style="color:#167490">ko'k</span> segmentida `t` ning bir xil qiymatiga proportsional masofadagi nuqtani oling. Ya'ni, `t=0,25` (chapdagi rasm) uchun segmentning chap choragi oxirida, `t=0,5` (o'ngdagi rasm) uchun esa segmentning o'rtasida nuqta bor. Yuqoridagi rasmlarda bu nuqta <span style="color:red">qizil</span>.
 
-5. As `t` runs from `0` to `1`, every value of `t` adds a point to the curve. The set of such points forms the Bezier curve. It's red and parabolic on the pictures above.
+5. `t` `0` dan `1` gacha ishlaganda, `t` ning har bir qiymati egri chiziqqa nuqta qo'shadi. Bunday nuqtalar to'plami Bezier egri chizig'ini hosil qiladi. U yuqoridagi rasmlarda qizil va parabolik tasvirlangan.
 
-That was a process for 3 points. But the same is for 4 points.
+Bu 3 ochko uchun jarayon edi. Ammo 4 ochko uchun ham xuddi shunday.
 
-The demo for 4 points (points can be moved by a mouse):
+4 ball uchun demo (nuqtalarni sichqoncha bilan siljitish mumkin):
 
 [iframe src="demo.svg?p=0,0,0.5,0,0.5,1,1,1&animate=1" height=370]
 
-The algorithm for 4 points:
+4 ball uchun algoritm:
 
-- Connect control points by segments: 1 -> 2, 2 -> 3, 3 -> 4. There will be 3 <span style="color:#825E28">brown</span> segments.
-- For each `t` in the interval from `0` to `1`:
-    - We take points on these segments on the distance proportional to `t` from the beginning. These points are connected, so that we have two <span style="color:#0A0">green segments</span>.
-    - On these segments we take points proportional to `t`. We get one <span style="color:#167490">blue segment</span>.
-    - On the blue segment we take a point proportional to `t`. On the example above it's <span style="color:red">red</span>.
-- These points together form the curve.
+- Boshqaruv nuqtalarini segmentlar bo'yicha ulang: 1 -> 2, 2 -> 3, 3 -> 4. 3 ta <span style="color:#825E28">jigarrang</span> segmentlar bo'ladi.
+- `0` dan `1` oralig'idagi har bir `t` uchun:
+     - Biz boshidan `t` ga proportsional masofada ushbu segmentlar bo'yicha ochkolarni olamiz. Bu nuqtalar ulangan, shuning uchun bizda ikkita <span style="color:#0A0">yashil segment</span> mavjud.
+     - Bu segmentlarda biz `t` ga proportsional nuqtalarni olamiz. Biz bitta <span style="color:#167490">koʻk segment</span> olamiz.
+     - Moviy segmentda biz `t` ga proportsional nuqtani olamiz. Yuqoridagi misolda bu <span style="color:red">qizil</span>.
+- Bu nuqtalar birgalikda egri chiziq hosil qiladi.
 
-The algorithm is recursive and can be generalized for any number of control points.
+Algoritm rekursiv bo'lib, har qanday nazorat nuqtalari uchun umumlashtirilishi mumkin.
 
-Given N of control points:
+N nazorat nuqtalari berilgan:
 
-1. We connect them to get initially N-1 segments.
-2. Then for each `t` from `0` to `1`, we take a point on each segment on the distance proportional to `t` and connect them. There will be N-2 segments.
-3. Repeat step 2 until there is only one point.
+1. Biz ularni dastlab N-1 segmentlarini olish uchun bog'laymiz.
+2. Keyin `0` dan `1` gacha bo'lgan har bir `t` uchun `t` ga proportsional masofadagi har bir segmentdan nuqta olib, ularni bog`laymiz. N-2 segmentlari bo'ladi.
+3. Faqat bitta nuqta qolguncha 2-bosqichni takrorlang.
 
-These points make the curve.
+Bu nuqtalar egri chiziq hosil qiladi.
 
 ```online
-**Run and pause examples to clearly see the segments and how the curve is built.**
+**Segmentlar va egri chiziq qanday qurilganligini aniq ko'rish uchun misollarni ishga tushiring va pauza qiling.**
 ```
 
 
-A curve that looks like `y=1/t`:
+`y=1/t` ga o'xshash egri chiziq:
 
 [iframe src="demo.svg?p=0,0,0,0.75,0.25,1,1,1&animate=1" height=370]
 
-Zig-zag control points also work fine:
+Zig-zag boshqaruv nuqtalari ham yaxshi ishlaydi:
 
 [iframe src="demo.svg?p=0,0,1,0.5,0,0.5,1,1&animate=1" height=370]
 
-Making a loop is possible:
+Loop qilish mumkin:
 
 [iframe src="demo.svg?p=0,0,1,0.5,0,1,0.5,0&animate=1" height=370]
 
-A non-smooth Bezier curve (yeah, that's possible too):
+Silliq bo'lmagan Bezier egri chizig'i (ha, bu ham mumkin):
 
 [iframe src="demo.svg?p=0,0,1,1,0,1,1,0&animate=1" height=370]
 
 ```online
-If there's something unclear in the algorithm description, please look at the live examples above to see how
-the curve is built.
+Algoritm tavsifida tushunarsiz narsa bo'lsa, yuqoridagi jonli misollarda egri chiziq qanday qurilishini ko'ring.
 ```
 
-As the algorithm is recursive, we can build Bezier curves of any order, that is: using 5, 6 or more control points. But in practice many points are less useful. Usually we take 2-3 points, and for complex lines glue several curves together. That's simpler to develop and calculate.
+Algoritm rekursiv bo'lgani uchun biz har qanday tartibdagi Bezier egri chiziqlarini qurishimiz mumkin, ya'ni: 5, 6 yoki undan ortiq nazorat nuqtalari yordamida. Ammo amalda ko'p fikrlar kamroq foydali. Odatda biz 2-3 ball olamiz va murakkab chiziqlar uchun bir nechta egri chiziqlarni yopishtiramiz. Buni ishlab chiqish va hisoblash osonroq.
 
-```smart header="How to draw a curve *through* given points?"
-To specify a Bezier curve, control points are used. As we can see, they are not on the curve, except the first and the last ones.
+```smart header="Berilgan nuqtalar *orqali* egri chiziq qanday chiziladi?"
+Bezier egri chizig'ini belgilash uchun nazorat nuqtalaridan foydalaniladi. Ko'rib turganimizdek, ular birinchi va oxirgilardan tashqari egri chiziqda emas.
 
-Sometimes we have another task: to draw a curve *through several points*, so that all of them are on a single smooth curve. That task is called  [interpolation](https://en.wikipedia.org/wiki/Interpolation), and here we don't cover it.
+Ba'zan bizda yana bir vazifa bor: *bir nechta nuqtalar orqali* egri chiziq chizish, shunda ularning barchasi bitta silliq egri chiziqda bo'ladi. Bu vazifa [interpolyatsiya](https://en.wikipedia.org/wiki/Interpolation) deb nomlanadi va bu yerda biz uni qamrab olmaymiz.
 
-There are mathematical formulas for such curves, for instance [Lagrange polynomial](https://en.wikipedia.org/wiki/Lagrange_polynomial). In computer graphics [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation) is often used to build smooth curves that connect many points.
+Bunday egri chiziqlar uchun matematik formulalar mavjud, masalan, [Lagrange polinomi](https://en.wikipedia.org/wiki/Lagrange_polynomial). Kompyuter grafikasida [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation) ko'pincha ko'p nuqtalarni bog'laydigan silliq egri chiziqlarni qurish uchun ishlatiladi.
 ```
 
+## Matematika
 
-## Maths
+Bezier egri chizig'ini matematik formula yordamida tasvirlash mumkin.
 
-A Bezier curve can be described using a mathematical formula.
+Ko'rib turganimizdek, buni bilishning hojati yo'q, ko'pchilik sichqoncha bilan nuqtalarni siljitish orqali egri chiziq chizadi. Agar siz matematikaga qiziqsangiz - ajoyib.
 
-As we saw -- there's actually no need to know it, most people just draw the curve by moving points with a mouse. But if you're into maths -- here it is.
+<code>P<sub>i</sub></code> nazorat nuqtalarining koordinatalarini hisobga olgan holda: birinchi nazorat nuqtasi koordinatalariga ega <code>P<sub>1</sub> = (x<sub>1</sub>) sub>, y<sub>1</sub></code>, ikkinchisi: <code>P<sub>2</sub> = (x<sub>2</sub>, y<sub>2 </sub>)</code> va hokazo, egri chiziq koordinatalari `[0,1]` segmentidan `t` parametriga bog'liq bo'lgan tenglama bilan tavsiflanadi.
 
-Given the coordinates of control points <code>P<sub>i</sub></code>: the first control point has coordinates <code>P<sub>1</sub> = (x<sub>1</sub>, y<sub>1</sub>)</code>, the second: <code>P<sub>2</sub> = (x<sub>2</sub>, y<sub>2</sub>)</code>, and so on, the curve coordinates are described by the equation that depends on the parameter `t` from the segment `[0,1]`.
-
-- The formula for a 2-points curve:
+- 2 nuqtali egri formulasi:
 
     <code>P = (1-t)P<sub>1</sub> + tP<sub>2</sub></code>
-- For 3 control points:
+- 3 ta nazorat nuqtasi uchun:
 
     <code>P = (1−t)<sup>2</sup>P<sub>1</sub> + 2(1−t)tP<sub>2</sub> + t<sup>2</sup>P<sub>3</sub></code>
-- For 4 control points:
+- 4 ta nazorat nuqtasi uchun:
 
     <code>P = (1−t)<sup>3</sup>P<sub>1</sub> + 3(1−t)<sup>2</sup>tP<sub>2</sub>  +3(1−t)t<sup>2</sup>P<sub>3</sub> + t<sup>3</sup>P<sub>4</sub></code>
 
 
-These are vector equations. In other words, we can put `x` and `y` instead of `P` to get corresponding coordinates.
+Bu vektor tenglamalari. Boshqacha qilib aytganda, mos keladigan koordinatalarni olish uchun `P` o'rniga `x` va `y` qo'yishimiz mumkin.
 
-For instance, the 3-point curve is formed by points `(x,y)` calculated as:
+Masalan, 3 nuqtali egri chiziq `(x, y)` nuqtalari orqali hosil bo'ladi:
 
 - <code>x = (1−t)<sup>2</sup>x<sub>1</sub> + 2(1−t)tx<sub>2</sub> + t<sup>2</sup>x<sub>3</sub></code>
 - <code>y = (1−t)<sup>2</sup>y<sub>1</sub> + 2(1−t)ty<sub>2</sub> + t<sup>2</sup>y<sub>3</sub></code>
 
-Instead of <code>x<sub>1</sub>, y<sub>1</sub>, x<sub>2</sub>, y<sub>2</sub>, x<sub>3</sub>, y<sub>3</sub></code> we should put coordinates of 3 control points, and then as `t` moves from `0` to `1`, for each value of `t` we'll have `(x,y)` of the curve.
+<code>x<sub>1</sub>, y<sub>1</sub>, x<sub>2</sub>, y<sub>2</sub>, x<sub>3 o'rniga </sub>, y<sub>3</sub></code> biz 3 ta nazorat nuqtasining koordinatalarini qo'yishimiz kerak, so'ngra `t` `0`dan `1`ga o'tganda, `t` ning har bir qiymati uchun egri chiziqning `(x,y)` ga ega bo'lamiz.
 
-For instance, if control points are  `(0,0)`, `(0.5, 1)` and `(1, 0)`, the equations become:
+Masalan, agar nazorat nuqtalari `(0,0)`, `(0,5, 1)` va `(1, 0)` bo'lsa, tenglamalar quyidagicha bo'ladi:
 
 - <code>x = (1−t)<sup>2</sup> * 0 + 2(1−t)t * 0.5 + t<sup>2</sup> * 1 = (1-t)t + t<sup>2</sup> = t</code>
 - <code>y = (1−t)<sup>2</sup> * 0 + 2(1−t)t * 1 + t<sup>2</sup> * 0 = 2(1-t)t = –2t<sup>2</sup> + 2t</code>
 
-Now as `t` runs from `0` to `1`, the set of values `(x,y)` for each `t` forms the curve for such control points.
+Endi `t` `0` dan `1` gacha ishlaganda, har bir `t` uchun `(x,y)` qiymatlar to'plami bunday nazorat nuqtalari uchun egri chiziq hosil qiladi.
 
-## Summary
+## Xulosa
 
-Bezier curves are defined by their control points.
+Bezier egri chiziqlari ularning nazorat nuqtalari bilan belgilanadi.
 
-We saw two definitions of Bezier curves:
+Biz Bezier egri chizig'ining ikkita ta'rifini ko'rdik:
 
-1. Using a drawing process: De Casteljau's algorithm.
-2. Using a mathematical formulas.
+1. Chizish jarayonidan foydalanish: De Kastelyau algoritmi.
+2. Matematik formulalardan foydalanish.
 
-Good properties of Bezier curves:
+Bezier egri chizig'ining yaxshi xususiyatlari:
 
-- We can draw smooth lines with a mouse by moving control points.
-- Complex shapes can be made of several Bezier curves.
+- Boshqaruv nuqtalarini siljitish orqali sichqoncha yordamida silliq chiziqlar chizishimiz mumkin.
+- Murakkab shakllar bir nechta Bezier egri chiziqlaridan tayyorlanishi mumkin.
 
-Usage:
+Foydalanishi:
 
-- In computer graphics, modeling, vector graphic editors. Fonts are described by Bezier curves.
-- In web development -- for graphics on Canvas and in the SVG format. By the way, "live" examples above are written in SVG. They are actually a single SVG document that is given different points as parameters. You can open it in a separate window and see the source: [demo.svg](demo.svg?p=0,0,1,0.5,0,0.5,1,1&animate=1).
-- In CSS animation to describe the path and speed of animation.
+- Kompyuter grafikasi, modellashtirish, vektor grafik muharrirlarida shriftlar Bezier egri chiziqlari bilan tavsiflanadi.
+- Veb-ishlab chiqishda -- Canvas va SVG formatidagi grafikalar uchun. Aytgancha, yuqoridagi "jonli" misollar SVG da yozilgan. Ular aslida parametr sifatida turli nuqtalar berilgan yagona SVG hujjatidir. Siz uni alohida oynada ochishingiz va manbani ko'rishingiz mumkin: [demo.svg](demo.svg?p=0,0,1,0.5,0,0.5,1,1&animate=1).
+- CSS animatsiyasi animatsiya yo'li va tezligini tasvirlash uchun mo'ljallangan.
