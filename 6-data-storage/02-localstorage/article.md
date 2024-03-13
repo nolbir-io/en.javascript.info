@@ -1,84 +1,84 @@
 # LocalStorage, sessionStorage
 
-Web storage objects `localStorage` and `sessionStorage` allow to save key/value pairs in the browser.
+`localStorage` va `sessionStorage` veb-saqlash obyektlari brauzerda kalit/qiymat juftlarini saqlashga imkon beradi.
 
-What's interesting about them is that the data survives a page refresh (for `sessionStorage`) and even a full browser restart (for `localStorage`). We'll see that very soon.
+Ularning qiziq tomoni shundaki, ma'lumotlar sahifa yangilanganda (`sessionStorage` uchun) va hatto brauzer to'liq qayta ishga tushirilganda ham (`localStorage` uchun) saqlanib qoladi. Buni tez orada ko'rib chiqamiz.
 
-We already have cookies. Why additional objects?
+Bizda allaqachon kukilar bor. Nima uchun bizga qo'shimcha obyektlar kerak?
 
-- Unlike cookies, web storage objects are not sent to server with each request. Because of that, we can store much more. Most modern browsers allow at least 5 megabytes of data (or more) and have settings to configure that.
-- Also unlike cookies, the server can't manipulate storage objects via HTTP headers. Everything's done in JavaScript.
-- The storage is bound to the origin (domain/protocol/port triplet). That is, different protocols or subdomains infer different storage objects, they can't access data from each other.
+- Cookie-fayllardan farqli o'laroq, web storage obyektlari har bir so'rov bilan serverga yuborilmaydi. Shu sababli, biz ko'proq narsalarni saqlashimiz mumkin. Ko'pgina zamonaviy brauzerlar kamida 5 megabayt (yoki undan ko'p) ma'lumotlarga ruxsat beradi va uni sozlash uchun sozlamalar mavjud.
+- Shuningdek, cookie-fayllardan farqli o'laroq, server HTTP sarlavhalari orqali saqlash obyektlarini boshqara olmaydi. Hammasi JavaScriptda bajarilgan.
+- Saqlash manbaga bog'langan (domen/protokol/port uchligi). Ya'ni, turli protokollar yoki subdomenlar turli xil saqlash obyektlarini chiqaradi, ular bir-biridan ma'lumotlarga kira olmaydi.
 
-Both storage objects provide same methods and properties:
+Ikkala saqlash obyekti ham bir xil usullar va xususiyatlarni ta'minlaydi:
 
-- `setItem(key, value)` -- store key/value pair.
-- `getItem(key)` -- get the value by key.
-- `removeItem(key)` -- remove the key with its value.
-- `clear()` -- delete everything.
-- `key(index)` -- get the key on a given position.
-- `length` -- the number of stored items.
+- `setItem(key, value)` -- kalit/qiymat juftligini saqlash.
+- `getItem(key)` -- kalit bo'yicha qiymatni oling.
+- `removeItem(key)` -- qiymati bilan kalitni olib tashlang.
+- `clear()` -- hamma narsani o'chirish.
+- `key(index)` -- berilgan pozitsiyada kalitni olish.
+- `length` -- saqlangan elementlar soni.
 
-As you can see, it's like a `Map` collection (`setItem/getItem/removeItem`), but also allows access by index with `key(index)`.
+Ko'rib turganingizdek, u `Map` to'plamiga o'xshaydi (`setItem/getItem/removeItem`), lekin `key(index)` bilan indeks bo'yicha kirish imkonini beradi.
 
-Let's see how it works.
+Keling, bu qanday ishlashini ko'rib chiqaylik.
 
-## localStorage demo
+## localStorage namunasi
 
-The main features of `localStorage` are:
+`localStorage` ning asosiy xususiyatlari quyidagilardir:
 
-- Shared between all tabs and windows from the same origin.
-- The data does not expire. It remains after the browser restart and even OS reboot.
+- Bir xil manbadagi barcha yorliqlar va oynalar o'rtasida taqsimlanadi.
+- Ma'lumotlar muddati tugamaydi. Brauzer va hattoki OS qayta ishga tushirilgandan keyin ham qoladi.
 
-For instance, if you run this code...
+Misol uchun, agar siz ushbu kodni ishlatsangiz...
 
 ```js run
 localStorage.setItem('test', 1);
 ```
 
-...And close/open the browser or just open the same page in a different window, then you can get it like this:
+...Va brauzerni yoping/oching yoki xuddi shu sahifani boshqa oynada oching, keyin siz buni quyidagicha olishingiz mumkin:
 
 ```js run
 alert( localStorage.getItem('test') ); // 1
 ```
 
-We only have to be on the same origin (domain/port/protocol), the url path can be different.
+Biz faqat bir xil kelib chiqish (domen/port/protokol) ga ega bo'lishimiz kerak, url yo'li boshqacha bo'lishi mumkin.
 
-The `localStorage` is shared between all windows with the same origin, so if we set the data in one window, the change becomes visible in another one.
+`localStorage` bir xil kelib chiqishi bo'lgan barcha oynalar o'rtasida taqsimlanadi, shuning uchun agar biz ma'lumotlarni bitta oynaga o'rnatsak, o'zgarish boshqa oynada ko'rinadi.
 
-## Object-like access
+## Obyektga o'xshash kirish
 
-We can also use a plain object way of getting/setting keys, like this:
+Shuningdek, biz kalitlarni olish/sozlashning oddiy obyekt usulidan foydalanishimiz mumkin, masalan:
 
 ```js run
-// set key
+// kalitni o'rnating
 localStorage.test = 2;
 
-// get key
+// kalitni oling
 alert( localStorage.test ); // 2
 
-// remove key
+// kalitni butunlay olib tashlang
 delete localStorage.test;
 ```
 
-That's allowed for historical reasons, and mostly works, but generally not recommended, because:
+Bunga tarixiy sabablarga ko'ra ruxsat berilgan va asosan ishlaydi, lekin odatda tavsiya etilmaydi, chunki:
 
-1. If the key is user-generated, it can be anything, like `length` or `toString`, or another built-in method of `localStorage`. In that case `getItem/setItem` work fine, while object-like access fails:
+1. Agar kalit foydalanuvchi tomonidan yaratilgan bo'lsa, u `length` yoki `toString` kabi har qanday narsa yoki `localStorage` ning boshqa o'rnatilgan usuli bo'lishi mumkin. Bunday holda, `getItem/setItem` yaxshi ishlaydi, obyektga o'xshash kirish muvaffaqiyatsiz bo'ladi:
 
     ```js run
     let key = 'length';
-    localStorage[key] = 5; // Error, can't assign length
+    localStorage[key] = 5; // Error, uzunlikni belgilash mumkin emas
     ```
 
-2. There's a `storage` event, it triggers when we modify the data. That event does not happen for object-like access. We'll see that later in this chapter.
+2. Bizda `storage` hodisasi mavjud, u ma'lumotlarni o'zgartirganimizda ishga tushadi. Ushbu hodisa obyektga o'xshash kirish uchun sodir bo'lmaydi. Buni keyinroq ushbu bobda ko'rib chiqamiz.
 
-## Looping over keys
+## Kalitlar ustida aylanish
 
-As we've seen, the methods provide "get/set/remove by key" functionality. But how to get all saved values or keys?
+Ko'rib turganimizdek, usullar "get/set/remove by key" funksiyasini ta'minlaydi. Lekin barcha saqlangan qiymatlar yoki kalitlarni qanday olish mumkin?
 
-Unfortunately, storage objects are not iterable.
+Afsuski, saqlash obyektlari takrorlanmaydi.
 
-One way is to loop over them as over an array:
+Buning bir usuli - ularni massiv orqali aylantirish:
 
 ```js run
 for(let i=0; i<localStorage.length; i++) {
@@ -87,29 +87,29 @@ for(let i=0; i<localStorage.length; i++) {
 }
 ```
 
-Another way is to use `for key in localStorage` loop, just as we do with regular objects.
+Yana bir yo'l, oddiy obyektlar bilan bo'lgani kabi, `for key in localStorage` siklidan foydalanishdir.
 
-It iterates over keys, but also outputs few built-in fields that we don't need:
+U kalitlarni takrorlaydi, lekin bizga kerak bo'lmagan bir nechta o'rnatilgan maydonlarni chiqaradi:
 
 ```js run
 // bad try
 for(let key in localStorage) {
-  alert(key); // shows getItem, setItem and other built-in stuff
+  alert(key); // getItem, setItem va boshqa o'rnatilgan narsalarni ko'rsatadi
 }
 ```
 
-...So we need either to filter fields from the prototype with `hasOwnProperty` check:
+...Demak, prototipdagi maydonlarni `hasOwnProperty` tekshiruvi bilan filtrlashimiz kerak:
 
 ```js run
 for(let key in localStorage) {
   if (!localStorage.hasOwnProperty(key)) {
-    continue; // skip keys like "setItem", "getItem" etc
+    continue; // "setItem", "getItem" kabi boshqa kalitlarni o'tkazib yuboring
   }
   alert(`${key}: ${localStorage.getItem(key)}`);
 }
 ```
 
-...Or just get the "own" keys with `Object.keys` and then loop over them if needed:
+...Yoki `Object.keys` yordamida "o'z" kalitlarini oling va agar kerak bo'lsa, ularni aylantiring:
 
 ```js run
 let keys = Object.keys(localStorage);
@@ -118,90 +118,90 @@ for(let key of keys) {
 }
 ```
 
-The latter works, because `Object.keys` only returns the keys that belong to the object, ignoring the prototype.
+Ikkinchisi ishlaydi, chunki `Object.keys` prototipga e'tibor bermasdan, faqat obyektga tegishli bo'lgan kalitlarni qaytaradi.
 
-## Strings only
+## Faqat stringlar
 
-Please note that both key and value must be strings.
+Esda tutingki, kalit ham, qiymat ham string bo'lishi kerak.
 
-If were any other type, like a number, or an object, it gets converted to string automatically:
+Agar raqam yoki obyekt kabi boshqa turdagi bo'lsa, u avtomatik ravishda stringga aylanadi:
 
 ```js run
 localStorage.user = {name: "John"};
 alert(localStorage.user); // [object Object]
 ```
 
-We can use `JSON` to store objects though:
+Obyektlarni saqlash uchun `JSON` dan foydalanishimiz mumkin:
 
 ```js run
 localStorage.user = JSON.stringify({name: "John"});
 
-// sometime later
+// birozdan keyin
 let user = JSON.parse( localStorage.user );
 alert( user.name ); // John
 ```
 
-Also it is possible to stringify the whole storage object, e.g. for debugging purposes:
+Shuningdek, butun saqlash obyektini stringifikatsiya qilish mumkin, masalan, debugging maqsadlari uchun:
 
 ```js run
-// added formatting options to JSON.stringify to make the object look nicer
+// obyektni yanada chiroyli qilish uchun JSON.stringify ga formatlash parametrlari qo'shildi
 alert( JSON.stringify(localStorage, null, 2) );
 ```
 
 ## sessionStorage
 
-The `sessionStorage` object is used much less often than `localStorage`.
+`sessionStorage` obyekti `localStorage` ga qaraganda kamroq ishlatiladi.
 
-Properties and methods are the same, but it's much more limited:
+Xususiyatlari va usullari bir xil, ammo u ancha cheklangan:
 
-- The `sessionStorage` exists only within the current browser tab.
-  - Another tab with the same page will have a different storage.
-  - But it is shared between iframes in the same tab (assuming they come from the same origin).
-- The data survives page refresh, but not closing/opening the tab.
+- `sessionStorage` faqat joriy brauzer yorlig'ida mavjud.
+   - Xuddi shu sahifaga ega bo'lgan boshqa yorliqda boshqa xotira bo'ladi.
+   - Lekin u bir xil yorliqdagi iframelar o'rtasida taqsimlanadi (bir xil kelib chiqishga ega ekanligi inobatga olingan holda).
+- Ma'lumotlar sahifani yangilashdan omon qoladi, lekin yorliq yopilmaydi/ochilmaydi.
 
-Let's see that in action.
+Keling, buni amalda ko'rib chiqaylik.
 
-Run this code...
+Ushbu kodni ishga tushiring ...
 
 ```js run
 sessionStorage.setItem('test', 1);
 ```
 
-...Then refresh the page. Now you can still get the data:
+...Keyin sahifani yangilang. Endi siz hali ham ma'lumotlarni olishingiz mumkin:
 
 ```js run
-alert( sessionStorage.getItem('test') ); // after refresh: 1
+alert( sessionStorage.getItem('test') ); // yangilashdan so'ng: 1
 ```
 
-...But if you open the same page in another tab, and try again there, the code above returns `null`, meaning "nothing found".
+...Agar siz xuddi shu sahifani boshqa varaqda ochsangiz va u yerda qayta urinib ko‘rsangiz, yuqoridagi kod `null`ni qaytaradi, ya'ni "hech narsa topilmadi".
 
-That's exactly because `sessionStorage` is bound not only to the origin, but also to the browser tab. For that reason, `sessionStorage` is used sparingly.
+Buning sababi, `sessionStorage` nafaqat manbaga, balki brauzer yorlig'iga ham bog'langan. Shu sababli, `sessionStorage` juda kam ishlatiladi.
 
-## Storage event
+## Saqlash hodisasi
 
-When the data gets updated in `localStorage` or `sessionStorage`, [storage](https://html.spec.whatwg.org/multipage/webstorage.html#the-storageevent-interface) event triggers, with properties:
+Ma'lumotlar `localStorage` yoki `sessionStorage` da yangilanganda, [storage](https://html.spec.whatwg.org/multipage/webstorage.html#the-storageevent-interface) quyidagi xususiyatlarga ega hodisani ishga tushiradi:
 
-- `key` – the key that was changed (`null` if `.clear()` is called).
-- `oldValue` – the old value (`null` if the key is newly added).
-- `newValue` – the new value (`null` if the key is removed).
-- `url` – the url of the document where the update happened.
-- `storageArea` – either `localStorage` or `sessionStorage` object where the update happened.
+- `key` – o'zgartirilgan kalit (agar `.clear()` chaqirilsa` null`).
+- `oldValue` - eski qiymat (agar kalit yangi qo'shilgan bo'lsa `null`).
+- `newValue` – yangi qiymat (agar kalit olib tashlangan bo'lsa, `null`).
+- `url` – yangilanish sodir bo`lgan hujjatning URL manzili.
+- `storageArea` - yangilanish sodir bo'lgan `localStorage` yoki `sessionStorage` obyekti.
 
-The important thing is: the event triggers on all `window` objects where the storage is accessible, except the one that caused it.
+Muhimi shundaki, bunga sabab bo'lganidan tashqari hodisa xotiraga kirish mumkin bo'lgan barcha `window` obyektlarida ishga tushadi.
 
-Let's elaborate.
+Keling, bu mavzuga batafsilroq to'xtalib o'tamiz.
 
-Imagine, you have two windows with the same site in each. So `localStorage` is shared between them.
+Tasavvur qiling-a, har birida bir xil saytga ega ikkita derazangiz bor. Shunday qilib, `localStorage` ular o'rtasida taqsimlanadi.
 
 ```online
-You might want to open this page in two browser windows to test the code below.
+Quyidagi kodni sinab ko'rish uchun ushbu sahifani ikkita brauzer oynasida ochishni xohlashingiz mumkin.
 ```
 
-If both windows are listening for `window.onstorage`, then each one will react on updates that happened in the other one.
+Agar ikkala oyna ham `window.onstorage` ni tinglayotgan bo'lsa, ularning har biri ikkinchisida sodir bo'lgan yangilanishlarga munosabat bildiradi.
 
 ```js run
-// triggers on updates made to the same storage from other documents
-window.onstorage = event => { // can also use window.addEventListener('storage', event => {
+// boshqa hujjatlardan bir xil xotiraga kiritilgan yangilanishlarni ishga tushiradi
+window.onstorage = event => { // window.addEventListener('storage', event => { ham foydalanishi mumkin.
   if (event.key != 'now') return;
   alert(event.key + ':' + event.newValue + " at " + event.url);
 };
@@ -209,41 +209,41 @@ window.onstorage = event => { // can also use window.addEventListener('storage',
 localStorage.setItem('now', Date.now());
 ```
 
-Please note that the event also contains: `event.url` -- the url of the document where the data was updated.
+Shuni esda tutingki, tadbirda quyidagilar ham mavjud: `event.url` -- ma'lumotlar yangilangan hujjatdagi url.
 
-Also, `event.storageArea` contains the storage object -- the event is the same for both `sessionStorage` and `localStorage`, so `event.storageArea` references the one that was modified. We may even want to set something back in it, to "respond" to a change.
+Shuningdek, `event.storageArea` saqlash obyektini o'z ichiga oladi – hodisa `sessionStorage` va `localStorage` uchun bir xil, shuning uchun `event.storageArea` o'zgartirilgan obyektga havola qiladi. Biz hatto biror narsani o'zgartirishni, o'zgarishlarga "javob berishni" xohlashimiz mumkin.
 
-**That allows different windows from the same origin to exchange messages.**
+**Bu bir xil manbadagi turli oynalarga xabar almashish imkonini beradi.**
 
-Modern browsers also support [Broadcast channel API](mdn:/api/Broadcast_Channel_API), the special API for same-origin inter-window communication, it's more full featured, but less supported. There are libraries that polyfill that API, based on `localStorage`, that make it available everywhere.
+Zamonaviy brauzerlar, shuningdek, [Broadcast channel API](mdn:/api/Broadcast_Channel_API), bir xil manbali oynalararo aloqa uchun maxsus APIni qo'llab-quvvatlaydi, u to'liq xususiyatga ega, ammo kamroq qo'llab-quvvatlanadi. `localStorage` asosidagi APIni ko'p to'ldiruvchi kutubxonalar mavjud bo'lib, ular uni hamma joyda mavjud qiladi.
 
-## Summary
+## Xulosa
 
-Web storage objects `localStorage` and `sessionStorage` allow to store key/value in the browser.
+`localStorage` va `sessionStorage` web-storage obyektlari kalit/qiymatni brauzerda saqlash imkonini beradi.
 
-- Both `key` and `value` must be strings.
-- The limit is 5mb+, depends on the browser.
-- They do not expire.
-- The data is bound to the origin (domain/port/protocol).
+- `key` ham, `value` ham string bo'lishi kerak.
+- Cheklov 5mb+, brauzerga bog'liq.
+- Ularning muddati tugamaydi.
+- Ma'lumotlar manbaga bog'langan (domen/port/protocol).
 
 | `localStorage` | `sessionStorage` |
 |----------------|------------------|
-| Shared between all tabs and windows with the same origin | Visible within a browser tab, including iframes from the same origin |
-| Survives browser restart | Survives page refresh (but not tab close) |
+| Kelib chiqishi bir xil bo'lgan barcha yorliqlar va oynalar o'rtasida taqsimlanadi | Brauzer yorlig'ida ko'rinadi, shu jumladan bir xil kelib chiqqan iframes |
+| Brauzerni qayta ishga tushirishdan omon qoladi | Sahifani yangilashdan omon qoladi (lekin yorliq yopilmaydi) |
 
 API:
 
-- `setItem(key, value)` -- store key/value pair.
-- `getItem(key)` -- get the value by key.
-- `removeItem(key)` -- remove the key with its value.
-- `clear()` -- delete everything.
-- `key(index)` -- get the key number `index`.
-- `length` -- the number of stored items.
-- Use `Object.keys` to get all keys.
-- We access keys as object properties, in that case `storage` event isn't triggered.
+- `setItem(key, value)` -- kalit/qiymat juftligini saqlash.
+- `getItem(key)` -- kalit bo'yicha qiymatni olish.
+- `removeItem(key)` -- qiymati bilan kalitni olib tashlash.
+- `clear()` -- hamma narsani o'chirish.
+- `key(index)` -- `index` kalit raqamini oling.
+- `length` -- saqlangan elementlar soni.
+- Barcha kalitlarni olish uchun `Object.keys` dan foydalaning.
+- Biz kalitlarga obyekt xususiyatlari sifatida kiramiz, bu holda `storage` hodisasi ishga tushmaydi.
 
-Storage event:
+Storage hodisasi:
 
-- Triggers on `setItem`, `removeItem`, `clear` calls.
-- Contains all the data about the operation (`key/oldValue/newValue`), the document `url` and the storage object `storageArea`.
-- Triggers on all `window` objects that have access to the storage except the one that generated it (within a tab for `sessionStorage`, globally for `localStorage`).
+- `setItem`, `removeItem`, `clear` qo'ng'iroqlarini ishga tushiradi.
+- Operatsiya (`key/oldValue/newValue`), `url` hujjati va `storageArea` saqlash obyekti haqidagi barcha ma'lumotlarni o'z ichiga oladi.
+- Xotiraga kirish huquqiga ega bo'lgan barcha `window` obyektlarida, uni yaratganidan tashqari (`sessionStorage` uchun yorliq ichida, `localStorage` uchun global).
