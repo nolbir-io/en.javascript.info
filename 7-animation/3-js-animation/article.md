@@ -1,63 +1,63 @@
-# JavaScript animations
+# JavaScript animatsiyalari
 
-JavaScript animations can handle things that CSS can't.
+JavaScript animatsiyalari CSS qila olmaydigan narsalarni boshqarishi mumkin.
 
-For instance, moving along a complex path, with a timing function different from Bezier curves, or an animation on a canvas.
+Masalan, Bezier egri chizig'idan farqli vaqt funksiyasi yoki animatsiya bilan murakkab yo'l bo'ylab harakatlanish shular jumlasiga kiradi.
 
-## Using setInterval
+## setIntervaldan foydalanish
 
-An animation can be implemented as a sequence of frames -- usually small changes to HTML/CSS properties.
+Animatsiya ramkalar ketma-ketligi sifatida amalga oshirilishi mumkin -- odatda HTML/CSS xususiyatlariga kichik o'zgarishlar kiritiladi.
 
-For instance, changing `style.left` from `0px` to `100px` moves the element. And if we increase it in `setInterval`, changing by `2px` with a tiny delay, like 50 times per second, then it looks smooth. That's the same principle as in the cinema: 24 frames per second is enough to make it look smooth.
+Masalan, `style.left` ni `0px` dan `100px` ga o'zgartirish elementni siljitadi. Va agar biz uni `setInterval` da `2px` ga o'zgartirib, soniyasiga 50 marta kichik kechikish bilan oshirsak, u silliq ko'rinadi. Bu kinodagi kabi printsip: uni silliq ko'rinishi uchun soniyasiga 24 ta kadr yetarli.
 
-The pseudo-code can look like this:
+Pseudo-kod quyidagicha ko'rinishi mumkin:
 
 ```js
 let timer = setInterval(function() {
   if (animation complete) clearInterval(timer);
   else increase style.left by 2px
-}, 20); // change by 2px every 20ms, about 50 frames per second
+}, 20); // 2px ga har 20ms ga o'zgaradi, soniyada taxminan 50 ta frame
 ```
 
-More complete example of the animation:
+Animatsiyaning to'liq namunasi:
 
 ```js
-let start = Date.now(); // remember start time
+let start = Date.now(); // boshlanish vaqtini eslab qoling
 
 let timer = setInterval(function() {
-  // how much time passed from the start?
+  // boshlangandan beri qancha vaqt o'tdi?
   let timePassed = Date.now() - start;
 
   if (timePassed >= 2000) {
-    clearInterval(timer); // finish the animation after 2 seconds
+    clearInterval(timer); // 2 soniyadan keyin animatsiyani tugating
     return;
   }
 
-  // draw the animation at the moment timePassed
+  // Vaqt o'tishi bilan animatsiyani chizing
   draw(timePassed);
 
 }, 20);
 
-// as timePassed goes from 0 to 2000
-// left gets values from 0px to 400px
+// 0 dan 2000 gacha bo'lgan vaqt o'tishi bilan
+// chap 0px dan 400px gacha qiymatlarni oladi
 function draw(timePassed) {
   train.style.left = timePassed / 5 + 'px';
 }
 ```
 
-Click for the demo:
+Namunani ko'rish uchun quyidagi linkni bosing:
 
 [codetabs height=200 src="move"]
 
-## Using requestAnimationFrame
+## requestAnimationFrame dan foydalanish
 
-Let's imagine we have several animations running simultaneously.
+Tasavvur qilaylik, bizda bir vaqtning o'zida bir nechta animatsiyalar ishlaydi.
 
-If we run them separately, then even though each one has `setInterval(..., 20)`, then the browser would have to repaint much more often than every `20ms`.
+Agar biz ularni alohida-alohida ishga tushiradigan bo'lsak, har birida `setInterval(..., 20)` bo'lsa ham, brauzer har `20ms`ga qaraganda tez-tez bo'yashga to'g'ri keladi.
 
-That's because they have different starting time, so "every 20ms" differs between different animations. The intervals are not aligned. So we'll have several independent runs within `20ms`.
+Buning sababi, ular turli xil boshlanish vaqtlariga ega, shuning uchun "har 20 ms" turli animatsiyalar o'rtasida farq qiladi. Intervallar bir xil emas. Shunday qilib, biz `20ms` ichida bir nechta mustaqil urunishlarga ega bo'lamiz.
 
-In other words, this:
+Boshqacha qilib aytganda, bu:
 
 ```js
 setInterval(function() {
@@ -67,40 +67,40 @@ setInterval(function() {
 }, 20)
 ```
 
-...Is lighter than three independent calls:
+...Uchta mustaqil qo'ng'iroqdan osonroq:
 
 ```js
-setInterval(animate1, 20); // independent animations
-setInterval(animate2, 20); // in different places of the script
+setInterval(animate1, 20); // mustaqil animatsiyalar
+setInterval(animate2, 20); // skriptning turli qismlarida
 setInterval(animate3, 20);
 ```
 
-These several independent redraws should be grouped together, to make the redraw easier for the browser and hence load less CPU load and look smoother.
+Brauzer uchun qayta chizishni osonlashtirish va shuning uchun CPU yukini kamroq yuklash hamda yumshoqroq ko'rinish uchun ushbu bir nechta mustaqil qayta chizmalar birgalikda guruhlangan bo'lishi kerak.
 
-There's one more thing to keep in mind. Sometimes CPU is overloaded, or there are other reasons to redraw less often (like when the browser tab is hidden), so we really shouldn't run it every `20ms`.
+Yana bir narsani yodda tuting. Ba'zida protsessor haddan tashqari ko'p yuklanadi yoki kamroq qayta chizish uchun boshqa sabablar ham bor (masalan, brauzer yorlig'i yashiringanida), shuning uchun biz uni har 20 ms'da ishga tushirmasligimiz kerak.
 
-But how do we know about that in JavaScript? There's a specification [Animation timing](https://www.w3.org/TR/animation-timing/) that provides the function `requestAnimationFrame`. It addresses all these issues and even more.
+Ammo JavaScriptda bu haqda qanday bilamiz? `requestAnimationFrame` funksiyasini ta'minlovchi [Animation timing](https://www.w3.org/TR/animation-timing/) spetsifikatsiyasi mavjud. Bu barcha va hatto biz o'ylagandan ham ko'proq muammolarni hal qiladi.
 
-The syntax:
+Sintaksis:
 ```js
 let requestId = requestAnimationFrame(callback)
 ```
 
-That schedules the `callback` function to run in the closest time when the browser wants to do animation.
+Bu brauzer animatsiya qilmoqchi bo'lganda, `callback` funksiyasini eng yaqin vaqtda ishga tushirishni rejalashtiradi.
 
-If we do changes in elements in `callback` then they will be grouped together with other `requestAnimationFrame` callbacks and with CSS animations. So there will be one geometry recalculation and repaint instead of many.
+Agar biz `callback` dagi elementlarda o'zgarishlar qilsak, ular boshqa `requestAnimationFrame` qo'ng'iroqlari va CSS animatsiyalari bilan birga guruhlanadi. Shunday qilib, ko'pchilik o'rniga bitta geometriyani qayta hisoblash va qayta bo'yash bo'ladi.
 
-The returned value `requestId` can be used to cancel the call:
+Qaytarilgan `requestId` qiymati qo'ng'iroqni bekor qilish uchun ishlatilishi mumkin:
 ```js
-// cancel the scheduled execution of callback
+// qayta qo'ng'iroqning rejalashtirilgan bajarilishini bekor qilish
 cancelAnimationFrame(requestId);
 ```
 
-The `callback` gets one argument -- the time passed from the beginning of the page load in milliseconds. This time can also be obtained by calling [performance.now()](mdn:api/Performance/now).
+`callback` sahifa yuklanishining boshidan millisekundlarda o'tgan bitta vaqt argumentni oladi. Bu vaqtni [performance.now()](mdn:api/Performance/now) orqali ham olish mumkin.
 
-Usually `callback` runs very soon, unless the CPU is overloaded or the laptop battery is almost discharged, or there's another reason.
+Protsessor haddan tashqari yuklanmagan yoki noutbuk batareyasi deyarli zaryadsizlanmagan bo'lsa yoki boshqa sabab bo'lmasa, odatda `callback` tezda ishga tushadi.
 
-The code below shows the time between first 10 runs for `requestAnimationFrame`. Usually it's 10-20ms:
+Quyidagi kod `requestAnimationFrame` uchun dastlabki 10 ta ishga tushirish orasidagi vaqtni ko'rsatadi. Odatda bu 10-20 ms ni tashkil etadi:
 
 ```html run height=40 refresh
 <script>
@@ -116,9 +116,9 @@ The code below shows the time between first 10 runs for `requestAnimationFrame`.
 </script>
 ```
 
-## Structured animation
+## Strukturaviy animatsiya
 
-Now we can make a more universal animation function based on `requestAnimationFrame`:
+Endi biz `requestAnimationFrame` asosida yanada universal animatsiya funksiyasini yaratishimiz mumkin:
 
 ```js
 function animate({timing, draw, duration}) {
@@ -126,14 +126,14 @@ function animate({timing, draw, duration}) {
   let start = performance.now();
 
   requestAnimationFrame(function animate(time) {
-    // timeFraction goes from 0 to 1
+    // timeFraction 0 dan 1 gacha boradi
     let timeFraction = (time - start) / duration;
     if (timeFraction > 1) timeFraction = 1;
 
-    // calculate the current animation state
+    //joriy animatsiya holatini hisoblang
     let progress = timing(timeFraction)
 
-    draw(progress); // draw it
+    draw(progress); // uni chizing
 
     if (timeFraction < 1) {
       requestAnimationFrame(animate);
@@ -143,49 +143,48 @@ function animate({timing, draw, duration}) {
 }
 ```
 
-Function `animate` accepts 3 parameters that essentially describes the animation:
+`animate` funksiyasi animatsiyani mohiyatan tavsiflovchi 3 ta parametrni qabul qiladi:
 
 `duration`
-: Total time of animation. Like, `1000`.
+: Animatsiyaning umumiy vaqti. `1000` kabi.
 
 `timing(timeFraction)`
-: Timing function, like CSS-property `transition-timing-function` that gets the fraction of time that passed (`0` at start, `1` at the end) and returns the animation completion (like `y` on the Bezier curve).
+: Vaqt funksiyasi, masalan, o'tgan vaqtning ulushini (boshlanishda `0`, oxirida `1`) oladigan va animatsiya tugallanishini (Bezier egri chizig'idagi `y` kabi) qaytaruvchi `transition-timing-function` kabi CSS xususiyati hisoblanadi.
 
-    For instance, a linear function means that the animation goes on uniformly with the same speed:
-
+    Masalan, chiziqli funksiya animatsiya bir xil tezlikda davom etishini anglatadi:
+    
     ```js
     function linear(timeFraction) {
       return timeFraction;
     }
     ```
 
-    Its graph:
+    Uning chizmasi:
     ![](linear.svg)
 
-    That's just like `transition-timing-function: linear`. There are more interesting variants shown below.
+    Bu xuddi `transition-timing-function: linear` kabi. Quyida ko'rsatilgan qiziqarli variantlar mavjud.
 
 `draw(progress)`
-: The function that takes the animation completion state and draws it. The value `progress=0` denotes the beginning animation state, and `progress=1` -- the end state.
+: Animatsiya tugallanish holatini qabul qiluvchi va uni chizuvchi funksiya. `Progress=0` qiymati animatsiyaning boshlanish holatini, `progress=1` esa yakuniy holatni bildiradi.
 
-    This is that function that actually draws out the animation.
+    Bu aslida animatsiyani chiqaradigan funksiya.
 
-    It can move the element:
+    U elementni siljitishi mumkin:
     ```js
     function draw(progress) {
       train.style.left = progress + 'px';
     }
     ```
 
-    ...Or do anything else, we can animate anything, in any way.
+    ...Yoki boshqa biror narsa qiling, biz har qanday narsani, har qanday tarzda jonlantirishimiz mumkin.
 
+Funksiyamizdan foydalanib, `width` elementini `0` dan `100%` gacha jonlantiramiz.
 
-Let's animate the element `width` from `0` to `100%` using our function.
-
-Click on the element for the demo:
+Demo uchun elementni bosing:
 
 [codetabs height=60 src="width"]
 
-The code for it:
+U uchun maxsus kod:
 
 ```js
 animate({
@@ -199,19 +198,19 @@ animate({
 });
 ```
 
-Unlike CSS animation, we can make any timing function and any drawing function here. The timing function is not limited by Bezier curves. And `draw` can go beyond properties, create new elements for like fireworks animation or something.
+CSS animatsiyasidan farqli o'laroq, biz bu yerda har qanday vaqt funksiyasini va istalgan chizma funksiyasini bajarishimiz mumkin. Vaqt funksiyasi Bezier egri chiziqlari bilan cheklanmaydi. Va `draw` xususiyatlardan tashqariga chiqishi, olovli animatsiya yoki boshqa narsalar uchun yangi elementlar yaratishi mumkin.
 
-## Timing functions
+## Vaqt funksiyalari
 
-We saw the simplest, linear timing function above.
+Biz yuqorida eng oddiy, chiziqli vaqt funksiyasini ko'rdik.
 
-Let's see more of them. We'll try movement animations with different timing functions to see how they work.
+Keling, ularni ko'proq ko'rib chiqaylik. Ular qanday ishlashini ko'rish uchun turli vaqt funksiyalariga ega harakat animatsiyalarini sinab ko'ramiz.
 
-### Power of n
+### N ning darajasi
 
-If we want to speed up the animation, we can use `progress` in the power `n`.
+Agar biz animatsiyani tezlashtirmoqchi bo'lsak, `n` darajasida `progress` dan foydalanishimiz mumkin.
 
-For instance, a parabolic curve:
+Masalan, parabolik egri chiziq:
 
 ```js
 function quad(timeFraction) {
@@ -219,27 +218,27 @@ function quad(timeFraction) {
 }
 ```
 
-The graph:
+Chizma:
 
 ![](quad.svg)
 
-See in action (click to activate):
+Namunalarni amalda ko'rib chiqing (faollashtirish uchun bosing):
 
 [iframe height=40 src="quad" link]
 
-...Or the cubic curve or even greater `n`. Increasing the power makes it speed up faster.
+...Yoki kubik egri chiziq yoki undan ham kattaroq `n`. Darajani oshirish uni yanayam tezlashtiradi.
 
-Here's the graph for `progress` in the power `5`:
+Mana `5` darajasidagi `progress` grafigi:
 
 ![](quint.svg)
 
-In action:
+Amalda:
 
 [iframe height=40 src="quint" link]
 
-### The arc
+### Yoy (the arc)
 
-Function:
+Funksiya:
 
 ```js
 function circ(timeFraction) {
@@ -247,19 +246,19 @@ function circ(timeFraction) {
 }
 ```
 
-The graph:
+Chizma:
 
 ![](circ.svg)
 
 [iframe height=40 src="circ" link]
 
-### Back: bow shooting
+### Back: kamondan otish (bow shooting)
 
-This function does the "bow shooting". First we "pull the bowstring", and then "shoot".
+Bu funksiya "kamon otish" ni bajaradi. Avval biz "kamonni tortamiz", keyin esa "otamiz".
 
-Unlike previous functions, it depends on an additional parameter `x`, the "elasticity coefficient". The distance of "bowstring pulling" is defined by it.
+Oldingi funksiyalardan farqli o'laroq, u qo'shimcha `x` parametriga, "elastiklik koeffitsientiga" bog'liq. "Kamonni tortish" masofasi u bilan belgilanadi.
 
-The code:
+Kod:
 
 ```js
 function back(x, timeFraction) {
@@ -267,19 +266,19 @@ function back(x, timeFraction) {
 }
 ```
 
-**The graph for `x = 1.5`:**
+**`x = 1.5` uchun chizma:**
 
 ![](back.svg)
 
-For animation we use it with a specific value of `x`. Example for `x = 1.5`:
+Animatsiya uchun biz uni `x` qiymati bilan ishlatamiz. `x = 1,5` uchun misol:
 
 [iframe height=40 src="back" link]
 
-### Bounce
+### Sakrash
 
-Imagine we are dropping a ball. It falls down, then bounces back a few times and stops.
+Tasavvur qiling, biz to'pni tashlayapmiz. U pastga tushadi, keyin bir necha marta orqaga qaytib, to'xtaydi.
 
-The `bounce` function does the same, but in the reverse order: "bouncing" starts immediately. It uses few special coefficients for that:
+`Bounce` funksiyasi ham xuddi shunday qiladi, lekin teskari tartibda: "sakrash" darhol boshlanadi. Buning uchun bir nechta maxsus koeffitsientlardan foydalaniladi:
 
 ```js
 function bounce(timeFraction) {
@@ -291,13 +290,13 @@ function bounce(timeFraction) {
 }
 ```
 
-In action:
+Amalda:
 
 [iframe height=40 src="bounce" link]
 
-### Elastic animation
+### Elastik animatsiya
 
-One more "elastic" function that accepts an additional parameter `x` for the "initial range".
+"Boshlang'ich diapazon" uchun qo'shimcha `x` parametrini qabul qiluvchi yana bir "elastik" funksiya.
 
 ```js
 function elastic(x, timeFraction) {
@@ -305,31 +304,31 @@ function elastic(x, timeFraction) {
 }
 ```
 
-**The graph for `x=1.5`:**
+**`x=1.5` uchun chizma:**
 ![](elastic.svg)
 
-In action for `x=1.5`:
+`x=1.5` uchun namuna:
 
 [iframe height=40 src="elastic" link]
 
-## Reversal: ease*
+## Orqaga qaytarish: osonlik*
 
-So we have a collection of timing functions. Their direct application is called "easeIn".
+Shunday qilib, bizda vaqt funksiyalari to'plami mavjud. Ularning bevosita qo'llanilishi "easeIn" deb ataladi.
 
-Sometimes we need to show the animation in the reverse order. That's done with the "easeOut" transform.
+Ba'zan biz animatsiyani teskari tartibda ko'rsatishimiz kerak. Bu "easeOut" transformatsiyasi bilan amalga oshiriladi.
 
 ### easeOut
 
-In the "easeOut" mode the `timing` function is put into a wrapper `timingEaseOut`:
+"EaseOut" rejimida `timing` funksiyasi `timingEaseOut` o'ramiga qo'yiladi:
 
 ```js
 timingEaseOut(timeFraction) = 1 - timing(1 - timeFraction)
 ```
 
-In other words, we have a "transform" function `makeEaseOut` that takes a "regular" timing function and returns the wrapper around it:
+Boshqacha qilib aytadigan bo'lsak, bizda "odatiy" vaqt funksiyasini oladigan va uning atrofidagi o'ramni qaytaradigan "o'zgartirish" funksiyasi `makeEaseOut` mavjud:
 
 ```js
-// accepts a timing function, returns the transformed variant
+// vaqt funksiyasini qabul qiladi, o'zgartirilgan variantni qaytaradi
 function makeEaseOut(timing) {
   return function(timeFraction) {
     return 1 - timing(1 - timeFraction);
@@ -337,42 +336,42 @@ function makeEaseOut(timing) {
 }
 ```
 
-For instance, we can take the `bounce` function described above and apply it:
+Misol uchun, biz yuqorida tavsiflangan `bounce` funksiyasini olib, uni qo'llashimiz mumkin:
 
 ```js
 let bounceEaseOut = makeEaseOut(bounce);
 ```
 
-Then the bounce will be not in the beginning, but at the end of the animation. Looks even better:
+Keyin sakrash animatsiyaning boshida emas, balki oxirida bo'ladi. Bundan ham yaxshiroq ko'rinadi:
 
 [codetabs src="bounce-easeout"]
 
-Here we can see how the transform changes the behavior of the function:
+Bu yerda transformatsiya funksiyaning harakatini qanday o'zgartirishini ko'rishimiz mumkin:
 
 ![](bounce-inout.svg)
 
-If there's an animation effect in the beginning, like bouncing -- it will be shown at the end.
+Agar boshida animatsiya effekti bo'lsa, masalan, sakrash -- u oxirida ko'rsatiladi.
 
-In the graph above the <span style="color:#EE6B47">regular bounce</span> has the red color, and the <span style="color:#62C0DC">easeOut bounce</span> is blue.
+Yuqoridagi grafikda <span style="color:#EE6B47">muntazam sakrash</span> qizil rangga ega va <span style="color:#62C0DC">easeOut sakrash</span> ko'k rangda berilgan.
 
-- Regular bounce -- the object bounces at the bottom, then at the end sharply jumps to the top.
-- After `easeOut` -- it first jumps to the top, then bounces there.
+- Muntazam sakrash -- obyekt pastdan sakraydi, so'ng oxirida keskin yuqoriga sakrab chiqadi.
+- `easeOut` dan so'ng -- avval tepaga sakrab chiqadi, so'ng u yerga sakraydi.
 
 ### easeInOut
 
-We also can show the effect both in the beginning and the end of the animation. The transform is called "easeInOut".
+Effektni animatsiyaning boshida ham, oxirida ham ko'rsatishimiz mumkin. Transformatsiya "easeInOut" deb nomlanadi.
 
-Given the timing function, we calculate the animation state like this:
+Vaqt funksiyasini hisobga olgan holda, biz animatsiya holatini quyidagicha hisoblaymiz:
 
 ```js
-if (timeFraction <= 0.5) { // first half of the animation
+if (timeFraction <= 0.5) { // animatsiyaning birinchi yarmi
   return timing(2 * timeFraction) / 2;
-} else { // second half of the animation
+} else { // animatsiyaning ikkinchi yarmi
   return (2 - timing(2 * (1 - timeFraction))) / 2;
 }
 ```
 
-The wrapper code:
+O'rovchi kod:
 
 ```js
 function makeEaseInOut(timing) {
@@ -387,37 +386,37 @@ function makeEaseInOut(timing) {
 bounceEaseInOut = makeEaseInOut(bounce);
 ```
 
-In action, `bounceEaseInOut`:
+`bounceEaseInOut` ning amalda qo'llanilishi:
 
 [codetabs src="bounce-easeinout"]
 
-The "easeInOut" transform joins two graphs into one: `easeIn` (regular) for the first half of the animation and `easeOut` (reversed) -- for the second part.
+"EaseInOut" transformatsiyasi ikkita grafikni bittaga birlashtiradi: animatsiyaning birinchi yarmi uchun `easeIn` (muntazam) va ikkinchi qismi uchun `easeOut` (teskari).
 
-The effect is clearly seen if we compare the graphs of `easeIn`, `easeOut` and `easeInOut` of the `circ` timing function:
+Vaqtni belgilash funksiyasining `easeIn`, `easeOut` va `easeInOut` grafiklarini solishtirsak, samara aniq ko'rinadi:
 
 ![](circ-ease.svg)
 
-- <span style="color:#EE6B47">Red</span> is the regular variant of `circ` (`easeIn`).
+- <span style="color:#EE6B47">Red</span> `circ` ning doimiy varianti(`easeIn`).
 - <span style="color:#8DB173">Green</span> -- `easeOut`.
 - <span style="color:#62C0DC">Blue</span> -- `easeInOut`.
 
-As we can see, the graph of the first half of the animation is the scaled down `easeIn`, and the second half is the scaled down `easeOut`. As a result, the animation starts and finishes with the same effect.
+Ko'rib turganimizdek, animatsiyaning birinchi yarmining grafigi kichraytirilgan `easeIn`, ikkinchi yarmi esa kichraytirilgan `easeOut`. Natijada, animatsiya xuddi shunday effekt bilan boshlanadi va tugaydi.
 
-## More interesting "draw"
+## Yanada qiziqroq "draw"
 
-Instead of moving the element we can do something else. All we need is to write the proper `draw`.
+Elementni ko'chirish o'rniga biz boshqa biror narsa qilishimiz mumkin. Bizga kerak bo'lgan narsa - to'g'ri chizilgan `draw` ni yozish.
 
-Here's the animated "bouncing" text typing:
+Bu yerda jonlantirilgan "sakrab" matn terish ko'rsatilgan:
 
 [codetabs src="text"]
 
-## Summary
+## Xulosa
 
-For animations that CSS can't handle well, or those that need tight control, JavaScript can help. JavaScript animations should be implemented via `requestAnimationFrame`. That built-in method allows to setup a callback function to run when the browser will be preparing a repaint. Usually that's very soon, but the exact time depends on the browser.
+CSS yaxshi ishlay olmaydigan yoki qattiq nazoratga muhtoj bo'lgan animatsiyalar uchun JavaScript yordam berishi mumkin. JavaScript animatsiyalari `requestAnimationFrame` orqali amalga oshirilishi kerak. Ushbu o'rnatilgan usul brauzer qayta bo'yashni tayyorlayotganda ishga tushirish uchun qayta qo'ng'iroq qilish funksiyasini sozlash imkonini beradi. Odatda bu juda tez ishlaydi, lekin aniq vaqt brauzerga bog'liq.
 
-When a page is in the background, there are no repaints at all, so the callback won't run: the animation will be suspended and won't consume resources. That's great.
+Agar sahifa fonda bo'lsa, qayta bo'yash umuman bo'lmaydi, shuning uchun qayta qo'ng'iroq bajarilmaydi: animatsiya to'xtatiladi va resurslarni iste'mol qilmaydi. Bu judayam ajoyib
 
-Here's the helper `animate` function to setup most animations:
+Ko'pgina animatsiyalarni o'rnatish uchun yordamchi `animate` funksiyasi:
 
 ```js
 function animate({timing, draw, duration}) {
@@ -425,14 +424,14 @@ function animate({timing, draw, duration}) {
   let start = performance.now();
 
   requestAnimationFrame(function animate(time) {
-    // timeFraction goes from 0 to 1
+    // timeFraction 0 dan 1 gacha boradi
     let timeFraction = (time - start) / duration;
     if (timeFraction > 1) timeFraction = 1;
 
-    // calculate the current animation state
+    // joriy animatsiya holatini hisoblang
     let progress = timing(timeFraction);
 
-    draw(progress); // draw it
+    draw(progress); // uni chizing
 
     if (timeFraction < 1) {
       requestAnimationFrame(animate);
@@ -442,14 +441,14 @@ function animate({timing, draw, duration}) {
 }
 ```
 
-Options:
+Variantlar:
 
-- `duration` -- the total animation time in ms.
-- `timing` -- the function to calculate animation progress. Gets a time fraction from 0 to 1, returns the animation progress, usually from 0 to 1.
-- `draw` -- the function to draw the animation.
+- `duration` -- ms dagi jami animatsiya vaqti.
+- `timing` -- animatsiya jarayonini hisoblash funksiyasi. 0 dan 1 gacha bo'lgan vaqt kasrini oladi, odatda 0 dan 1 gacha animatsiya jarayonini qaytaradi.
+- `draw` -- animatsiyani chizish funksiyasi.
 
-Surely we could improve it, add more bells and whistles, but JavaScript animations are not applied on a daily basis. They are used to do something interesting and non-standard. So you'd want to add the features that you need when you need them.
+Albatta, biz uni yaxshilashimiz, qo'ng'iroq va hushtaklarni qo'shishimiz mumkin edi, lekin JavaScript animatsiyalari har kuni qo'llanilmaydi. Ular qiziqarli va nostandart narsalarni qilish uchun ishlatiladi. Shunday qilib, kerak bo'lganda kerakli xususiyatlarni qo'shishni xohlaysiz.
 
-JavaScript animations can use any timing function. We covered a lot of examples and transformations to make them even more versatile. Unlike CSS, we are not limited to Bezier curves here.
+JavaScript animatsiyalari har qanday vaqt funksiyasidan foydalanishi mumkin. Biz ularni yanada ko'p qirrali qilish uchun ko'plab misollar va o'zgarishlarni ko'rib chiqdik. CSSdan farqli o'laroq, biz bu yerda Bezier egri chiziqlari bilan cheklanmaymiz.
 
-The same is about `draw`: we can animate anything, not just CSS properties.
+Xuddi shu narsa `draw` haqida: biz faqat CSS xususiyatlarini emas, balki hamma narsani jonlantirishimiz mumkin.
