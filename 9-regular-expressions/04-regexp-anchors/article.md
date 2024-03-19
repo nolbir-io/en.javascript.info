@@ -1,10 +1,10 @@
 # Langarlar(anchors): string start ^ va end $
 
-Regexpda karet `pattern:^` va dollar `pattern:$` belgilar alohida ma`noga ega. Ular "langarlar" deb ataladi.
+Regexpda karet `pattern:^` va dollar `pattern:$` belgilar alohida ma'noga ega. Ular "langarlar" deb ataladi.
 
 Matn boshida `pattern:^` karet, oxirida esa dollar `pattern:$` mos keladi.
 
-Masalan, matn `Mary` bilan boshlangan yoki yo'qligini tekshirib ko‘raylik:
+Masalan, matn `Mary` bilan boshlangan yoki yo'qligini tekshirib ko'raylik:
 
 ```js run
 let str1 = "Mary had a little lamb";
