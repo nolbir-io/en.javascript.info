@@ -7,7 +7,7 @@ Nazariy jihatdan, biz HTML belgilarini saqlash uchun HTMLning biron bir joyida h
 
 Birinchidan, hatto u odatda to'g'ri yopish tegini talab qilsa ham uning mazmuni har qanday to'g'ri HTML bo'lishi mumkin.
 
-Masalan, biz u yerda `<tr>` jadval qatorini qo'yishimiz mumkin:
+Masalan, biz u yerda `<tr>` jadval qatorini qo'shamiz:
 ```html
 <template>
   <tr>
@@ -18,7 +18,7 @@ Masalan, biz u yerda `<tr>` jadval qatorini qo'yishimiz mumkin:
 
 Odatda, agar biz `<tr>` ni, aytaylik, `<div>` ichiga qo'yishga harakat qilsak, brauzer noto'g'ri DOM strukturasini aniqlaydi va uni "tuzatadi", atrofida `<table>` qo'shadi. Bu biz xohlagan narsa emas. Boshqa tomondan, `<template>` aynan biz joylashtirgan narsalarni saqlaydi.
 
-Biz uslublar va skriptlarni `<template>`ga ham qo`yishimiz mumkin:
+Biz uslublar va skriptlarni `<template>`ga ham qo'yishimiz mumkin:
 
 ```html
 <template>
@@ -60,7 +60,7 @@ Masalan:
 */!*
 
   document.body.append(elem);
-  // Endi < template> dagi skript ishlaydi
+  // Endi <template> dagi skript ishlaydi
 </script>
 ```
 
@@ -105,7 +105,7 @@ Xulosa qilsak:
 
 - `<template>` kontent har qanday sintaktik to'g'ri HTML bo'lishi mumkin.
 - `<template>` kontent "hujjatdan tashqari" deb hisoblanadi, shuning uchun u hech narsaga ta'sir qilmaydi.
-- Biz JavaScript-dan `template.content` ga kira olamiz, uni yangi komponentda qayta ishlatish uchun klonlashimiz mumkin.
+- Biz JavaScriptdan `template.content` ga kira olamiz, uni yangi komponentda qayta ishlatish uchun klonlashimiz mumkin.
 
 `<template>` tegi juda noyob, chunki:
 
