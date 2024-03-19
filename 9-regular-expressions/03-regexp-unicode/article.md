@@ -25,17 +25,17 @@ alert('😄'.length); // 2
 alert('𝒳'.length); // 2
 ```
 
-...Ammo biz faqat bittasi borligini ko'ramiz, to'g'rimi? Gap shundaki, `length` 4 baytni ikkita 2 baytli belgi sifatida ko'rib chiqadi. Bu noto'g'ri, chunki ular faqat birgalikda ko'rib chiqilishi kerak ("surrogat juftlik" deb ataladi, ular haqida <info:string> maqolasida o'qishingiz mumkin).
+...Ammo biz faqat bittasi borligini ko'ramiz, to'g'rimi? Gap shundaki, `length` 4 baytni ikkita 2 baytli belgi sifatida ko'rib chiqadi. Bu noto'g'ri, chunki ular faqat birgalikda ko'rib chiqilishi kerak (ular "surrogat juftlik" deb ataladi, bu haqida <info:string> maqolasida o'qishingiz mumkin).
 
-Odatda oddiy iboralar ham 4 baytli "uzun belgilar"ni 2 baytli juftlik sifatida ko'radi. Va bu satrlarda bo'lgani kabi, bu g'alati natijalarga olib kelishi mumkin. Buni birozdan keyin <info:regexp-character-sets-and-ranges> maqolasida ko'ramiz.
+Odatda oddiy iboralar ham 4 baytli "uzun belgilar"ni 2 baytli juftlik sifatida ko'radi. Va bu satrlarda bo'lgani kabi g'alati natijalarga olib kelishi mumkin. Buni birozdan keyin <info:regexp-character-sets-and-ranges> maqolasida ko'ramiz.
 
-Satrlardan farqli o'laroq, oddiy iboralar bunday muammolarni hal qiladigan `pattern:u` belgisiga ega. Bunday bayroq bilan regexp 4 baytli belgilarni to'g'ri boshqaradi. Shuningdek, Unicode mulk qidiruvi mavjud bo'ladi, biz unga keyingi bosqichda o'tamiz.
+Satrlardan farqli o'laroq, oddiy iboralar bunday muammolarni hal qiladigan `pattern:u` belgisiga ega. Bunday bayroq bilan regexp 4 baytli belgilarni to'g'ri boshqaradi. Shuningdek, Unicode xususiyat qidiruvi mavjud bo'ladi, biz unga keyingi bosqichda o'tamiz.
 
 ## Unicode xususiyatlari \p{...}
 
-Unicode-dagi har bir belgi juda ko'p xususiyatlarga ega. Ular qahramonning qaysi "toifaga" tegishli ekanligini tasvirlaydi, u haqida turli xil ma'lumotlarni o'z ichiga oladi.
+Unicodedagi har bir belgi juda ko'p xususiyatlarga ega. Ular qahramonning qaysi "toifaga" tegishli ekanligini tasvirlaydi, u haqida turli xil ma'lumotlarni o'z ichiga oladi.
 
-Masalan, agar belgi `Letter` xususiyatiga ega boʻlsa, bu belgi alifboga (har qanday tilga) tegishli ekanligini bildiradi. `Number` xususiyati esa bu raqam ekanligini bildiradi: ehtimol arab yoki xitoy va hokazo.
+Masalan, agar belgi `Letter` xususiyatiga ega bo'lsa, bu belgi alifboga (har qanday tilga) tegishli ekanligini bildiradi. `Number` xususiyati esa bu raqam ekanligini bildiradi: ehtimol arab yoki xitoy va hokazo.
 
 Biz `pattern:\p{…}` sifatida yozilgan xususiyatga ega belgilarni qidirishimiz mumkin. `Pattern:\p{…}` dan foydalanish uchun oddiy iborada `pattern:u` belgisi bo'lishi kerak.
 
