@@ -40,14 +40,14 @@ Qanday qilib yaxshiroq pattern yaratishimiz mumkin?
 Biz ehtiyotkorroq moslashuvdan foydalanishimiz mumkin. Birinchidan, ish soatlari:
 
 - Agar birinchi raqam `0` yoki `1` bo'lsa, keyingisi istalgan raqam bo'lishi mumkin: `pattern:[01]\d`.
-- Aks holda, agar birinchi raqam `2` bo'lsa, keyingisi `pattern:[0-3]` bo`lishi kerak.
+- Aks holda, agar birinchi raqam `2` bo'lsa, keyingisi `pattern:[0-3]` bo'lishi kerak.
 - (boshqa birinchi raqamga ruxsat berilmaydi)
 
 Har ikkala variantni regexpda quyidagi o'zgartirish yordamida yozishimiz mumkin: `pattern:[01]\d|2[0-3]`.
 
 Keyin daqiqalar `00` dan `59` gacha bo'lishi kerak. `Pattern:[0-5]\d` shaklida yozilishi mumkin bo'lgan oddiy ifoda tilida: birinchi raqam `0-5`, keyin esa istalgan raqam.
 
-Agar soat va daqiqalarni bir-biriga yopishtirsak, biz quyidagi pattern'ni olamiz:`pattern:[01]\d|2[0-3]:[0-5]\d`.
+Agar soat va daqiqalarni bir-biriga yopishtirsak, biz quyidagi patternni olamiz:`pattern:[01]\d|2[0-3]:[0-5]\d`.
 
 Biz deyarli tugatdik, lekin muammo bor. `pattern:|` muqobilligi endi `pattern:[01]\d` va `pattern:2[0-3]:[0-5]\d` orasida bo'ladi.
 
@@ -59,7 +59,7 @@ Ya'ni: ikkinchi muqobil variantga daqiqalar qo'shiladi, bu yerda aniq rasm ko'rs
 
 Bu pattern `pattern:[01]\d` yoki `pattern:2[0-3]:[0-5]\d` ni qidiradi.
 
-Lekin bu noto'g'ri, muqobil `pattern:[01]\d` OR `pattern:2[0-3]` ga ruxsat berish uchun faqat oddiy iboraning "soat" qismida ishlatilishi kerak. Qavslar ichiga "soat"ni qo‘shish orqali buni to'g'rilaymiz: `pattern:([01]\d|2[0-3]):[0-5]\d`.
+Lekin bu noto'g'ri, muqobil `pattern:[01]\d` OR `pattern:2[0-3]` ga ruxsat berish uchun faqat oddiy iboraning "soat" qismida ishlatilishi kerak. Qavslar ichiga "soat"ni qo'shish orqali buni to'g'rilaymiz: `pattern:([01]\d|2[0-3]):[0-5]\d`.
 
 Yakuniy yechim:
 
