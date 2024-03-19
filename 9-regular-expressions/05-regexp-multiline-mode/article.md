@@ -35,9 +35,7 @@ console.log( str.match(/^\d/g) ); // 1
 Buning sababi shundaki, sukut bo'yicha `pattern:^` karet faqat matn boshida, ko'p qatorli rejimda esa istalgan satr boshida mos keladi.
 
 ```smart
-"Qator boshi" rasmiy ravishda "satr uzilishidan so‘ng" degan ma’noni anglatadi: ko'p qatorli rejimdagi `pattern:^` testi yangi qator belgisi `\n` oldidagi barcha pozitsiyalarga mos keladi.
-
-Va matn boshida.
+"Qator boshi" rasmiy ravishda "satr uzilishidan so'ng" degan ma'noni anglatadi: ko'p qatorli rejimdagi `pattern:^` testi yangi qator belgisi `\n` oldidagi va matn boshidagi barcha pozitsiyalarga mos keladi.
 ```
 
 ## $ qator oxirida qidirilmoqda
@@ -57,12 +55,10 @@ console.log( str.match(/\d$/gm) ); // 1,2,3
 `Pattern:m` bayrog'i bo'lmasa, dollar `pattern:$` faqat butun matnning oxiriga to'g'ri keladi, shuning uchun faqat oxirgi raqam topiladi.
 
 ```smart
-"Qator oxiri" rasmiy ravishda "satr uzilishidan oldin" degan ma'noni anglatadi: ko'p qatorli rejimdagi `pattern:$` testi `\n` yangi qator belgisidan keyingi barcha pozitsiyalarda mos keladi.
-
-Va matn oxirida.
+"Qator oxiri" rasmiy ravishda "satr uzilishidan oldin" degan ma'noni anglatadi: ko'p qatorli rejimdagi `pattern:$` testi `\n` yangi qator belgisidan keyingi va matn oxiridagi barcha pozitsiyalarda mos keladi. 
 ```
 
-## ^ $ oʻrniga \n qidirilmoqda
+## ^ $ o'rniga \n qidirilmoqda
 
 Yangi qatorni topish uchun biz nafaqat `pattern:^` va `pattern:$` ankorlaridan, balki yangi qator `\n` belgisidan ham foydalanishimiz mumkin.
 
