@@ -1,7 +1,7 @@
 
 # Escaping, maxsus belgilar
 
-Ko'rib turganimizdek, teskari qiyshiq chiziq `pattern:\` belgilar sinflarini belgilash uchun ishlatiladi, masalan. `pattern:\d`. Demak, bu regexplardagi maxsus belgi (xuddi oddiy satrlardagi kabi).
+Ko'rib turganimizdek, teskari qiyshiq chiziq `pattern:\` belgilar sinflarini belgilash uchun ishlatiladi, masalan, `pattern:\d`. Demak, bu regexplardagi maxsus belgi (xuddi oddiy satrlardagi kabi) hisoblanadi.
 
 Regexpda maxsus ma'noga ega bo'lgan boshqa maxsus belgilar ham mavjud, masalan, `pattern:[ ] { } ( ) \ ^ $ . | ? * +`. Ular yanada kuchli qidiruvlarni amalga oshirish uchun ishlatiladi.
 
@@ -14,7 +14,7 @@ Aytaylik, biz tom ma'noda nuqta topmoqchimiz. "Har qanday belgi" emas, faqat nuq
 Maxsus belgidan oddiy belgi sifatida foydalanish uchun uning oldiga teskari chiziq qo'ying: `pattern:\.`.
 
 Bu "belgidan qochish", ya'ni escaping a character deb ham ataladi.
-For example:
+Masalan:
 ```js run
 alert( "Chapter 5.1".match(/\d\.\d/) ); // 5.1 (match!)
 alert( "Chapter 511".match(/\d\.\d/) ); // null (haqiqiy nuqta qidirmoqda \.)
@@ -26,7 +26,7 @@ Qavslar ham maxsus belgilardir, shuning uchun agar biz ularni xohlasak, `pattern
 alert( "function g()".match(/g\(\)/) ); // "g()"
 ```
 
-Agar biz `\` teskari chiziq, ya'ni backslashni izlayotgan bo`lsak, bu oddiy satrlarda ham, regexplarda ham maxsus belgi, shuning uchun biz uni ikki barobarga oshirishimiz kerak.
+Agar biz `\` teskari chiziq, ya'ni backslashni izlayotgan bo'lsak, bu oddiy satrlarda ham, regexplarda ham maxsus belgi, shuning uchun biz uni ikki barobarga oshirishimiz kerak.
 
 ```js run
 alert( "1\\2".match(/\\/) ); // '\'
@@ -34,7 +34,7 @@ alert( "1\\2".match(/\\/) ); // '\'
 
 ## Slash
 
-slash belgisi maxsus belgi emas, lekin JavaScriptda u regexpni ochish va yopish uchun ishlatiladi: `pattern:/...pattern.../`, shuning uchun biz ham undan qochishimiz kerak.
+slash belgisi maxsus belgi emas, lekin JavaScriptda u regexpni ochish va yopish uchun ishlatiladi: `pattern:/...pattern.../`, shuning uchun biz ham undan qochishimiz kerak. 
 
 `'/'` qiyshiq chiziqni qidirish quyidagicha bo'ladi:
 
@@ -70,7 +70,7 @@ Buning sababi shundaki, teskari chiziq chizig'i satr tomonidan "iste'mol qilinad
 alert("\d\.\d"); // d.d
 ```
 
-Satr quote'lari teskari chiziqchalarni "iste'mol qiladi" va ularni mustaqil ravishda izohlaydi, masalan:
+Satr quotelari teskari chiziqchalarni "iste'mol qiladi" va ularni mustaqil ravishda izohlaydi, masalan:
 
 - `\n` -- yangi satr belgisiga aylanadi,
 - `\u1234` -- bunday kod bilan Unicode belgisiga aylanadi,
@@ -95,4 +95,4 @@ alert( "Chapter 5.1".match(regexp) ); // 5.1
 
 - Maxsus belgilarni qidirish uchun `pattern:[ \ ^ $ . | ? * + ( )` so'zma-so'z, biz ularni teskari qirrali `\` ("escape them") bilan qo'yishimiz kerak.
 - Agar biz `pattern:/.../` ichida bo'lsak, `/` dan qochishimiz kerak (lekin `new RegExp` ichida emas).
-- `new RegExp` ga satrni o'tkazishda biz `\\` teskari chiziqni ikki marta qo'yishimiz kerak, buning natijasida qator qo'shtirnoqlari ulardan birini iste'mol qiladi.
+- `new RegExp` ga satrni o'tkazishda biz `\\` teskari chiziqni ikki marta qo'yishimiz lozim, buning natijasida qator qo'shtirnoqlari ulardan birini iste'mol qiladi.
