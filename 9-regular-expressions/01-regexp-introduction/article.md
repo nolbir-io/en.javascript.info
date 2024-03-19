@@ -2,7 +2,7 @@
 
 Muntazam iboralar matnda qidirish va almashtirishning kuchli usulini ta'minlovchi shakllardir.
 
-JavaScriptda ular [RegExp](mdn:js/RegExp) obyekti orqali mavjud, shuningdek, satrlar usullarida birlashtirilgan.
+JavaScriptda ular [RegExp](mdn:js/RegExp) obyekti orqali mavjud, shuningdek, ular satrlar usullarida birlashtirilgan.
 
 ## Oddiy ifodalar
 
@@ -25,7 +25,7 @@ regexp = /pattern/gmi; // g,m va i bayroqlari bilan (tez orada qoplanadi)
 
 Slash `pattern:/.../` JavaScriptga biz muntazam ifoda yaratayotganimizni bildiradi. Ular satrlar uchun tirnoq bilan bir xil rol o'ynaydi.
 
-Ikkala holatda ham `regexp`` o'rnatilgan `RegExp` sinfining namunasiga aylanadi.
+Ikkala holatda ham `regexp` o'rnatilgan `RegExp` sinfining namunasiga aylanadi.
 
 Bu ikki sintaksis o'rtasidagi asosiy farq shundaki, `/.../` qiyshiq chiziqdan foydalanilgan shakl iboralarni qo'shishga ruxsat bermaydi (masalan, `${...}` bo'lgan satr shablonining literallari). Ular butunlay statikdir.
 
@@ -56,13 +56,13 @@ JavaScriptda ulardan faqat 6 tasi mavjud:
 : Nuqta `pattern:.` yangi qator belgisi `\n` (<info:regexp-character-classes> bobida yoritilgan) mos kelishiga imkon beruvchi "dotall" rejimini yoqadi.
 
 `pattern:u`
-: Unicode to'liq qo'llab-quvvatlashni yoqadi. Bayroq surrogat juftlarini to'g'ri qayta ishlash imkonini beradi. Bu haqda batafsilroq <info:regexp-unicode> bobida o'qishingiz mumkin.
+: Unicode to'liq qo'llab-quvvatlashni yoqadi. Bayroq surrogat juftlarini to'g'ri qayta ishlash imkonini beradi. Bu haqda batafsilroq <info:regexp-unicode> bobida o'qishingiz mumkin. 
 
 `pattern:y`
 : "Sticky" rejimi: matndagi aniq pozitsiyada qidirish (<info:regexp-sticky> bobida yoritilgan)
 
 ```smart header="Colors"
-Bu yerdan rang sxemasi:
+Bu yerda rang sxemasi berilgan:
 
 - regexp -- `pattern:red`
 - string (biz qidiradigan joy) -- `subject:blue`
@@ -75,7 +75,7 @@ Yuqorida aytib o'tilganidek, muntazam iboralar string usullari bilan birlashtiri
 
 `str.match(regexp)` usuli `str` qatoridagi `regexp` ning barcha mosliklarini topadi.
 
-U 3 ish rejimiga ega:
+U 3 ta ish rejimiga ega:
 
 1. Agar muntazam ifodada `pattern:g` bayrog'i bo'lsa, u barcha mosliklar qatorini qaytaradi:
     ```js run
@@ -85,7 +85,7 @@ U 3 ish rejimiga ega:
     ```
     Esda tutingki, `match:We` va `match:we` ikkalasi ham topiladi, chunki `pattern:i` bayroqchasi muntazam ifodani katta-kichik harflarga sezgir qilmaydi.
 
-2. Agar bunday bayroq bo'lmasa, u faqat massiv ko'rinishidagi birinchi moslikni qaytaradi, to'liq moslik `0` indeksida va xususiyatlardagi ba'zi qo'shimcha tafsilotlar bilan:
+2. Agar bunday bayroq bo'lmasa, u faqat massiv ko'rinishidagi birinchi moslikni qaytaradi, to'liq moslik `0` indeksida va xususiyatlardagi ba'zi qo'shimcha tafsilotlar bilan ko'rsatilgan:
     ```js run
     let str = "We will, we will rock you";
 
@@ -102,7 +102,7 @@ U 3 ish rejimiga ega:
 
 3. Va nihoyat, agar mos keladiganlar bo'lmasa, `null` qaytariladi (`pattern:g` bayroqchasi bor yoki yo'qligi muhim emas).
 
-    Bu juda muhim nyuans. Agar mos keladiganlar bo'lmasa, biz bo'sh massivni olmaymiz, balki `null`ni olamiz. Buni unutish xatolarga olib kelishi mumkin, masalan:
+    Bu juda muhim nyuans. Agar mos keladiganlar bo'lmasa, biz bo'sh massivni olmaymiz, balki `null` ni olamiz. Buni unutish xatolarga olib kelishi mumkin, masalan:
 
     ```js run
     let matches = "JavaScript".match(/HTML/); // = null
@@ -129,10 +129,10 @@ U 3 ish rejimiga ega:
 Masalan:
 
 ```js run
-// no flag g
+// g bayrog'i yo'q
 alert( "We will, we will".replace(/we/i, "I") ); // I will, we will
 
-// with flag g
+// g bayrog'i bilan
 alert( "We will, we will".replace(/we/ig, "I") ); // I will, I will
 ```
 
@@ -140,9 +140,9 @@ Ikkinchi argument `replacement` qatoridir. O'yin qismlarini kiritish uchun biz u
 
 | Belgilar | O'zgartirish qatoridagi harakat |
 |--------|--------|
-|`$&`|butun oʻyinni kiritadi|
+|`$&`|butun o'yinni kiritadi|
 |<code>$&#096;</code>|o'yindan oldin qatorning bir qismini kiritadi|
-|`$'`|oʻyindan keyin qatorning bir qismini kiritadi|
+|`$'`|o'yindan keyin qatorning bir qismini kiritadi|
 |`$n`|agar `n` 1-2 xonali son bo'lsa, u n-qavslar mazmunini kiritadi, bu haqda batafsilroq <info:regexp-groups> bo'limida|
 |`$<name>`|Qavslar tarkibini berilgan `name` bilan kiritadi, bu haqda batafsil <info:regexp-groups>| bobida.
 |`$$`|`$` belgisini kiritadi|
@@ -172,6 +172,6 @@ Usullar haqida to'liq ma'lumot <info:regexp-methods> maqolasida keltirilgan.
 
 - Muntazam ibora shakl va ixtiyoriy bayroqlardan iborat: `pattern:g`, `pattern:i`, `pattern:m`, `pattern:u`, `pattern:s`, `pattern:y`.
 - Bayroqlar va maxsus belgilarsiz (buni keyinroq o'rganamiz), regexp orqali qidirish pastki qator qidiruvi bilan bir xil.
-- `str.match(regexp)` usuli mosliklarni qidiradi: agar `pattern:g` bayrog'i bo`lsa, ularning barchasi, aks holda, faqat birinchisi.
-- `str.replace(regexp, replacement)` usuli `regexp` yordamida topilgan mosliklarni `replacement` bilan almashtiradi: agar `pattern:g` bayrog'i bo'lsa, ularning barchasi, aks holda faqat birinchisi.
+- `str.match(regexp)` usuli mosliklarni qidiradi: agar `pattern:g` bayrog'i bo'lsa, ularning barchasini, aks holda, faqat birinchisini qidiradi.
+- `str.replace(regexp, replacement)` usuli `regexp` yordamida topilgan mosliklarni `replacement` bilan almashtiradi: agar `pattern:g` bayrog'i bo'lsa, ularning barchasini, aks holda faqat birinchisini almashtiradi.
 - `regexp.test(str)` usuli kamida bitta moslik bo'lsa `true`ni qaytaradi, aks holda `false`ni qaytaradi.
