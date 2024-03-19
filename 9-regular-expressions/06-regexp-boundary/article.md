@@ -17,17 +17,17 @@ alert( "Hello, Java!".match(/\bJava\b/) ); // Java
 alert( "Hello, JavaScript!".match(/\bJava\b/) ); // null
 ```
 
-`subject:Hello, Java!` qatoridagi quyidagi pozitsiyalar `pattern:\b`ga mos keladi:
+`subject:Hello, Java!` qatoridagi quyidagi pozitsiyalar `pattern:\b` ga mos keladi:
 
 ![](hello-java-boundaries.svg)
 
-Demak, u `pattern:\bHello\b` naqshiga mos keladi, chunki:
+Demak, u `pattern:\bHello\b` pattternga mos keladi, chunki:
 
 1. Satr boshida birinchi test `pattern:\b` mos keladi.
 2. Keyin `pattern: Hello` so'ziga mos keladi.
 3. Keyin `pattern:\b` testi yana mos keladi, chunki biz `subject:o` va vergul orasidamiz.
 
-Shunday qilib, `pattern:\bHello\b` pattern mos keladi, lekin `pattern:\bHell\b` emas (chunki `l` dan keyin so'z chegarasi yo'q) va `Java!\b` emas (chunki undov belgisi emas) `pattern:\w` so'z belgisi, shuning uchun undan keyin hech qanday so'z chegarasi yo'q.
+Shunday qilib, `pattern:\bHello\b` pattern mos keladi, lekin `pattern:\bHell\b` emas (chunki `l` dan keyin so'z chegarasi yo'q) va `Java!\b` emas (chunki undov belgisi emas) `pattern:\w` so'z belgisi, shuning uchun undan keyin hech qanday so'z chegarasi mavjud emas.
 
 ```js run
 alert( "Hello, Java!".match(/\bHello\b/) ); // Hello
@@ -48,5 +48,5 @@ alert( "12,34,56".match(/\b\d\d\b/g) ); // 12,34,56
 ```warn header="Word boundary`` `pattern:\b` lotin bo'lmagan alifbolar uchun ishlamaydi"
 `Pattern:\b` so'z chegarasi testi joylashuvning bir tomonida `pattern:\w` va boshqa tomonda `pattern:\w` emasligini tekshiradi.
 
-But `pattern:\w` means a latin letter `a-z` (or a digit or an underscore), so the test doesn't work for other characters, e.g. cyrillic letters or hieroglyphs. Lekin `pattern:\w` lotin harfi `a-z` (yoki raqam yoki pastki chiziq) degan ma'noni anglatadi, shuning uchun test boshqa belgilar, masalan, kirill harflari yoki ierogliflar uchun ishlamaydi.
+Lekin `pattern:\w` lotin harfi `a-z` (yoki raqam yoki pastki chiziq) degan ma'noni anglatadi, shuning uchun test boshqa belgilar, masalan, kirill harflari yoki ierogliflar uchun ishlamaydi.
 ```
