@@ -27,7 +27,7 @@ let str = "+7(903)-123-45-67";
 
 let regexp = /\d/g;
 
-alert( str.match(regexp) ); // oʻyinlar massivi: 7,9,0,3,1,2,3,4,5,6,7
+alert( str.match(regexp) ); // o'yinlar massivi: 7,9,0,3,1,2,3,4,5,6,7
 
 // keling, ularning faqat raqamlardan iborat telefon raqamini tuzamiz:
 alert( str.match(regexp).join('') ); // 79031234567
@@ -38,19 +38,19 @@ Bu raqamlar uchun belgilar klassi edi. Boshqa belgilar klasslari ham mavjud.
 Eng ko'p ishlatiladiganlar:
 
 `pattern:\d` ("d" "raqam"dan olingan)
-: Raqam: `0` dan `9` gacha bo`lgan belgi.
+: Raqam: `0` dan `9` gacha bo'lgan belgi.
 
 `pattern:\s` ("s" "bo'sh joy"dan olingan)
-: Bo'sh joy belgisi: bo'shliqlar, tablar `\t`, yangi qatorlar `\n` va `\v`, `\f` va `\r` kabi bir nechta noyob belgilarni o`z ichiga oladi.
+: Bo'sh joy belgisi: bo'shliqlar, tablar `\t`, yangi qatorlar `\n` va `\v`, `\f` va `\r` kabi bir nechta noyob belgilarni o'z ichiga oladi.
 
 `pattern:\w` ("w" "so'z"dan olingan)
 : "So'zli" belgi: lotin alifbosidagi harf yoki raqam yoki pastki chiziq `_`. Lotin bo'lmagan harflar (kirill yoki hindi kabi) `pattern:\w` ga tegishli emas.
 
-Misol uchun, `pattern:\d\s\w` "raqam"dan keyin "boʻsh joy"dan keyin "soʻzli belgi"ni bildiradi, masalan, `match:1 a`.
+Misol uchun, `pattern:\d\s\w` "raqam"dan so'ng "bo'sh joy"dan keyin "so'zli belgi"ni bildiradi, masalan, `match:1 a`.
 
 **Regexp oddiy belgilar va belgilar klasslarini o'z ichiga olishi mumkin.**
 
-Masalan, `pattern:CSS\d` `match:CSS` qatoriga o`zidan keyingi raqam bilan mos keladi:
+Masalan, `pattern:CSS\d` `match:CSS` qatoriga o'zidan keyingi raqam bilan mos keladi:
 
 ```js run
 let str = "Is there CSS4?";
@@ -129,7 +129,7 @@ alert( "CS4".match(/CS.4/) ); // null, mos kelmaydi, chunki nuqta uchun belgi yo
 
 Odatda nuqta `\n` yangi qator belgisiga mos kelmaydi.
 
-Masalan, regexp `pattern:A.B` `match:A` va keyin `match:B` ga ular orasidagi istalgan belgi bilan mos keladi, yangi qator `\n` tashqari:
+Masalan, regexp `pattern:A.B` `match:A` va keyin `match:B` ga ular orasidagi istalgan belgi bilan mos keladi, faqat yangi qator `\n` dan tashqari:
 
 ```js run
 alert( "A\nB".match(/A.B/) ); // null (moslik yo'q)
@@ -144,7 +144,7 @@ alert( "A\nB".match(/A.B/s) ); // A\nB (mos keladi!)
 ```
 
 ````warn header="IE da qo'llab-quvvatlanmaydi"
-IE’da `pattern:s` bayrog‘i qo‘llab-quvvatlanmaydi.
+IEda `pattern:s` bayrog'i qo'llab-quvvatlanmaydi.
 
 Yaxshiyamki, hamma joyda ishlaydigan alternativa bor. Biz "har qanday belgi"ga mos kelish uchun `pattern:[\s\S]` kabi regexp dan foydalanishimiz mumkin (bu pattern <info:regexp-character-sets-and-ranges> maqolasida yoritiladi).
 
