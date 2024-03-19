@@ -2,7 +2,7 @@
 
 Ushbu bo'limda "veb komponentlar" uchun zamonaviy standartlar to'plami tasvirlangan.
 
-Hozirda ushbu standartlar ishlab chiqilmoqda. Ba'zi xususiyatlar yaxshi qo'llab-quvvatlanadi va zamonaviy HTML/DOM standartiga integratsiyalangan, boshqalari esa hali loyiha bosqichida. Siz har qanday brauzerda misollarni sinab ko'rishingiz mumkin, Google Chrome, ehtimol, bu xususiyatlar bilan eng yangilangan variantdir. O'ylab ko'ring, buning sababi Google dan boshqa varianlar mavzuga aloqador ko'plab texnik xususiyatlarga ega emas.
+Hozirda ushbu standartlar ishlab chiqilmoqda. Ba'zi xususiyatlar yaxshi qo'llab-quvvatlanadi va zamonaviy HTML/DOM standartiga integratsiyalangan, boshqalari esa hali loyiha bosqichida. Siz har qanday brauzerda misollarni sinab ko'rishingiz mumkin. Google Chrome, ehtimol, bu xususiyatlar bilan eng yangilangan variantdir. O'ylab ko'ring, buning sababi Google dan boshqa varianlar mavzuga aloqador ko'plab texnik xususiyatlarga ega emas.
 
 ## O'rtada umumiylik bormi...
 
@@ -28,7 +28,7 @@ Xalqaro kosmik stansiya:
 
 Bunday murakkab qurilmalar qanday yaratilgan?
 
-Rivojlanishimizni bir xil darajadagi ishonchli va kengaytiriladigan qilish uchun qanday tamoyillarni olishimiz mumkin? Yoki, hech bo'lmaganda, unga yaqinini ololamizmi?
+Rivojlanishimizni bir xil darajadagi ishonchli va kengaytiriladigan qilish uchun qanday tamoyillarni olishimiz mumkin? Hech bo'lmaganda, unga yaqinini ololamizmi?
 
 ## Komponent tuzilishi
 
@@ -36,7 +36,7 @@ Murakkab dasturiy ta'minotni ishlab chiqishning taniqli qoidasi - bu murakkab da
 
 Agar biror narsa murakkab bo'lib qolsa -- uni oddiyroq qismlarga bo'ling va eng aniq tarzda ulang.
 
-**Yaxshi arxitektor - bu murakkabni soddalashtira oladigan kishi.**
+**Yaxshi arxitektor - bu murakkabni soddalashtira oladigan arxitektor**
 
 Biz foydalanuvchi interfeysini vizual komponentlarga ajratishimiz mumkin: ularning har biri sahifada o'z o'rniga ega, yaxshi tasvirlangan vazifani boshqalardan alohida "bajara oladi".
 
@@ -54,7 +54,7 @@ Tabiiyki, u ham tarkibiy qismlarga bo'linadi:
 
 Komponentlar subkomponentlarga ega bo'lishi mumkin, masalan, xabarlar yuqori darajadagi "xabarlar ro'yxati" komponentining qismlari bo'lishi, bosiladigan foydalanuvchi rasmining o'zi komponent bo'lishi mumkin va hokazo.
 
-Komponent nimaligi haqida qanday qilib bir qarorga kelishimiz mumkin? Bu sezgi, tajriba va sog'lom fikrdan kelib chiqadi. Odatda bu alohida vizual obyekt bo'lib, biz uning nima qilishi va sahifa bilan o'zaro ta'siri nuqtai nazaridan tasvirlashimiz mumkin. Yuqoridagi holatda, sahifada bloklar mavjud, ularning har biri o'z rolini o'ynaydi, bu komponentlarni qilish mantiq bilan bog'liq.
+Komponent nimaligi haqida qanday qilib bir qarorga kelishimiz mumkin? Bu sezgi, tajriba va sog'lom fikrdan kelib chiqadi. Odatda bu alohida vizual obyekt bo'lib, biz uning nima qilishi va sahifa bilan o'zaro ta'siri nuqtayi nazaridan tasvirlashimiz mumkin. Yuqoridagi holatda, sahifada bloklar mavjud, ularning har biri o'z rolini o'ynaydi, bu komponentlarni bajarish mantiqiy hisoblanadi. 
 
 Komponentda quyidagilar mavjud:
 - O'zining JavaScript klassi.
@@ -62,9 +62,9 @@ Komponentda quyidagilar mavjud:
 - Komponentga qo'llaniladigan CSS uslublari.
 - API: hodisalar, sinf usullari va boshqalar, boshqa komponentlar bilan o'zaro ta'sir qilish.
 
-Yana bir bor, butun "komponent" narsa alohida narsa emas.
+Yana bir bor takrorlaymiz, butun "komponent" narsa alohida narsa emas.
 
-Ularni qurish uchun ko'plab ramkalar va rivojlanish metodologiyalari mavjud, ularning har biri o'z qo'ng'iroqlari va hushtaklariga ega. Odatda, maxsus CSS klasslari va konventsiyalari "komponent hissini" ta'minlash uchun ishlatiladi, masalan, CSS miqyosi va DOM inkapsulyatsiyasi.
+Ularni qurish uchun ko'plab ramkalar va rivojlanish metodologiyalari mavjud, ularning har biri o'z qo'ng'iroqlari va hushtaklariga ega. Odatda, maxsus CSS klasslari va konventsiyalari "komponent hissini" ta'minlash uchun ishlatiladi, masalan, CSS miqyosi va DOM inkapsulyatsiyasi. 
 
 "Veb komponentlar" buning uchun o'rnatilgan brauzer imkoniyatlarini ta'minlaydi, shuning uchun biz ularga boshqa taqlid qilishimiz shart emas.
 
