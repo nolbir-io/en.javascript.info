@@ -1,30 +1,30 @@
-# Methods of RegExp and String
+# RegExp va String usullari
 
-In this article we'll cover various methods that work with regexps in-depth.
+Ushbu maqolada biz regexps bilan chuqur ishlaydigan turli usullarni ko'rib chiqamiz.
 
 ## str.match(regexp)
 
-The method `str.match(regexp)` finds matches for `regexp` in the string `str`.
+`str.match(regexp)` usuli `str` qatoridagi `regexp` uchun mosliklarni topadi.
 
-It has 3 modes:
+U 3 ta rejimga ega:
 
-1. If the `regexp` doesn't have flag `pattern:g`, then it returns the first match as an array with capturing groups and properties `index` (position of the match), `input` (input string, equals `str`):
+1. Agar `regexp` da `pattern:g` bayrog'i bo'lmasa, u birinchi moslikni `index` (moslik o'rni), `input` (kirish qatori, `str` bilan teng) olish guruhlari va xususiyatlariga ega massiv sifatida qaytaradi:
 
     ```js run
     let str = "I love JavaScript";
 
     let result = str.match(/Java(Script)/);
 
-    alert( result[0] );     // JavaScript (full match)
-    alert( result[1] );     // Script (first capturing group)
+    alert( result[0] );     // JavaScript (to'liq moslik)
+    alert( result[1] );     // Skript (birinchi suratga olish guruhi)
     alert( result.length ); // 2
 
-    // Additional information:
-    alert( result.index );  // 7 (match position)
-    alert( result.input );  // I love JavaScript (source string)
+    // Qo'shimcha ma'lumot:
+    alert( result.index );  // 7 (moslik pozitsiyasi)
+    alert( result.input );  // I love JavaScript (manbaa stringi)
     ```
 
-2. If the `regexp` has flag `pattern:g`, then it returns an array of all matches as strings, without capturing groups and other details.
+2. Agar `regexp` da `pattern:g` bayrog'i bo'lsa, u guruhlar va boshqa tafsilotlarni yozmasdan, barcha mos keladigan qatorni qatorlar sifatida qaytaradi.
     ```js run
     let str = "I love JavaScript";
 
@@ -34,9 +34,9 @@ It has 3 modes:
     alert( result.length ); // 1
     ```
 
-3. If there are no matches, no matter if there's flag `pattern:g` or not, `null` is returned.
+3. Agar `pattern:g` bayrog'i bor yoki yo'qligidan qat'iy nazar, mos kelmasa, `null` qaytariladi.
 
-    That's an important nuance. If there are no matches, we don't get an empty array, but `null`. It's easy to make a mistake forgetting about it, e.g.:
+   Bu muhim nyuans. Agar mosliklar bo'lmasa, biz bo'sh massivni olmaymiz, lekin `null` ni olamiz. Buni unutib xato qilish oson, masalan:
 
     ```js run
     let str = "I love JavaScript";
@@ -44,10 +44,10 @@ It has 3 modes:
     let result = str.match(/HTML/);
 
     alert(result); // null
-    alert(result.length); // Error: Cannot read property 'length' of null
+    alert(result.length); // Error: Nullning "length" xususiyatini o'qib bo'lmaydi
     ```
 
-    If we want the result to be an array, we can write like this:
+    Natija massiv bo'lishini istasak, quyidagicha yozishimiz mumkin:
 
     ```js
     let result = str.match(regexp) || [];
@@ -57,17 +57,17 @@ It has 3 modes:
 
 [recent browser="new"]
 
-The method `str.matchAll(regexp)` is a "newer, improved" variant of `str.match`.
+`str.matchAll(regexp)` usuli `str.match` ning "yangiroq, takomillashtirilgan" variantidir.
 
-It's used mainly to search for all matches with all groups.
+U asosan barcha guruhlar bilan barcha mosliklarni qidirish uchun ishlatiladi.
 
-There are 3 differences from `match`:
+`Match`dan 3 ta farqi bor:
 
-1. It returns an iterable object with matches instead of an array. We can make a regular array from it using `Array.from`.
-2. Every match is returned as an array with capturing groups (the same format as `str.match` without flag `pattern:g`).
-3. If there are no results, it returns an empty iterable object instead of `null`.
+1. U massiv o'rniga mos keladigan takrorlanadigan obyektni qaytaradi. Undan `Array.from` yordamida oddiy massiv yasashimiz mumkin.
+2. Har bir moslik qo'lga olingan guruhlarga ega massiv sifatida qaytariladi (`str.match` bilan bir xil format `pattern:g` belgisisiz).
+3. Natijalar bo'lmasa, u `null` o'rniga bo'sh takrorlanadigan obyektni qaytaradi.
 
-Usage example:
+Amaliy misol:
 
 ```js run
 let str = '<h1>Hello, world!</h1>';
@@ -75,9 +75,9 @@ let regexp = /<(.*?)>/g;
 
 let matchAll = str.matchAll(regexp);
 
-alert(matchAll); // [object RegExp String Iterator], not array, but an iterable
+alert(matchAll); // [object RegExp String Iterator], array emas, lekin iterable (takrorlanadigan)
 
-matchAll = Array.from(matchAll); // array now
+matchAll = Array.from(matchAll); // endi array 
 
 let firstMatch = matchAll[0];
 alert( firstMatch[0] );  // <h1>
@@ -86,97 +86,97 @@ alert( firstMatch.index );  // 0
 alert( firstMatch.input );  // <h1>Hello, world!</h1>
 ```
 
-If we use `for..of` to loop over `matchAll` matches, then we don't need `Array.from` any more.
+Agar biz `matchAll` mosliklarini aylantirish uchun `for..of` dan foydalansak, endi `Array.from` kerak emas.
 
 ## str.split(regexp|substr, limit)
 
-Splits the string using the regexp (or a substring) as a delimiter.
+Ajratuvchi sifatida regexp (yoki pastki qator) yordamida qatorni ajratadi.
 
-We can use `split` with strings, like this:
+Biz `split` dan quyidagi kabi satrlar bilan foydalanishimiz mumkin:
 
 ```js run
-alert('12-34-56'.split('-')) // array of ['12', '34', '56']
+alert('12-34-56'.split('-')) // ['12', '34', '56'] dagi array
 ```
 
-But we can split by a regular expression, the same way:
+Ammo biz oddiy ibora bilan ham quyidagi kabi ajratishimiz mumkin:
 
 ```js run
-alert('12, 34, 56'.split(/,\s*/)) // array of ['12', '34', '56']
+alert('12, 34, 56'.split(/,\s*/)) // ['12', '34', '56'] dagi array
 ```
 
 ## str.search(regexp)
 
-The method `str.search(regexp)` returns the position of the first match or `-1` if none found:
+`str.search(regexp)` usuli birinchi mos keladigan joyni yoki topilmasa, `-1`ni qaytaradi:
 
 ```js run
 let str = "A drop of ink may make a million think";
 
-alert( str.search( /ink/i ) ); // 10 (first match position)
+alert( str.search( /ink/i ) ); // 10 (birinchi moslik pozitsiyasi)
 ```
 
-**The important limitation: `search` only finds the first match.**
+**Muhim cheklov: `search` faqat birinchi moslikni topadi.**
 
-If we need positions of further matches, we should use other means, such as finding them all with `str.matchAll(regexp)`.
+Agar bizga keyingi moslik pozitsiyalari kerak bo'lsa, biz boshqa vositalardan foydalanishimiz kerak, masalan, `str.matchAll(regexp)` yordamida ularning barchasini topish.
 
 ## str.replace(str|regexp, str|func)
 
-This is a generic method for searching and replacing, one of most useful ones. The swiss army knife for searching and replacing.  
+Bu qidirish va almashtirishning eng foydali umumiy usullardan biridir . Qidiruv va almashtirish uchun Shveytsariya armiyasi pichog'idan foydalanamiz.
 
-We can use it without regexps, to search and replace a substring:
+Biz undan pastki qatorni qidirish va almashtirishda regexpssiz ishlatishimiz mumkin:
 
 ```js run
-// replace a dash by a colon
+// chiziqchani ikki nuqta bilan almashtiring
 alert('12-34-56'.replace("-", ":")) // 12:34-56
 ```
 
-There's a pitfall though.
+Biroq, bu yerda tuzoq bor.
 
-**When the first argument of `replace` is a string, it only replaces the first match.**
+**`replace` ning birinchi argumenti satr bo'lsa, u faqat birinchi moslikni almashtiradi.**
 
-You can see that in the example above: only the first `"-"` is replaced by `":"`.
+Buni yuqoridagi misolda ko'rishingiz mumkin: faqat birinchi `"-"` `":"` bilan almashtirilgan.
 
-To find all hyphens, we need to use not the string `"-"`, but a regexp `pattern:/-/g`, with the obligatory `pattern:g` flag:
+Barcha defislarni topish uchun biz `"-"` qatorini emas, balki regexp `pattern:/-/g`, majburiy `pattern:g` bayrog'ini ishlatishimiz kerak:
 
 ```js run
-// replace all dashes by a colon
+// barcha chiziqlarni ikki nuqta bilan almashtiring
 alert( '12-34-56'.replace( *!*/-/g*/!*, ":" ) )  // 12:34:56
 ```
 
-The second argument is a replacement string. We can use special characters in it:
+Ikkinchi argument string o'rnini bosuvchi qatordir. Unda biz maxsus belgilardan foydalanishimiz mumkin:
 
-| Symbols | Action in the replacement string |
+| Belgilar | O'zgartirish qatoridagi harakat |
 |--------|--------|
-|`$&`|inserts the whole match|
-|<code>$&#096;</code>|inserts a part of the string before the match|
-|`$'`|inserts a part of the string after the match|
-|`$n`|if `n` is a 1-2 digit number, inserts the contents of n-th capturing group, for details see [](info:regexp-groups)|
-|`$<name>`|inserts the contents of the parentheses with the given `name`, for details see [](info:regexp-groups)|
-|`$$`|inserts character `$` |
+|`$&`|barcha moslikni kiritadi|
+|<code>$&#096;</code>|o'yindan oldin qatorning bir qismini kiritadi|
+|`$'`|moslikdan keyingi satrning bir qismini kiritadi|
+|`$n`|agar `n` 1-2 xonali raqam bo'lsa, n-tortib olish guruhi tarkibini kiritadi, batafsil ma'lumot uchun [](info:regexp-groups)|
+|`$<name>`|qavslar mazmunini berilgan `name` bilan kiritadi, batafsil ma'lumot uchun [](info:regexp-groups)|
+|`$$`|`$` | belgisini kiritadi
 
-For instance:
+Masalan:
 
 ```js run
 let str = "John Smith";
 
-// swap first and last name
+// ism va familiyani almashtiring
 alert(str.replace(/(john) (smith)/i, '$2, $1')) // Smith, John
 ```
 
-**For situations that require "smart" replacements, the second argument can be a function.**
+**"Smart" almashtirishni talab qiladigan vaziyatlar uchun ikkinchi argument funksiya bo'lishi mumkin.**
 
-It will be called for each match, and the returned value will be inserted as a replacement.
+U har bir moslik uchun chaqiriladi va qaytarilgan qiymat almashtirish sifatida kiritiladi.
 
-The function is called with arguments `func(match, p1, p2, ..., pn, offset, input, groups)`:
+Funksiya `func(match, p1, p2, ..., pn, ofset, input, groups)` argumentlari bilan chaqiriladi:
 
-1. `match` -- the match,
-2. `p1, p2, ..., pn` -- contents of capturing groups (if there are any),
-3. `offset` -- position of the match,
-4. `input` -- the source string,
-5. `groups` -- an object with named groups.
+1. `match` -- match,
+2. `p1, p2, ..., pn` -- qo'lga olish guruhlari tarkibi (agar mavjud bo'lsa),
+3. `ofset` -- matchning pozitsiyasi,
+4. `kiritish` -- manbaa qatori,
+5. `guruhlar` -- nomli guruhlarga ega obyekt.
 
-If there are no parentheses in the regexp, then there are only 3 arguments: `func(str, offset, input)`.
+Agar regexpda qavslar bo'lmasa, u holda faqat 3 ta argument mavjud: `func(str, ofset, input)`.
 
-For example, let's uppercase all matches:
+Masalan, keling, barcha mosliklarni bosh harf bilan yozamiz:
 
 ```js run
 let str = "html and css";
@@ -186,13 +186,13 @@ let result = str.replace(/html|css/gi, str => str.toUpperCase());
 alert(result); // HTML and CSS
 ```
 
-Replace each match by its position in the string:
+Har bir moslikni satrdagi o'rni bilan almashtiring:
 
 ```js run
 alert("Ho-Ho-ho".replace(/ho/gi, (match, offset) => offset)); // 0-3-6
 ```
 
-In the example below there are two parentheses, so the replacement function is called with 5 arguments: the first is the full match, then 2 parentheses, and after it (not used in the example) the match position and the source string:
+Quyidagi misolda ikkita qavs mavjud, shuning uchun almashtirish funktsiyasi 5 ta argument bilan chaqiriladi: birinchisi to'liq moslik, keyin 2 qavs va undan keyin (misolda ishlatilmaydi) moslik pozitsiyasi va manba qatori berilgan:
 
 ```js run
 let str = "John Smith";
@@ -202,7 +202,7 @@ let result = str.replace(/(\w+) (\w+)/, (match, name, surname) => `${surname}, $
 alert(result); // Smith, John
 ```
 
-If there are many groups, it's convenient to use rest parameters to access them:
+Agar guruhlar ko'p bo'lsa, ularga kirish uchun dam olish parametrlaridan foydalanish qulayroq:
 
 ```js run
 let str = "John Smith";
@@ -212,7 +212,7 @@ let result = str.replace(/(\w+) (\w+)/, (...match) => `${match[2]}, ${match[1]}`
 alert(result); // Smith, John
 ```
 
-Or, if we're using named groups, then `groups` object with them is always the last, so we can obtain it like this:
+Yoki biz nomli guruhlardan foydalanayotgan bo'lsak, ular bilan birga `grooups` obyekti har doim oxirgi bo'ladi, shuning uchun uni quyidagicha olishimiz mumkin:
 
 ```js run
 let str = "John Smith";
@@ -226,101 +226,101 @@ let result = str.replace(/(?<name>\w+) (?<surname>\w+)/, (...match) => {
 alert(result); // Smith, John
 ```
 
-Using a function gives us the ultimate replacement power, because it gets all the information about the match, has access to outer variables and can do everything.
+Funksiyadan foydalanish bizga yakuniy almashtirish quvvatini beradi, chunki u o'yin haqidagi barcha ma'lumotlarni oladi, tashqi o'zgaruvchilarga kirish huquqiga ega va hamma narsani bajaroladi.
 
 ## str.replaceAll(str|regexp, str|func)
 
-This method is essentially the same as `str.replace`, with two major differences:
+Bu usul asosan `str.replace` bilan bir xil bo'lib, ikkita asosiy farqqa ega:
 
-1. If the first argument is a string, it replaces *all occurrences* of the string, while `replace` replaces only the *first occurrence*.
-2. If the first argument is a regular expression without the `g` flag, there'll be an error. With `g` flag, it works the same as `replace`.
+1. Agar birinchi argument satr bo'lsa, u satrning *barcha takrorlanishlar* o'rnini bosadi, `replace` esa faqat *birinchi hodisani* almashtiradi.
+2. Agar birinchi argument `g` bayrog'isiz muntazam ifoda bo'lsa, xatolik yuz beradi. `G` bayrog'i `replace` bilan bir xil ishlaydi.
 
-The main use case for `replaceAll` is replacing all occurrences of a string.
+`replaceAll` ning asosiy qo'llanilishi satrning barcha holatlarini almashtirishdir.
 
-Like this:
+Quyidagi kabi:
 
 ```js run
-// replace all dashes by a colon
+// barcha chiziqlarni ikki nuqta bilan almashtiring
 alert('12-34-56'.replaceAll("-", ":")) // 12:34:56
 ```
 
 
 ## regexp.exec(str)
 
-The `regexp.exec(str)` method returns a match for `regexp` in the string `str`.  Unlike previous methods, it's called on a regexp, not on a string.
+`regexp.exec(str)` usuli `str` qatoridagi `regexp` uchun moslikni qaytaradi. Oldingi usullardan farqli o'laroq, u satrda emas, balki regexp orqali chaqiriladi.
 
-It behaves differently depending on whether the regexp has flag `pattern:g`.
+Regexp `pattern:g` bayrog'iga ega yoki yo'qligiga qarab u boshqacha harakat qiladi.
 
-If there's no `pattern:g`, then `regexp.exec(str)` returns the first match exactly as  `str.match(regexp)`. This behavior doesn't bring anything new.
+Agar `pattern:g` bo'lmasa, `regexp.exec(str)` birinchi moslikni aynan `str.match(regexp)` sifatida qaytaradi. Bu xatti-harakat yangi hech narsa keltirmaydi.
 
-But if there's flag `pattern:g`, then:
-- A call to `regexp.exec(str)` returns the first match and saves the position immediately after it in the property `regexp.lastIndex`.
-- The next such call starts the search from position `regexp.lastIndex`, returns the next match and saves the position after it in `regexp.lastIndex`.
-- ...And so on.
-- If there are no matches, `regexp.exec` returns `null` and resets `regexp.lastIndex` to `0`.
+Ammo agar `pattern:g` bayrog'i bo'lsa, unda:
+- `regexp.exec(str)` ga qo'ng'iroq birinchi moslikni qaytaradi va darhol undan keyingi joyni `regexp.lastIndex` xususiyatida saqlaydi.
+- Keyingi bunday qo'ng'iroq `regexp.lastIndex` pozitsiyasidan qidirishni boshlaydi, keyingi moslikni qaytaradi va undan keyingi joyni `regexp.lastIndex` da saqlaydi.
+- ...Va hokazo.
+- Agar mos kelmasa, `regexp.exec` `null`ni qaytaradi va `regexp.lastIndex` ni `0` ga qaytaradi.
 
-So, repeated calls return all matches one after another, using property `regexp.lastIndex` to keep track of the current search position.
+Shunday qilib, takroriy qo'ng'iroqlar joriy qidiruv holatini kuzatish uchun `regexp.lastIndex` xususiyatidan foydalanib, barcha mosliklarni birin-ketin qaytaradi.
 
-In the past, before the method `str.matchAll` was added to JavaScript, calls of `regexp.exec` were used in the loop to get all matches with groups:
+Ilgari, JavaScriptga `str.matchAll` usuli qo'shilishidan oldin, guruhlar bilan barcha mosliklarni olish uchun siklda `regexp.exec` qo'ng'iroqlari ishlatilgan:
 
 ```js run
-let str = 'More about JavaScript at https://javascript.info';
+let str = 'JavaScript haqida yanada chuqurroq bilish uchun: https://javascript.info';
 let regexp = /javascript/ig;
 
 let result;
 
 while (result = regexp.exec(str)) {
   alert( `Found ${result[0]} at position ${result.index}` );
-  // Found JavaScript at position 11, then
-  // Found javascript at position 33
+  // 11-pozitsiyada JavaScript topildi, keyin
+   // 33-pozitsiyada javascript topildi
 }
 ```
 
-This works now as well, although for newer browsers `str.matchAll` is usually more convenient.
+Bu hozir ham ishlaydi, garchi yangi brauzerlar uchun `str.matchAll` odatda qulayroqdir.
 
-**We can use `regexp.exec` to search from a given position by manually setting `lastIndex`.**
+**Biz `lastIndex`ni qo'lda o'rnatish orqali berilgan joydan qidirish uchun `regexp.exec` dan foydalanishimiz mumkin.**
 
-For instance:
+Masalan:
 
 ```js run
 let str = 'Hello, world!';
 
-let regexp = /\w+/g; // without flag "g", lastIndex property is ignored
-regexp.lastIndex = 5; // search from 5th position (from the comma)
+let regexp = /\w+/g; // flag "g" bayrog'isiz lastIndex xususiyati e'tiborga olinmaydi
+regexp.lastIndex = 5; // 5-pozitsiyadan qidiring (verguldan boshlab)
 
 alert( regexp.exec(str) ); // world
 ```
 
-If the regexp has flag `pattern:y`, then the search will be performed exactly at the  position `regexp.lastIndex`, not any further.
+Agar regexpda `pattern:y` belgisi bo'lsa, qidiruv `regexp.lastIndex` pozitsiyasida amalga oshiriladi, bundan keyin emas.
 
-Let's replace flag `pattern:g` with `pattern:y` in the example above. There will be no matches, as there's no word at position `5`:
+Yuqoridagi misoldagi `pattern:g` belgisini `pattern:y` bilan almashtiramiz. `5` pozitsiyasida hech qanday so'z yo'qligi sababli hech narsa mos kelmaydi:
 
 ```js run
 let str = 'Hello, world!';
 
 let regexp = /\w+/y;
-regexp.lastIndex = 5; // search exactly at position 5
+regexp.lastIndex = 5; // 5-pozitsiyada aniq qidiring
 
 alert( regexp.exec(str) ); // null
 ```
 
-That's convenient for situations when we need to "read" something from the string by a regexp at the exact position, not somewhere further.
+Bu biz satrdan biror narsani regexp orqali "o'qishimiz" kerak bo'lgan holatlar uchun qulaydir, boshqa joyda emas.
 
 ## regexp.test(str)
 
-The method `regexp.test(str)` looks for a match and returns `true/false` whether it exists.
+`regexp.test(str)` usuli moslikni qidiradi va u mavjud bo'lsa, `true/false` ni qaytaradi.
 
-For instance:
+Masalan:
 
 ```js run
 let str = "I love JavaScript";
 
-// these two tests do the same
+// quyidagi ikkita test bir xil vazifani bajaradi
 alert( *!*/love/i*/!*.test(str) ); // true
 alert( str.search(*!*/love/i*/!*) != -1 ); // true
 ```
 
-An example with the negative answer:
+Manfiy javobga ega namuna:
 
 ```js run
 let str = "Bla-bla-bla";
@@ -329,24 +329,24 @@ alert( *!*/love/i*/!*.test(str) ); // false
 alert( str.search(*!*/love/i*/!*) != -1 ); // false
 ```
 
-If the regexp has flag `pattern:g`, then `regexp.test` looks from `regexp.lastIndex` property and updates this property, just like `regexp.exec`.
+Agar regexpda `pattern:g` bayrog'i bo'lsa, `regexp.test` `regexp.lastIndex` xususiyatidan ko'rinadi va xuddi `regexp.exec` kabi bu xususiyatni yangilaydi.
 
-So we can use it to search from a given position:
+Shunday qilib, biz uni ma'lum bir pozitsiyadan qidirish uchun ishlatishimiz mumkin:
 
 ```js run
 let regexp = /love/gi;
 
 let str = "I love JavaScript";
 
-// start the search from position 10:
+// 10-pozitsiyadan qidiruvni boshlang:
 regexp.lastIndex = 10;
-alert( regexp.test(str) ); // false (no match)
+alert( regexp.test(str) ); // false (moslik yo'q)
 ```
 
-````warn header="Same global regexp tested repeatedly on different sources may fail"
-If we apply the same global regexp to different inputs, it may lead to wrong result, because `regexp.test` call advances `regexp.lastIndex` property, so the search in another string may start from non-zero position.
+````warn header="Turli manbalarda qayta-qayta sinovdan o'tgan bir xil global regexp muvaffaqiyatsiz bo'lishi mumkin"
+Agar biz bir xil global regexpni turli ma'lumotlarga qo'llasak, bu noto'g'ri natijaga olib kelishi mumkin, chunki `regexp.test` qo'ng'irog'i `regexp.lastIndex` xususiyatini ilgari suradi, shuning uchun boshqa qatorda qidirish nolga teng bo'lmagan joydan boshlanishi mumkin.
 
-For instance, here we call `regexp.test` twice on the same text, and the second time fails:
+Misol uchun, bu yerda biz bir xil matnda ikki marta `regexp.test` ni chaqiramiz va u ikkinchi marta bajarilmaydi:
 
 ```js run
 let regexp = /javascript/g;  // (regexp just created: regexp.lastIndex=0)
@@ -355,7 +355,7 @@ alert( regexp.test("javascript") ); // true (regexp.lastIndex=10 now)
 alert( regexp.test("javascript") ); // false
 ```
 
-That's exactly because `regexp.lastIndex` is non-zero in the second test.
+Buning sababi, ikkinchi testda `regexp.lastIndex` nolga teng emas.
 
-To work around that, we can set `regexp.lastIndex = 0` before each search. Or instead of calling methods on regexp, use string methods `str.match/search/...`, they don't use `lastIndex`.
+Buni hal qilish uchun har bir qidiruvdan oldin `regexp.lastIndex = 0` ni o'rnatishimiz mumkin. Yoki regexp da qo'ng'iroq qilish usullari o'rniga `str.match/search/...` qator usullaridan foydalaning, ular "lastIndex" dan foydalanmaydi.
 ````
