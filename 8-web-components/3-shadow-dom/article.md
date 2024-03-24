@@ -71,7 +71,7 @@ Natijada paydo bo'lgan DOM Chrome dev asboblarida shunday ko'rinadi, barcha kont
 
 ![](shadow-dom-say-hello.png)
 
-Birinchidan, `elem.attachShadow({rejim: …})` ga qo'ng'iroq qilish soya daraxtini yaratadi.
+Birinchidan, `elem.attachShadow({mode: …})` ga qo'ng'iroq qilish soya daraxtini yaratadi.
 
 Ikkita cheklov mavjud:
 1. Biz har bir element uchun faqat bitta soya ildizini yaratishimiz mumkin.
