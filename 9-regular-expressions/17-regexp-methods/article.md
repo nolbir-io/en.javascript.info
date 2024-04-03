@@ -16,7 +16,7 @@ U 3 ta rejimga ega:
     let result = str.match(/Java(Script)/);
 
     alert( result[0] );     // JavaScript (to'liq moslik)
-    alert( result[1] );     // Skript (birinchi suratga olish guruhi)
+    alert( result[1] );     // Skript (birinchi topish guruhi)
     alert( result.length ); // 2
 
     // Qo'shimcha ma'lumot:
