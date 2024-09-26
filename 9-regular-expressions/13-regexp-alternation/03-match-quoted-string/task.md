@@ -1,32 +1,32 @@
-# Find quoted strings
+# Qo'shtirnoqli qatorlarni toping
 
-Create a regexp to find strings in double quotes `subject:"..."`.
+Ikkita qo'shtirnoq ichidagi satrlarni topish uchun regexp yarating `subject:"..."`.
 
-The strings should support escaping, the same way as JavaScript strings do. For instance, quotes can be inserted as `subject:\"` a newline as `subject:\n`, and the backslash itself as `subject:\\`.
+Satrlar JavaScript satrlari kabi qochishni qo'llab-quvvatlashi kerak. Masalan, qo'shtirnoqlarni `subject:\"` yangi qatorni `subject:\n`, backslash ni esa `subject:\\` sifatida kiritish mumkin.
 
 ```js
 let str = "Just like \"here\".";
 ```
 
-Please note, in particular, that an escaped quote `subject:\"` does not end a string.
+Shuni esda tutingki, `subject:\"` qochib ketgan qo'shtirnoq qatorni tugatmaydi.
 
-So we should search from one quote to the other ignoring escaped quotes on the way.
+Shunday qilib, biz yo'lda qochib ketgan qo'shtirnoqlarga e'tibor bermasdan, bir qo'shtirnoqdan ikkinchisiga qidirishimiz kerak.
 
-That's the essential part of the task, otherwise it would be trivial.
+Bu vazifaning muhim qismi, aks holda bu ahamiyatsiz bo'lar edi.
 
-Examples of strings to match:
+Mos keladigan satrlarga misollar:
 ```js
 .. *!*"test me"*/!* ..  
-.. *!*"Say \"Hello\"!"*/!* ... (escaped quotes inside)
-.. *!*"\\"*/!* ..  (double backslash inside)
-.. *!*"\\ \""*/!* ..  (double backslash and an escaped quote inside)
+.. *!*"Say \"Hello\"!"*/!* ... (qochib ketgan ichki quotelar)
+.. *!*"\\"*/!* ..  (ichida ikkita backslash)
+.. *!*"\\ \""*/!* ..  (ikki tomonlama backslash va ichkarida qochib ketgan quote)
 ```
 
-In JavaScript we need to double the backslashes to pass them right into the string, like this:
+JavaScriptda biz ularni to'g'ridan-to'g'ri satrga o'tkazish uchun backslashni ikki barobarga oshirishimiz kerak, masalan:
 
 ```js run
 let str = ' .. "test me" .. "Say \\"Hello\\"!" .. "\\\\ \\"" .. ';
 
-// the in-memory string
+// xotiradagi qator
 alert(str); //  .. "test me" .. "Say \"Hello\"!" .. "\\ \"" ..
 ```

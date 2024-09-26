@@ -1,22 +1,22 @@
-# Catastrophic backtracking
+# Falokatli orqaga qaytish
 
-Some regular expressions are looking simple, but can execute a veeeeeery long time, and even "hang" the JavaScript engine.
+Ba'zi oddiy iboralar oddiy ko'rinadi, lekin juda uzoq vaqt va hatto JavaScript dvigatelini "osib qo'yishi" mumkin.
 
-Sooner or later most developers occasionally face such behavior. The typical symptom -- a regular expression works fine sometimes, but for certain strings it "hangs", consuming 100% of CPU.
+Ertami-kechmi ko'pchilik dasturchilar vaqti-vaqti bilan bunday xatti-harakatlarga duch kelishadi. Odatiy alomat -- muntazam ifoda ba'zan yaxshi ishlaydi, lekin ba'zi qatorlar uchun u "osilib qoladi" va 100% protsessorni iste'mol qiladi.
 
-In such case a web-browser suggests to kill the script and reload the page. Not a good thing for sure.
+Bunday holda, veb-brauzer skriptni o'chirib, sahifani qayta yuklashni taklif qiladi. Albatta bu yaxshi narsa emas.
 
-For server-side JavaScript such a regexp may hang the server process, that's even worse. So we definitely should take a look at it.
+Bundan ham yomoni server tomonidagi JavaScript uchun bunday regexp server jarayonini osib qo'yishi mumkin. Shuning uchun biz buni albatta ko'rib chiqishimiz kerak.
 
-## Example
+## Namuna
 
-Let's say we have a string, and we'd like to check if it consists of words `pattern:\w+` with an optional space `pattern:\s?` after each.
+Aytaylik, bizda satr bor va uning har biridan keyin ixtiyoriy bo'sh joy qoldirilgan `pattern:\w+` so'zlaridan iborat yoki yo'qligini tekshirmoqchimiz.
 
-An obvious way to construct a regexp would be to take a word followed by an optional space `pattern:\w+\s?` and then repeat it with `*`.
+Regexp yaratishning aniq usuli bu so'zdan keyin ixtiyoriy bo'sh joy bo'lgan `pattern:\w+\s?` va keyin uni `*` bilan takrorlashdir.
 
-That leads us to the regexp `pattern:^(\w+\s?)*$`, it specifies zero or more such words, that start at the beginning `pattern:^` and finish at the end `pattern:$` of the line.
+Bu bizni regexp `pattern:^(\w+\s?)*$`ga olib boradi, u `pattern:^`chizig'i boshida boshlanib, `pattern:$` oxirida tugaydigan nol yoki undan ortiq so'zlarni bildiradi.
 
-In action:
+Amaliy namuna:
 
 ```js run
 let regexp = /^(\w+\s?)*$/;
@@ -25,59 +25,59 @@ alert( regexp.test("A good string") ); // true
 alert( regexp.test("Bad characters: $@#") ); // false
 ```
 
-The regexp seems to work. The result is correct. Although, on certain strings it takes a lot of time. So long that JavaScript engine "hangs" with 100% CPU consumption.
+Regexp ishlayotganga o'xshaydi. Natija to'g'ri. Ba'zi satrlarda bu ko'p vaqt talab etadi. JavaScript dvigateli 100% protsessor sarfi bilan "osib turdi".
 
-If you run the example below, you probably won't see anything, as JavaScript will just "hang". A web-browser will stop reacting on events, the UI will stop working (most browsers allow only scrolling). After some time it will suggest to reload the page. So be careful with this:
+Agar siz quyidagi misolni ishga tushirsangiz, ehtimol siz hech narsani ko'rmaysiz, chunki JavaScript shunchaki "osilib qoladi". Veb-brauzer voqealarga munosabat bildirishni to'xtatadi, UI ishlashni to'xtatadi (ko'pchilik brauzerlar faqat aylantirishga ruxsat beradi). Biroz vaqt o'tgach, u sahifani qayta yuklashni taklif qiladi. Shuning uchun ehtiyot bo'ling:
 
 ```js run
 let regexp = /^(\w+\s?)*$/;
-let str = "An input string that takes a long time or even makes this regexp hang!";
+let str = "Ko'p vaqt talab qiladigan yoki hatto ushbu regexpni osib qo'yadigan kirish qatori!";
 
-// will take a very long time
+// ko'p vaqt talab qiladi
 alert( regexp.test(str) );
 ```
 
-To be fair, let's note that some regular expression engines can handle such a search effectively, for example V8 engine version starting from 8.8 can do that (so Google Chrome 88 doesn't hang here), while Firefox browser does hang. 
+Shuni ta'kidlash lozimki, ba'zi oddiy ibora dvigatellari bunday qidiruvni samarali boshqarishi mumkin, masalan, 8.8 dan boshlanadigan V8 dvigatel versiyasi buni amalga oshirishi mumkin (shuning uchun Google Chrome 88 bu yerda osilib qolmaydi), Firefox brauzeri esa osilib qoladi.
 
-## Simplified example
+## Soddalashtirilgan misol
 
-What's the matter? Why does the regular expression hang?
+Nima bo'ldi? Nima uchun muntazam ifoda osilib qoladi?
 
-To understand that, let's simplify the example: remove spaces `pattern:\s?`. Then it becomes `pattern:^(\w+)*$`.
+Buni tushunish uchun misolni soddalashtiramiz: `pattern:\s?` bo'shliqlarini olib tashlang. Keyin u `pattern:^(\w+)*$` bo'ladi.
 
-And, to make things more obvious, let's replace `pattern:\w` with `pattern:\d`. The resulting regular expression still hangs, for instance:
+Va narsalarni yanada aniqroq qilish uchun `pattern:\w` ni `pattern:\d` bilan almashtiramiz. Olingan muntazam ifoda hali ham osilib turadi, masalan:
 
 ```js run
 let regexp = /^(\d+)*$/;
 
 let str = "012345678901234567890123456789z";
 
-// will take a very long time (careful!)
+// uzoq vaqt talab etadi (ehtiyot bo'ling!)
 alert( regexp.test(str) );
 ```
 
-So what's wrong with the regexp?
+Xo'sh, regexp bilan nima noto'g'ri?
 
-First, one may notice that the regexp `pattern:(\d+)*` is a little bit strange. The quantifier `pattern:*` looks extraneous. If we want a number, we can use `pattern:\d+`.
+Birinchidan, regexp `pattern:(\d+)*` biroz g'alati ekanligini sezish mumkin. `pattern:*` miqdoriy ko'rsatkichi begona ko'rinadi. Agar raqamni xohlasak, `pattern:\d+` dan foydalanishimiz mumkin.
 
-Indeed, the regexp is artificial; we got it by simplifying the previous example. But the reason why it is slow is the same. So let's understand it, and then the previous example will become obvious.
+Haqiqatan ham, regexp sun'iydir; oldingi misolni soddalashtirib oldik. Ammo sekin bo'lishining sababi bir xil. Keling, buni tushunib olaylik, keyin oldingi misol aniq bo'ladi.
 
-What happens during the search of `pattern:^(\d+)*$` in the line `subject:123456789z` (shortened a bit for clarity, please note a non-digit character `subject:z` at the end, it's important), why does it take so long?
+`subject:123456789z` qatorida `pattern:^(\d+)*$` qidirish paytida nima sodir bo'ladi (aniqlik uchun biroz qisqartirilgan, oxirida `subject:z` raqamli bo'lmagan belgiga e'tibor bering, bu muhim ), nega bu qadar uzoq davom etadi?
 
-Here's what the regexp engine does:
+Demak, regexp mexanizmi nima qiladi:
 
-1. First, the regexp engine tries to find the content of the parentheses: the number `pattern:\d+`. The plus `pattern:+` is greedy by default, so it consumes all digits:
+1. Birinchidan, regexp mexanizmi qavslar tarkibini topishga harakat qiladi: `pattern:\d+` raqami. Plyus `pattern:+` sukut bo'yicha ochko'zdir, shuning uchun u barcha raqamlarni sarflaydi:
 
     ```
     \d+.......
     (123456789)z
     ```
 
-    After all digits are consumed, `pattern:\d+` is considered found (as `match:123456789`).
+     Barcha raqamlar iste'mol qilingandan so'ng, `pattern:\d+` topilgan deb hisoblanadi (`match:123456789`).
 
-    Then the star quantifier `pattern:(\d+)*` applies. But there are no more digits in the text, so the star doesn't give anything.
+     Keyin `pattern:(\d+)*` yulduz miqdori qo'llaniladi. Ammo matnda boshqa raqamlar yo'q, shuning uchun yulduz hech narsa bermaydi.
 
-    The next character in the pattern is the string end `pattern:$`. But in the text we have `subject:z` instead, so there's no match:
+     Naqshdagi keyingi belgi qator oxiri `pattern:$`dir. Lekin matnda bizda `subject:z` o'rniga, mos keladigan narsa yo'q:
 
     ```
                X
@@ -85,16 +85,16 @@ Here's what the regexp engine does:
     (123456789)z
     ```
 
-2. As there's no match, the greedy quantifier `pattern:+` decreases the count of repetitions, backtracks one character back.
+2. Hech qanday moslik yo'qligi sababli, `pattern:+` ochko'z kvanti takrorlanish sonini kamaytiradi, bir belgi orqaga qaytaradi.
 
-    Now `pattern:\d+` takes all digits except the last one (`match:12345678`):
+     Endi `pattern:\d+` oxirgisidan tashqari barcha raqamlarni oladi (`match:12345678`):
     ```
     \d+.......
     (12345678)9z
     ```
-3. Then the engine tries to continue the search from the next position (right after `match:12345678`).
+3. Keyin vosita qidiruvni keyingi pozitsiyadan davom ettirishga harakat qiladi (`match: 12345678` dan keyin).
 
-    The star `pattern:(\d+)*` can be applied -- it gives one more match of `pattern:\d+`, the number `match:9`:
+     Yulduzcha `pattern:(\d+)*` qo'llanilishi mumkin -- u yana bitta `pattern:\d+`, `match:9` raqamini beradi:
 
     ```
 
@@ -102,7 +102,7 @@ Here's what the regexp engine does:
     (12345678)(9)z
     ```
 
-    The engine tries to match `pattern:$` again, but fails, because it meets `subject:z` instead:
+    Dvigatel yana `pattern:$` bilan moslashishga harakat qiladi, lekin muvaffaqiyatsiz bo'ladi, chunki u o'rniga `subject:z` javob beradi:
 
     ```
                  X
@@ -111,11 +111,11 @@ Here's what the regexp engine does:
     ```
 
 
-4. There's no match, so the engine will continue backtracking, decreasing the number of repetitions. Backtracking generally works like this: the last greedy quantifier decreases the number of repetitions until it reaches the minimum. Then the previous greedy quantifier decreases, and so on.
+4. Hech qanday mos kelmaydi, shuning uchun vosita takrorlanish sonini kamaytiradigan orqaga qaytishda davom etadi. Orqaga qaytish odatda shunday ishlaydi: oxirgi ochko'z miqdoriy belgi minimal darajaga yetguncha takrorlash sonini kamaytiradi. Keyin oldingi ochko'z miqdoriy ko'rsatkichi kamayadi va hokazo.
 
-    All possible combinations are attempted. Here are their examples.
+     Barcha mumkin bo'lgan kombinatsiyalarga harakat qilinadi. Mana ularning misollari.
 
-    The first number `pattern:\d+` has 7 digits, and then a number of 2 digits:
+     Birinchi `pattern:\d+` raqami 7 ta raqamdan, keyin esa 2 ta raqamdan iborat:
 
     ```
                  X
@@ -123,23 +123,23 @@ Here's what the regexp engine does:
     (1234567)(89)z
     ```
 
-    The first number has 7 digits, and then two numbers of 1 digit each:
-
+    Birinchi raqam 7 ta raqamdan, so'ngra har biri 1 raqamdanli ikkita raqamdan iborat:
+    
     ```
                    X
     \d+......\d+\d+
     (1234567)(8)(9)z
     ```
 
-    The first number has 6 digits, and then a number of 3 digits:
-
+    Birinchi raqam 6 ta raqamdan, keyin esa 3 ta raqamdan iborat:
+    
     ```
                  X
     \d+.......\d+
     (123456)(789)z
     ```
 
-    The first number has 6 digits, and then 2 numbers:
+    Birinchi raqam 6 ta raqamdan, keyin esa 2 ta raqamdan iborat:
 
     ```
                    X
@@ -147,22 +147,21 @@ Here's what the regexp engine does:
     (123456)(78)(9)z
     ```
 
-    ...And so on.
+    ...Va hokazo.
 
+`123456789` raqamlar ketma-ketligini raqamlarga bo'lishning ko'plab usullari mavjud. Aniq bo'lish uchun <code>2<sup>n</sup>-1</code> mavjud, bu yerda `n` ketma-ketlikning uzunligi.
 
-There are many ways to split a sequence of digits `123456789` into numbers. To be precise, there are <code>2<sup>n</sup>-1</code>, where `n` is the length of the sequence.
+- `123456789` uchun bizda `n=9` bor, bu 511 ta kombinatsiyani beradi.
+- `n=20` uzunroq ketma-ketlik uchun taxminan bir million (1048575) kombinatsiya mavjud.
+- `n=30` uchun - ming marta ko'p (1073741823 kombinatsiya).
 
-- For `123456789` we have `n=9`, that gives 511 combinations.
-- For a longer sequence with `n=20` there are about one million (1048575) combinations.
-- For `n=30` - a thousand times more (1073741823 combinations).
+Ularning har birini sinab ko'rish, qidiruvning shunchalik uzoq davom etishining sababidir.
 
-Trying each of them is exactly the reason why the search takes so long.
+## So'zlar va satrlarga qaytish
 
-## Back to words and strings
+Xuddi shunday holat bizning birinchi misolimizda ham sodir bo'ladi, biz `subject:An input thats!` qatorida `pattern:^(\w+\s?)*$` namunasi bo'yicha so'zlarni qidirganda sodir bo'ladi.
 
-The similar thing happens in our first example, when we look for words by pattern `pattern:^(\w+\s?)*$` in the string `subject:An input that hangs!`.
-
-The reason is that a word can be represented as one `pattern:\w+` or many:
+Buning sababi shundaki, so'z bitta `pattern:\w+` yoki ko'p sifatida ifodalanishi mumkin:
 
 ```
 (input)
@@ -172,63 +171,63 @@ The reason is that a word can be represented as one `pattern:\w+` or many:
 ...
 ```
 
-For a human, it's obvious that there may be no match, because the string ends with an exclamation sign `!`, but the regular expression expects a wordly character `pattern:\w` or a space `pattern:\s` at the end. But the engine doesn't know that.
+Inson uchun hech qanday mos kelmasligi aniq, chunki satr undov belgisi `!` bilan tugaydi, lekin oddiy ibora oxiridada `pattern:\w` so'z belgisi yoki `pattern:\s` bo'sh joy kutiladi. Ammo dvigatel buni bilmaydi.
 
-It tries all combinations of how the regexp `pattern:(\w+\s?)*` can "consume" the string, including variants with spaces `pattern:(\w+\s)*` and without them `pattern:(\w+)*` (because spaces `pattern:\s?` are optional). As there are many such combinations (we've seen it with digits), the search takes a lot of time.
+U regexp `pattern:(\w+\s?)*` satrni qanday "iste'mol qilishi" mumkin bo'lgan barcha kombinatsiyalarni sinab ko'radi, jumladan `pattern:(\w+\s)*` va ularsiz `pattern:(\ w+)*` (chunki bo'shliqlar `pattern:\s?` ixtiyoriy). Bunday kombinatsiyalar ko'p bo'lgani uchun (biz buni raqamlar bilan ko'rganmiz), qidiruv juda ko'p vaqtni oladi.
 
-What to do?
+Nima qilsa bo'ladi?
 
-Should we turn on the lazy mode?
+Biz dangasa rejimini yoqishimiz kerakmi?
 
-Unfortunately, that won't help: if we replace `pattern:\w+` with `pattern:\w+?`, the regexp will still hang. The order of combinations will change, but not their total count.
+Afsuski, bu yordam bermaydi: agar `pattern:\w+` ni `pattern:\w+?` bilan almashtirsak, regexp hali ham osilib qoladi. Kombinatsiyalar tartibi o'zgaradi, lekin ularning umumiy soni emas.
 
-Some regular expression engines have tricky tests and finite automations that allow to avoid going through all combinations or make it much faster, but most engines don't, and it doesn't always help.
+Ba'zi muntazam ifodali dvigatellarda murakkab sinovlar va chekli avtomatlashtirishlar mavjud bo'lib, ular barcha kombinatsiyalardan o'tishdan qochish yoki uni ancha tezlashtirish imkonini beradi, lekin ko'pchilik dvigatellarda bunday emas va bu har doim ham yordam bermaydi.
 
-## How to fix?
+## Qanday tuzatish kerak?
 
-There are two main approaches to fixing the problem.
+Muammoni hal qilishning ikkita asosiy usuli mavjud.
 
-The first is to lower the number of possible combinations.
+Birinchisi, mumkin bo'lgan kombinatsiyalar sonini kamaytirishdir.
 
-Let's make the space non-optional by rewriting the regular expression as `pattern:^(\w+\s)*\w*$` - we'll look for any number of words followed by a space `pattern:(\w+\s)*`, and then (optionally) a final word `pattern:\w*`.
+Oddiy iborani `pattern:^(\w+\s)*\w*$` shaklida qayta yozish orqali bo'sh joyni ixtiyoriy bo'lmagan holga keltiramiz - biz istalgan sonli so'zlardan keyin bo'sh joy `pattern:(\w+\s)*`, so'ngra (ixtiyoriy) yakuniy so'z `pattern:\w*` ni qidiramiz.
 
-This regexp is equivalent to the previous one (matches the same) and works well:
+Ushbu regexp avvalgisiga teng (xuddi shunday) va yaxshi ishlaydi:
 
 ```js run
 let regexp = /^(\w+\s)*\w*$/;
-let str = "An input string that takes a long time or even makes this regex hang!";
+let str = "Ko'p vaqt talab qiladigan yoki hatto bu regexni osib qo'yadigan kirish qatori!";
 
 alert( regexp.test(str) ); // false
 ```
 
-Why did the problem disappear?
+Nima uchun muammo yo'qoldi?
 
-That's because now the space is mandatory.
+Buning sababi, endi bo'sh joy majburiydir.
 
-The previous regexp, if we omit the space, becomes `pattern:(\w+)*`, leading to many combinations of `\w+` within a single word
+Oldingi regexp, agar bo'sh joy qoldirilsa, `pattern:(\w+)*` bo'lib, bir so'z ichida `\w+` ko'p birikmalariga olib keladi.
 
-So `subject:input` could be matched as two repetitions of `pattern:\w+`, like this:
+Shunday qilib, `subject:input` `pattern:\w+` ning ikkita takrorlanishi sifatida mos kelishi mumkin, masalan:
 
 ```
 \w+  \w+
 (inp)(ut)
 ```
 
-The new pattern is different: `pattern:(\w+\s)*` specifies repetitions of words followed by a space! The `subject:input` string can't be matched as two repetitions of `pattern:\w+\s`, because the space is mandatory.
+Yangi pattern boshqacha: `pattern:(\w+\s)*` bo'sh joy qo'yilgan so'zlarning takrorlanishini bildiradi! `subject:input` qatorini `pattern:\w+\s`ning ikki marta takrorlanishi sifatida moslab bo'lmaydi, chunki bo'sh joy majburiydir.
 
-The time needed to try a lot of (actually most of) combinations is now saved.
+Ko'p (aslida ko'pchilik) kombinatsiyalarni sinash uchun zarur bo'lgan vaqt endi tejaladi.
 
-## Preventing backtracking
+## Orqaga qaytishning oldini olish
 
-It's not always convenient to rewrite a regexp though. In the example above it was easy, but it's not always obvious how to do it.
+Regexpni qayta yozish har doim ham qulay emas. Yuqoridagi misolda bu oson edi, lekin buni qanday qilish har doim ham aniq emas.
 
-Besides, a rewritten regexp is usually more complex, and that's not good. Regexps are complex enough without extra efforts.
+Bundan tashqari, qayta yozilgan regexp odatda murakkabroq va bu yaxshi emas. Regexps qo'shimcha harakatlarsiz yetarlicha murakkab darajada.
 
-Luckily, there's an alternative approach. We can forbid backtracking for the quantifier.
+Yaxshiyamki, muqobil yondashuv mavjud. Biz miqdoriy belgi uchun orqaga qaytishni ta'qiqlashimiz mumkin.
 
-The root of the problem is that the regexp engine tries many combinations that are obviously wrong for a human.
+Muammoning ildizi shundaki, regexp mexanizmi inson uchun noto'g'ri bo'lgan ko'plab kombinatsiyalarni sinab ko'radi.
 
-E.g. in the regexp `pattern:(\d+)*$` it's obvious for a human, that `pattern:+` shouldn't backtrack. If we replace one `pattern:\d+` with two separate `pattern:\d+\d+`, nothing changes:
+Masalan, regexp `pattern:(\d+)*$` inson uchun `pattern:+` orqaga qaytmasligi aniq. Agar bitta `pattern:\d+` ni ikkita alohida `pattern:\d+\d+` bilan almashtirsak, hech narsa o'zgarmaydi:
 
 ```
 \d+........
@@ -238,81 +237,81 @@ E.g. in the regexp `pattern:(\d+)*$` it's obvious for a human, that `pattern:+` 
 (1234)(56789)!
 ```
 
-And in the original example `pattern:^(\w+\s?)*$` we may want to forbid backtracking in `pattern:\w+`. That is: `pattern:\w+` should match a whole word, with the maximal possible length. There's no need to lower the repetitions count in `pattern:\w+` or to split it into two words `pattern:\w+\w+` and so on.
+Va asl misolda `pattern:^(\w+\s?)*$` biz `pattern:\w+` da orqaga qaytishni taqiqlashni xohlashimiz mumkin. Ya'ni, `pattern:\w+` mumkin bo'lgan maksimal uzunlik bilan butun so'zga mos kelishi kerak. `pattern:\w+` da takrorlar sonini kamaytirish yoki uni ikki so'z `pattern:\w+\w+` va hokazolarga bo'lishning hojati yo'q.
 
-Modern regular expression engines support possessive quantifiers for that. Regular quantifiers become possessive if we add `pattern:+` after them. That is, we use `pattern:\d++` instead of `pattern:\d+` to stop `pattern:+` from backtracking.
+Zamonaviy muntazam ifoda dvigatellari buning uchun egalik kvantifikatorlarini qo'llab-quvvatlaydi. Doimiy miqdor bildiruvchilardan keyin `pattern:+` qo'shsak, ega bo'ladi. Ya'ni, biz `pattern:\d+` o'rniga `pattern:\d++` dan `pattern:+` orqaga qaytishini to'xtatamiz.
 
-Possessive quantifiers are in fact simpler than "regular" ones. They just match as many as they can, without any backtracking. The search process without backtracking is simpler.
+Egalik kvantlovchilari aslida "muntazam"larga qaraganda soddaroq. Ular hech qanday orqaga chekinmasdan iloji boricha ko'proq mos keladi. Orqaga qaytishsiz qidiruv jarayoni oson.
 
-There are also so-called "atomic capturing groups" - a way to disable backtracking inside parentheses.
+Qavslar ichidagi orqaga qaytishni o'chirib qo'yish usuli - "atom tutuvchi guruhlar" ham mavjud.
 
-...But the bad news is that, unfortunately, in JavaScript they are not supported.
+...Ammo yomon xabar shundaki, afsuski, JavaScriptda ular qo'llab-quvvatlanmaydi.
 
-We can emulate them though using a "lookahead transform".
+Biz ularga taqlid qilishimiz mumkin, ammo "lookaheadni o'zgartirish" dan foydalanamiz.
 
-### Lookahead to the rescue!
+### Lookahead qutqaradi!
 
-So we've come to real advanced topics. We'd like a quantifier, such as `pattern:+` not to backtrack, because sometimes backtracking makes no sense.
+Shunday qilib, biz haqiqiy ilg'or mavzularga keldik. Biz `pattern:+` kabi miqdor ko'rsatkichini orqaga qaytmaslikni xohlaymiz, chunki ba'zida orqaga qaytish hech qanday ma'noga ega emas.
 
-The pattern to take as many repetitions of `pattern:\w` as possible without backtracking is: `pattern:(?=(\w+))\1`. Of course, we could take another pattern instead of `pattern:\w`.
+`Pattern:\w` ning iloji boricha ko'proq takrorlanishini orqaga qaytarmasdan olish uchun namuna: `pattern:(?=(\w+))\1`. Albatta, `pattern:\w` o'rniga boshqa pattern olishimiz mumkin.
 
-That may seem odd, but it's actually a very simple transform.
+Bu g'alati tuyuladi, lekin aslida bu juda oddiy transformatsiya.
 
-Let's decipher it:
+Keling, uni shifrlaymiz:
 
-- Lookahead `pattern:?=` looks forward for the longest word `pattern:\w+` starting at the current position.
-- The contents of parentheses with `pattern:?=...` isn't memorized by the engine, so wrap `pattern:\w+` into parentheses. Then the engine will memorize their contents
-- ...And allow us to reference it in the pattern as `pattern:\1`.
+- Lookahead `pattern:?=` joriy holatdan boshlab eng uzun `pattern:\w+` so'zini kutadi.
+- `pattern:?=...` bo'lgan qavslar tarkibi dvigatel tomonidan yodlanmagan, shuning uchun `pattern:\w+` ni qavs ichiga o'rang. Keyin dvigatel ularning mazmunini eslab qoladi
+- ...Va uni `pattern:\1` sifatida ko'rsatishga ruxsat bering.
 
-That is: we look ahead - and if there's a word `pattern:\w+`, then match it as `pattern:\1`.
+Ya'ni: biz oldinga qaraymiz - va agar `pattern:\w+` so'zi bo'lsa, uni `pattern:\1` sifatida moslang.
 
-Why? That's because the lookahead finds a word `pattern:\w+` as a whole and we capture it into the pattern with `pattern:\1`. So we essentially implemented a possessive plus `pattern:+` quantifier. It captures only the whole word `pattern:\w+`, not a part of it.
+Nega? Buning sababi, look ahead `pattern:\w+` so'zini bir butun sifatida topadi va biz uni `pattern:\1` bilan patternga kiritamiz. Shunday qilib, biz mohiyatan egalik plyus `pattern:+` kvantifikatorini amalga oshirdik. U faqat butun `pattern:\w+` so'zini qamrab oladi, uning bir qismini emas.
 
-For instance, in the word `subject:JavaScript` it may not only match `match:Java`, but leave out `match:Script` to match the rest of the pattern.
+Masalan, `subject:JavaScript` so'zida u nafaqat `match:Java` ga mos kelishi mumkin, balki qolgan naqshga mos kelishi uchun `match:Script`ni ham qoldirishi mumkin.
 
-Here's the comparison of two patterns:
+Mana ikkita patternni taqqoslash:
 
 ```js run
 alert( "JavaScript".match(/\w+Script/)); // JavaScript
 alert( "JavaScript".match(/(?=(\w+))\1Script/)); // null
 ```
 
-1. In the first variant `pattern:\w+` first captures the whole word `subject:JavaScript` but then `pattern:+` backtracks character by character, to try to match the rest of the pattern, until it finally succeeds (when `pattern:\w+` matches `match:Java`).
-2. In the second variant `pattern:(?=(\w+))` looks ahead and finds the word  `subject:JavaScript`, that is included into the pattern as a whole by `pattern:\1`, so there remains no way to find `subject:Script` after it.
+1. Birinchi variantda `pattern:\w+` avval `mavzu:JavaScript` so'zini to'liq qamrab oladi, so'ngra `pattern:+` qolgan qismiga mos kelishga harakat qilish uchun xarakter bo'yicha belgilarni orqaga qaytaradi, to oxirigacha muvaffaqiyatga erishadi (qachonki `pattern:\w+` `mos: Java`ga mos kelsa).
+2. Ikkinchi variantda `pattern:(?=(\w+))` oldinga qaraydi va `subject:JavaScript` so'zini topadi, bu naqshga `pattern:\1` bilan bir butun sifatida kiritilgan, shuning uchun qoladi. Undan keyin `subject:Script` ni topishning iloji yo'q.
 
-We can put a more complex regular expression into `pattern:(?=(\w+))\1` instead of `pattern:\w`, when we need to forbid backtracking for `pattern:+` after it.
+Agar undan keyin `pattern:+` uchun orqaga qaytishni taqiqlash kerak bo'lsa, `pattern:\w` o'rniga `pattern:(?=(\w+))\1` ga murakkabroq muntazam iborani qo'yishimiz mumkin.
 
 ```smart
-There's more about the relation between possessive quantifiers and lookahead in articles [Regex: Emulate Atomic Grouping (and Possessive Quantifiers) with LookAhead](https://instanceof.me/post/52245507631/regex-emulate-atomic-grouping-with-lookahead) and [Mimicking Atomic Groups](https://blog.stevenlevithan.com/archives/mimic-atomic-groups).
+Berilgan maqolada egalik kvantifikatorlari va lookahead o'rtasidagi bog'liqlik haqida ko'proq ma'lumot berilgan [Regex: LookAhead yordamida atomik guruhlashni (va egalik kvantifikatorlarini) taqlid qilish](https://instanceof.me/post/52245507631/regex-emulate-atomic-grouping-with-lookhead) va [Atom guruhlarini taqlid qilish](https://blog.stevenlevithan.com/archives/mimic-atomic-groups).
 ```
 
-Let's rewrite the first example using lookahead to prevent backtracking:
+Keling, orqaga qaytishni oldini olish uchun birinchi misolni lookahead yordamida qayta yozamiz:
 
 ```js run
 let regexp = /^((?=(\w+))\2\s?)*$/;
 
 alert( regexp.test("A good string") ); // true
 
-let str = "An input string that takes a long time or even makes this regex hang!";
+let str = "Ko'p vaqt talab qiladigan yoki hatto ushbu regexpni osib qo'yadigan kirish qatori!";
 
-alert( regexp.test(str) ); // false, works and fast!
+alert( regexp.test(str) ); // false, tez ishlaydi!
 ```
 
-Here `pattern:\2` is used instead of `pattern:\1`, because there are additional outer parentheses. To avoid messing up with the numbers, we can give the parentheses a name, e.g. `pattern:(?<word>\w+)`.
+Bu yerda `pattern:\1` o'rniga `pattern:\2` ishlatiladi, chunki qo'shimcha tashqi qavslar mavjud. Raqamlar bilan aralashmaslik uchun biz qavslarga nom berishimiz mumkin, masalan, `pattern:(?<word>\w+)`.
 
 ```js run
-// parentheses are named ?<word>, referenced as \k<word>
+// qavslar ?<word> deb nomlanadi, \k<word> deb havola qilinadi
 let regexp = /^((?=(?<word>\w+))\k<word>\s?)*$/;
 
-let str = "An input string that takes a long time or even makes this regex hang!";
+let str = "Ko'p vaqt talab qiladigan yoki hatto bu regexpni osib qo'yadigan kirish qatori!";
 
 alert( regexp.test(str) ); // false
 
-alert( regexp.test("A correct string") ); // true
+alert( regexp.test("To'g'ri string") ); // true
 ```
 
-The problem described in this article is called "catastrophic backtracking".
+Ushbu maqolada tasvirlangan muammo "halokatli orqaga qaytish" deb ataladi.
 
-We covered two ways how to solve it:
-- Rewrite the regexp to lower the possible combinations count.
-- Prevent backtracking.
+Biz uni hal qilishning ikkita usulini ko'rib chiqdik:
+- Mumkin kombinatsiyalar sonini kamaytirish uchun regexpni qayta yozing.
+- Orqaga qaytishning oldini olish.

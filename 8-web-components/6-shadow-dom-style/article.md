@@ -1,21 +1,21 @@
-# Shadow DOM styling
+# Shadow DOM uslubi
 
-Shadow DOM may include both `<style>` and `<link rel="stylesheet" href="…">` tags. In the latter case, stylesheets are HTTP-cached, so they are not redownloaded for multiple components that use same template.
+Shadow DOM `<style>` va `<link rel="stylesheet" href="...">` teglarini o'z ichiga olishi mumkin. Ikkinchi holda, uslublar jadvallari HTTP-keshlanadi, shuning uchun ular bir xil shablonni ishlatadigan bir nechta komponentlar uchun qayta yuklab olinmaydi.
 
-As a general rule, local styles work only inside the shadow tree, and document styles work outside of it. But there are few exceptions.
+Umumiy qoida sifatida mahalliy uslublar faqat shadow tree ichida ishlaydi, hujjat uslublari esa undan tashqarida. Ammo bir nechta istisnolar mavjud.
 
 ## :host
 
-The `:host` selector allows to select the shadow host (the element containing the shadow tree).
+`:host` selektori soya hostini (soya daraxtini o'z ichiga olgan element) tanlash imkonini beradi.
 
-For instance, we're making `<custom-dialog>` element that should be centered. For that we need to style the `<custom-dialog>` element itself.
+Masalan, biz markazda bo'lishi kerak bo'lgan `<custom-dialog>` elementini yaratmoqdamiz. Buning uchun biz `<custom-dialog>` elementining o'zini uslublashimiz kerak.
 
-That's exactly what `:host` does:
+`:host` aynan shunday qiladi:
 
 ```html run autorun="no-epub" untrusted height=80
 <template id="tmpl">
   <style>
-    /* the style will be applied from inside to the custom-dialog element */
+    /* uslub ichkaridan moslashtirilgan dialog elementiga qo'llaniladi */
     :host {
       position: fixed;
       left: 50%;
@@ -42,13 +42,13 @@ customElements.define('custom-dialog', class extends HTMLElement {
 </custom-dialog>
 ```
 
-## Cascading
+## Kaskad (Cascading)
 
-The shadow host (`<custom-dialog>` itself) resides in the light DOM, so it's affected by document CSS rules.
+Soya host (`<custom-dialog>` o'zi) yorug'lik DOMda joylashgan, shuning uchun unga CSS hujjat qoidalari ta'sir qiladi.
 
-If there's a property styled both in `:host` locally, and in the document, then the document style takes precedence.
+Hujjatda ham, `:host` ham mahalliy sifatida uslublangan xususiyat mavjud bo'lsa, hujjat uslubi ustunlikka ega bo'ladi.
 
-For instance, if in the document we had:
+Masalan, agar hujjatda quyidagilar bo'lsa:
 ```html
 <style>
 custom-dialog {
@@ -56,18 +56,18 @@ custom-dialog {
 }
 </style>
 ```
-...Then the `<custom-dialog>` would be without padding.
+...Keyin `<custom-dialog>` to'ldirishsiz bo'ladi.
 
-It's very convenient, as we can setup "default" component styles in its `:host` rule, and then easily override them in the document.
+Bu juda qulay, chunki biz uning `:host` qoidasida "standart" komponent uslublarini o'rnatishimiz va keyin ularni hujjatda osongina bekor qilishimiz mumkin.
 
-The exception is when a local property is labelled `!important`, for such properties, local styles take precedence.
+Istisno mahalliy xususiyat `!important` deb belgilangan bo'lsa, bunday xususiyatlar uchun mahalliy uslublar ustunlik qiladi.
 
 
 ## :host(selector)
 
-Same as `:host`, but applied only if the shadow host matches the `selector`.
+`:host` bilan bir xil, lekin faqat soya xosti `selector` bilan mos kelsagina qo'llaniladi.
 
-For example, we'd like to center the `<custom-dialog>` only if it has `centered` attribute:
+Masalan, biz `<custom-dialog>`ni faqat `centered` atribyutiga ega bo'lsa, markazlashtirmoqchimiz:
 
 ```html run autorun="no-epub" untrusted height=80
 <template id="tmpl">
@@ -109,17 +109,17 @@ customElements.define('custom-dialog', class extends HTMLElement {
 </custom-dialog>
 ```
 
-Now the additional centering styles are only applied to the first dialog: `<custom-dialog centered>`.
+Endi qo'shimcha markazlashtirish uslublari faqat birinchi dialog oynasiga qo'llaniladi: `<custom-dialog centered>`.
 
-To summarize, we can use `:host`-family of selectors to style the main element of the component. These styles (unless `!important`) can be overridden by the document.
+Xulosa qilib aytganda, komponentning asosiy elementini uslublash uchun `:host`- selektorlar oilasidan foydalanishimiz mumkin. Ushbu uslublar (agar `!important` bo`lmasa) hujjat tomonidan bekor qilinishi mumkin.
 
-## Styling slotted content
+## Slotli kontentni uslublash
 
-Now let's consider the situation with slots.
+Endi uyalar (slot) bilan bog'liq vaziyatni ko'rib chiqaylik.
 
-Slotted elements come from light DOM, so they use document styles. Local styles do not affect slotted content.
+Slotli elementlar engil DOM dan keladi, shuning uchun ular hujjat uslublaridan foydalanadilar. Mahalliy uslublar ajratilgan tarkibga ta'sir qilmaydi.
 
-In the example below, slotted `<span>` is bold, as per document style, but does not take `background` from the local style:
+Quyidagi misolda, tirqishli `<span>` hujjat uslubiga ko'ra qalin, lekin mahalliy uslubdan `background` olinmaydi:
 ```html run autorun="no-epub" untrusted height=80
 <style>
 *!*
@@ -148,11 +148,11 @@ customElements.define('user-card', class extends HTMLElement {
 </script>
 ```
 
-The result is bold, but not red.
+Natija qalin, ammo qizil emas.
 
-If we'd like to style slotted elements in our component, there are two choices.
+Agar biz komponentimizdagi tirqishli (slotted) elementlarni uslublashni istasak, ikkita variant mavjud.
 
-First, we can style the `<slot>` itself and rely on CSS inheritance:
+Birinchidan, biz `<slot>` ning o'zini uslublashimiz va CSS merosiga tayanishimiz mumkin:
 
 ```html run autorun="no-epub" untrusted height=80
 <user-card>
@@ -176,14 +176,14 @@ customElements.define('user-card', class extends HTMLElement {
 </script>
 ```
 
-Here `<p>John Smith</p>` becomes bold, because CSS inheritance is in effect between the `<slot>` and its contents. But in CSS itself not all properties are inherited.
+Bu yerda `<p>Jon Smit</p>` qalin bo'ladi, chunki CSS merosi `<slot>` va uning mazmuni o'rtasida amal qiladi. Ammo CSSning o'zida barcha xususiyatlar meros qilib olinmaydi. 
 
-Another option is to use `::slotted(selector)` pseudo-class. It matches elements based on two conditions:
+Yana bir variant `::slotted(selector)` psevdo-sinfdan foydalanishdir. U ikkita shart asosida elementlarga mos keladi:
 
-1. That's a slotted element, that comes from the light DOM. Slot name doesn't matter. Just any slotted element, but only the element itself, not its children.
-2. The element matches the `selector`.
+1. Bu tirqishli element bo'lib, yorug'lik DOM dan keladi. Slot nomi muhim emas. Har qanday tirqishli element, lekin faqat elementning o'zi, uning bolalari emas.
+2. Element `selector` ga mos keladi.
 
-In our example, `::slotted(div)` selects exactly `<div slot="username">`, but not its children:
+Bizning misolimizda `::slotted(div)` aynan `<div slot="username">`ni tanlaydi, lekin uning bolalarini emas:
 
 ```html run autorun="no-epub" untrusted height=80
 <user-card>
@@ -209,44 +209,44 @@ customElements.define('user-card', class extends HTMLElement {
 </script>
 ```
 
-Please note, `::slotted` selector can't descend any further into the slot. These selectors are invalid:
+Esda tuting, `::slotted` selektori slotga boshqa tusha olmaydi. Bu selektorlar yaroqsiz:
 
 ```css
 ::slotted(div span) {
-  /* our slotted <div> does not match this */
+  /* bizning tirqishli <div> bunga mos kelmaydi */
 }
 
 ::slotted(div) p {
-  /* can't go inside light DOM */
+  /* yorug'lik DOM ichiga kira olmaydi */
 }
 ```
 
-Also, `::slotted` can only be used in CSS. We can't use it in `querySelector`.
+Bundan tashqari, `::slotted` faqat CSSda ishlatilishi mumkin. Biz uni `querySelector` da ishlata olmaymiz.
 
-## CSS hooks with custom properties
+## Maxsus xususiyatlarga ega CSS ilgaklari
 
-How do we style internal elements of a component from the main document?
+Asosiy hujjatdagi komponentning ichki elementlarini qanday qilib uslublaymiz?
 
-Selectors like `:host` apply rules to `<custom-dialog>` element or `<user-card>`, but how to style shadow DOM elements inside them?
+`:host` kabi selektorlar `<custom-dialog>` yoki `<user-card>` uchun qoidalarni qo'llaydi, lekin ularning ichida soyali DOM elementlarini qanday uslublash kerak?
 
-There's no selector that can directly affect shadow DOM styles from the document. But just as we expose methods to interact with our component, we can expose CSS variables (custom CSS properties) to style it.
+Hujjatdagi soyali DOM uslublariga bevosita ta'sir ko'rsatadigan selektor yo'q. Ammo biz komponentimiz bilan o'zaro ta'sir qilish usullarini oshkor qilganimizdek, uni uslublash uchun CSS o'zgaruvchilarini (maxsus CSS xususiyatlari) ochishimiz mumkin.
 
-**Custom CSS properties exist on all levels, both in light and shadow.**
+**Maxsus CSS xususiyatlari barcha darajalarda ham yorug'lik, ham soyada mavjud.**
 
-For example, in shadow DOM we can use `--user-card-field-color` CSS variable to  style fields, and the outer document can set its value:
+Masalan, soyali DOM da biz `--user-card-field-color` CSS o'zgaruvchisidan maydonlarni uslublash uchun foydalanishimiz mumkin va tashqi hujjat uning qiymatini belgilaydi:
 
 ```html
 <style>
   .field {
     color: var(--user-card-field-color, black);
-    /* if --user-card-field-color is not defined, use black color */
+    /* agar --user-card-field-color aniqlanmagan bo'lsa, qora rangdan foydalaning */
   }
 </style>
 <div class="field">Name: <slot name="username"></slot></div>
 <div class="field">Birthday: <slot name="birthday"></slot></div>
 ```
 
-Then, we can declare this property in the outer document for `<user-card>`:
+Keyin biz ushbu xususiyatni `<user-card>` uchun tashqi hujjatda e'lon qilishimiz mumkin:
 
 ```css
 user-card {
@@ -254,9 +254,9 @@ user-card {
 }
 ```
 
-Custom CSS properties pierce through shadow DOM, they are visible everywhere, so the inner `.field` rule will make use of it.
+Maxsus CSS xususiyatlari soyali DOM orqali o'tadi, ular hamma joyda ko'rinadi, shuning uchun ichki `.field` qoidasi undan foydalanadi.
 
-Here's the full example:
+Mana to'liq misol:
 
 ```html run autorun="no-epub" untrusted height=80
 <style>
@@ -296,24 +296,24 @@ customElements.define('user-card', class extends HTMLElement {
 
 
 
-## Summary
+## Xulosa
 
-Shadow DOM can include styles, such as `<style>` or `<link rel="stylesheet">`.
+Shadow DOM `<style>` yoki `<link rel="stylesheet">` kabi uslublarni o`z ichiga olishi mumkin.
 
-Local styles can affect:
-- shadow tree,
-- shadow host with `:host` and `:host()` pseudoclasses,
-- slotted elements (coming from light DOM), `::slotted(selector)` allows to select  slotted elements themselves, but not their children.
+Mahalliy uslublar ta'sir qilishi mumkin:
+- soya daraxti,
+- `:host` va `:host()` psevdoklasslari bilan soyali host,
+- tirqishli elementlar (yengil DOM dan keladi), `::slotted(selector)` tirqishli elementlarni o'zlari tanlash imkonini beradi, lekin ularning bolalarini emas.
 
-Document styles can affect:
-- shadow host (as it lives in the outer document)
-- slotted elements and their contents (as that's also in the outer document)
+Hujjat uslublari quyidagilarga ta'sir qilishi mumkin:
+- soya hosti (tashqi hujjatda joylashgani kabi)
+- tirqishli elementlar va ularning mazmuni (bu tashqi hujjatda ham mavjud)
 
-When CSS properties conflict, normally document styles have precedence, unless the property is labelled as `!important`. Then local styles have precedence.
+Agar CSS xususiyatlari ziddiyatli va `!important` deb belgilanmagan bo'lsa, odatda hujjat uslublari ustunlikka ega bo'ladi. Keyin mahalliy uslublar ustunlikka ega.
 
-CSS custom properties pierce through shadow DOM. They are used as "hooks" to style the component:
+CSS maxsus xususiyatlari soyali DOM orqali o'tadi. Ular komponentni shakllantirish uchun "ilgaklar" sifatida ishlatiladi:
 
-1. The component uses a custom CSS property to style key elements, such as `var(--component-name-title, <default value>)`.
-2. Component author publishes these properties for developers, they are same important as other public component methods.
-3. When a developer wants to style a title, they assign `--component-name-title` CSS property for the shadow host or above.
-4. Profit!
+1. Komponent `var(--component-name-title, <default value>)` kabi asosiy elementlarni uslublash uchun maxsus CSS xususiyatidan foydalanadi.
+2. Komponent muallifi ushbu xususiyatlarni ishlab chiquvchilar uchun nashr etadi, ular boshqa ommaviy komponent usullari bilan bir xil ahamiyatga ega.
+3. Ishlab chiquvchi sarlavhani uslublashni xohlasa, ular soya xostiga yoki undan yuqorisiga `--component-name-title` CSS xususiyatini tayinlaydi.
+4. Foyda!

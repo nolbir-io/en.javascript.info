@@ -1,53 +1,51 @@
-# Styles and classes
+# Uslublar va sinflar (styles and classes)
 
-Before we get into JavaScript's ways of dealing with styles and classes -- here's an important rule. Hopefully it's obvious enough, but we still have to mention it.
+JavaScriptning uslublar va sinflar bilan ishlash usullarini ko'rib chiqishdan avval muhim qoidani yodga olaylik. Yetarli darajada tushunasiz, deb umid qilaman, lekin biz hali ham buni eslatib o'tishimiz kerak.
 
-There are generally two ways to style an element:
+Elementni shakllantirishning odatda ikkita usuli mavjud:
 
-1. Create a class in CSS and add it: `<div class="...">`
-2. Write properties directly into `style`: `<div style="...">`.
+1. CSSda sinf yaratish va uni qo'shish: `<div class="...">`
+2. Xususiyatlarni to'g'ridan-to'g'ri `style` ga yozish: `<div style="...">`.
 
-JavaScript can modify both classes and `style` properties.
+JavaScript ikkala sinf va `style` xususiyatlarini o'zgartirishi mumkin.
 
-We should always prefer CSS classes to `style`. The latter should only be used if classes "can't handle it".
+Biz har doim CSS sinflarini `style` dan afzal ko'rishimiz kerak. Ikkinchisini faqat sinflar "bajara olmasa" ishlatish kerak.
 
-For example, `style` is acceptable if we calculate coordinates of an element dynamically and want to set them from JavaScript, like this:
+Misol uchun, agar biz elementning koordinatalarini dinamik ravishda hisoblab chiqsak va ularni JavaScriptdan o'rnatmoqchi bo'lsak, `style` qabul qilinadi, masalan:
 
 ```js
-let top = /* complex calculations */;
-let left = /* complex calculations */;
+let top = /* murakkab hisob-kitoblar */;
+let left = /* murakkab hisob-kitoblar */;
 
-elem.style.left = left; // e.g '123px', calculated at run-time
+elem.style.left = left; // e.g '123px', ish vaqtida hisoblab chiqilgan
 elem.style.top = top; // e.g '456px'
 ```
+Boshqa hollarda, masalan, matnni qizil rangga aylantirish, fon belgisini qo'shishni CSSda tavsiflang va keyin sinfni qo'shing (JavaScript buni qila oladi). Bu yanada moslashuvchan va qo'llab-quvvatlash osonroq.
 
-For other cases, like making the text red, adding a background icon -- describe that in CSS and then add the class (JavaScript can do that). That's more flexible and easier to support.
+## className va classList
 
-## className and classList
+Sinfni o'zgartirish skriptlarda eng ko'p ishlatiladigan amallardan biridir.
 
-Changing a class is one of the most often used actions in scripts.
+Avvalgi paytlar JavaScriptda cheklov mavjud edi: `"class"` kabi ajratilgan so'z obyekt xususiyati bo'la olmasdi. Bu cheklov hozir mavjud emas, lekin o'sha paytda `elem.class` kabi `"class"` xususiyatiga ega bo'lolmasdi.
 
-In the ancient time, there was a limitation in JavaScript: a reserved word like `"class"` could not be an object property. That limitation does not exist now, but at that time it was impossible to have a `"class"` property, like `elem.class`.
+Shunday qilib, sinflar uchun o'xshash ko'rinishdagi `"className"` xususiyati joriy etildi: `elem.className` `"sinf"` atributiga mos keladi.
 
-So for classes the similar-looking property `"className"` was introduced: the `elem.className` corresponds to the `"class"` attribute.
-
-For instance:
+Masalan:
 
 ```html run
 <body class="main page">
   <script>
-    alert(document.body.className); // main page
+    alert(document.body.className); // main page (asosiy sahifa)
   </script>
 </body>
 ```
+Agar biz `elem.className` ga biror narsa tayinlasak, u butun sinflar qatorini almashtiradi. Ba'zida bu bizga kerak bo'ladi, lekin ko'pincha biz bitta sinfni qo'shish/o'chirishni xohlaymiz.
 
-If we assign something to `elem.className`, it replaces the whole string of classes. Sometimes that's what we need, but often we want to add/remove a single class.
+Bizda buning uchun `elem.classList` xususiyati mavjud:
 
-There's another property for that: `elem.classList`.
+`Elem.classList` - bu bitta sinfning `add/remove/toggle` usullariga ega maxsus obyektdir.
 
-The `elem.classList` is a special object with methods to `add/remove/toggle` a single class.
-
-For instance:
+Masalan:
 
 ```html run
 <body class="main page">
@@ -62,15 +60,15 @@ For instance:
 </body>
 ```
 
-So we can operate both on the full class string using `className` or on individual classes using `classList`. What we choose depends on our needs.
+Shunday qilib, biz `className` yordamida to'liq sinf qatorida yoki `classList` yordamida alohida sinflarda ishlashimiz mumkin. Tanlagan narsamiz ehtiyojlarimizga bog'liq.
 
-Methods of `classList`:
+`classList` metodlari:
 
-- `elem.classList.add/remove("class")` -- adds/removes the class.
-- `elem.classList.toggle("class")` -- adds the class if it doesn't exist, otherwise removes it.
-- `elem.classList.contains("class")` -- checks for the given class, returns `true/false`.
+- `elem.classList.add/remove("class")` -- sinfni qo'shadi/o'chiradi.
+- `elem.classList.toggle("class")` -- agar mavjud bo'lmasa, sinfni qo'shadi, aks holda uni o'chiradi.
+- `elem.classList.contains("class")` -- berilgan sinfni tekshiradi, `true/false` ni qaytaradi.
 
-Besides, `classList` is iterable, so we can list all classes with `for..of`, like this:
+Bundan tashqari, `classList` takrorlanadi, shuning uchun biz barcha sinflarni `for..of` bilan ro'yxatga olishimiz mumkin, masalan:
 
 ```html run
 <body class="main page">
@@ -82,11 +80,11 @@ Besides, `classList` is iterable, so we can list all classes with `for..of`, lik
 </body>
 ```
 
-## Element style
+## Element stili
 
-The property `elem.style` is an object that corresponds to what's written in the `"style"` attribute. Setting `elem.style.width="100px"` works the same as if we had in the attribute `style` a string `width:100px`.
+`elem.style` xossasi ``style`` atributida yozilgan narsaga mos keladigan obyektdir. `elem.style.width="100px"` sozlanishi `style` atributida `width:100px` qatori bo'lgandek ishlaydi.
 
-For multi-word property the camelCase is used:
+Ko'p so'zli xususiyat uchun camelCase ishlatiladi:
 
 ```js no-beautify
 background-color  => elem.style.backgroundColor
@@ -94,16 +92,16 @@ z-index           => elem.style.zIndex
 border-left-width => elem.style.borderLeftWidth
 ```
 
-For instance:
+Masalan:
 
 ```js run
 document.body.style.backgroundColor = prompt('background color?', 'green');
 ```
 
-````smart header="Prefixed properties"
-Browser-prefixed properties like `-moz-border-radius`, `-webkit-border-radius` also follow the same rule: a dash means upper case.
+````smart header="Prefiksli xususiyatlar"
+`-moz-border-radius`, `-webkit-border-radius` kabi brauzer-prefiksli xususiyatlar ham xuddi shu qoidaga amal qiladi: chiziqcha katta harfni bildiradi.
 
-For instance:
+Masalan:
 
 ```js
 button.style.MozBorderRadius = '5px';
@@ -111,41 +109,39 @@ button.style.WebkitBorderRadius = '5px';
 ```
 ````
 
-## Resetting the style property
+## Uslub xususiyatini tiklash 
 
-Sometimes we want to assign a style property, and later remove it.
+Ba'zan uslub xususiyatini tayinlashni va keyinroq uni olib tashlashni xohlaymiz.
 
-For instance, to hide an element, we can set `elem.style.display = "none"`.
+Masalan, elementni yashirish uchun biz `elem.style.display = "none"` ni o'rnatishimiz mumkin.
 
-Then later we may want to remove the `style.display` as if it were not set. Instead of `delete elem.style.display` we should assign an empty string to it: `elem.style.display = ""`.
+Keyinroq biz `style.display` o'rnatilmagandek olib tashlashni xohlashimiz mumkin. `delete elem.style.display` o'rniga biz unga bo'sh qatorni belgilashimiz kerak: `elem.style.display = ""`.
 
 ```js run
-// if we run this code, the <body> will blink
+// agar biz ushbu kodni ishga tushirsak, <body> xira ko'rinadi
 document.body.style.display = "none"; // hide
 
-setTimeout(() => document.body.style.display = "", 1000); // back to normal
+setTimeout(() => document.body.style.display = "", 1000); // normal holatiga qaytadi
 ```
+Agar biz `style.display` ni bo'sh qatorga o'rnatsak, go'yo bunday `style.display` xususiyati umuman mavjud emasdek, brauzer CSS sinflari va uning o'rnatilgan uslublarini odatdagidek qo'llaydi.
 
-If we set `style.display` to an empty string, then the browser applies CSS classes and its built-in styles normally, as if there were no such `style.display` property at all.
-
-Also there is a special method for that, `elem.style.removeProperty('style property')`. So, We can remove a property like this:
+Buning uchun `elem.style.removeProperty('style property')` maxsus usuli ham mavjud. Shunday qilib, biz quyidagi xususiyatni olib tashlashimiz mumkin:
 
 ```js run
-document.body.style.background = 'red'; //set background to red
-
-setTimeout(() => document.body.style.removeProperty('background'), 1000); // remove background after 1 second
+document.body.style.background = 'red'; //fonni qizil rangga o'rnating
+setTimeout(() => document.body.style.removeProperty('background'), 1000); // 1 soniyadan keyin fonni olib tashlang
 ```
 
-````smart header="Full rewrite with `style.cssText`"
-Normally, we use `style.*` to assign individual style properties. We can't set the full style like `div.style="color: red; width: 100px"`, because `div.style` is an object, and it's read-only.
+````smart header="``style.cssText` bilan to'liq qayta yozish`"
+Odatda, biz individual uslub xususiyatlarini belgilash uchun `style.*` dan foydalanamiz. Biz `div.style="color: red; width: 100px"` kabi to'liq uslubni o'rnatolmaymiz, chunki `div.style` obyekt bo'lib, u faqat o'qish uchun mo'ljallangan.
 
-To set the full style as a string, there's a special property `style.cssText`:
+To'liq uslubni satr sifatida o'rnatish uchun `style.cssText` maxsus xususiyati mavjud:
 
 ```html run
 <div id="div">Button</div>
 
 <script>
-  // we can set special style flags like "important" here
+  // biz bu yerda "important" kabi maxsus uslub bayroqlarini o'rnatishimiz mumkin
   div.style.cssText=`color: red !important;
     background-color: yellow;
     width: 100px;
@@ -155,28 +151,27 @@ To set the full style as a string, there's a special property `style.cssText`:
   alert(div.style.cssText);
 </script>
 ```
+Bu xususiyat kamdan-kam qo'llaniladi, chunki bunday tayinlash barcha mavjud uslublarni olib tashlaydi: u qo'shmaydi, balki ularni almashtiradi. Vaqti-vaqti bilan kerakli narsani o'chirib tashlashi mumkin, ammo mavjud uslubni o'chirmasligimizni bilsak, biz undan yangi elementlar uchun xavfsiz foydalanishimiz mumkin.
 
-This property is rarely used, because such assignment removes all existing styles: it does not add, but replaces them. May occasionally delete something needed. But we can safely use it for new elements, when we know we won't delete an existing style.
-
-The same can be accomplished by setting an attribute: `div.setAttribute('style', 'color: red...')`.
+ Buni xuddi shunday atributni o'rnatish orqali ham amalga oshirish mumkin: `div.setAttribute('style', 'color: red...')`.
 ````
 
-## Mind the units
+## Birliklarga e'tibor bering
 
-Don't forget to add CSS units to values.
+Qiymatlarga CSS birliklarini qo'shishni unutmang.
 
-For instance, we should not set `elem.style.top` to `10`, but rather to `10px`. Otherwise it wouldn't work:
+Masalan, biz `elem.style.top` ni `10` ga emas, balki `10px` ga qo'yishimiz kerak. Aks holda u ishlamaydi:
 
 ```html run height=100
 <body>
   <script>
   *!*
-    // doesn't work!
+    // ishlamaydi!
     document.body.style.margin = 20;
-    alert(document.body.style.margin); // '' (empty string, the assignment is ignored)
+    alert(document.body.style.margin); // '' (bo'sh satr, topshiriq e'tiborga olinmaydi)
   */!*
 
-    // now add the CSS unit (px) - and it works
+    // endi CSS birligini (px) qo'shing - va u ishlaydi
     document.body.style.margin = '20px';
     alert(document.body.style.margin); // 20px
 
@@ -185,20 +180,19 @@ For instance, we should not set `elem.style.top` to `10`, but rather to `10px`. 
   </script>
 </body>
 ```
+Iltimos, diqqat qiling: brauzer oxirgi satrlardagi `style.margin` xususiyatini "ochadi" va undan `style.marginLeft` va `style.marginTop` xulosalarini chiqaradi.
 
-Please note: the browser "unpacks" the property `style.margin` in the last lines and infers `style.marginLeft` and `style.marginTop` from it.
+## Computed style lar: getComputedStyle
 
-## Computed styles: getComputedStyle
+Shunday qilib, uslubni o'zgartirish oson. Lekin uni qanday *o'qish* kerak?
 
-So, modifying a style is easy. But how to *read* it?
+Masalan, biz elementning o'lchamini, chegaralarini, rangini bilishni xohlaymiz. Buni qanday qilish kerak?
 
-For instance, we want to know the size, margins, the color of an element. How to do it?
+**"style" xususiyati faqat "style" atribyutining qiymati bo'yicha hech qanday CSS kaskadisiz ishlaydi.**
 
-**The `style` property operates only on the value of the `"style"` attribute, without any CSS cascade.**
+Shunday qilib, biz `elem.style` yordamida CSS sinflaridan kelgan hech narsani o'qiy olmaymiz.
 
-So we can't read anything that comes from CSS classes using `elem.style`.
-
-For instance, here `style` doesn't see the margin:
+Masalan, bu erda "uslub" chegarani ko'rmaydi:
 
 ```html run height=60 no-beautify
 <head>
@@ -209,32 +203,32 @@ For instance, here `style` doesn't see the margin:
   The red text
   <script>
 *!*
-    alert(document.body.style.color); // empty
-    alert(document.body.style.marginTop); // empty
+    alert(document.body.style.color); // bo'sh
+    alert(document.body.style.marginTop); // bo'sh
 */!*
   </script>
 </body>
 ```
 
-...But what if we need, say, to increase the margin by `20px`? We would want the current value of it.
+...Ammo, aytaylik, marjni `20px` ga oshirish kerak bo'lsa-chi? Biz uning hozirgi qiymatini xohlaymiz.
 
-There's another method for that: `getComputedStyle`.
+Bizda buning uchun `getComputedStyle` metodi mavjud.
 
-The syntax is:
+Sintaksis:
 
 ```js
 getComputedStyle(element, [pseudo])
 ```
 
 element
-: Element to read the value for.
+: Qiymatni o'qish uchun element.
 
 pseudo
-: A pseudo-element if required, for instance `::before`. An empty string or no argument means the element itself.
+: Agar kerak bo'lsa, psevdoelement, masalan, `::before` mavjud. Bo'sh satr yoki argument yo'qligi elementning o'zini anglatadi.
 
-The result is an object with styles, like `elem.style`, but now with respect to all CSS classes.
+Natijada `elem.style` kabi uslublarga ega obyekt paydo bo`ldi, lekin endi u barcha CSS sinflariga bog'liq.
 
-For instance:
+Masalan:
 
 ```html run height=100
 <head>
@@ -245,7 +239,7 @@ For instance:
   <script>
     let computedStyle = getComputedStyle(document.body);
 
-    // now we can read the margin and the color from it
+    // endi biz undan chekka va rangni o'qiy olamiz
 
     alert( computedStyle.marginTop ); // 5px
     alert( computedStyle.color ); // rgb(255, 0, 0)
@@ -254,44 +248,47 @@ For instance:
 </body>
 ```
 
-```smart header="Computed and resolved values"
-There are two concepts in [CSS](https://drafts.csswg.org/cssom/#resolved-values):
+```smart header="Hisoblangan va hal qilingan qiymatlar"
+[CSS] da ikkita tushuncha mavjud (https://drafts.csswg.org/cssom/#resolved-values):
 
-1. A *computed* style value is the value after all CSS rules and CSS inheritance is applied, as the result of the CSS cascade. It can look like `height:1em` or `font-size:125%`.
-2. A *resolved* style value is the one finally applied to the element. Values like `1em` or `125%` are relative. The browser takes the computed value and makes all units fixed and absolute, for instance: `height:20px` or `font-size:16px`. For geometry properties resolved values may have a floating point, like `width:50.5px`.
+1. *computed* uslub qiymati barcha CSS qoidalari va CSS merosi qo'llanilgandan keyingi qiymat, CSS kaskadi natijasidir. U `height: 1em` yoki `font-size: 125%` kabi ko'rinishi mumkin.
+2. *Resolved* uslubi qiymati elementga oxirida qo'llaniladigan qiymatdir. `1em` yoki `125%` kabi qiymatlar nisbiydir. Brauzer hisoblangan qiymatni oladi va barcha birliklarni qat'iy va mutlaq qiladi, masalan: `height:20px` yoki `shrift-size:16px`. Geometriya xususiyatlari uchun hal qilingan qiymatlar suzuvchi nuqtaga ega bo'lishi mumkin, masalan, `font-size: 50,5px`.
 
-A long time ago `getComputedStyle` was created to get computed values, but it turned out that resolved values are much more convenient, and the standard changed.
+Uzoq vaqt oldin `getComputedStyle` hisoblangan qiymatlarni olish uchun yaratilgan edi, ammo hal qilingan qiymatlar ancha qulayroq ekanligi ma'lum bo'ldi va standart o'zgardi.
 
-So nowadays `getComputedStyle` actually returns the resolved value of the property, usually in `px` for geometry.
+Shunday qilib, bugungi kunda `getComputedStyle` aslida xususiyatning hal qilingan qiymatini qaytaradi, odatda geometriya uchun `px`da.
 ```
 
-````warn header="`getComputedStyle` requires the full property name"
-We should always ask for the exact property that we want, like `paddingLeft` or `marginTop` or `borderTopWidth`. Otherwise the correct result is not guaranteed.
+````warn header="`getComputedStyle` xususiyatning to'liq nomini talab qiladi"
 
-For instance, if there are properties `paddingLeft/paddingTop`, then what should we get for `getComputedStyle(elem).padding`? Nothing, or maybe a "generated" value from known paddings? There's no standard rule here.
+Biz har doim o'zimizga kerakli xususiyatni so'rashimiz kerak, masalan, `paddingLeft`, `marginTop` yoki `borderTopWidth`. Aks holda, to'g'ri natija kafolatlanmaydi.
+
+Masalan, agar `paddingLeft/paddingTop` xossalari mavjud bo'lsa, `getComputedStyle(elem).padding` uchun nimani olishimiz kerak? Hech narsa yo'qmi yoki ma'lum to'ldirishlardan "yaratilgan" qiymatmi? Bu yerda standart qoida yo'q.
 ````
 
-```smart header="Styles applied to `:visited` links are hidden!"
-Visited links may be colored using `:visited` CSS pseudoclass.
+```smart header="`:visited` havolalariga qo'llaniladigan uslublar berkitilgan!"
+Tashrif qilingan havolalar `:visited` CSS pseudo-klassi yordamida ranglanishi mumkin.
 
-But `getComputedStyle` does not give access to that color, because otherwise an arbitrary page could find out whether the user visited a link by creating it on the page and checking the styles.
+Ammo `getComputedStyle` bu rangga kirishga ruxsat bermaydi, chunki aks holda ixtiyoriy sahifa foydalanuvchining havolaga tashrif buyurganligini sahifada yaratish va uslublarni tekshirish orqali bilib olishi mumkin.
 
 JavaScript may not see the styles applied by `:visited`. And also, there's a limitation in CSS that forbids applying geometry-changing styles in `:visited`. That's to guarantee that there's no side way for an evil page to test if a link was visited and hence to break the privacy.
+
+JavaScript `:visited` tomonidan qo'llaniladigan uslublarni ko'rmasligi mumkin. Shuningdek, CSSda `:visited` da geometriyani o'zgartiruvchi uslublarni qo'llashni taqiqlovchi cheklov mavjud. Bu yovuz sahifaning havolaga tashrif buyurilganligini tekshiradi va shu sababli maxfiylikni buzish uchun hech qanday yo'l yo'qligini kafolatlaydi.
 ```
 
-## Summary
+## Xulosa
 
-To manage classes, there are two DOM properties:
+Sinflarni boshqarish uchun ikkita DOM xususiyati mavjud:
 
-- `className` -- the string value, good to manage the whole set of classes.
-- `classList` -- the object with methods `add/remove/toggle/contains`, good for individual classes.
+- `className` -- string qiymati, barcha sinflarni boshqarish uchun yaxshi. 
+- `classList` -- obyekt `add/remove/toggle/contains` usullari bilan alohida sinflar uchun mos.
 
-To change the styles:
+Stil, ya'ni uslublarni o'zgartirish:
 
-- The `style` property is an object with camelCased styles. Reading and writing to it has the same meaning as modifying individual properties in the `"style"` attribute. To see how to apply `important` and other rare stuff -- there's a list of methods at [MDN](mdn:api/CSSStyleDeclaration).
+- `style` xususiyati camelCased uslublariga ega obyektdir. Uni o'qish va yozish `"style"` atribyutidagi individual xususiyatlarni o'zgartirish bilan bir xil ma'noga ega. `important` va boshqa noyob narsalarni qanday qo'llashni ko'rish uchun [MDN] (mdn:api/CSSStyleDeclaration) da usullar ro'yxati mavjud.
 
-- The `style.cssText` property corresponds to the whole `"style"` attribute, the full string of styles.
+- `style.cssText` xususiyati butun `"style"` atributiga, to`liq uslublar qatoriga mos keladi.
 
-To read the resolved styles (with respect to all classes, after all CSS is applied and final values are calculated):
+Yechilgan uslublarni o'qish uchun (barcha sinflarga nisbatan, barcha CSS qo'llanilgandan va yakuniy qiymatlar hisoblab chiqilgandan so'ng):
 
-- The `getComputedStyle(elem, [pseudo])` returns the style-like object with them. Read-only.
+- `getComputedStyle(elem, [pseudo])` ular bilan uslubga o'xshash obyektni faqat o'qiladigan tarzda qaytaradi.

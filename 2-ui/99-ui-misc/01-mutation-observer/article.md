@@ -1,82 +1,79 @@
 
-# Mutation observer
+# Mutatsiya kuzatuvchisi
 
-`MutationObserver` is a built-in object that observes a DOM element and fires a callback when it detects a change.
+`MutationObserver` o'rnatilgan obyekt bo'lib, u DOM elementini kuzatadi va o'zgarishlarni aniqlaganida qayta qo'ng'iroqni amalga oshiradi.
 
-We'll first take a look at the syntax, and then explore a real-world use case, to see where such thing may be useful.
+Biz avval sintaksisni ko'rib chiqamiz, so'ngra bunday narsa qayerda foydali bo'lishi mumkinligini ko'rish uchun real foydalanish holatini o'rganamiz.
 
-## Syntax
+## Sintaksis
 
-`MutationObserver` is easy to use.
+`MutationObserver` dan foydalanish oson.
 
-First, we create an observer with a callback-function:
+Birinchidan, biz qayta qo'ng'iroq qilish funksiyasi bilan kuzatuvchi yaratamiz:
 
 ```js
 let observer = new MutationObserver(callback);
 ```
 
-And then attach it to a DOM node:
+Va keyin uni DOM node ga biriktiring:
 
 ```js
 observer.observe(node, config);
 ```
+`config` - bu "qanday turdagi o'zgarishlarga munosabat bildirish kerak" degan mantiqiy parametrlarga ega obyekt:
+- `childList` -- `node` ning bevosita bolalaridagi o'zgarishlar,
+- `subtree` -- `node` ning barcha avlodlarida,
+- `atributlar` -- `node` atribyutlari,
+- `attributeFilter` -- faqat tanlanganlarini kuzatish uchun atribyut nomlari massivi.
+- `characterData` -- `node.data` (matn mazmuni) kuzatilishi kerakmi,
 
-`config` is an object with boolean options "what kind of changes to react on":
-- `childList` -- changes in the direct children of `node`,
-- `subtree` -- in all descendants of `node`,
-- `attributes` -- attributes of `node`,
-- `attributeFilter` -- an array of attribute names, to observe only selected ones.
-- `characterData` -- whether to observe `node.data` (text content),
+Bir nechta boshqa variantlar:
+- `attributeOldValue` -- agar `true` bo'lsa, atributning eski va yangi qiymatini qayta qo'ng'iroqqa o'tkazing (pastga qarang), aks holda faqat yangisini (`attributes` varianti kerak),
+- `characterDataOldValue` -- agar `true` bo'lsa, qayta qo'ng'iroq qilish uchun `node.data` ning ham eski, ham yangi qiymatini o'tkazing (pastga qarang), aks holda faqat yangisini o'tkazing, (`characterData` parametri kerak).
 
-Few other options:
-- `attributeOldValue` -- if `true`, pass both the old and the new value of attribute to callback (see below), otherwise only the new one (needs `attributes` option),
-- `characterDataOldValue` -- if `true`, pass both the old and the new value of `node.data` to callback (see below), otherwise only the new one (needs `characterData` option).
+Keyin har qanday o'zgarishlardan so'ng `callback` amalga oshiriladi: o'zgarishlar birinchi argumentda [MutationRecord](https://dom.spec.whatwg.org/#mutationrecord) obyektlar ro'yxati sifatida va kuzatuvchining o'zi ikkinchi dalil sifatida uzatiladi.
 
-Then after any changes, the `callback` is executed: changes are passed in the first argument as a list of [MutationRecord](https://dom.spec.whatwg.org/#mutationrecord) objects, and the observer itself as the second argument.
+[MutationRecord](https://dom.spec.whatwg.org/#mutationrecord) obyektlari quyidagi xususiyatlarga ega:
 
-[MutationRecord](https://dom.spec.whatwg.org/#mutationrecord) objects have properties:
+- `tip` -- mutatsiya turlaridan biri
+     - `"attributes"`: atribut o'zgartirildi
+     - `"characterData"`: o'zgartirilgan ma'lumotlar, matn tugunlari uchun ishlatiladi,
+     - `"childList"`: qo'shilgan/o'chirilgan yordamchi elementlar,
+- `target` -- o'zgarish sodir bo'lgan joy: `"attributes"` uchun element yoki `"characterData"` uchun matnli tugun yoki `"childList"` mutatsiyasi uchun element,
+- `addedNodes/removedNodes` -- qo'shilgan/o'chirilgan tugunlar,
+- `previousSibling/nextSibling` -- qo'shilgan/o'chirilgan tugunlarning oldingi va keyingi birodarlari,
+- `attributeName/attributeNamespace` -- o'zgartirilgan atributning nomi/nom maydoni (XML uchun),
+- `oldValue` -- oldingi qiymat, faqat atribut yoki matn o'zgarishlari uchun, agar mos variant `attributeOldValue`/`characterDataOldValue` o'rnatilgan bo'lsa.
 
-- `type` -- mutation type, one of
-    - `"attributes"`: attribute modified
-    - `"characterData"`: data modified, used for text nodes,
-    - `"childList"`: child elements added/removed,
-- `target` -- where the change occurred: an element for `"attributes"`, or text node for `"characterData"`, or an element for a `"childList"` mutation,
-- `addedNodes/removedNodes`  -- nodes that were added/removed,
-- `previousSibling/nextSibling` -- the previous and next sibling to added/removed nodes,
-- `attributeName/attributeNamespace` -- the name/namespace (for XML) of the changed attribute,
-- `oldValue` -- the previous value, only for attribute or text changes, if the corresponding option is set `attributeOldValue`/`characterDataOldValue`.
-
-For example, here's a `<div>` with a `contentEditable` attribute. That attribute allows us to focus on it and edit.
+Masalan, bu yerda `contentEditable` atributiga ega `<div>`. Bu atribyut bizga diqqatni unga qaratish va tahrir qilish imkonini beradi.
 
 ```html run
 <div contentEditable id="elem">Click and <b>edit</b>, please</div>
 
 <script>
 let observer = new MutationObserver(mutationRecords => {
-  console.log(mutationRecords); // console.log(the changes)
+  console.log(mutationRecords); // console.log(o'zgartirishlar)
 });
 
-// observe everything except attributes
+// atribyutlardan tashqari hamma narsani kuzating
 observer.observe(elem, {
-  childList: true, // observe direct children
-  subtree: true, // and lower descendants too
-  characterDataOldValue: true // pass old data to callback
+  childList: true, // bevosita bolalarni kuzating
+  subtree: true, // va quyi avlodlarni ham
+  characterDataOldValue: true // qayta qo'ng'iroq qilish uchun eski ma'lumotlarni uzating
 });
 </script>
 ```
-
-If we run this code in the browser, then focus on the given `<div>` and change the text inside `<b>edit</b>`, `console.log` will show one mutation:
+Agar biz ushbu kodni brauzerda ishga tushirsak, u holda berilgan `<div>`ga e'tibor qarating va `<b>tahrir</b>` ichidagi matnni o'zgartiring, `console.log` bitta mutatsiyani ko'rsatadi:
 
 ```js
 mutationRecords = [{
   type: "characterData",
   oldValue: "edit",
   target: <text node>,
-  // other properties empty
+  // boshqa xususiyatlar bo'sh
 }];
 ```
-
-If we make more complex editing operations, e.g. remove the `<b>edit</b>`, the mutation event may contain multiple mutation records:
+Agar biz yanada murakkab tahrirlash operatsiyalarini amalga oshirsak, masalan. `<b>edit</b>` ni olib tashlang, mutatsiya hodisasi bir nechta mutatsiya yozuvlarini o'z ichiga olishi mumkin:
 
 ```js
 mutationRecords = [{
@@ -85,39 +82,39 @@ mutationRecords = [{
   removedNodes: [<b>],
   nextSibling: <text node>,
   previousSibling: <text node>
-  // other properties empty
+  // boshqa xususiyatlar bo'sh
 }, {
   type: "characterData"
   target: <text node>
-  // ...mutation details depend on how the browser handles such removal
-  // it may coalesce two adjacent text nodes "edit " and ", please" into one node
-  // or it may leave them separate text nodes
+   // ...mutatsiya tafsilotlari brauzer bunday olib tashlashni qanday boshqarishiga bog'liq
+   // u ikkita qo'shni matnli "edit" va "please" tugunlarini bitta tugunga birlashtirishi mumkin
+   // yoki ular alohida matn tugunlarini qoldiradi
 }];
 ```
 
-So, `MutationObserver` allows to react on any changes within DOM subtree.
+Demak, `MutationObserver` DOM pastki daraxtidagi har qanday o'zgarishlarga munosabat bildirish imkonini beradi.
 
-## Usage for integration
+## Integratsiya uchun foydalanish
 
-When such thing may be useful?
+Bunday narsa qachon foydali bo'lishi mumkin?
 
-Imagine the situation when you need to add a third-party script that contains useful functionality, but also does something unwanted, e.g. shows ads `<div class="ads">Unwanted ads</div>`.
+Vaziyatni tasavvur qiling-a, siz foydali funksiyalarni o'z ichiga olgan uchinchi tomon skriptini qo'shishingiz kerak, lekin ayni paytda u keraksiz narsalarni bajaradi, masalan, reklamalarni ko'rsatadi `<div class="ads">Keruvchi reklamalar</div>`.
 
-Naturally, the third-party script provides no mechanisms to remove it.
+Tabiiyki, uchinchi tomon skriptida uni olib tashlash uchun hech qanday mexanizm mavjud emas.
 
-Using `MutationObserver`, we can detect when the unwanted element appears in our DOM and remove it.
+`MutationObserver` yordamida biz DOMda keraksiz element qachon paydo bo'lishini aniqlashimiz va uni olib tashlashimiz mumkin.
 
-There are other situations when a third-party script adds something into our document, and we'd like to detect, when it happens, to adapt our page, dynamically resize something etc.
+Boshqa holatlar ham borki, uchinchi tomon skripti hujjatimizga biror narsa qo'shsa va biz bu sodir bo'lganda sahifamizni moslashtirishni, biror narsaning hajmini dinamik ravishda o'zgartirishni va hokazolarni aniqlashni xohlaymiz.
 
-`MutationObserver` allows to implement this.
+`MutationObserver` buni amalga oshirishga imkon beradi.
 
-## Usage for architecture
+## Arxitektura uchun foydalanish
 
-There are also situations when `MutationObserver` is good from architectural standpoint.
+`MutationObserver` arxitektura nuqtai nazaridan yaxshi bo'lgan holatlar ham mavjud.
 
-Let's say we're making a website about programming. Naturally, articles and other materials may contain source code snippets.
+Aytaylik, biz dasturlash haqida veb-sayt yaratyapmiz. Tabiiyki, maqolalar va boshqa materiallar manba kodi parchalarini o'z ichiga olishi mumkin.
 
-Such snippet in an HTML markup looks like this:
+HTML belgilashdagi bunday parcha quyidagicha ko'rinadi:
 
 ```html
 ...
@@ -127,33 +124,30 @@ Such snippet in an HTML markup looks like this:
 </code></pre>
 ...
 ```
+Yaxshiroq o'qilishi va shu bilan birga uni chiroyli qilish uchun biz saytimizda JavaScript sintaksisini ajratib ko'rsatish kutubxonasidan foydalanamiz, masalan, [Prism.js](https://prismjs.com/). Prizmada yuqoridagi parcha uchun sintaksik ta'kidlashni olish uchun `Prism.highlightElem(pre)` chaqiriladi, u bunday `pre` elementlarning mazmunini tekshiradi va siz ko'rgan narsaga o'xshash ushbu elementlarga rangli sintaksisni ajratib ko'rsatish uchun maxsus teglar va uslublar qo'shadi, ular sahifada berilgan misollarga o'xshash.
 
-For better readability and at the same time, to beautify it, we'll be using a JavaScript syntax highlighting library on our site, like [Prism.js](https://prismjs.com/). To get syntax highlighting for above snippet in Prism, `Prism.highlightElem(pre)` is called, which examines the contents of such `pre` elements and adds special tags and styles for colored syntax highlighting into those elements, similar to what you see in examples here, on this page.
-
-When exactly should we run that highlighting method? Well, we can do it on `DOMContentLoaded` event, or put the script at the bottom of the page. The moment our DOM is ready, we can search for elements `pre[class*="language"]` and call `Prism.highlightElem` on them:
+Ushbu ta'kidlash usulini qachon ishlatishimiz kerak? Xo'sh, biz buni DOMContentLoaded hodisasida qilishimiz yoki skriptni sahifaning pastki qismiga qo'yishimiz mumkin. Bizning DOM tayyor bo'lganda, biz `pre[class*="language"]` elementlarni qidirishimiz va ularda `Prism.highlightElem` ni chaqirishimiz mumkin:
 
 ```js
-// highlight all code snippets on the page
+// sahifadagi barcha kod parchalarini ajratib ko'rsating
 document.querySelectorAll('pre[class*="language"]').forEach(Prism.highlightElem);
 ```
+Hozircha hamma narsa oddiy, to'g'rimi? Biz HTML-da kod parchalarini topamiz va ularni ajratib ko'rsatamiz.
 
-Everything's simple so far, right? We find code snippets in HTML and highlight them.
-
-Now let's go on. Let's say we're going to dynamically fetch materials from a server. We'll study methods for that [later in the tutorial](info:fetch). For now it only matters that we fetch an HTML article from a webserver and display it on demand:
+Endi davom etaylik. Aytaylik, biz serverdan materiallarni dinamik ravishda olmoqchimiz. Buning usullarini [keyinroq qo'llanmada] o'rganamiz (info:fetch). Hozircha faqat HTML maqolasini veb-serverdan olishimiz va uni talab bo'yicha ko'rsatishimiz muhim:
 
 ```js
-let article = /* fetch new content from server */
+let article = /* serverdan yangi tarkibni oling */
 articleElem.innerHTML = article;
 ```
+Yangi `article` HTML kod parchalarini o'z ichiga olishi mumkin. Biz ularga `Prism.highlightElem` ni chaqirishimiz kerak, aks holda ular ajratib ko'rsatilmaydi.
 
-The new `article` HTML may contain code snippets. We need to call `Prism.highlightElem` on them, otherwise they won't get highlighted.
+**Dinamik yuklangan maqola uchun "Prism.highlightElem" ni qayerda va qachon chaqirish kerak?**
 
-**Where and when to call `Prism.highlightElem` for a dynamically loaded article?**
-
-We could append that call to the code that loads an article, like this:
+Biz ushbu qo'ng'iroqni maqolani yuklaydigan kodga qo'shishimiz mumkin, masalan:
 
 ```js
-let article = /* fetch new content from server */
+let article = /* serverdan yangi tarkibni olish */
 articleElem.innerHTML = article;
 
 *!*
@@ -161,39 +155,38 @@ let snippets = articleElem.querySelectorAll('pre[class*="language-"]');
 snippets.forEach(Prism.highlightElem);
 */!*
 ```
+...Ammo, tasavvur qiling-a, biz kodda kontentimizni yuklaydigan ko'plab joylar – maqolalar, viktorinalar, forum postlari va boshqalar bo'lsa. Yuklagandan so'ng kontentdagi kodni ajratib ko'rsatish uchun ta'kidlash chaqiruvini hamma joyda qo'yishimiz kerakmi? Bu qulay emas.
 
-...But, imagine if we have many places in the code where we load our content - articles, quizzes, forum posts, etc. Do we need to put the highlighting call everywhere, to highlight the code in content after loading? That's not very convenient.
+Va agar kontent uchinchi tomon moduli tomonidan yuklangan bo'lsa-chi? Misol uchun, bizda boshqa birov tomonidan yozilgan, kontentni dinamik ravishda yuklaydigan forumimiz bor va biz unga sintaksisni ajratib ko'rsatishni qo'shmoqchimiz. Hech kim uchinchi tomon skriptlarini tuzatishni yoqtirmaydi.
 
-And what if the content is loaded by a third-party module? For example, we have a forum written by someone else, that loads content dynamically, and we'd like to add syntax highlighting to it. No one likes patching third-party scripts.
+Yaxshiyamki, boshqa variant ham bor.
 
-Luckily, there's another option.
+Kod parchalari sahifaga qachon kiritilganligini avtomatik aniqlash va ularni ajratib ko'rsatish uchun `MutationObserver` dan foydalanishimiz mumkin.
 
-We can use `MutationObserver` to automatically detect when code snippets are inserted into the page and highlight them.
+Shunday qilib, biz ta'kidlash funksiyasini bir joyda boshqarib, uni birlashtirish zaruratidan xalos qilamiz.
 
-So we'll handle the highlighting functionality in one place, relieving us from the need to integrate it.
+### Dinamik ta'kidlash demosi
 
-### Dynamic highlight demo
+Mana ish misoli.
 
-Here's the working example.
-
-If you run this code, it starts observing the element below and highlighting any code snippets that appear there:
+Agar siz ushbu kodni ishga tushirsangiz, u quyidagi elementni kuzatishni va u yerda paydo bo'ladigan har qanday kod parchalarini ajratib ko'rsatishni boshlaydi:
 
 ```js run
 let observer = new MutationObserver(mutations => {
 
   for(let mutation of mutations) {
-    // examine new nodes, is there anything to highlight?
+    // yangi tugunlarni ko'rib chiqing, ta'kidlash uchun biror narsa bormi?
 
     for(let node of mutation.addedNodes) {
-      // we track only elements, skip other nodes (e.g. text nodes)
+      // biz faqat elementlarni kuzatamiz, boshqa node larni o'tkazib yuboramiz (masalan, matn node lari)
       if (!(node instanceof HTMLElement)) continue;
 
-      // check the inserted element for being a code snippet
+      // kiritilgan elementni kod parchasi ekanligini tekshiring
       if (node.matches('pre[class*="language-"]')) {
         Prism.highlightElement(node);
       }
 
-      // or maybe there's a code snippet somewhere in its subtree?
+      // yoki ehtimol uning pastki daraxtida kod parchasi bormi?
       for(let elem of node.querySelectorAll('pre[class*="language-"]')) {
         Prism.highlightElement(elem);
       }
@@ -206,19 +199,18 @@ let demoElem = document.getElementById('highlight-demo');
 
 observer.observe(demoElem, {childList: true, subtree: true});
 ```
+Quyida, HTML-element va JavaScript mavjud bo'lib, uni `innerHTML` yordamida dinamik ravishda to'ldiradi.
 
-Here, below, there's an HTML-element and JavaScript that dynamically fills it using `innerHTML`.
-
-Please run the previous code (above, observes that element), and then the code below. You'll see how `MutationObserver` detects and highlights the snippet.
+Iltimos, oldingi kodni (yuqorida, ushbu elementni kuzatadi) va keyin quyidagi kodni ishga tushiring. Siz `MutationObserver` parchani qanday aniqlashini va ajratib ko'rsatishini ko'rasiz.
 
 <p id="highlight-demo" style="border: 1px solid #ddd">A demo-element with <code>id="highlight-demo"</code>, run the code above to observe it.</p>
 
-The following code populates its `innerHTML`, that causes the `MutationObserver` to react and highlight its contents:
+Quyidagi kod o'zining `innerHTML` ini to'ldiradi, bu esa `MutationObserver` ning reaksiyaga kirishishiga va uning mazmunini ajratib ko'rsatishiga olib keladi:
 
 ```js run
 let demoElem = document.getElementById('highlight-demo');
 
-// dynamically insert content with code snippets
+// kod parchalari bilan tarkibni dinamik ravishda kiritish
 demoElem.innerHTML = `A code snippet is below:
   <pre class="language-javascript"><code> let hello = "world!"; </code></pre>
   <div>Another one:</div>
@@ -227,47 +219,46 @@ demoElem.innerHTML = `A code snippet is below:
   </div>
 `;
 ```
+Endi bizda `MutationObserver` mavjud bo'lib, u kuzatilgan elementlardagi yoki butun `document` dagi barcha highlight ni kuzatishi mumkin. Biz HTMLga kod parchalarini o'ylamasdan qo'shishimiz/o'chirishimiz mumkin.
 
-Now we have `MutationObserver` that can track all highlighting in observed elements or the whole `document`. We can add/remove code snippets in HTML without thinking about it.
+## Qo'shimcha usullar
 
-## Additional methods
+Node ni kuzatishni to'xtatishning bir usuli bor:
 
-There's a method to stop observing the node:
+- `observer.disconnect()` -- kuzatishni to'xtatadi.
 
-- `observer.disconnect()` -- stops the observation.
+Kuzatishni to'xtatganimizda, ba'zi o'zgarishlar hali kuzatuvchi tomonidan qayta ishlanmagan bo'lishi mumkin. Bunday hollarda biz ushbu usuldan foydalanamiz.
 
-When we stop the observing, it might be possible that some changes were not yet processed by the observer. In such cases, we use
+- `observer.takeRecords()` -- qayta ishlanmagan mutatsiya yozuvlari ro'yxatini oladi - sodir bo'lgan, lekin qayta qo'ng'iroq ularni ko'rib chiqmadi.
 
-- `observer.takeRecords()` -- gets a list of unprocessed mutation records - those that happened, but the callback has not handled them.
-
-These methods can be used together, like this:
+Ushbu usullar birgalikda ishlatilishi mumkin, masalan:
 
 ```js
-// get a list of unprocessed mutations
-// should be called before disconnecting,
-// if you care about possibly unhandled recent mutations
+// qayta ishlanmagan mutatsiyalar ro'yxatini oling
+// uzilishdan oldin chaqirilishi kerak,
+// agar siz so'nggi ishlov berilmagan mutatsiyalar haqida qayg'ursangiz
 let mutationRecords = observer.takeRecords();
 
-// stop tracking changes
+// o'zgarishlarni kuzatishni to'xtating
 observer.disconnect();
 ...
 ```
 
 
-```smart header="Records returned by `observer.takeRecords()` are removed from the processing queue"
-The callback won't be called for records, returned by `observer.takeRecords()`.
+```smart header="`observer.takeRecords()` tomonidan qaytarilgan yozuvlar ishlov berish navbatdan olib tashlanadi`"
+Qayta qo'ng'iroq `observer.takeRecords()` tomonidan qaytarilgan yozuvlar uchun chaqirilmaydi.
 ```
 
-```smart header="Garbage collection interaction"
-Observers use weak references to nodes internally. That is, if a node is removed from the DOM, and becomes unreachable, then it can be garbage collected.
+```smart header="Garbage collection ning o'zaro ta'siri"
+Kuzatuvchilar ichki tugunlarga zaif havolalardan foydalanadilar. Agar tugun DOMdan olib tashlansa va unga yetib bo'lmaydigan bo'lib qolsa, u axlat yig'ish mumkin.
 
-The mere fact that a DOM node is observed doesn't prevent the garbage collection.
+DOM tugunining kuzatilishining o'zi axlat yig'ishga to'sqinlik qilmaydi.
 ```
 
-## Summary  
+## Xulosa  
 
-`MutationObserver` can react to changes in DOM - attributes, text content and adding/removing elements.
+`MutationObserver` DOMdagi o'zgarishlarga - atribyutlarga, matn tarkibiga va elementlarni qo'shish/o'chirishga javob berishi mumkin.
 
-We can use it to track changes introduced by other parts of our code, as well as to integrate with third-party scripts.
+Biz undan kodimizning boshqa qismlari tomonidan kiritilgan o'zgarishlarni kuzatish, shuningdek, uchinchi tomon skriptlari bilan integratsiya qilish uchun foydalanishimiz mumkin.
 
-`MutationObserver` can track any changes. The config "what to observe" options are used for optimizations, not to spend resources on unneeded callback invocations.
+`MutationObserver` har qanday o'zgarishlarni kuzatishi mumkin. "Nimani kuzatish kerak" konfiguratsiyasi parametrlari resurslarni keraksiz qayta qo'ng'iroqlarga sarflash uchun emas, balki optimallashtirish uchun ishlatiladi.

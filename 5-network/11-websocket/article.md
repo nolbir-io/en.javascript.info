@@ -1,36 +1,36 @@
 # WebSocket
 
-The `WebSocket` protocol, described in the specification [RFC 6455](https://datatracker.ietf.org/doc/html/rfc6455), provides a way to exchange data between browser and server via a persistent connection. The data can be passed in both directions as "packets", without breaking the connection and the need of additional HTTP-requests.
+[RFC 6455](https://datatracker.ietf.org/doc/html/rfc6455) spetsifikatsiyasida tasvirlangan `WebSocket` protokoli doimiy ulanish orqali brauzer va server o'rtasida ma'lumot almashish imkonini beradi. Ma'lumotlar ulanishni buzmasdan va qo'shimcha HTTP so'rovlarini talab qilmasdan "paketlar" sifatida har ikki yo'nalishda ham uzatilishi mumkin.
 
-WebSocket is especially great for services that require continuous data exchange, e.g. online games, real-time trading systems and so on.
+WebSocket, ayniqsa, doimiy ma'lumotlar almashinuvini talab qiladigan xizmatlar, masalan, onlayn o'yinlar, real vaqtda savdo tizimlari va boshqalar uchun juda qulay.
 
-## A simple example
+## Oddiy misol
 
-To open a websocket connection, we need to create `new WebSocket` using the special protocol `ws` in the url:
+Websocket ulanishini ochish uchun url-da maxsus `ws` protokoli yordamida `new WebSocket` yaratishimiz kerak:
 
 ```js
 let socket = new WebSocket("*!*ws*/!*://javascript.info");
 ```
 
-There's also encrypted `wss://` protocol. It's like HTTPS for websockets.
+Shuningdek, shifrlangan `wss://` protokoli ham mavjud. Bu veb-soketlar uchun HTTPSga o'xshaydi.
 
-```smart header="Always prefer `wss://`"
-The `wss://` protocol is not only encrypted, but also more reliable.
+```smart header="Har doim `wss://` ni afzal ko'ring"
+`wss://` protokoli nafaqat shifrlangan, balki ishonchliroq.
 
-That's because `ws://` data is not encrypted, visible for any intermediary. Old proxy servers do not know about WebSocket, they may see "strange" headers and abort the connection.
+Buning sababi, `ws://` ma'lumotlari shifrlanmagan, har qanday vositachi uchun ko'rinadi. Eski proksi-serverlar WebSocket haqida bilishmaydi, ular "g'alati" sarlavhalarni ko'rishlari va ulanishni to'xtatishlari mumkin.
 
-On the other hand, `wss://` is WebSocket over TLS, (same as HTTPS is HTTP over TLS), the transport security layer encrypts the data at the sender and decrypts it at the receiver. So data packets are passed encrypted through proxies. They can't see what's inside and let them through.
+Boshqa tomondan, `wss://` - bu TLS orqali WebSocket, (HTTPS, TLS orqali HTTP kabi), transport xavfsizligi qatlami jo'natuvchida ma'lumotlarni shifrlaydi va qabul qiluvchida shifrni ochadi. Shunday qilib, ma'lumotlar paketlari proksi-serverlar orqali shifrlangan holda uzatiladi. Ular ichkarida nima borligini ko'ra olmaydilar va ularni o'tkazib yuboradilar.
 ```
 
-Once the socket is created, we should listen to events on it. There are totally 4 events:
-- **`open`** -- connection established,
-- **`message`** -- data received,
-- **`error`** -- websocket error,
-- **`close`** -- connection closed.
+Socket yaratilgandan so'ng, biz undagi voqealarni tinglashimiz kerak. Hammasi bo'lib 4 ta hodisa mavjud:
+- **`open`** -- ulanish o'rnatildi,
+- **`message`** -- olingan ma'lumotlar,
+- **`error`** -- websocket xatosi,
+- **`close`** -- ulanish yopiq.
 
-...And if we'd like to send something, then `socket.send(data)` will do that.
+...Agar biz biror narsa jo'natmoqchi bo'lsak, buni `socket.send(data)` bajaradi.
 
-Here's an example:
+Quyida namuna berilgan:
 
 ```js run
 let socket = new WebSocket("wss://javascript.info/article/websocket/demo/hello");
@@ -47,11 +47,11 @@ socket.onmessage = function(event) {
 
 socket.onclose = function(event) {
   if (event.wasClean) {  
-    alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+    alert(`[close] Ulanish yopildi, code=${event.code} reason=${event.reason}`);
   } else {
-    // e.g. server process killed or network down
-    // event.code is usually 1006 in this case
-    alert('[close] Connection died');
+     // masalan, server jarayoni o'chirildi yoki tarmoq o'chirildi
+     // event.code odatda bu holda 1006 bo'ladi
+    alert('[close] Ulanish o'chirildi');
   }
 };
 
@@ -60,23 +60,23 @@ socket.onerror = function(error) {
 };
 ```
 
-For demo purposes, there's a small server [server.js](demo/server.js) written in Node.js, for the example above, running. It responds with "Hello from server, John", then waits 5 seconds and closes the connection.
+Namoyish maqsadida kichik server [server.js](demo/server.js) mavjud, yuqoridagi misol uchun Node.js da yozilgan. U "Serverdan salom, Jon" deb javob beradi, keyin 5 soniya kutadi va ulanishni yopadi.
 
-So you'll see events `open` -> `message` -> `close`.
+Shunday qilib, siz `open` -> `message` -> `close` voqealarini ko'rasiz.
 
-That's actually it, we can talk WebSocket already. Quite simple, isn't it?
+Aslida biz allaqachon WebSocket bilan gaplasha olamiz. Juda oddiy, shunday emasmi?
 
-Now let's talk more in-depth.
+Endi batafsilroq gapirsak.
 
-## Opening a websocket
+## Websocket ochish
 
-When `new WebSocket(url)` is created, it starts connecting immediately.
+`New WebSocket(url)` yaratilganda, u darhol ulanishni boshlaydi.
 
-During the connection, the browser (using headers) asks the server: "Do you support Websocket?" And if the server replies "yes", then the talk continues in WebSocket protocol, which is not HTTP at all.
+Ulanish vaqtida brauzer (sarlavhalar yordamida) serverdan so'raydi: "Siz Websocket-ni qo'llab-quvvatlaysizmi?" Va agar server "ha" deb javob bersa, suhbat umuman HTTP bo'lmagan WebSocket protokolida davom etadi.
 
 ![](websocket-handshake.svg)
 
-Here's an example of browser headers for a request made by `new WebSocket("wss://javascript.info/chat")`.
+Mana `new WebSocket("wss://javascript.info/chat")` tomonidan qilingan so'rov uchun brauzer sarlavhalariga misol.
 
 ```
 GET /chat
@@ -88,17 +88,17 @@ Sec-WebSocket-Key: Iv8io/9s+lYFgZWcXczP8Q==
 Sec-WebSocket-Version: 13
 ```
 
-- `Origin` -- the origin of the client page, e.g. `https://javascript.info`. WebSocket objects are cross-origin by nature. There are no special headers or other limitations. Old servers are unable to handle WebSocket anyway, so there are no compatibility issues. But the `Origin` header is important, as it allows the server to decide whether or not to talk WebSocket with this website.
-- `Connection: Upgrade` -- signals that the client would like to change the protocol.
-- `Upgrade: websocket` -- the requested protocol is "websocket".
-- `Sec-WebSocket-Key` -- a random browser-generated key, used to ensure that the server supports WebSocket protocol. It's random to prevent proxies from caching any following communication.
-- `Sec-WebSocket-Version` -- WebSocket protocol version, 13 is the current one.
+- `Origin` -- mijoz sahifasining kelib chiqishi, masalan, `https://javascript.info`. WebSocket obyektlari tabiatan o'zaro kelib chiqadi. Hech qanday maxsus sarlavhalar yoki boshqa cheklovlar yo'q. Eski serverlar WebSocket bilan baribir ishlay olmaydi, shuning uchun moslik bilan bog'liq muammolar yo'q. Ammo `Origin` sarlavhasi muhim, chunki u serverga WebSocket bilan ushbu veb-sayt bilan gaplashish yoki gaplashmaslik haqida qaror qabul qilish imkonini beradi.
+- `Connection: Upgrade` -- mijoz protokolni o'zgartirmoqchi ekanligini bildiradi.
+- `Upgrade: websocket` -- so'ralgan protokol `websocket`.
+- `Sec-WebSocket-Key` -- brauzer tomonidan tasodifiy yaratilgan kalit, server WebSocket protokolini qo'llab-quvvatlashini ta'minlash uchun ishlatiladi. Proksi-serverlarning har qanday keyingi aloqani keshlashiga yo'l qo'ymaslik tasodifiy.
+- `Sec-WebSocket-Version` -- 13-joriy WebSocket protokoli versiyasi.
 
-```smart header="WebSocket handshake can't be emulated"
-We can't use `XMLHttpRequest` or `fetch` to make this kind of HTTP-request, because JavaScript is not allowed to set these headers.
+```smart header="WebSocket handshake ni taqlid qilib bo'lmaydi"
+Ushbu turdagi HTTP so'rovini amalga oshirish uchun biz `XMLHttpRequest` yoki `fetch` dan foydalana olmaymiz, chunki JavaScriptda bu sarlavhalarni o'rnatishga ruxsat berilmagan.
 ```
 
-If the server agrees to switch to WebSocket, it should send code 101 response:
+Agar server WebSocketga o'tishga rozi bo'lsa, u javob kodini 101 yuborishi kerak:
 
 ```
 101 Switching Protocols
@@ -107,29 +107,29 @@ Connection: Upgrade
 Sec-WebSocket-Accept: hsBlbuDTkk24srzEOTBUlZAlC2g=
 ```
 
-Here `Sec-WebSocket-Accept` is `Sec-WebSocket-Key`, recoded using a special algorithm. Upon seeing it, the browser understands that the server really does support the WebSocket protocol.
+Bu yerda `Sec-WebSocket-Accept` - bu maxsus algoritm yordamida qayta kodlangan `Sec-WebSocket-Key`. Uni ko'rgandan so'ng, brauzer server haqiqatan ham WebSocket protokolini qo'llab-quvvatlashini tushunadi.
 
-Afterwards, the data is transferred using the WebSocket protocol, we'll see its structure ("frames") soon. And that's not HTTP at all.
+Keyinchalik, ma'lumotlar WebSocket protokoli yordamida uzatiladi, biz uning tuzilishini ("ramkalar") tez orada ko'rib chiqamiz. Va bu umuman HTTP emas.
 
-### Extensions and subprotocols
+### Kengaytmalar va subprotokollar
 
-There may be additional headers `Sec-WebSocket-Extensions` and `Sec-WebSocket-Protocol` that describe extensions and subprotocols.
+Kengaytmalar va subprotokollarni tavsiflovchi qo'shimcha `Sec-WebSocket-Extensions` va `Sec-WebSocket-Protocol` sarlavhalari bo'lishi mumkin.
 
-For instance:
+Masalan:
 
-- `Sec-WebSocket-Extensions: deflate-frame` means that the browser supports data compression. An extension is something related to transferring the data, functionality that extends the WebSocket protocol. The header `Sec-WebSocket-Extensions` is sent automatically by the browser, with the list of all extensions it supports.
+- `Sec-WebSocket-Extensions: deflate-frame` brauzer ma'lumotlarni siqishni qo'llab-quvvatlashini bildiradi. Kengaytma - bu ma'lumotlarni uzatish bilan bog'liq bo'lgan narsa, WebSocket protokolini kengaytiruvchi funksionallik. `Sec-WebSocket-Extensions` sarlavhasi brauzer tomonidan qo'llab-quvvatlanadigan barcha kengaytmalar ro'yxati bilan avtomatik ravishda yuboriladi.
 
-- `Sec-WebSocket-Protocol: soap, wamp` means that we'd like to transfer not just any data, but the data in [SOAP](https://en.wikipedia.org/wiki/SOAP) or WAMP ("The WebSocket Application Messaging Protocol") protocols. WebSocket subprotocols are registered in the [IANA catalogue](https://www.iana.org/assignments/websocket/websocket.xml). So, this header describes the data formats that we're going to use.
+- `Sec-WebSocket-Protocol: soap, wamp` biz nafaqat har qanday ma'lumotlarni, balki [SOAP](https://en.wikipedia.org/wiki/SOAP) yoki WAMP ()dagi ma'lumotlarni uzatishni xohlayotganimizni bildiradi. ("WebSocket Application Messaging Protocol") protokollari. WebSocket subprotokollari [IANA katalogida] (https://www.iana.org/assignments/websocket/websocket.xml) ro'yxatga olingan. Shunday qilib, ushbu sarlavha biz foydalanmoqchi bo'lgan ma'lumotlar formatlarini tavsiflaydi.
 
-    This optional header is set using the second parameter of `new WebSocket`. That's the array of subprotocols, e.g. if we'd like to use SOAP or WAMP:
+   Ushbu ixtiyoriy sarlavha `new WebSocket` ning ikkinchi parametri yordamida o'rnatiladi. Bu subprotokollar massivi, masalan, agar biz SOAP yoki WAMP dan foydalanmoqchi bo'lsak:
 
     ```js
     let socket = new WebSocket("wss://javascript.info/chat", ["soap", "wamp"]);
     ```
 
-The server should respond with a list of protocols and extensions that it agrees to use.
+Server foydalanishga rozi bo'lgan protokollar va kengaytmalar ro'yxati bilan javob berishi kerak.
 
-For example, the request:
+Masalan, so'rov:
 
 ```
 GET /chat
@@ -158,49 +158,49 @@ Sec-WebSocket-Protocol: soap
 */!*
 ```
 
-Here the server responds that it supports the extension "deflate-frame", and only SOAP of the requested subprotocols.
+Bu yerda server "deflate-frame" kengaytmasini va faqat so'ralgan subprotokollardagi SOAPni qo'llab-quvvatlashini aytadi.
 
-## Data transfer
+## Ma'lumotlarni uzatish (data transfer)
 
-WebSocket communication consists of "frames" -- data fragments, that can be sent from either side, and can be of several kinds:
+WebSocket aloqasi har ikki tomondan yuborilishi mumkin bo'lgan va bir necha turdagi bo'lishi mumkin bo'lgan "ramkalar" -- ma'lumotlar bo'laklaridan iborat:
 
-- "text frames" -- contain text data that parties send to each other.
-- "binary data frames" -- contain binary data that parties send to each other.
-- "ping/pong frames" are used to check the connection, sent from the server, the browser responds to these automatically.
-- there's also "connection close frame" and a few other service frames.
+- "text frames" -- tomonlar bir-biriga yuboradigan matn ma'lumotlarini o'z ichiga oladi.
+- "binary data frames" -- tomonlar bir-biriga yuboradigan ikkilik ma'lumotlarni o'z ichiga oladi.
+- "ping/pong frames" serverdan yuborilgan ulanishni tekshirish uchun ishlatiladi, brauzer ularga avtomatik ravishda javob beradi.
+- shuningdek, "connection close frame" va boshqa bir nechta xizmat ko'rsatish ramkalari mavjud.
 
-In the browser, we directly work only with text or binary frames.
+Brauzerda biz to'g'ridan-to'g'ri faqat matn yoki ikkilik ramkalar bilan ishlaymiz.
 
-**WebSocket `.send()` method can send either text or binary data.**
+**WebSocket `.send()` usuli matn yoki ikkilik ma'lumotlarni yuborishi mumkin.**
 
-A call `socket.send(body)` allows `body` in string or a binary format, including `Blob`, `ArrayBuffer`, etc. No settings are required: just send it out in any format.
+`socket.send(body)` chaqiruvi string yoki binary formatda `body` ga ruxsat beradi, jumladan, `Blob`, `ArrayBuffer` va hokazo. Hech qanday sozlash shart emas, uni istalgan formatda yuborish kifoya.
 
-**When we receive the data, text always comes as string. And for binary data, we can choose between `Blob` and `ArrayBuffer` formats.**
+**Ma'lumotni olganimizda, matn har doim qator sifatida keladi. Ikkilik ma'lumotlar uchun esa biz `Blob` va `ArrayBuffer` formatlarini tanlashimiz mumkin.**
 
-That's set by `socket.binaryType` property, it's `"blob"` by default, so binary data comes as `Blob` objects.
+Bu `socket.binaryType` xususiyati tomonidan o'rnatiladi, sukut bo'yicha `"blob"`, shuning uchun ikkilik ma'lumotlar `Blob` obyektlari sifatida keladi.
 
-[Blob](info:blob) is a high-level binary object, it directly integrates with `<a>`, `<img>` and other tags, so that's a sane default. But for binary processing, to access individual data bytes, we can change it to `"arraybuffer"`:
+[Blob](ma'lumot:blob) yuqori darajadagi binary obyekt bo'lib, u `<a>`, `<img>` va boshqa teglar bilan bevosita integratsiyalanadi, shuning uchun bu standart standart hisoblanadi. Ammo ikkilik ishlov berish uchun alohida ma'lumotlar baytlariga kirish uchun biz uni `arraybufer` ga o'zgartirishimiz mumkin:
 
 ```js
 socket.binaryType = "arraybuffer";
 socket.onmessage = (event) => {
-  // event.data is either a string (if text) or arraybuffer (if binary)
+  // event.data yoki satr (agar matn bo'lsa) yoki arraybufer (agar ikkilik bo'lsa)
 };
 ```
 
-## Rate limiting
+## Tarifni cheklash
 
-Imagine, our app is generating a lot of data to send. But the user has a slow network connection, maybe on a mobile internet, outside of a city.
+Tasavvur qiling-a, bizning ilovamiz jo'natish uchun juda ko'p ma'lumotlarni ishlab chiqarmoqda. Lekin foydalanuvchi sekin tarmoq ulanishiga ega, ehtimol mobil internetda, shahar tashqarisida.
 
-We can call `socket.send(data)` again and again. But the data will be buffered (stored) in memory and sent out only as fast as network speed allows.
+Biz `socket.send(data)` ga qayta-qayta qo'ng'iroq qilishimiz mumkin. Ammo ma'lumotlar xotirada buferlanadi (saqlanadi) va faqat tarmoq tezligi imkon qadar tez yuboriladi.
 
-The `socket.bufferedAmount` property stores how many bytes remain buffered at this moment, waiting to be sent over the network.
+`socket.bufferedAmount` xususiyati tarmoq orqali yuborilishini kutayotgan qancha bayt buferlanganligini saqlaydi.
 
-We can examine it to see whether the socket is actually available for transmission.
+Biz rozetkaning uzatish uchun mavjud yoki yo'qligini tekshirish uchun uni ko'zdan kechirishimiz mumkin.
 
 ```js
-// every 100ms examine the socket and send more data  
-// only if all the existing data was sent out
+// har 100ms rozetkani tekshiring va ko'proq ma'lumot yuboring
+// faqat barcha mavjud ma'lumotlar yuborilgan bo'lsa
 setInterval(() => {
   if (socket.bufferedAmount == 0) {
     socket.send(moreData());
@@ -208,26 +208,25 @@ setInterval(() => {
 }, 100);
 ```
 
+## Ulanish yopilishi
 
-## Connection close
+Odatda, bir tomon ulanishni yopishni xohlasa (brauzer ham, server ham teng huquqlarga ega), ular raqamli kod va matnli sabab bilan "ulanishni yopish ramkasi" (connection close frame) ni yuboradilar.
 
-Normally, when a party wants to close the connection (both browser and server have equal rights), they send a "connection close frame" with a numeric code and a textual reason.
-
-The method for that is:
+Buning uchun usul:
 ```js
 socket.close([code], [reason]);
 ```
 
-- `code` is a special WebSocket closing code (optional)
-- `reason` is a string that describes the reason of closing (optional)
+- `code` - bu maxsus WebSocket yopish kodi (ixtiyoriy)
+- `reason` - yopilish sababini tavsiflovchi qator (ixtiyoriy)
 
-Then the other party in the `close` event handler gets the code and the reason, e.g.:
+Keyin `close` hodisasi ishlovchisidagi boshqa tomondagi code va reasonni oladi, masalan:
 
 ```js
-// closing party:
+// yopilish partiyasi:
 socket.close(1000, "Work complete");
 
-// the other party
+// boshqa partiya
 socket.onclose = event => {
   // event.code === 1000
   // event.reason === "Work complete"
@@ -235,47 +234,47 @@ socket.onclose = event => {
 };
 ```
 
-Most common code values:
+Eng keng tarqalgan kod qiymatlari:
 
-- `1000` -- the default, normal closure (used if no `code` supplied),
-- `1006` -- no way to set such code manually, indicates that the connection was lost (no close frame).
+- `1000` -- standart, oddiy yopilish (agar `code` berilmagan bo'lsa ishlatiladi),
+- `1006` -- bunday kodni qo'lda o'rnatishning imkoni yo'q, ulanish uzilganligini bildiradi (yopiq ramka yo'q).
 
-There are other codes like:
+Boshqa kodlar mavjud:
 
-- `1001` -- the party is going away, e.g. server is shutting down, or a browser leaves the page,
-- `1009` -- the message is too big to process,
-- `1011` -- unexpected error on server,
-- ...and so on.
+- `1001` -- ziyofat ketmoqda, masalan, server yopiladi yoki brauzer sahifani tark etadi,
+- `1009` -- xabarni qayta ishlash uchun juda katta,
+- `1011` -- serverda kutilmagan xatolik,
+- ...va hokazo.
 
-The full list can be found in [RFC6455, §7.4.1](https://tools.ietf.org/html/rfc6455#section-7.4.1).
+To'liq ro'yxatni [RFC6455, §7.4.1](https://tools.ietf.org/html/rfc6455#section-7.4.1) da topishingiz mumkin.
 
-WebSocket codes are somewhat like HTTP codes, but different. In particular, codes lower than `1000` are reserved, there'll be an error if we try to set such a code.
+WebSocket kodlari biroz HTTP kodlariga o'xshaydi, lekin u biroz boshqacha. Xususan, `1000` dan past kodlar zaxiralangan, agar biz bunday kodni o'rnatishga harakat qilsak, xatolik yuz beradi.
 
 ```js
-// in case connection is broken
+// ulanish buzilgan taqdirda
 socket.onclose = event => {
   // event.code === 1006
   // event.reason === ""
-  // event.wasClean === false (no closing frame)
+  // event.wasClean === false (closing frame mavjud emas)
 };
 ```
 
 
-## Connection state
+## Ulanish holati
 
-To get connection state, additionally there's `socket.readyState` property with values:
+Ulanish holatini olish uchun qo'shimcha qiymatlarga ega `socket.readyState` xususiyati mavjud:
 
-- **`0`** -- "CONNECTING": the connection has not yet been established,
-- **`1`** -- "OPEN": communicating,
-- **`2`** -- "CLOSING": the connection is closing,
-- **`3`** -- "CLOSED": the connection is closed.
+- **`0`** -- "CONNECTING": ulanish hali o'rnatilmagan,
+- **`1`** -- "OPEN": muloqot qilish,
+- **`2`** -- "CLOSING": ulanish yopilyapti,
+- **`3`** -- "CLOSED": ulanish yopiq.
 
 
-## Chat example
+## Chat namunasi
 
-Let's review a chat example using browser WebSocket API and Node.js WebSocket module <https://github.com/websockets/ws>. We'll pay the main attention to the client side, but the server is also simple.
+Keling, WebSocket API brauzeri va Node.js WebSocket moduli <https://github.com/websockets/ws> yordamida chat misolini ko'rib chiqaylik. Biz asosiy e'tiborni mijoz tomoniga qaratamiz, lekin server ham oddiy.
 
-HTML: we need a `<form>` to send messages and a `<div>` for incoming messages:
+HTML: bizga xabarlarni yuborish uchun `<form>` va kiruvchi xabarlar uchun `<div>` kerak:
 
 ```html
 <!-- message form -->
@@ -284,21 +283,22 @@ HTML: we need a `<form>` to send messages and a `<div>` for incoming messages:
   <input type="submit" value="Send">
 </form>
 
-<!-- div with messages -->
+<!-- xabarlar bilan div -->
 <div id="messages"></div>
 ```
 
-From JavaScript we want three things:
-1. Open the connection.
-2. On form submission -- `socket.send(message)` for the message.
-3. On incoming message -- append it to `div#messages`.
+JavaScriptdan biz uchta narsani xohlaymiz:
 
-Here's the code:
+1. Ulanishni oching.
+2. Shaklni yuborishda -- xabar uchun `socket.send(message)`.
+3. Kiruvchi xabarda -- uni `div#messages` ga qo'shing.
+
+Mana kod:
 
 ```js
 let socket = new WebSocket("wss://javascript.info/article/websocket/chat/ws");
 
-// send message from the form
+// formdan xabar yuboring
 document.forms.publish.onsubmit = function() {
   let outgoingMessage = this.message.value;
 
@@ -306,7 +306,7 @@ document.forms.publish.onsubmit = function() {
   return false;
 };
 
-// message received - show the message in div#messages
+// xabar qabul qilindi - xabarni div#messages da ko'rsatish
 socket.onmessage = function(event) {
   let message = event.data;
 
@@ -316,14 +316,14 @@ socket.onmessage = function(event) {
 }
 ```
 
-Server-side code is a little bit beyond our scope. Here we'll use Node.js, but you don't have to. Other platforms also have their means to work with WebSocket.
+Server tomonidagi kod bizning doiramizdan biroz tashqarida. Bu yerda biz Node.js dan foydalanamiz, lekin bunga majbur emassiz. Boshqa platformalarda ham WebSocket bilan ishlash vositalari mavjud.
 
-The server-side algorithm will be:
+Server tomoni algoritmi quyidagicha bo'ladi:
 
-1. Create `clients = new Set()` -- a set of sockets.
-2. For each accepted websocket, add it to the set `clients.add(socket)` and set `message` event listener to get its messages.
-3. When a message is received: iterate over clients and send it to everyone.
-4. When a connection is closed: `clients.delete(socket)`.
+1. `clients = new Set()` -- rozetkalar to'plamini yarating.
+2. Har bir qabul qilingan veb-rozetka uchun uni `clients.add(socket)` to'plamiga qo'shing va uning xabarlarini olish uchun `message` hodisa tinglovchisini o'rnating.
+3. Xabar qabul qilinganda: mijozlarni takrorlang va uni hammaga yuboring.
+4. Ulanish yopilganda: `clients.delete(socket)` dan foydalaning.
 
 ```js
 const ws = new require('ws');
@@ -332,8 +332,8 @@ const wss = new ws.Server({noServer: true});
 const clients = new Set();
 
 http.createServer((req, res) => {
-  // here we only handle websocket connections
-  // in real project we'd have some other code here to handle non-websocket requests
+   // bu yerda biz faqat websocket ulanishlari bilan ishlaymiz
+   // haqiqiy loyihada bizda websocket bo'lmagan so'rovlarni bajarish uchun boshqa kod mavjud
   wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect);
 });
 
@@ -341,7 +341,7 @@ function onSocketConnect(ws) {
   clients.add(ws);
 
   ws.on('message', function(message) {
-    message = message.slice(0, 50); // max message length will be 50
+    message = message.slice(0, 50); // maksimal xabar uzunligi 50 bo'ladi
 
     for(let client of clients) {
       client.send(message);
@@ -355,34 +355,34 @@ function onSocketConnect(ws) {
 ```
 
 
-Here's the working example:
+Mana ish misoli:
 
-[iframe src="chat" height="100" zip]
+[iframe src="chat" balandligi="100" zip]
 
-You can also download it (upper-right button in the iframe) and run it locally. Just don't forget to install [Node.js](https://nodejs.org/en/) and `npm install ws` before running.
+Siz uni yuklab olishingiz ham mumkin (iframe-ning yuqori o'ng tugmasi) va uni mahalliy holatda ishga tushirishingiz mumkin. Ishlashdan oldin [Node.js](https://nodejs.org/en/) va `npm install ws` ni o'rnatishni unutmang.
 
-## Summary
+## Xulosa
 
-WebSocket is a modern way to have persistent browser-server connections.
+WebSocket - doimiy brauzer-server ulanishiga ega bo'lishning zamonaviy usuli.
 
-- WebSockets don't have cross-origin limitations.
-- They are well-supported in browsers.
-- Can send/receive strings and binary data.
+- WebSockets o'zaro kelib chiqish cheklovlariga ega emas.
+- Ular brauzerlarda yaxshi qo'llab-quvvatlanadi.
+- Satrlar va ikkilik ma'lumotlarni yuborish/qabul qilish.
 
-The API is simple.
+API oddiy.
 
-Methods:
+Usullar:
 - `socket.send(data)`,
 - `socket.close([code], [reason])`.
 
-Events:
+Eventlar:
 - `open`,
 - `message`,
 - `error`,
 - `close`.
 
-WebSocket by itself does not include reconnection, authentication and many other high-level mechanisms. So there are client/server libraries for that, and it's also possible to implement these capabilities manually.
+WebSocket o'z-o'zidan qayta ulanish, autentifikatsiya va boshqa ko'plab yuqori darajadagi mexanizmlarni o'z ichiga olmaydi. Shunday qilib, buning uchun mijoz/server kutubxonalari mavjud va bu imkoniyatlarni qo'lda amalga oshirish ham mumkin.
 
-Sometimes, to integrate WebSocket into existing projects, people run a WebSocket server in parallel with the main HTTP-server, and they share a single database. Requests to WebSocket use `wss://ws.site.com`, a subdomain that leads to the WebSocket server, while `https://site.com` goes to the main HTTP-server.
+Ba'zan, WebSocketni mavjud loyihalarga integratsiya qilish uchun odamlar asosiy HTTP-server bilan parallel ravishda WebSocket serverini ishga tushiradilar va ular bitta ma'lumotlar bazasini almashadilar. WebSocket so'rovlarida WebSocket serveriga olib boruvchi `wss://ws.site.com` subdomenidan foydalaniladi, `https://site.com` esa asosiy HTTP-serverga boradi.
 
-Surely, other ways of integration are also possible.
+Albatta, integratsiyaning boshqa usullari ham mavjud.

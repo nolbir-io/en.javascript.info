@@ -5,13 +5,13 @@ libs:
 
 # Function binding (Funksiyani bog'lash)
 
-Ob'ekt usullarini qayta chaqiruvlar sifatida o'tkazishda, masalan, `setTimeout` ga, ma'lum muammo bor: "`this`ni yo'qotish".
+Obyekt usullarini, masalan, `setTimeout`ni, qayta chaqiruvlar sifatida o'tkazishda `this`ni yo'qotish bilan bog'liq muammo bor.
 
 Ushbu bo'limda biz uni tuzatish usullarini ko'rib chiqamiz.
 
 ## "thisni" yo'qotish
 
-Biz allaqachon `this`ni yo'qotish misollarini ko'rganmiz. Usul ob'ektdan alohida joyga o'tkazilgandan so'ng -- `this` yo'qoladi.
+Biz allaqachon `this`ni yo'qotish misollarini ko'rib chiqqanmiz. Usul obyektdan alohida joyga o'tkazilgandan so'ng -- `this` yo'qoladi.
 
 Bu `setTimeout` bilan qanday sodir bo'lishi mumkin:
 
@@ -30,20 +30,20 @@ setTimeout(user.sayHi, 1000); // Hello, undefined!
 
 Ko'rib turganimizdek, chiqish "John" ni `this.firstName` sifatida emas, balki `undefined` sifatida ko'rsatadi!
 
-Buning sababi, `setTimeout` ob'ektdan alohida `user.sayHi` funksiyasini oldi. Oxirgi qatorni quyidagicha qayta yozish mumkin:
+Buning sababi, `setTimeout` obyektdan alohida `user.sayHi` funksiyasini oldi. Oxirgi qatorni quyidagicha qayta yozish mumkin:
 
 ```js
 let f = user.sayHi;
 setTimeout(f, 1000); // user konteksti yo'qoldi
 ```
 
-Brauzerdagi `setTimeout` metodi biroz o'ziga xosdir: funksiya chaqiruvi uchun `this=window` ni o'rnatadi (Node.js uchun `this` taymer ob'ektiga aylanadi, lekin bu erda muhim emas). Shunday qilib, `this.firstName` uchun `window.firstName` ni olishga harakat qiladi, bu mavjud emas. Boshqa shunga o'xshash holatlarda, odatda, `this` `undefined` bo'ladi.
+Brauzerdagi `setTimeout` metodi biroz o'ziga xosdir: funksiya chaqiruvi uchun `this=window` ni o'rnatadi (Node.js uchun `this` taymer obyektiga aylanadi, lekin bu yerda muhim emas). Shunday qilib, `this.firstName` uchun `window.firstName` ni olishga harakat qiladi, lekin bu mavjud emas. Boshqa shunga o'xshash holatlarda, odatda, `this` `undefined` bo'ladi.
 
-Vazifa juda odatiy - biz ob'ekt usulini chaqiriladigan boshqa joyga (bu erda - rejalashtiruvchiga) o'tkazmoqchimiz. U to'g'ri kontekstda chaqirilishiga qanday ishonch hosil qilish mumkin?
+Vazifa juda odatiy - biz obyekt usulini chaqiriladigan boshqa joyga (bu yerda - rejalashtiruvchiga) o'tkazmoqchimiz. U to'g'ri kontekstda chaqirilishiga qanday ishonch hosil qilish mumkin?
 
-## Yechim 1: a wrapper
+## Yechim 1: a wrapper (o'rovchi)
 
-Eng oddiy yechim - wrapper funktsiyasidan foydalanish:
+Eng oddiy yechim - wrapper funksiyasidan foydalanish:
 
 ```js run
 let user = {
@@ -62,15 +62,15 @@ setTimeout(function() {
 
 Endi u ishlaydi, chunki u tashqi leksik muhitdan `user` ni oladi va keyin usulni odatdagidek chaqiradi.
 
-Xuddi shunday, lekin qisqaroq:
+Lekin bu usulda ishlash qisqaroq:
 
 ```js
 setTimeout(() => user.sayHi(), 1000); // Hello, John!
 ```
 
-Yaxshi ko'rinadi, lekin bizning kod tuzilmasida ozgina zaiflik paydo bo'ladi.
+Bu tashqi tomondan yaxshi ko'rinadi, ammo bizning kod tuzilmamizda ozgina zaiflik paydo bo'ladi.
 
-Agar `setTimeout` ishga tushishidan oldin (bir soniya kechikish bor!) `user` qiymatni o'zgartirsachi? Keyin, to'satdan, u noto'g'ri ob'ektni chaqiradi!
+Agar `setTimeout` ishga tushishidan oldin (bir soniya kechikish bor!) `user` qiymatni o'zgartirsachi? Keyin, to'satdan, u noto'g'ri obyektni chaqiradi!
 
 
 ```js run
@@ -95,7 +95,7 @@ Keyingi yechim bunday narsa sodir bo'lmasligini kafolatlaydi.
 
 ## Yechim 2: bind
 
-Funktsiyalar o'rnatilgan [bind](mdn:js/Function/bind) metodini ta'minlaydi, bu `this`ni tuzatishga imkon beradi.
+Funksiyalar o'rnatilgan [bind](mdn:js/Function/bind) metodini ta'minlaydi, bu `this`ni tuzatishga imkon beradi.
 
 Asosiy sintaksis:
 
@@ -104,7 +104,7 @@ Asosiy sintaksis:
 let boundFunc = func.bind(context);
 ```
 
-`func.bind(context)` natijasi funksiya sifatida chaqirilishi mumkin bo'lgan va chaqiruvni `this=kontekst` `func` sozlamasiga shaffof tarzda uzatuvchi maxsus funksiyaga o'xshash "ekzotik ob'ekt"dir.
+`func.bind(context)` natijasi funksiya sifatida chaqirilishi mumkin bo'lgan va chaqiruvni `this=kontekst` `func` sozlamasiga shaffof tarzda uzatuvchi maxsus funksiyaga o'xshash "ekzotik obyekt"dir.
 
 Boshqacha qilib aytadigan bo'lsak, `boundFunc` qo'ng'irog'i `func`ga o'xshaydi, bu esa o'rnatilgan.
 
@@ -146,7 +146,7 @@ funcUser("Hello"); // Hello, John ("Hello" argumenti qabul qilindi va this = use
 */!*
 ```
 
-Keling, ob'ekt usuli bilan harakat qilaylik:
+Keling, obyekt usuli bilan harakat qilaylik:
 
 
 ```js run
@@ -161,21 +161,21 @@ let user = {
 let sayHi = user.sayHi.bind(user); // (*)
 */!*
 
-// ob'ektsiz ishga tushirishi mumkin
+// obyektsiz ishga tushirishi mumkin
 sayHi(); // Hello, John!
 
 setTimeout(sayHi, 1000); // Hello, John!
 
 // user qiymati 1 soniya ichida o'zgarsa ham
-// sayHi eski user ob'ektiga havola bo'lgan oldindan bog'langan qiymatdan foydalanadi
+// sayHi eski user obyektiga havola bo'lgan oldindan bog'langan qiymatdan foydalanadi
 user = {
   sayHi() { alert("setTimeout da boshqa user!"); }
 };
 ```
 
-`(*)` qatorida `user.sayHi` metodini olamiz va uni `user` bilan bog`laymiz. `sayHi` "bog'langan" funksiya bo'lib, uni yakka o'zi chaqirish yoki `setTimeout` ga o'tkazish mumkin -- muhim emas, kontekst to'g'ri bo'ladi.
+`(*)` qatorida `user.sayHi` metodini olamiz va uni `user` bilan bog'laymiz. `sayHi` "bog'langan" funksiya bo'lib, uni yakka o'zi chaqirish yoki `setTimeout` ga o'tkazish mumkin -- muhim emas, kontekst to'g'ri bo'ladi.
 
-Bu yerda biz argumentlar "xuddi shunday" uzatilganini ko'rishimiz mumkin, faqat "bu" "bind" bilan o'rnatiladi:
+Bu yerda biz argumentlar "xuddi shunday" uzatilganini ko'rishimiz mumkin, faqat "this" "bind" bilan o'rnatiladi:
 
 ```js run
 let user = {
@@ -192,7 +192,7 @@ say("Bye"); // Bye, John! ("Bye" aytish uchun uzatiladi)
 ```
 ``
 smart header="Qulay metod: `bindAll`"
-Agar ob'ektda ko'plab usullar mavjud bo'lsa va biz uni faol ravishda o'tkazishni rejalashtirmoqchi bo'lsak, biz ularning barchasini tsiklda bog'lashimiz mumkin:
+Agar obyektda ko'plab usullar mavjud bo'lsa va biz uni faol ravishda o'tkazishni rejalashtirmoqchi bo'lsak, biz ularning barchasini siklda bog'lashimiz mumkin:
 
 ```js
 for (let key in user) {
@@ -202,14 +202,14 @@ for (let key in user) {
 }
 ```
 
-JavaScript kutubxonalari, shuningdek, qulay ommaviy ulanish uchun funktsiyalarni taqdim etadi, masalan. Lodashda [_.bindAll(object, methodNames)](https://lodash.com/docs#bindAll).
+JavaScript kutubxonalari, shuningdek, qulay ommaviy ulanish uchun funksiyalarni taqdim etadi, masalan, lodashda [_.bindAll(object, methodNames)](https://lodash.com/docs#bindAll).
 ````
 ````
 ## Qisman funktsiyalar
 
 Hozirgacha biz faqat `this`ni bog'lash haqida gapirib kelganmiz. Keling, yana bir qadam tashlaylik.
 
-Biz nafaqat `this`, balki argumentlarni ham bog'lashimiz mumkin. Bu kamdan-kam hollarda amalga oshiriladi, lekin ba'zida qulay bo'lishi mumkin.
+Biz nafaqat `this`, balki argumentlarni ham bog'lashimiz mumkin. Bu kamdan-kam hollarda amalga oshiriladi, lekin bu ba'zida qulay.
 
 `bind` ning to'liq sintaksisi:
 
@@ -217,7 +217,7 @@ Biz nafaqat `this`, balki argumentlarni ham bog'lashimiz mumkin. Bu kamdan-kam h
 let bound = func.bind(context, [arg1], [arg2], ...);
 ```
 
-Bu kontekstni `this` va funktsiyaning boshlang'ich argumentlari sifatida bog'lash imkonini beradi.
+Bu kontekstni `this` va funksiyaning boshlang'ich argumentlari sifatida bog'lash imkonini beradi.
 
 Masalan, bizda `mul(a, b)` ko'paytirish funksiyasi mavjud:
 
@@ -247,7 +247,7 @@ alert( double(5) ); // = mul(2, 5) = 10
 
 Bu [qisman funksiya ilovasi](https://en.wikipedia.org/wiki/Partial_application) deb ataladi -- biz mavjud funksiyaning ayrim parametrlarini tuzatish orqali yangi funksiya yaratamiz.
 
-Shuni esda tutingki, biz bu erda `this` dan foydalanmaymiz. Lekin `bind` buni talab qiladi, shuning uchun biz `null` kabi biror narsani qo'yishimiz kerak.
+Shuni esda tutingki, biz bu yerda `this` dan foydalanmaymiz. Lekin `bind` buni talab qiladi, shuning uchun biz `null` kabi biror narsani qo'yishimiz kerak. 
 
 Quyidagi koddagi `triple` funksiyasi qiymatni uch barobar oshiradi:
 
@@ -265,23 +265,23 @@ alert( triple(4) ); // = mul(3, 4) = 12
 alert( triple(5) ); // = mul(3, 5) = 15
 ```
 
-Nima uchun biz odatda qisman funktsiyani qilamiz?
+Nima uchun biz odatda qisman funksiyani qilamiz?
 
 Foydasi shundaki, biz o'qilishi mumkin bo'lgan nomga ega mustaqil funktsiyani yaratishimiz mumkin (`double`, `triple`). Biz undan foydalanishimiz mumkin va har safar birinchi argumentni keltira olmaymiz, chunki u `bind` bilan o'rnatiladi.
 
-Boshqa hollarda, qisman qo'llash bizda juda umumiy funktsiyaga ega bo'lsa va qulaylik uchun uning kamroq universal variantini xohlasak foydali bo'ladi.
+Boshqa hollarda, qisman qo'llash bizda umumiy funksiyaga ega bo'lsa, qulaylik uchun uning kamroq universal varianti foydali bo'ladi. 
 
-Masalan, bizda `send(from, to, text)` funksiyasi mavjud. Keyin, `user` ob'ekti ichida biz uning qisman variantidan foydalanishni xohlashimiz mumkin: joriy foydalanuvchidan yuboradigan `sendTo(to, text)`.
+Masalan, bizda `send(from, to, text)` funksiyasi mavjud. Keyin, `user` obyekti ichida biz uning qisman variantidan foydalanishni xohlashimiz mumkin, masalan, joriy foydalanuvchidan yuboriladigan `sendTo(to, text)`.
 
 ## Kontekstsiz qisman funksiya
 
-Agar biz `this` kontekstini emas, balki baʼzi argumentlarni tuzatmoqchi boʻlsak-chi? Masalan, ob'ekt usuli uchun.
+Agar biz `this` kontekstini emas, balki ba'zi argumentlarni tuzatmoqchi bo'lsak-chi? Masalan, obyekt usuli uchun.
 
 Mahalliy `bind` bunga ruxsat bermaydi. Biz shunchaki kontekstni qoldirib, dalillarga o'tishimiz mumkin emas.
 
-Yaxshiyamki, faqat argumentlarni bog'lash uchun `partial` funktsiyasi osongina amalga oshirilishi mumkin.
+Yaxshiyamki, faqat argumentlarni bog'lash uchun `partial` funksiyasi osongina amalga oshirilishi mumkin.
 
-Like this:
+Xuddi quyidagi kabi:
 
 ```js run
 *!*
@@ -308,7 +308,7 @@ user.sayNow("Hello");
 // [10:00] John: Hello!
 ```
 
-`partial(func[, arg1, arg2...])` chaqiruvi natijasi `(*)` wrapper bo'lib, `func` ni quyidagi bilan chaqiradi:
+`partial(func[, arg1, arg2...])` chaqiruvi natijasi `(*)` wrapper bo'lib, `func` ni quyidagidek chaqiradi:
 - Xuddi shunday `this` (`user.sayNow` uchun `user` deb nomlanadi)
 - Keyin unga `...argsBound` -- `partial` chaqiruvdan (`"10:00"`) argumentlarni beradi.
 - Keyin unga `...args` beradi -- wrapperga berilgan argumentlar (`"Salom"`)
@@ -319,10 +319,10 @@ Shuningdek, lodash kutubxonasidan tayyor [_.partial](https://lodash.com/docs#par
 
 ## Xulosa
 
-`func.bind(context, ...args)` usuli `this` kontekstini va agar berilgan bo‘lsa, birinchi argumentlarni tuzatuvchi `func` funksiyasining “bog‘langan variantini” qaytaradi.
+`func.bind(context, ...args)` usuli `this` kontekstini va agar berilgan bo'lsa, birinchi argumentlarni tuzatuvchi `func` funksiyasining "bog'langan variantini" qaytaradi.
 
-Odatda biz ob'ekt usuli uchun `this`ni tuzatish uchun `bind` ni qo'llaymiz, shunda biz uni biror joyga o'tkazamiz. Masalan, `SetTimeout` uchun.
+Odatda biz obyekt usulidagi `this` ni tuzatish uchun `bind` ni qo'llaymiz, shunda biz uni biror joyga o'tkazamiz, masalan, `SetTimeout` uchun.
 
-Mavjud funktsiyaning ba'zi argumentlarini tuzatsak, natijada paydo bo'lgan (kamroq universal) funksiya *qisman qo'llaniladigan* yoki *qisman* deb ataladi.
+Mavjud funksiyaning ba'zi argumentlarini tuzatsak, natijada paydo bo'lgan (kamroq universal) funksiya *qisman qo'llaniladigan* yoki *qisman* deb ataladi.
 
-Biz bir xil argumentni qayta-qayta takrorlashni istamaganimizda, qisman qulaydir. Masalan, agar bizda `send(from, to)` funksiyasi bo'lsa va `from` bizning vazifamiz uchun har doim bir xil bo'lishi kerak bo'lsa, biz qisman olishimiz va u bilan davom etishimiz mumkin.
+Biz bir xil argumentni qayta-qayta takrorlashni istamaganimizda, "qisman" qulaydir. Masalan, bizda `send(from, to)` funksiyasi bo'lsa va `from` bizning vazifamiz uchun har doim bir xil bo'lishi kerak bo'lsa, biz "qisman" ni olishimiz va u bilan davom etishimiz mumkin.

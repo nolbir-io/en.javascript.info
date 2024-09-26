@@ -1,10 +1,12 @@
 # Prototipli meros
 
+
 Dasturlashda biz ko'pincha biror narsa olib, uni kengaytirishni xohlaymiz.
 
 Masalan, bizda uning xossalari va usullariga ega bo'lgan `user` obyekti bor va `admin` va `guest` ni uning biroz o'zgartirilgan variantlari qilishni xohlaymiz. Biz `user` da mavjud bo'lgan narsalarni qayta ishlatmoqchimiz, uning usullarini nusxalab yoki qayta amalga oshirmaymiz, shunchaki uning ustiga yangi obyekt quramiz.
 
 *Prototip merosi* bunda yordam beruvchi til xususiyatidir.
+
 
 ## [[Prototip]] (prototype)
 
@@ -17,6 +19,7 @@ Biz `object` dan xususiyatni o'qiganimizda va u yo'q bo'lsa, JavaScript uni avto
 `[[Prototype]]` xossasi ichki va yashirin, lekin uni o'rnatishning ko'plab usullari mavjud.
 
 Ulardan biri `__proto__` maxsus nomini ishlatishdir, masalan:
+
 
 ```js run
 let animal = {
@@ -33,6 +36,7 @@ rabbit.__proto__ = animal; // rabbit.[[Prototype]] = animal ni o'rnatadi
 
 Endi `rabbit` dan xususiyatni o'qisak va u yo'q bo'lsa, JavaScript uni avtomatik ravishda `animal` dan oladi.
 
+
 Masalan:
 
 ```js
@@ -47,12 +51,15 @@ let rabbit = {
 rabbit.__proto__ = animal; // (*)
 */!*
 
+
 // biz rabbit da ikkala xususiyatni ham topishimiz mumkin:
+
 *!*
 alert( rabbit.eats ); // true (**)
 */!*
 alert( rabbit.jumps ); // true
 ```
+
 
 Bu yerda `(*)` qatori `animal` `rabbit` ning prototipi bo`lishini belgilaydi.
 
@@ -65,6 +72,7 @@ Bu yerda biz aytishimiz mumkinki, `animal` `rabbit` ning prototipi yoki `rabbit`
  Shunday qilib, agar `animal` juda ko'p foydali xususiyatlar va usullarga ega bo'lsa, ular `rabbit` da avtomatik ravishda mavjud bo'ladi. Bunday xususiyatlar "inherited", ya'ni me'ros qilib olingan deb ataladi.
 
 Agar `animal` da usul mavjud bo'lsa, u `rabbit` da chaqirilishi mumkin:
+
 
 ```js run
 let animal = {
@@ -81,17 +89,21 @@ let rabbit = {
   __proto__: animal
 };
 
+
 // walk prototype dan olingan
+
 *!*
 rabbit.walk(); // Animal walk
 */!*
 ```
+
 
 Usul avtomatik ravishda prototipdan olinadi, masalan:
 
 ![](proto-animal-rabbit-walk.svg)
 
 Prototip zanjiri uzunroq bo'lishi mumkin:
+
 
 ```js run
 let animal = {
@@ -122,6 +134,7 @@ alert(longEar.jumps); // true (rabbit dan olingan)
 
 ![](proto-animal-rabbit-chain.svg)
 
+
 Endi `longEar` dan biror narsani o'qisak va u yo'q bo'lsa, JavaScript uni `rabbit`, keyin esa `animal`dan qidiradi.
 
 Faqat ikkita cheklov mavjud:
@@ -151,11 +164,14 @@ Yozish/o'chirish operatsiyalari bevosita obyekt bilan ishlaydi.
 
 Quyidagi misolda biz `rabbit`ga o'zining `walk` usulini tayinlaymiz:
 
+
 ```js run
 let animal = {
   eats: true,
   walk() {
+
     /* ushbu usul rabbit toomonidan ishlatilmaydi */  
+
   }
 };
 
@@ -171,6 +187,7 @@ rabbit.walk = function() {
 
 rabbit.walk(); // Rabbit! Bounce-bounce!
 ```
+
 Bundan buyon `rabbit.walk()` chaqiruvi obyektda usulni darhol topadi va uni prototipdan foydalanmasdan bajaradi:
 
 ![](proto-animal-rabbit-walk-2.svg)
@@ -178,6 +195,7 @@ Bundan buyon `rabbit.walk()` chaqiruvi obyektda usulni darhol topadi va uni prot
 Aksessuar xossalari bundan mustasno, chunki belgilash setter funksiyasi tomonidan boshqariladi. Shunday qilib, bunday xususiyatga yozish aslida funksiyani chaqirish bilan bir xil.
 
 Shuning uchun `admin.fullName` quyidagi kodda to'g'ri ishlaydi:
+
 
 ```js run
 let user = {
@@ -203,10 +221,13 @@ alert(admin.fullName); // John Smith (*)
 // setter triggers!
 admin.fullName = "Alice Cooper"; // (**)
 
+
 alert(admin.fullName); // Alice Cooper, o'zgartirilgan boshqaruv holati 
 alert(user.fullName); // John Smith, himoyalangan foydalanuvchi holati
+
 ```
 Bu yerda `(*)` qatorida `admin.fullName` xossasi `user` prototipida qabul qiluvchiga ega, shuning uchun u chaqiriladi. Va `(**)` qatorida xususiyat prototipda o'rnatuvchiga ega, shuning uchun u ham chaqiriladi.
+
 
 ## "this" ning qiymati
 
@@ -226,6 +247,7 @@ Misol uchun, bu yerda `animal` "usul saqlash" ni anglatadi va `rabbit` undan foy
 
 ```js run
 // animal usullarga ega
+
 let animal = {
   walk() {
     if (!this.isSleeping) {
@@ -245,13 +267,16 @@ let rabbit = {
 // rabbit.isSleeping o'zgaradi
 rabbit.sleep();
 
+
 alert(rabbit.isSleeping); // true
 alert(animal.isSleeping); // aniqlanmagan (prototype da bunday xususiyat yo'q)
+
 ```
 
 Natijaviy surat:
 
 ![](proto-animal-rabbit-walk-3.svg)
+
 
 Agar bizda `bird`, `snake` va boshqalar `animal` dan meros bo'lgan boshqa obyektlar bo'lsa, ular ham `animal` usullaridan foydalanish imkoniyatiga ega bo'lar edi. Lekin har bir usul chaqiruvidagi `this` `animal` emas, chaqiruv vaqtida (nuqtadan oldin) baholanadigan mos obyekt bo'ladi. Shunday qilib, biz `this` ga ma'lumot yozganimizda, u ushbu obyektlarda saqlanadi.
 
@@ -260,6 +285,7 @@ Natijada obyekt holati emas, usullar baham ko'riladi.
 ## for..in sikli (loop)
 
 `for..in` sikli meros qilib olingan xususiyatlarni ham takrorlaydi.
+
 
 Masalan:
 
@@ -274,26 +300,28 @@ let rabbit = {
 };
 
 *!*
-// Object.keys only returns own keys
-alert(Object.keys(rabbit)); // jumps
+// Object belgilari faqatgina o'z belgilarinigina qaytaradi
+alert(Object.keys(rabbit)); // sakraydi
 */!*
 
 *!*
-// for..in loops over both own and inherited keys
-for(let prop in rabbit) alert(prop); // jumps, then eats
+// for..in sikli o'z va meros belgilarni ham qaytaradi
+for(let prop in rabbit) alert(prop); // sakraydi, keyin yeydi
 */!*
 ```
 Agar buni biz xohlamasak va biz meros qilib olingan xususiyatlarni istisno qilmoqchi bo'lsak, o'rnatilgan usul mavjud [obj.hasOwnProperty(key)](https://developer.mozilla.org/en-US/docs/Web/ JavaScript/Reference/Global_Objects/Object/hasOwnProperty): agar `obj` `key` nomli o'zining (meroslanmagan) xususiyatiga ega bo'lsa, u `true` qiymatini qaytaradi.
 
+
 Shunday qilib, biz meros qilib olingan xususiyatlarni filtrlashimiz (yoki ular bilan boshqa biror narsa qilishimiz mumkin):
+
 
 ```js run
 let animal = {
-  eats: true
+  yeydi: true
 };
 
 let rabbit = {
-  jumps: true,
+  sakraydi: true,
   __proto__: animal
 };
 
@@ -301,12 +329,13 @@ for(let prop in rabbit) {
   let isOwn = rabbit.hasOwnProperty(prop);
 
   if (isOwn) {
-    alert(`Our: ${prop}`); // Our: jumps
+    alert(`Our: ${prop}`); // Shaxsiy: sakraydi
   } else {
-    alert(`Inherited: ${prop}`); // Inherited: eats
+    alert(`Inherited: ${prop}`); // Meroslangan: yeydi
   }
 }
 ```
+
 Bu yerda bizda quyidagi meros zanjiri mavjud: `rabbit` `animal`dan, u `Object.prototype`dan meros oladi, chunki `animal` `{...}` tom ma'nodagi obyekt, shuning uchun u default tartibida va uning ustida `null` mavjud:
 
 ![](rabbit-animal-object.svg)
@@ -321,9 +350,11 @@ Javob oddiy: uni sanab bo'lmaydi. `Object.prototype` ning boshqa barcha xususiya
 Deyarli barcha boshqa kalit/qiymat olish usullari, masalan, `Object.keys`, `Object.values` va boshqalar meros qilib olingan xususiyatlarni e'tiborsiz qoldiradi.
 
 Ular faqat obyektning o'zida ishlaydi. Prototipning xususiyatlari hisobga *olinmaydi*.
+
 ```
 
 ## Xulosa
+
 
 - JavaScriptda barcha obyektlar yashirin `[[Prototype]]` xususiyatiga ega bo'lib, u boshqa obyekt yoki `null` hisoblanadi.
 - Unga kirish uchun `obj.__proto__` dan foydalanishimiz mumkin (tarixiy getter/setter yoki boshqa yo'llar ham bor, bu tez orada muhokama qilinadi).
@@ -332,3 +363,4 @@ Ular faqat obyektning o'zida ishlaydi. Prototipning xususiyatlari hisobga *olinm
 - Yozish/o'chirish operatsiyalari to'g'ridan-to'g'ri obyektga ta'sir qiladi, ular prototipdan foydalanmaydi (agar bu ma'lumotlar xususiyati bo'lsa, sozlagich emas).
 - Agar biz `obj.method()` ni chaqirsak va `method` prototipdan olingan bo'lsa, `this` baribir `obj` ga ishora qiladi. Shunday qilib, usullar meros qilib olingan bo'lsa ham, har doim joriy obyekt bilan ishlaydi.
 - `for..in` sikli o'zining ham, meros bo'lib qolgan xususiyatlarini ham takrorlaydi. Boshqa barcha kalit/qiymat olish usullari faqat obyektning o'zida ishlaydi.
+

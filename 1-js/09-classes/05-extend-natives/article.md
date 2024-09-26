@@ -1,12 +1,12 @@
 
-# Extending built-in classes
+# # O'rnatilgan sinflarni kengaytirish
 
-Built-in classes like Array, Map and others are extendable also.
+Array (to'plam), map (xarita) va boshqa o'rnatilgan sinflar ham kengaytirilishi mumkin.
 
-For instance, here `PowerArray` inherits from the native `Array`:
+Misol uchun, bu yerda `PowerArray` mahalliy `Array` dan meros oladi:
 
 ```js run
-// add one more method to it (can do more)
+//  yana bitta usul qo'shish (ko'proq qila oladi)
 class PowerArray extends Array {
   isEmpty() {
     return this.length === 0;
@@ -21,20 +21,20 @@ alert(filteredArr); // 10, 50
 alert(filteredArr.isEmpty()); // false
 ```
 
-Please note a very interesting thing. Built-in methods like `filter`, `map` and others -- return new objects of exactly the inherited type `PowerArray`. Their internal implementation uses the object's `constructor` property for that.
+Iltimos, bir qiziq narsaga e'tibor bering. `filter` , `map` va boshqalar kabi o'rnatilgan usullar -- `PowerArray` turidagi yangi obyektlarni qaytaradi. Ularning ichki tarzda amalga oshirilishi uchun obyektning `constructor` xususiyatidan foydalaniladi.
 
-In the example above,
+Yuqoridagi misolga diqqat qiling:
 ```js
 arr.constructor === PowerArray
 ```
 
-When `arr.filter()` is called, it internally creates the new array of results using exactly `arr.constructor`, not basic `Array`. That's actually very cool, because we can keep using `PowerArray` methods further on the result.
+`arr.filter()` chaqirilganda, u asosiy `Array` emas, aynan `arr.constructor` yordamida yangi natijalar qatorini yaratadi. Bu aslida juda zo'r, chunki biz natijada `PowerArray` usullaridan foydalanishni davom ettirishimiz mumkin.
 
-Even more, we can customize that behavior.
+Bundan tashqari, bu xatti-harakatni sozlashimiz mumkin.
 
-We can add a special static getter `Symbol.species` to the class. If it exists, it should return the constructor that JavaScript will use internally to create new entities in `map`, `filter` and so on.
+Biz sinfga maxsus statik qabul qiluvchi `Symbol.species` ni qo'shsak bo'ladi. Agar u mavjud bo'lsa, `map`, `filter` va hokazolarda yangi obyektlar yaratish uchun JavaScript ichki ishlatadigan konstruktorni qaytarishi kerak.
 
-If we'd like built-in methods like `map` or `filter` to return regular arrays, we can return `Array` in `Symbol.species`, like here:
+Oddiy massivlarni qaytarish uchun `map` yoki `filter` kabi o'rnatilgan usullarni xohlasak, `Symbol.species` da `Array`ni qaytarishimiz mumkin, masalan:
 
 ```js run
 class PowerArray extends Array {
@@ -43,7 +43,7 @@ class PowerArray extends Array {
   }
 
 *!*
-  // built-in methods will use this as the constructor
+  // o'rnatilgan usullar buni konstruktor sifatida ishlatadi
   static get [Symbol.species]() {
     return Array;
   }
@@ -51,39 +51,39 @@ class PowerArray extends Array {
 }
 
 let arr = new PowerArray(1, 2, 5, 10, 50);
-alert(arr.isEmpty()); // false
+alert(arr.isEmpty()); // xato
 
-// filter creates new array using arr.constructor[Symbol.species] as constructor
+// filtr konstruktor sifatida arr.constructor[Symbol.species] yordamida yangi massiv yaratadi
 let filteredArr = arr.filter(item => item >= 10);
 
 *!*
-// filteredArr is not PowerArray, but Array
+// filteredArr PowerArray emas, lekin Array hisoblanadi
 */!*
-alert(filteredArr.isEmpty()); // Error: filteredArr.isEmpty is not a function
+alert(filteredArr.isEmpty()); // Xato: filteredArr. bo'sh va u funksiya emas
 ```
 
-As you can see, now `.filter` returns `Array`. So the extended functionality is not passed any further.
+Ko'rib turganingizdek, endi `.filtr` `Array`ni qaytaradi. Shunday qilib, kengaytirilgan funksiya boshqa o'tkazilmaydi.
 
-```smart header="Other collections work similarly"
-Other collections, such as `Map` and `Set`, work alike. They also use `Symbol.species`.
+```smart header="Boshqa to'plamlar xuddi shunday ishlaydi"
+"Map" va "Set" kabi boshqa to'plamlar bir xil ishlaydi. Ular `Symbol.species` dan ham foydalanadilar.
 ```
 
-## No static inheritance in built-ins
+## O'rnatilgan sinflarda statik meroslar mavjud emas
 
-Built-in objects have their own static methods, for instance `Object.keys`, `Array.isArray` etc.
+O'rnatilgan obyektlar o'zining shaxsiy statik usullariga ega, masalan, `Object.keys`, `Array.isArray` va boshqalar.
 
-As we already know, native classes extend each other. For instance, `Array` extends `Object`.
+Allaqachon bizga ma'lumki,  mahalliy sinflar bir-birini kengaytiradi. Masalan, `Array` `Object` ni kengaytiradi.
 
-Normally, when one class extends another, both static and non-static methods are inherited. That was thoroughly explained in the article [](info:static-properties-methods#statics-and-inheritance).
+Odatda, bir sinf boshqasini kengaytirganda, statik va statik bo'lmagan usullar meros qilib olinadi. Bu maqolada batafsil tushuntirilgan [](info:static-properties-methods#statics-and-inheritance).
 
-But built-in classes are an exception. They don't inherit statics from each other.
+O'rnatilgan sinflar bundan mustisno. Ular bir-biridan statiklarni meros qilib olmaydi.
 
-For example, both `Array` and `Date` inherit from `Object`, so their instances have methods from `Object.prototype`. But `Array.[[Prototype]]` does not reference `Object`, so there's no, for instance, `Array.keys()` (or `Date.keys()`) static method.
+Masalan, `Array` ham, `Date` ham `Object`dan meros bo'lib, ularning misollarida `Object.prototype` usullari mavjud. Lekin `Array.[[Prototype]]` `Object`ga havola qilmaydi, shuning uchun `Array.keys()` (yoki `Date.keys()`) statik usuli mavjud emas.
 
-Here's the picture structure for `Date` and `Object`:
+Bu yerda `Date` va `Object` uchun rasm strukturasi berilgan:
 
 ![](object-date-inheritance.svg)
 
-As you can see, there's no link between `Date` and `Object`. They are independent, only `Date.prototype` inherits from `Object.prototype`.
+Ko'rib turganingizdek, `Date` va `Object` o'rtasida hech qanday havola yo'q. Ular mustaqil, faqatgina `Date.prototype` `Object.prototype` dan meros oladi.
 
-That's an important difference of inheritance between built-in objects compared to what we get with `extends`.
+Bu o'rnatilgan obyektlar o'rtasidagi merosning `extends` bilan biz olgan narsaga nisbatan muhim farqidir.

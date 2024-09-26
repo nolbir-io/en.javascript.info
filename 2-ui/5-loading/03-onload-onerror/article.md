@@ -1,17 +1,17 @@
-# Resource loading: onload and onerror
+# Resurs yuklanishi: yuklash va xato
 
-The browser allows us to track the loading of external resources -- scripts, iframes, pictures and so on.
+Brauzer bizga tashqi resurslarning yuklanishini kuzatish imkonini beradi -- skriptlar, iframes, rasmlar va boshqalar.
 
-There are two events for it:
+Buning uchun ikkita hodisa mavjud:
 
-- `onload` -- successful load,
-- `onerror` -- an error occurred.
+- `onload` -- muvaffaqiyatli yuklash,
+- `error` -- xatolik yuz berdi.
 
-## Loading a script
+## Skriptni yuklash
 
-Let's say we need to load a third-party script and call a function that resides there.
+Aytaylik, biz uchinchi tomon skriptini yuklashimiz va u yerda joylashgan funksiyani chaqirishimiz kerak.
 
-We can load it dynamically, like this:
+Biz uni dinamik ravishda yuklashimiz mumkin, masalan:
 
 ```js
 let script = document.createElement('script');
@@ -20,68 +20,68 @@ script.src = "my.js";
 document.head.append(script);
 ```
 
-...But how to run the function that is declared inside that script? We need to wait until the script loads, and only then we can call it.
+...Ammo ushbu skript ichida e'lon qilingan funksiyani qanday ishga tushiramiz? Biz skript yuklanguncha kutishimiz kerak va shundan keyingina uni chaqirishimiz mumkin.
 
 ```smart
-For our own scripts we could use [JavaScript modules](info:modules) here, but they are not widely adopted by third-party libraries.
+O'z skriptlarimiz uchun biz bu yerda [JavaScript modullari](info:modules) dan foydalanishimiz mumkin, ammo ular uchinchi tomon kutubxonalari tomonidan keng qo'llanilmaydi.
 ```
 
 ### script.onload
 
-The main helper is the `load` event. It triggers after the script was loaded and executed.
+Asosiy yordamchi `load` hodisasidir. U skript yuklangan va bajarilgandan so'ng ishga tushadi.
 
-For instance:
+Masalan:
 
 ```js run untrusted
 let script = document.createElement('script');
 
-// can load any script, from any domain
+// istalgan domendan istalgan skriptni yuklashi mumkin
 script.src = "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js"
 document.head.append(script);
 
 *!*
 script.onload = function() {
-  // the script creates a variable "_"
-  alert( _.VERSION ); // shows library version
+  // skript ushbu "_" variable ni yaratadi
+  alert( _.VERSION ); // library versiyasini ko'rsatadi
 };
 */!*
 ```
 
-So in `onload` we can use script variables, run functions etc.
+Shunday qilib, `onload` da biz skript o'zgaruvchilari, ishga tushirish funksiyalari va hokazolardan foydalanishimiz mumkin.
 
-...And what if the loading failed? For instance, there's no such script (error 404) or the server is down (unavailable).
+...Agar yuklash muvaffaqiyatsiz bo'lsa-chi? Masalan, bunday skript yo'q (xato 404) yoki server ishlamayapti (mavjud emas).
 
 ### script.onerror
 
-Errors that occur during the loading of the script can be tracked in an `error` event.
+Skriptni yuklash paytida yuzaga keladigan xatolar `error` hodisasida kuzatilishi mumkin.
 
-For instance, let's request a script that doesn't exist:
+Masalan, mavjud bo'lmagan skriptni so'raymiz:
 
 ```js run
 let script = document.createElement('script');
-script.src = "https://example.com/404.js"; // no such script
+script.src = "https://example.com/404.js"; // bunday skript yo'q
 document.head.append(script);
 
 *!*
 script.onerror = function() {
-  alert("Error loading " + this.src); // Error loading https://example.com/404.js
+  alert("Error loading " + this.src); // https://example.com/404.js yuklashda xatolik yuz berdi
 };
 */!*
 ```
 
-Please note that we can't get HTTP error details here. We don't know if it was an error 404 or 500 or something else. Just that the loading failed.
+Esda tutingki, biz bu yerda HTTP xatosi tafsilotlarini ololmaydi. Bu xato 404 yoki 500 yoki boshqa narsa ekanligini bilmaymiz. Faqat yuklash muvaffaqiyatsiz tugadi.
 
 ```warn
-Events `onload`/`onerror` track only the loading itself.
+`onload`/`onerror` hodisalari faqat yuklanishning o'zini kuzatib boradi.
 
-Errors that may occur during script processing and execution are out of scope for these events. That is: if a script loaded successfully, then `onload` triggers, even if it has programming errors in it. To track script errors, one can use `window.onerror` global handler.
+Skriptni qayta ishlash va bajarish jarayonida yuzaga kelishi mumkin bo'lgan xatolar ushbu hodisalar uchun ko'rib chiqilmaydi. Ya'ni: agar skript muvaffaqiyatli yuklangan bo'lsa, unda dasturlash xatolari bo'lsa ham, `onload` ishga tushadi. Skript xatolarini kuzatish uchun `window.onerror` global ishlov beruvchisidan foydalanish mumkin.
 ```
 
-## Other resources
+## Boshqa resurslar
 
-The `load` and `error` events also work for other resources, basically for any resource that has an external `src`.
+`load` va `error` hodisalari boshqa manbalar uchun ham ishlaydi, asosan tashqi `src` ga ega bo'lgan har qanday manba uchun.
 
-For example:
+Masalan:
 
 ```js run
 let img = document.createElement('img');
@@ -96,30 +96,30 @@ img.onerror = function() {
 };
 ```
 
-There are some notes though:
+Biroq, ba'zi eslatmalar mavjud:
 
-- Most resources start loading when they are added to the document. But `<img>` is an exception. It starts loading when it gets a src `(*)`.
-- For `<iframe>`, the `iframe.onload` event triggers when the iframe loading finished, both for successful load and in case of an error.
+- Ko'pgina resurslar hujjatga qo'shilgandan so'ng yuklashni boshlaydi. Lekin `<img>` bundan mustasno. U src `(*)` belgisini olganida yuklashni boshlaydi.
+- `<iframe>` uchun iframe yuklash tugagach, `iframe.onload` hodisasi muvaffaqiyatli yuklash uchun ham, xatolik yuz berganda ham ishga tushadi.
 
-That's for historical reasons.
+Bu tarixiy sabablarga ko'ra shunday.
 
-## Crossorigin policy
+## Krossorigin siyosati
 
-There's a rule: scripts from one site can't access contents of the other site. So, e.g. a script at `https://facebook.com` can't read the user's mailbox at `https://gmail.com`.
+Shunday qoida bor: bir saytdagi skriptlar boshqa sayt tarkibiga kira olmaydi. Shunday qilib, masalan. `https://facebook.com` saytidagi skript foydalanuvchining `https://gmail.com` manzilidagi pochta qutisini o'qiy olmaydi.
 
-Or, to be more precise, one origin (domain/port/protocol triplet) can't access the content from another one. So even if we have a subdomain, or just another port, these are different origins with no access to each other.
+Yoki, aniqrog'i, bir kelib chiqishi (domen/port/protokol uchligi) boshqasidan tarkibga kira olmaydi. Shunday qilib, agar bizda subdomain yoki boshqa qism bo'lsa ham, bular bir-biriga kirish imkoni bo'lmagan turli xil manbalardir.
 
-This rule also affects resources from other domains.
+Bu qoida boshqa domenlardagi resurslarga ham ta'sir qiladi.
 
-If we're using a script from another domain, and there's an error in it, we can't get error details.
+Agar biz boshqa domendagi skriptdan foydalanayotgan bo'lsak va unda xatolik bo'lsa, biz xato tafsilotlarini ololmaymiz.
 
-For example, let's take a script `error.js` that consists of a single (bad) function call:
+Masalan, bitta (yomon) funksiya chaqiruvidan iborat `error.js` skriptini olaylik:
 ```js
 // 📁 error.js
 noSuchFunction();
 ```
 
-Now load it from the same site where it's located:
+Endi uni u joylashgan saytdan yuklang:
 
 ```html run height=0
 <script>
@@ -130,14 +130,14 @@ window.onerror = function(message, url, line, col, errorObj) {
 <script src="/article/onload-onerror/crossorigin/error.js"></script>
 ```
 
-We can see a good error report, like this:
+Biz yaxshi xato hisobotini ko'rishimiz mumkin, masalan:
 
 ```
 Uncaught ReferenceError: noSuchFunction is not defined
 https://javascript.info/article/onload-onerror/crossorigin/error.js, 1:1
 ```
 
-Now let's load the same script from another domain:
+Endi xuddi shu skriptni boshqa domendan yuklaymiz:
 
 ```html run height=0
 <script>
@@ -148,40 +148,40 @@ window.onerror = function(message, url, line, col, errorObj) {
 <script src="https://cors.javascript.info/article/onload-onerror/crossorigin/error.js"></script>
 ```
 
-The report is different, like this:
+Quyidagi kabi report biroz boshqacha:
 
 ```
 Script error.
 , 0:0
 ```
 
-Details may vary depending on the browser, but the idea is the same: any information about the internals of a script, including error stack traces, is hidden. Exactly because it's from another domain.
+Tafsilotlar brauzerga qarab farq qilishi mumkin, ammo g'oya bir xil: skriptning ichki qismlari haqidagi har qanday ma'lumot, jumladan, xato stack izlari yashiringan, chunki u boshqa domendan.
 
-Why do we need error details?
+Nima uchun bizga xato tafsilotlari kerak?
 
-There are many services (and we can build our own) that listen for global errors using `window.onerror`, save errors and provide an interface to access and analyze them. That's great, as we can see real errors, triggered by our users. But if a script comes from another origin, then there's not much information about errors in it, as we've just seen.
+`window.onerror` yordamida global xatolarni tinglaydigan, xatolarni saqlaydigan va ularga kirish va tahlil qilish uchun interfeysni taqdim etadigan ko'plab xizmatlar mavjud (va biz o'zimiznikini yaratishimiz mumkin). Bu ajoyib, chunki biz foydalanuvchilarimiz tomonidan qo'zg'atilgan haqiqiy xatolarni ko'rishimiz mumkin. Agar skript boshqa manbadan kelgan bo'lsa, unda biz ko'rganimizdek, undagi xatolar haqida ko'p ma'lumot yo'q.
 
-Similar cross-origin policy (CORS) is enforced for other types of resources as well.
+Shunga o'xshash o'zaro kelib chiqish siyosati (CORS) boshqa turdagi resurslar uchun ham qo'llaniladi.
 
-**To allow cross-origin access, the `<script>` tag needs to have the `crossorigin` attribute, plus the remote server must provide special headers.**
+**O'zaro kelib chiqishga ruxsat berish uchun `<script>` tegi `crossorigin` atribyutiga ega bo'lishi kerak, bundan tashqari masofaviy server maxsus sarlavhalarni taqdim etishi lozim.**
 
-There are three levels of cross-origin access:
+O'zaro kirishning uchta darajasi mavjud:
 
-1. **No `crossorigin` attribute** -- access prohibited.
-2. **`crossorigin="anonymous"`** -- access allowed if the server responds with the header `Access-Control-Allow-Origin` with `*` or our origin. Browser does not send authorization information and cookies to remote server.
-3. **`crossorigin="use-credentials"`** -- access allowed if the server sends back the header `Access-Control-Allow-Origin` with our origin and `Access-Control-Allow-Credentials: true`. Browser sends authorization information and cookies to remote server.
+1. **`Crossorigin` atribyuti yo'q** -- kirish taqiqlangan.
+2. **`crossorigin="anonymous"`** -- agar server `Access-Control-Allow-Origin` sarlavhasi bilan `*` yoki bizning kelib chiqishimiz bilan javob bersa, kirishga ruxsat beriladi. Brauzer avtorizatsiya ma'lumotlari va cookie-fayllarni masofaviy serverga yubormaydi.
+3. **`crossorigin="use-credentials"`** -- agar server `Access-Control-Allow-Origin` sarlavhasini bizning kelib chiqishi va `Access-Control-Allow-Credentials: true` bilan qaytarib yuborsa, kirishga ruxsat beriladi. Brauzer avtorizatsiya ma'lumotlari va cookie fayllarini masofaviy serverga yuboradi.
 
 ```smart
-You can read more about cross-origin access in the chapter <info:fetch-crossorigin>. It describes the `fetch` method for network requests, but the policy is exactly the same.
+O'zaro kirish ruxsati haqida ko'proq <info:fetch-crossorigin> bo'limida o'qishingiz mumkin. U tarmoq so'rovlari uchun `fetch` usulini tavsiflaydi, lekin siyosat aynan bir xil.
 
-Such thing as "cookies" is out of our current scope, but you can read about them in the chapter <info:cookie>.
+"Cookie-fayllar" kabi narsalar bizning joriy doiramizga kirmaydi, lekin siz ular haqida <info:cookie> bobida o'qishingiz mumkin.
 ```
 
-In our case, we didn't have any crossorigin attribute. So the cross-origin access was prohibited. Let's add it.
+Bizning holatlarimizda bizda hech qanday o'zaro bog'liqlik xususiyati yo'q edi. Shunday qilib, o'zaro kelib chiqish taqiqlandi. Keling, biz buni qo'shamiz.
 
-We can choose between `"anonymous"` (no cookies sent, one server-side header needed) and `"use-credentials"` (sends cookies too, two server-side headers needed).
+Biz `"anonymous"` (cookie-fayllar yuborilmagan, bitta server tomoni sarlavhasi kerak) va `"use-credentials"` (cookie-fayllarni ham yuboradi, ikkita server tomoni sarlavhasi kerak) o'rtasida tanlov qilishimiz mumkin.
 
-If we don't care about cookies, then `"anonymous"` is the way to go:
+Agar biz cookie-fayllar haqida qayg'urmasak, unda `"anonymous"` eng ma'qul yo'l:
 
 ```html run height=0
 <script>
@@ -192,15 +192,15 @@ window.onerror = function(message, url, line, col, errorObj) {
 <script *!*crossorigin="anonymous"*/!* src="https://cors.javascript.info/article/onload-onerror/crossorigin/error.js"></script>
 ```
 
-Now, assuming that the server provides an `Access-Control-Allow-Origin` header, everything's fine. We have the full error report.
+Endi, agar server `Access-Control-Allow-Origin` sarlavhasini taqdim qilsa, hammasi joyida. Bizda to'liq xato hisoboti mavjud.
 
-## Summary
+## Xulosa
 
-Images `<img>`, external styles, scripts and other resources provide `load` and `error` events to track their loading:
+Tasvirlar `<img>`, tashqi uslublar, skriptlar va boshqa resurslar yuklanishini kuzatish uchun `load` va `error` hodisalarini ta'minlaydi:
 
-- `load` triggers on a successful load,
-- `error` triggers on a failed load.
+- `load` muvaffaqiyatli load ni ishga tushiradi,
+- `error` muvaffaqiyatsiz yuklanishda paydo bo'ladi.
 
-The only exception is `<iframe>`: for historical reasons it always triggers `load`, for any load completion, even if the page is not found.
+Faqatgina istisno `<iframe>`: tarixiy sabablarga ko'ra, sahifa topilmasa ham, har qanday yuklash tugallanishi uchun u har doim `load` ni ishga tushiradi.
 
-The `readystatechange` event also works for resources, but is rarely used, because `load/error` events are simpler.
+`readystatechange` hodisasi resurslar uchun ham ishlaydi, lekin kamdan-kam qo'llaniladi, chunki `load/error` hodisalari oddiyroq.

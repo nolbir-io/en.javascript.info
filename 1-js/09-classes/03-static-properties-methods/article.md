@@ -1,9 +1,9 @@
 
-# Static properties and methods
+# Statik xususiyatlar va usullar
 
-We can also assign a method to the class as a whole. Such methods are called *static*.
+Shuningdek, biz butun sinfga metod belgilashimiz mumkin. Bunday usullar *statik* deb ataladi.
 
-In a class declaration, they are prepended by `static` keyword, like this:
+ Sinf deklaratsiyasida ular `static`  kalit so'zi bilan qo'shiladi, masalan:
 
 ```js run
 class User {
@@ -17,7 +17,7 @@ class User {
 User.staticMethod(); // true
 ```
 
-That actually does the same as assigning it as a property directly:
+Bu aslida uni to'g'ridan-to'g'ri mulk sifatida belgilash bilan bir xil bajariladi:
 
 ```js run
 class User { }
@@ -29,13 +29,13 @@ User.staticMethod = function() {
 User.staticMethod(); // true
 ```
 
-The value of `this` in `User.staticMethod()` call is the class constructor `User` itself (the "object before dot" rule).
+`User.staticMethod()` chaqiruvidagi `this` ning qiymati `User` sinf konstruktoridir ("nuqtadan oldingi obyekt" qoidasi).
 
-Usually, static methods are used to implement functions that belong to the class as a whole, but not to any particular object of it.
+Odatda, statik usullar sinfning biron bir obyektiga emas, balki butun sinfga tegishli bo'lgan funksiyalarni amalga oshirish uchun ishlatiladi.
 
-For instance, we have `Article` objects and need a function to compare them.
+Masalan, bizda `Article` obyektlari bor va ularni solishtirish uchun funksiya kerak.
 
-A natural solution would be to add `Article.compare` static method:
+Tabiiy yechim `Article.compare` statik usulini qo'shish bo'ladi:
 
 ```js run
 class Article {
@@ -51,7 +51,7 @@ class Article {
 */!*
 }
 
-// usage
+// foydalanish
 let articles = [
   new Article("HTML", new Date(2019, 1, 1)),
   new Article("CSS", new Date(2019, 0, 1)),
@@ -65,19 +65,19 @@ articles.sort(Article.compare);
 alert( articles[0].title ); // CSS
 ```
 
-Here `Article.compare` method stands "above" articles, as a means to compare them. It's not a method of an article, but rather of the whole class.
+Bu yerda `Article.compare` usuli maqolalarni solishtirish vositasi sifatida "yuqorida" turadi. Bu maqolaning usuli emas, balki butun sinfning usuli hisoblanadi.
 
-Another example would be a so-called "factory" method.
+Yana bir misol, "factory" deb ataladigan usul.
 
-Let's say, we need multiple ways to create an article:
+ Aytaylik, maqola yaratish uchun bizga bir nechta usullar kerak bo'ladi:
 
-1. Create by given parameters (`title`, `date` etc).
-2. Create an empty article with today's date.
-3. ...or else somehow.
+1. Mavjud parametrlar bilan yaratish (`title`, `date` sarlavha, sana va boshqalar).
+2. Bugungi sana bilan bo'sh maqola yaratish
+3. ...yoki boshqalar
 
-The first way can be implemented by the constructor. And for the second one we can make a static method of the class.
+Birinchi usul konstruktor tomonidan amalga oshirilishi mumkin. Ikkinchisi uchun biz sinfning statik usulini yaratamiz.
 
-Such as `Article.createTodays()` here:
+`Article.createTodays()` kabi:
 
 ```js run
 class Article {
@@ -96,35 +96,35 @@ class Article {
 
 let article = Article.createTodays();
 
-alert( article.title ); // Today's digest
+alert( article.title ); // Bugungi dayjest (qisqa bayon)
 ```
 
-Now every time we need to create a today's digest, we can call `Article.createTodays()`. Once again, that's not a method of an article, but a method of the whole class.
+Endi har safar bugungi dayjestni yaratishimiz kerak bo'lganda, biz `Article.createTodays()` ni chaqirishimiz mumkin. Yana bir bor ta'kidlayman, bu maqolaning usuli emas, balki butun sinfning usuli hisoblanadi.
 
-Static methods are also used in database-related classes to search/save/remove entries from the database, like this:
+Statik usullar ma'lumotlar bazasi bilan bog'liq sinflarda ma'lumotlar bazasidan yozuvlarni qidirish/saqlash/o'chirish uchun ham qo'llaniladi, masalan:
 
 ```js
-// assuming Article is a special class for managing articles
-// static method to remove the article by id:
+//  Maqola maqolalarni boshqarish uchun maxsus sinfdir
+// Maqolani id bo'yicha olib tashlashning statik usuli:
 Article.remove({id: 12345});
 ```
 
-````warn header="Static methods aren't available for individual objects"
-Static methods are callable on classes, not on individual objects.
+````warn header="Statik usullar alohida obyektlar uchun mavjud emas"
+Statik usullar alohida obyektlarda emas, balki sinflarda chaqirilishi mumkin.
 
-E.g. such code won't work:
+E.g. quyidagi kabi kodlar ishlamaydi:
 
 ```js
 // ...
-article.createTodays(); /// Error: article.createTodays is not a function
+article.createTodays(); /// Error: article.createTodays funksiya emas
 ```
 ````
 
-## Static properties
+## Statik xususiyatlar
 
 [recent browser=Chrome]
 
-Static properties are also possible, they look like regular class properties, but prepended by `static`:
+Statik xususiyatlar ham ishlatilishi mumkin, ular oddiy sinf xususiyatlariga o'xshaydi, lekin `static` bilan old qatorda yoziladi:
 
 ```js run
 class Article {
@@ -134,17 +134,17 @@ class Article {
 alert( Article.publisher ); // Ilya Kantor
 ```
 
-That is the same as a direct assignment to `Article`:
+Bu `Article` ga to'g'ridan-to'g'ri tayinlash bilan bir xil:
 
 ```js
 Article.publisher = "Ilya Kantor";
 ```
 
-## Inheritance of static properties and methods [#statics-and-inheritance]
+## Statik xossalar va usullarni meros qilib olish
 
-Static properties and methods are inherited.
+Statik xususiyatlar va usullar meros qilib olinadi.
 
-For instance, `Animal.compare` and `Animal.planet` in the code below are inherited and accessible as `Rabbit.compare` and `Rabbit.planet`:
+Masalan, quyidagi kodda berilgan `Animal.compare` va `Animal.planet` meros qilib olingan hamda ulardan `Rabbit.compare` va `Rabbit.planet` kabi foydalanish mumkin:
 
 ```js run
 class Animal {
@@ -184,25 +184,25 @@ let rabbits = [
 rabbits.sort(Rabbit.compare);
 */!*
 
-rabbits[0].run(); // Black Rabbit runs with speed 5.
+rabbits[0].run(); // Black Rabbit 5 tezlikda yuguradi.
 
 alert(Rabbit.planet); // Earth
 ```
 
-Now when we call `Rabbit.compare`, the inherited `Animal.compare` will be called.
+Qachonki `Rabbit.compare` ni chaqirganimizda, meros qilib olingan `Animal.compare` chaqiriladi.
 
-How does it work? Again, using prototypes. As you might have already guessed, `extends` gives `Rabbit` the `[[Prototype]]` reference to `Animal`.
+Bu qanday ishlaydi? Yana prototiplardan foydalangan holda ishlatilishi mumkin. Allaqachon tahmin qilganingizdek, `extends` `Rabbit`ga, `[[Prototip]]` `Animal`ga havola beradi.
 
 ![](animal-rabbit-static.svg)
 
-So, `Rabbit extends Animal` creates two `[[Prototype]]` references:
+Demak, `Rabbit extends Animal` ikkita `[[Prototype]]` havola yaratadi:
 
-1. `Rabbit` function prototypally inherits from `Animal` function.
-2. `Rabbit.prototype` prototypally inherits from `Animal.prototype`.
+1. `Rabbit`  funksiyasi prototip sifatida `Animal` funksiyasidan meros oladi.
+2. `Rabbit.prototype` prototipi sifatida `Animal.prototype` dan meros oladi.
 
-As a result, inheritance works both for regular and static methods.
+Natijada, meros ham muntazam, ham statik usullar uchun ishlaydi.
 
-Here, let's check that by code:
+Demak, buni kod yozish orqali tekshirib ko'ramiz:
 
 ```js run
 class Animal {}
@@ -215,17 +215,17 @@ alert(Rabbit.__proto__ === Animal); // true
 alert(Rabbit.prototype.__proto__ === Animal.prototype); // true
 ```
 
-## Summary
+## Xulosa
 
-Static methods are used for the functionality that belongs to the class "as a whole". It doesn't relate to a concrete class instance.
+Statik usullar "butun" sinfga tegishli bo'lgan funksionallik uchun qo'llaniladi. Bu aniq sinf misoliga taalluqli emas.
 
-For example, a method for comparison `Article.compare(article1, article2)` or a factory method `Article.createTodays()`.
+Masalan, `Article.compare(article1, article2)` taqqoslash usuli yoki `Article.createTodays()` zavod usuli.
 
-They are labeled by the word `static` in class declaration.
+Ular sinf deklaratsiyasida `static` so'zi bilan belgilanadi. 
 
-Static properties are used when we'd like to store class-level data, also not bound to an instance.
+Statik xususiyatlar biz sinf darajasidagi ma'lumotlarni saqlamoqchi bo'lganimizda ishlatiladi, shuningdek, ular  misol bilan bog'lanmagan.
 
-The syntax is:
+Sintaksisda misol ko'rib chiqishimiz mumkin:
 
 ```js
 class MyClass {
@@ -237,13 +237,13 @@ class MyClass {
 }
 ```
 
-Technically, static declaration is the same as assigning to the class itself:
+Texnik jihatdan, statik deklaratsiya sinfning o'ziga tayinlash bilan bir xil:
 
 ```js
 MyClass.property = ...
 MyClass.method = ...
 ```
 
-Static properties and methods are inherited.
+Statik xususiyatlar va usullar meros qilib olingan.
 
-For `class B extends A` the prototype of the class `B` itself points to `A`: `B.[[Prototype]] = A`. So if a field is not found in `B`, the search continues in `A`.
+`class B extends A` uchun `B` sinf prototipining o'zi `A` ga ishora qiladi: `B.[[Prototype]] = A`. Shunday qilib, agar `B` da maydon topilmasa, qidiruv `A` da davom etadi.

@@ -1,25 +1,25 @@
-# Forms: event and method submit
+# Shakllar: hodisa va usulni yuborish
 
-The `submit` event triggers when the form is submitted, it is usually used to validate the form before sending it to the server or to abort the submission and process it in JavaScript.
+Shakl yuborilganda `submit` hodisasi ishga tushadi, odatda uni serverga yuborishdan oldin tekshirish yoki yuborishni bekor qilish va JavaScriptda qayta ishlash uchun ishlatiladi.
 
-The method `form.submit()` allows to initiate form sending from JavaScript. We can use it to dynamically create and send our own forms to server.
+`form.submit()` usuli JavaScriptdan shakl yuborishni boshlash imkonini beradi. Biz undan dinamik ravishda o'z shakllarimizni yaratish va serverga yuborish uchun foydalanishimiz mumkin.
 
-Let's see more details of them.
+Keling, ularning batafsil tafsilotlarini ko'rib chiqaylik.
 
-## Event: submit
+## Submit hodisasi
 
-There are two main ways to submit a form:
+Shaklni topshirishning ikkita asosiy usuli mavjud:
 
-1. The first -- to click `<input type="submit">` or `<input type="image">`.
-2. The second -- press `key:Enter` on an input field.
+1. Birinchisi -- `<input type="submit">` yoki `<input type="image">` tugmasini bosing.
+2. Ikkinchisi -- kiritish maydonida `key:Enter` tugmasini bosing.
 
-Both actions lead to `submit` event on the form. The handler can check the data, and if there are errors, show them and call `event.preventDefault()`, then the form won't be sent to the server.
+Ikkala harakat ham formadagi `submit` hodisasiga olib keladi. Ishlovchi ma'lumotlarni tekshirishi mumkin va agar xatolar mavjud bo'lsa, ularni ko'rsating va `event.preventDefault()` ni chaqiring, keyin shakl serverga yuborilmaydi.
 
-In the form below:
-1. Go into the text field and press `key:Enter`.
-2. Click `<input type="submit">`.
+Quyidagi shaklda:
+1. Matn maydoniga o'ting va `key:Enter` tugmasini bosing.
+2. `<input type="submit">` tugmasini bosing.
 
-Both actions show `alert` and the form is not sent anywhere due to `return false`:
+Har ikkala amalda ham `alert` ko‘rsatiladi va `return false` tufayli shakl hech qayerga yuborilmaydi:
 
 ```html autorun height=60 no-beautify
 <form onsubmit="alert('submit!');return false">
@@ -28,12 +28,12 @@ Both actions show `alert` and the form is not sent anywhere due to `return false
 </form>
 ```
 
-````smart header="Relation between `submit` and `click`"
-When a form is sent using `key:Enter` on an input field, a `click` event triggers on the `<input type="submit">`.
+````smart header="`submit` va `click` o'rtasidagi munosabat`"
+Shakl kiritish maydonida `key:Enter` yordamida yuborilganda, `<input type="submit">`da `click` hodisasi ishga tushadi.
 
-That's rather funny, because there was no click at all.
+Bu juda kulgili, chunki hech qanday click yo'q edi.
 
-Here's the demo:
+Mana demo:
 ```html autorun height=60
 <form onsubmit="return false">
  <input type="text" size="30" value="Focus here and press enter">
@@ -43,13 +43,13 @@ Here's the demo:
 
 ````
 
-## Method: submit
+## Submit usui
 
-To submit a form to the server manually, we can call `form.submit()`.
+Shaklni serverga qo'lda yuborish uchun `form.submit()` ni chaqirishimiz mumkin.
 
-Then the `submit` event is not generated. It is assumed that if the programmer calls `form.submit()`, then the script already did all related processing.
+Keyin `submit` hodisasi yaratilmaydi. Agar dasturchi `form.submit()` ni chaqirsa, skript barcha tegishli ishlovlarni allaqachon bajargan deb tahmin qilinadi.
 
-Sometimes that's used to manually create and send a form, like this:
+Ba'zan bu shaklni qo'lda yaratish va yuborish uchun ishlatiladi, masalan:
 
 ```js run
 let form = document.createElement('form');
@@ -58,7 +58,7 @@ form.method = 'GET';
 
 form.innerHTML = '<input name="q" value="test">';
 
-// the form must be in the document to submit it
+// shakl uni topshirish uchun document da bo'lishi kerak
 document.body.append(form);
 
 form.submit();

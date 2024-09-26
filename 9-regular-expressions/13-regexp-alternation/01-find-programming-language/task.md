@@ -1,8 +1,8 @@
-# Find programming languages
+# Dasturlash tillarini toping
 
-There are many programming languages, for instance Java, JavaScript, PHP, C, C++.
+Ko'p dasturlash tillari mavjud, masalan, Java, JavaScript, PHP, C, C++.
 
-Create a regexp that finds them in the string `subject:Java JavaScript PHP C++ C`:
+Ularni `subject:Java JavaScript PHP C++ C` qatoridan topadigan regexp yarating:
 
 ```js
 let regexp = /your regexp/g;

@@ -1,22 +1,22 @@
 
-# Class basic syntax
+# sinfning asosiy sintaksisi
 
-```quote author="Wikipedia"
-In object-oriented programming, a *class* is an extensible program-code-template for creating objects, providing initial values for state (member variables) and implementations of behavior (member functions or methods).
+```muallif izohi="Wikipedia"
+Obyektga yo'naltirilgan dasturlashda *sinf* obyektlarni yaratish uchun kengaytiriladigan dastur-kod-shablon bo'lib, holat (a'zo o'zgaruvchilar) va xatti-harakatlarning amalga oshirilishi (a'zo funksiyalari yoki usullari) uchun boshlang'ich qiymatlarni taqdim etadi.
 ```
 
-In practice, we often need to create many objects of the same kind, like users, or goods or whatever.
+Amalda, biz ko'pincha bir xil turdagi ko'plab obyektlarni yaratishimiz kerak, masalan, foydalanuvchilar, tovarlar yoki boshqalar.
 
-As we already know from the chapter <info:constructor-new>, `new function` can help with that.
+<info:constructor-new> bobidan ma'lumki, `new function`, ya'ni yangi funksiya bizga yordam bera oladi.
 
-But in the modern JavaScript, there's a more advanced "class" construct, that introduces great new features which are useful for object-oriented programming.
+Ammo zamonaviy JavaScriptda obyektga yo'naltirilgan dasturlash uchun foydali bo'lgan ajoyib yangi xususiyatlarni taqdim etadigan yanada rivojlangan "sinf" konstruktsiyasi mavjud.
 
-## The "class" syntax
+## "sinf" sintaksisi
 
-The basic syntax is:
+Asosiy sintaksis bu:
 ```js
-class MyClass {
-  // class methods
+class MyClass  {
+  // sinf metodlari
   constructor() { ... }
   method1() { ... }
   method2() { ... }
@@ -25,11 +25,11 @@ class MyClass {
 }
 ```
 
-Then use `new MyClass()` to create a new object with all the listed methods.
+Keyin yuqorida sanab o'tilgan metodlar yordamida yangi obyekt yaratish uchun `new MyClass()` dan foydalaniladi. 
 
-The `constructor()` method is called automatically by `new`, so we can initialize the object there.
+Obyektni ishga tushirish uchun `constructor()` metod chaqiruvi `new` orqali avtomatik ravishda amalga oshiriladi.
 
-For example:
+Masalan:
 
 ```js run
 class User {
@@ -49,28 +49,28 @@ let user = new User("John");
 user.sayHi();
 ```
 
-When `new User("John")` is called:
-1. A new object is created.
-2. The `constructor` runs with the given argument and assigns it to `this.name`.
+Qachonki `new User ("John")` chaqirilganda:
+1. Yangi obyekt yaratiladi
+2. `constructor` berilgan argument bilan ishlaydi va uni `this.name` ga tayinlaydi.
 
-...Then we can call object methods, such as `user.sayHi()`.
+...Keyin biz `user.sayHi()` kabi obyekt metodlarini chaqira olamiz.
 
 
-```warn header="No comma between class methods"
-A common pitfall for novice developers is to put a comma between class methods, which would result in a syntax error.
+```warn header="sinf metodlari orasida vergul qo'yilmaydi"
+Yangi dasturchilar yo'l qo'yadigan ko'p xatolardan biri - bu sinf usullari orasiga vergul qo'yish, bu hol esa sintaksis xatosiga olib keladi.
 
-The notation here is not to be confused with object literals. Within the class, no commas are required.
+Bu yerda yozuvni obyekt harflari bilan aralashtirib yubormaslik kerak. Sinf ichida vergul qo'yish shart emas.
 ```
 
-## What is a class?
+## Sinf nima?
 
-So, what exactly is a `class`? That's not an entirely new language-level entity, as one might think.
+Demak, `class` qanday ma'noni anglatadi? Bu ko'pchilik o'ylashi mumkin bo'lgan til darajasidagi mutlaqo yangi obyekt emas.
 
-Let's unveil any magic and see what a class really is. That'll help in understanding many complex aspects.
+ Keling, har qanday sehrni ochib, sinf aslida nima ekanligini bilib olamiz. Bu ko'plab murakkab jihatlarni tushunishga yordam beradi.
 
-In JavaScript, a class is a kind of function.
+JavaScriptda sinf o'ziga xos funksiyadir.
 
-Here, take a look:
+Bu yerda o'zingiz ko'rishingiz mumkin:
 
 ```js run
 class User {
@@ -78,24 +78,24 @@ class User {
   sayHi() { alert(this.name); }
 }
 
-// proof: User is a function
+// isbot: Foydalanuvchi funksiyadir
 *!*
 alert(typeof User); // function
 */!*
 ```
 
-What `class User {...}` construct really does is:
+`class User {...}` konstruktori aynan qanday vazifalarni bajaradi:
 
-1. Creates a function named `User`, that becomes the result of the class declaration. The function code is taken from the `constructor` method (assumed empty if we don't write such method).
-2. Stores class methods, such as `sayHi`, in `User.prototype`.
+1. Sinf deklaratsiyasining natijasi bo'lgan `User` nomli funktsiyani yaratadi. Funksiya kodi `constructor` usulidan olingan (agar biz bunday usulni yozmasak, bo'sh deb hisoblanadi).
+2. `User.prototype`da `sayHi` kabi sinf metodlarini saqlaydi. 
 
-After `new User` object is created, when we call its method, it's taken from the prototype, just as described in the chapter <info:function-prototype>. So the object has access to class methods.
+`new User` obyekti yaratilgandan so'ng, biz uning usulini chaqirganimizda, <info:function-prototype> bobida tasvirlanganidek, u prototipdan olinadi. Shunday qilib, obyekt sinf usullariga kirish huquqiga ega.
 
-We can illustrate the result of `class User` declaration as:
+Biz `class User` deklaratsiyasining natijasini quyidagicha tasvirlashimiz mumkin:
 
 ![](class-user.svg)
 
-Here's the code to introspect it:
+Quyida buni o'rganish uchun kod berilgan:
 
 ```js run
 class User {
@@ -103,34 +103,34 @@ class User {
   sayHi() { alert(this.name); }
 }
 
-// class is a function
-alert(typeof User); // function
+// sinf funksiyadir
+alert(typeof User); // funksiya
 
-// ...or, more precisely, the constructor method
+// ...yoki, yanayam aniqroq aytadigan bo'lsak, bu konstruktor metodi
 alert(User === User.prototype.constructor); // true
 
-// The methods are in User.prototype, e.g:
-alert(User.prototype.sayHi); // the code of the sayHi method
+// Metodlar User.prototype da berilgan, masalan:
+alert(User.prototype.sayHi); // sayHi metodining kodi
 
-// there are exactly two methods in the prototype
-alert(Object.getOwnPropertyNames(User.prototype)); // constructor, sayHi
+// Bu yerda prototipda aniq ikkita metod mavjud
+alert(Object.getOwnPropertyNames(User.prototype)); // konstruktor, sayHi
 ```
 
-## Not just a syntactic sugar
+## Faqatgina sintaktik shakar emas
 
-Sometimes people say that `class` is a "syntactic sugar" (syntax that is designed to make things easier to read, but doesn't introduce anything new), because we could actually declare the same thing without using the `class` keyword at all:
+Ba'zan odamlar `class` bu "sintaktik shakar", deb aytishadi, (sintaksisni o'qishni osonlashtirish uchun yaratilgan, ammo hech qanday yangilik kiritmaydi), chunki biz `class` kalit so'zidan foydalanmasdan ham xuddi shu narsani e'lon qilishimiz mumkin:
 
 ```js run
-// rewriting class User in pure functions
+// sof funksiyalarda foydalanuvchi sinfini qayta yozish
 
-// 1. Create constructor function
+// 1. Konstruktor funksiyasini yaarting
 function User(name) {
   this.name = name;
 }
-// a function prototype has "constructor" property by default,
-// so we don't need to create it
+// funksiya prototipi sukut bo'yicha "konstruktor" xususiyatiga ega,
+// shuning uchun uni yaratishimiz shart emas
 
-// 2. Add the method to prototype
+// 2. Prototipga metodni qo'shing
 User.prototype.sayHi = function() {
   alert(this.name);
 };
@@ -140,13 +140,13 @@ let user = new User("John");
 user.sayHi();
 ```
 
-The result of this definition is about the same. So, there are indeed reasons why `class` can be considered a syntactic sugar to define a constructor together with its prototype methods.
+Ushbu ta'rifning natijasi tahminan bir xil. Shunday qilib, `class` ni konstruktorni prototip usullari bilan aniqlash uchun sintaktik shakar deb hisoblashning sabablari bor.
 
-Still, there are important differences.
+Ammo bu yerda muhim farqlar mavjud:
 
-1. First, a function created by `class` is labelled by a special internal property `[[IsClassConstructor]]: true`. So it's not entirely the same as creating it manually.
+1. Birinchidan, `class` tomonidan yaratilgan funksiya maxsus ichki xususiyat `[[IsClassConstructor]]: true` bilan belgilanadi. Shunday qilib, uni qo'lda yaratish bilan butunlay bir xil emas.
 
-    The language checks for that property in a variety of places. For example, unlike a regular function, it must be called with `new`:
+  Til bu xususiyatni turli joylarda tekshiradi. Masalan, oddiy funksiyadan farqli ravishda, uni `new` bilan chaqirish kerak:
 
     ```js run
     class User {
@@ -154,10 +154,9 @@ Still, there are important differences.
     }
 
     alert(typeof User); // function
-    User(); // Error: Class constructor User cannot be invoked without 'new'
+    User(); // Error: Sinf konstruktori foydalanuvchisini "new"siz chaqirib bo'lmaydi
     ```
-
-    Also, a string representation of a class constructor in most JavaScript engines starts with the "class..."
+   Bundan tashqari, ko'pgina JavaScript dvigatellarida sinf konstruktorining qatorli ko'rinishi "class..." bilan boshlanadi.
 
     ```js run
     class User {
@@ -166,23 +165,23 @@ Still, there are important differences.
 
     alert(User); // class User { ... }
     ```
-    There are other differences, we'll see them soon.
+   Boshqa farqlar ham mavjud, ularni keyinroq ko'rib o'tamiz. 
 
-2. Class methods are non-enumerable.
-    A class definition sets `enumerable` flag to `false` for all methods in the `"prototype"`.
+2.  Sinf usullarini sanab bo'lmaydi.
+  Sinf ta'rifi `"prototype"` dagi barcha usullar uchun `enumerable` bayroqni `false` ga o'rnatadi.
 
-    That's good, because if we `for..in` over an object, we usually don't want its class methods.
+    Bu yaxshi, chunki obyekt ustida `for..in` bo'lsa, bizga odatda uning sinf usullari kerak bo'lmaydi.
 
-3. Classes always `use strict`.
-    All code inside the class construct is automatically in strict mode.
+3. Sinflar har doim `use strict`, qat'iy foydalaniladi.
+     Sinf konstruktsiyasi ichidagi barcha kodlar avtomatik ravishda qattiq rejimda bo'ladi.
 
-Besides, `class` syntax brings many other features that we'll explore later.
+Bundan tashqari, `class` sintaksisi biz keyinroq o'rganadigan boshqa ko'plab xususiyatlarga ega.
 
-## Class Expression
+## Sinf Ifodasi
 
-Just like functions, classes can be defined inside another expression, passed around, returned, assigned, etc.
+Huddi funksiyalar kabi, sinflar ham boshqa ifoda ichida aniqlanishi, o'tkazilishi, qaytarilishi va tayinlanishi mumkin.
 
-Here's an example of a class expression:
+Quyida sinf ifodasi bilan bog'liq bir misolni ko'ramiz:  
 
 ```js
 let User = class {
@@ -192,29 +191,29 @@ let User = class {
 };
 ```
 
-Similar to Named Function Expressions, class expressions may have a name.
+Nomlangan funksiya ifodalari kabi sinf ifodalari ham nomga ega bo'lishi mumkin.
 
-If a class expression has a name, it's visible inside the class only:
+Agar sinf ifodasining nomi bo'lsa, u faqat sinf ichida ko'rinadi:
 
 ```js run
-// "Named Class Expression"
-// (no such term in the spec, but that's similar to Named Function Expression)
+// "Nomli sinf ifodasi"
+// (spetsda bunday atama yo'q, lekin bu nomlangan funksiya ifodasiga o'xshaydi)
 let User = class *!*MyClass*/!* {
   sayHi() {
-    alert(MyClass); // MyClass name is visible only inside the class
+    alert(MyClass); // MyClass nomi faqatgina sinf ichida ko'rinadi.
   }
 };
 
-new User().sayHi(); // works, shows MyClass definition
+new User().sayHi(); // ishlaydi, MyClass ta'rifini ko'rsatadi
 
-alert(MyClass); // error, MyClass name isn't visible outside of the class
+alert(MyClass); // xato, MyClass nomi sinfdan tashqarida ko'rinmaydi
 ```
 
-We can even make classes dynamically "on-demand", like this:
+Biz hatto sinflarni dinamik ravishda "talab bo'yicha" qilishimiz mumkin, masalan:
 
 ```js run
 function makeClass(phrase) {
-  // declare a class and return it
+  // sinfni e'lon qiling va qaytaring
   return class {
     sayHi() {
       alert(phrase);
@@ -222,24 +221,24 @@ function makeClass(phrase) {
   };
 }
 
-// Create a new class
+// Yangi sinf yarating
 let User = makeClass("Hello");
 
 new User().sayHi(); // Hello
 ```
 
 
-## Getters/setters
+## Oluvchilar va o'rnatuvchilar (getter va setter lar)
 
-Just like literal objects, classes may include getters/setters, computed properties etc.
+Huddi so'zma-so'z obyektlar kabi, sinflar qabul qiluvchilar/o'rnatuvchilar, hisoblangan xususiyatlar va boshqalarni o'z ichiga olishi mumkin.
 
-Here's an example for `user.name` implemented using `get/set`:
+Mana, `get/set` yordamida amalga oshirilgan `user.name` uchun misol:
 
 ```js run
 class User {
 
   constructor(name) {
-    // invokes the setter
+    // o'rnatuvchini chaqiradi
     this.name = name;
   }
 
@@ -253,7 +252,7 @@ class User {
   set name(value) {
 */!*
     if (value.length < 4) {
-      alert("Name is too short.");
+      alert("Nom judayam qisqa.");
       return;
     }
     this._name = value;
@@ -264,14 +263,14 @@ class User {
 let user = new User("John");
 alert(user.name); // John
 
-user = new User(""); // Name is too short.
+user = new User(""); // Nom judayam qisqa.
 ```
 
-Technically, such class declaration works by creating getters and setters in `User.prototype`.
+Texnik jihatdan bunday sinf deklaratsiyasi `User.prototype` da oluvchilar va sozlagichlarni yaratish orqali ishlaydi.
 
-## Computed names [...]
+## Hisoblangan nomlar [...]
 
-Here's an example with a computed method name using brackets `[...]`:
+Qavslar yordamida hisoblangan usul nomiga misol keltiramiz `[...]`:
 
 ```js run
 class User {
@@ -287,19 +286,19 @@ class User {
 new User().sayHi();
 ```
 
-Such features are easy to remember, as they resemble that of literal objects.
+Bunday xususiyatlarni eslab qolish oson, chunki ular haqiqiy obyektlarga o'xshaydi.
 
-## Class fields
+## Sinf maydonlari
 
-```warn header="Old browsers may need a polyfill"
-Class fields are a recent addition to the language.
+```warn header ="Eski brauzerlar uchun polifill, to'ldiruvchi maydon kerak bo'lishi mumkin"
+Sinf maydonlari tilga yaqinda qo'shilgan.
 ```
 
-Previously, our classes only had methods.
+Ilgari darslarimizda faqat metodlar mavjud edi.
 
-"Class fields" is a syntax that allows to add any properties.
+"Sinf maydonlari" har qanday xususiyatlarni qo'shish imkonini beruvchi sintaksisdir.
 
-For instance, let's add `name` property to `class User`:
+Masalan, `name` xususiyatini `class User` ga qo'shaylik:
 
 ```js run
 class User {
@@ -315,9 +314,9 @@ class User {
 new User().sayHi(); // Hello, John!
 ```
 
-So, we just write "<property name> = <value>" in the declaration, and that's it.
+Demak, "<property name> = <value>" ni deklaratsiyaga yozamiz, xolos. 
 
-The important difference of class fields is that they are set on individual objects, not `User.prototype`:
+Sinf maydonlarining muhim farqi shundaki, ular `User.prototype` ga emas, balki alohida obektlarga o'rnatiladi:
 
 ```js run
 class User {
@@ -328,10 +327,10 @@ class User {
 
 let user = new User();
 alert(user.name); // John
-alert(User.prototype.name); // undefined
+alert(User.prototype.name); // aniqlanmagan
 ```
 
-We can also assign values using more complex expressions and function calls:
+Bundan tashqari, murakkabroq ifodalar va funksiya chaqiruvlari yordamida qiymatlarni belgilashimiz mumkin:
 
 ```js run
 class User {
@@ -345,13 +344,13 @@ alert(user.name); // John
 ```
 
 
-### Making bound methods with class fields
+### Sinf maydonlari bilan bog'liq usullarni yaratish
 
-As demonstrated in the chapter <info:bind> functions in JavaScript have a dynamic `this`. It depends on the context of the call.
+<info:bind> bobida ko'rsatilganidek, JavaScriptdagi funksiyalar `this` dinamikiga ega. Bu chaqiruvning kontekstiga bog'liq.
 
-So if an object method is passed around and called in another context, `this` won't be a reference to its object any more.
+Shunday qilib, agar obyekt usuli boshqa kontekstga o'tkazilsa va chaqirilsa, `this` endi uning obyektiga havola bo'lmaydi.
 
-For instance, this code will show `undefined`:
+Masalan, bu kod `undefined`, ya'ni aniqlanmagan deya ko'rsatadi:
 
 ```js run
 class Button {
@@ -371,14 +370,14 @@ setTimeout(button.click, 1000); // undefined
 */!*
 ```
 
-The problem is called "losing `this`".
+Ushbu masala " `this` ni yo'qotish" deb nomlanadi.
 
-There are two approaches to fixing it, as discussed in the chapter <info:bind>:
+<info:bind> bobida muhokama qilinganidek, uni hal qilishning ikkita usuli mavjud:
 
-1. Pass a wrapper-function, such as `setTimeout(() => button.click(), 1000)`.
-2. Bind the method to object, e.g. in the constructor.
+1. `setTimeout(() => button.click(), 1000)` kabi o'rash funksiyasini o'tkazing.
+2. Usulni obyektga bog'lang, masalan, konstruktorga.
 
-Class fields provide another, quite elegant syntax:
+Sinf maydonlari boshqa sintaksisni taqdim etadi:
 
 ```js run
 class Button {
@@ -397,32 +396,31 @@ let button = new Button("hello");
 setTimeout(button.click, 1000); // hello
 ```
 
-The class field `click = () => {...}` is created on a per-object basis, there's a separate function for each `Button` object, with `this` inside it referencing that object. We can pass `button.click` around anywhere, and the value of `this` will always be correct.
+Sinf maydoni `click = () => {...}` har bir obyekt asosida yaratiladi, har bir `Button` obyekti uchun alohida funksiya mavjud bo'lib, uning ichida `this` o'sha obyektga havola qiladi. Biz `button.click` tugmachasini istalgan joyga o'tkazishimiz mumkin va  `this` qiymati har doim to'g'ri bo'ladi.
 
-That's especially useful in browser environment, for event listeners.
+Bu, ayniqsa, brauzer muhitida, voqea tinglovchilari uchun foydalidir.
 
-## Summary
+## Xulosa
 
-The basic class syntax looks like this:
+Asosiy sinf sintaksisi quyidagicha ko'rinadi:
 
 ```js
 class MyClass {
-  prop = value; // property
+  prop = value; // xususiyat
 
-  constructor(...) { // constructor
+  constructor(...) { // konstruktor
     // ...
   }
 
-  method(...) {} // method
+  method(...) {} // metod
 
-  get something(...) {} // getter method
-  set something(...) {} // setter method
+  get something(...) {} // qabul qiluvchi metod
+  set something(...) {} // o'rnatuvchi metod
 
-  [Symbol.iterator]() {} // method with computed name (symbol here)
+  [Symbol.iterator]() {} // hisoblangan nomli usul (bu yerda belgi)
   // ...
 }
 ```
+`MyClass` texnik jihatdan funksiyadir (biz `constructor` sifatida taqdim etamiz), usullar, qabul qiluvchilar va sozlagichlar esa `MyClass.prototype` ga yoziladi.
 
-`MyClass` is technically a function (the one that we provide as `constructor`), while methods, getters and setters are written to `MyClass.prototype`.
-
-In the next chapters we'll learn more about classes, including inheritance and other features.
+ Keyingi boblarda biz sinflar, jumladan, meros va boshqa xususiyatlar haqida ko'proq bilib olamiz.

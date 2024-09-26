@@ -2,21 +2,21 @@
 
 [recent caniuse="bigint"]
 
-`BigInt` is a special numeric type that provides support for integers of arbitrary length.
+`BigInt` - ixtiyoriy uzunlikdagi butun sonlarni qo'llab-quvvatlaydigan maxsus raqamli tip.
 
-A bigint is created by appending `n` to the end of an integer literal or by calling the function `BigInt` that creates bigints from strings, numbers etc.
+Bigint butun son literalining oxiriga `n` qo'shilishi yoki satrlar, raqamlar va hokazolardan bigint lar yaratuvchi `BigInt` funksiyasini chaqirish orqali yaratiladi.
 
 ```js
 const bigint = 1234567890123456789012345678901234567890n;
 
 const sameBigint = BigInt("1234567890123456789012345678901234567890");
 
-const bigintFromNumber = BigInt(10); // same as 10n
+const bigintFromNumber = BigInt(10); // 10n kabi bir xil
 ```
 
-## Math operators
+## Matematik operatorlar
 
-`BigInt` can mostly be used like a regular number, for example:
+`BigInt` odatda oddiy raqam sifatida ishlatilishi mumkin, masalan: 
 
 ```js run
 alert(1n + 2n); // 3
@@ -24,15 +24,15 @@ alert(1n + 2n); // 3
 alert(5n / 2n); // 2
 ```
 
-Please note: the division `5/2` returns the result rounded towards zero, without the decimal part. All operations on bigints return bigints.
+Esda tuting: "5/2" bo'linmasi natijani o'nli kasrsiz nolga yaxlitlangan holda qaytaradi. Bigintlardagi barcha operatsiyalar bigintlarni qaytaradi.
 
-We can't mix bigints and regular numbers:
+Biz katta va oddiy raqamlarni aralashtira olmaymiz:
 
 ```js run
-alert(1n + 2); // Error: Cannot mix BigInt and other types
+alert(1n + 2); // Error: BigInt va boshqa turlarni aralashtirib bo'lmaydi
 ```
 
-We should explicitly convert them if needed: using either `BigInt()` or `Number()`, like this:
+Agar kerak bo'lsa, biz ularni aniq konvertatsiya qilishimiz kerak: `BigInt()` yoki `Number()` yordamida quyidagi kabi bajariladi:
 
 ```js run
 let bigint = 1n;
@@ -45,23 +45,23 @@ alert(bigint + BigInt(number)); // 3
 alert(Number(bigint) + number); // 3
 ```
 
-The conversion operations are always silent, never give errors, but if the bigint is too huge and won't fit the number type, then extra bits will be cut off, so we should be careful doing such conversion.
+O'tkazish operatsiyalari har doim ovozsiz bo'ladi, hech qachon xato qilmaydi, lekin agar bigint juda katta bo'lsa va raqam turiga mos kelmasa, qo'shimcha bitlar kesiladi, shuning uchun biz bunday konvertatsiya qilishda ehtiyot bo'lishimiz kerak.
 
-````smart header="The unary plus is not supported on bigints"
-The unary plus operator `+value` is a well-known way to convert `value` to a number.
+````smart header="Bigintlarda birlik plus qo'llab-quvvatlanmaydi"
+Birlik plyus operatori `+value` `value`ni raqamga aylantirishning mashhur usulidir.
 
-In order to avoid confusion, it's not supported on bigints:
+Chalkashmaslik uchun u bigintlarda qo'llab-quvvatlanmaydi: 
 ```js run
 let bigint = 1n;
 
 alert( +bigint ); // error
 ```
-So we should use `Number()` to convert a bigint to a number.
+Shunday qilib, biz bigintni raqamga aylantirish uchun `Number()` dan foydalanishimiz kerak.
 ````
 
-## Comparisons
+## Taqqoslashlar
 
-Comparisons, such as `<`, `>` work with bigints and numbers just fine:
+`<`, `>` kabi taqqoslashlar bigintlar va raqamlar bilan ishlaydi:
 
 ```js run
 alert( 2n > 1n ); // true
@@ -69,7 +69,7 @@ alert( 2n > 1n ); // true
 alert( 2n > 1 ); // true
 ```
 
-Please note though, as numbers and bigints belong to different types, they can be equal `==`, but not strictly equal `===`:
+E'tibor bering, raqamlar va kattaliklar har xil turlarga tegishli bo'lganligi sababli, ular `==` ga teng bo'lishi mumkin, lekin ular qat'iy teng emas `===`:
 
 ```js run
 alert( 1 == 1n ); // true
@@ -77,39 +77,39 @@ alert( 1 == 1n ); // true
 alert( 1 === 1n ); // false
 ```
 
-## Boolean operations
+## Mantiqiy operatsiyalar
 
-When inside `if` or other boolean operations, bigints behave like numbers.
+`If` yoki boshqa mantiqiy operatsiyalar ichida bo'lsa, bigintlar raqamlar kabi ishlaydi.
 
-For instance, in `if`, bigint `0n` is falsy, other values are truthy:
+Masalan, `if` da bigint `0n` noto'g'ri, boshqa qiymatlar to'g'ridir:
 
 ```js run
 if (0n) {
-  // never executes
+  // hech qachon bajarmaydi
 }
 ```
 
-Boolean operators, such as `||`, `&&` and others also work with bigints similar to numbers:
+`||`, `&&` va boshqalar kabi mantiqiy operatorlar ham raqamlarga o'xshash bigintlar bilan ishlaydi:
 
 ```js run
-alert( 1n || 2 ); // 1 (1n is considered truthy)
+alert( 1n || 2 ); // 1 (1n to'g'ri deb hisoblanadi)
 
-alert( 0n || 2 ); // 2 (0n is considered falsy)
+alert( 0n || 2 ); // 2 (0n xato deb hisoblanadi)
 ```
 
 ## Polyfills
 
-Polyfilling bigints is tricky. The reason is that many JavaScript operators, such as `+`, `-` and so on behave differently with bigints compared to regular numbers.
+Bigintlarni polyfilling qilish juda qiyin. Sababi,`+`, `-` va boshqalar kabi ko'pgina JavaScript operatorlari oddiy raqamlarga nisbatan bigintlar bilan boshqacha yo'l tutishadi.
 
-For example, division of bigints always returns a bigint (rounded if necessary).
+Misol uchun, bigintlarning bo'linishi har doim bigintni qaytaradi (agar kerak bo'lsa, yaxlitlanadi).
 
-To emulate such behavior, a polyfill would need to analyze the code and replace all such operators with its functions. But doing so is cumbersome and would cost a lot of performance.
+Bunday xatti-harakatlarga taqlid qilish uchun polyfill kodni tahlil qilishi va barcha operatorlarni o'z funksiyalari bilan almashtirishi kerak, ammo buni qilish juda og'ir va ko'p ishlashga xarajat qiladi. 
 
-So, there's no well-known good polyfill.
+Shunday qilib, bizda taniqli yaxshi polyfill mavjud emas. 
 
-Although, the other way around is proposed by the developers of [JSBI](https://github.com/GoogleChromeLabs/jsbi) library.
+Aksincha, [JSBI](https://github.com/GoogleChromeLabs/jsbi) kutubxonasi ishlab chiquvchilar tomonidan taklif qilingan.
 
-This library implements big numbers using its own methods. We can use them instead of native bigints:
+Ushbu kutubxona o'z usullaridan foydalangan holda katta raqamlarni amalga oshiradi. Biz ularni mahalliy bigintlar o'rniga ishlatishimiz mumkin:
 
 | Operation | native `BigInt` | JSBI |
 |-----------|-----------------|------|
@@ -118,13 +118,13 @@ This library implements big numbers using its own methods. We can use them inste
 | Subtraction	| `c = a - b` | `c = JSBI.subtract(a, b)` |
 | ... | ... | ... |
 
-...And then use the polyfill (Babel plugin) to convert JSBI calls to native bigints for those browsers that support them.
+... Va keyin JSBI qo'ng'iroqlarini ularni qo'llab-quvvatlaydigan brauzerlar uchun mahalliy bigintlarga aylantirish uchun polyfill (Babel plugini) dan foydalaning.
 
-In other words, this approach suggests that we write code in JSBI instead of native bigints. But JSBI works with numbers as with bigints internally, emulates them closely following the specification, so the code will be "bigint-ready".
+Boshqacha qilib aytadigan bo'lsak, bu yondashuv mahalliy bigintlar o'rniga JSBIda kod yozishni taklif qiladi. Ammo JSBI raqamlar bilan xuddi bigintlar kabi ichkarida ishlaydi, spetsifikatsiyaga rioya qilgan holda ularga taqlid qiladi, shuning uchun kod "bigintga tayyor" bo'ladi.
 
-We can use such JSBI code "as is" for engines that don't support bigints and for those that do support - the polyfill will convert the calls to native bigints.
+Biz bunday JSBI kodini bigintlarni qo'llab-quvvatlamaydigan dvigatellar uchun va qo'llab-quvvatlaydiganlar uchun "as is" ishlatishimiz mumkin - polyfill qo'ng'iroqlarni mahalliy bigintlarga aylantiradi.
 
-## References
+## Havolalar
 
 - [MDN docs on BigInt](mdn:/JavaScript/Reference/Global_Objects/BigInt).
 - [Specification](https://tc39.es/ecma262/#sec-bigint-objects).

@@ -1,22 +1,22 @@
-# Mixins
+# Mixins - Aralashmalar
 
-In JavaScript we can only inherit from a single object. There can be only one `[[Prototype]]` for an object. And a class may extend only one other class.
+JavaScriptda biz faqat bitta obyektdan meros olishimiz mumkin. Obyekt uchun faqat bitta `[[Prototype]]` mavjud. Hamda sinf faqat bitta boshqa sinfni kengaytira olaadi.
 
-But sometimes that feels limiting. For instance, we have a class `StreetSweeper` and a class `Bicycle`, and want to make their mix: a `StreetSweepingBicycle`.
+Ammo ba'zida bu cheklovlarga sabab bo'ladi. Masalan, bizda `StreetSweeper` (ko'cha supuruvchi) va `Bicycle`(velosiped) sinflari bor va ularning aralashmasini yaratmoqchimiz: `StreetSweepingBicycle`
 
-Or we have a class `User` and a class `EventEmitter` that implements event generation, and we'd like to add the functionality of `EventEmitter` to `User`, so that our users can emit events.
+Yoki bizda hodisa yaratishni amalga oshiradigan `User` va `EventEmitter` sinflari bor va biz `User` ga `EventEmitter` funksiyasini qo'shmoqchimiz, shunda bizning foydalanuvchilarimiz hodisalarni chiqarishi mumkin.
 
-There's a concept that can help here, called "mixins".
+Bu yerda bizga yordam berishi mumkin bo'lgan "aralashmalar" deb nomlangan tushuncha mavjud.
 
-As defined in Wikipedia, a [mixin](https://en.wikipedia.org/wiki/Mixin) is a class containing methods that can be used by other classes without a need to inherit from it.
+Vikipediyada ta'riflanganidek, [mixin](https://en.wikipedia.org/wiki/Mixin) boshqa sinflar tomonidan undan meros olish zaruratisiz foydalanish mumkin bo'lgan usullarni o'z ichiga olgan sinfdir.
 
-In other words, a *mixin* provides methods that implement a certain behavior, but we do not use it alone, we use it to add the behavior to other classes.
+Boshqacha qilib aytadigan bo'lsak, *mixin* ma'lum bir xatti-harakatni amalga oshiradigan usullarni taqdim etadi, lekin biz uni yolg'iz ishlatmaymiz, undan boshqa sinflarga xatti-harakatni qo'shish uchun foydalanamiz.
 
-## A mixin example
+## Mixins, ya'ni aralashmalarga doir misollar
 
-The simplest way to implement a mixin in JavaScript is to make an object with useful methods, so that we can easily merge them into a prototype of any class.
+JavaScriptda miksinni, ya'ni aralashmani amalga oshirishning eng oddiy usuli bu obyektni foydali usullar bilan yaratishdir, shunda biz ularni istalgan sinfning prototipiga osongina birlashtira olamiz.
 
-For instance here the mixin `sayHiMixin` is used to add some "speech" for `User`:
+Masalan, bu erda `sayHiMixin` miksin `User` ga ba'zi bir "nutq" qo'shish uchun ishlatiladi:
 
 ```js run
 *!*
@@ -32,7 +32,7 @@ let sayHiMixin = {
 };
 
 *!*
-// usage:
+// ishlatilishi:
 */!*
 class User {
   constructor(name) {
@@ -40,14 +40,14 @@ class User {
   }
 }
 
-// copy the methods
+// usullarni ko'chirish
 Object.assign(User.prototype, sayHiMixin);
 
-// now User can say hi
+// user, ya'ni foydalanuvchi endi hi deb ayta oladi
 new User("Dude").sayHi(); // Hello Dude!
 ```
 
-There's no inheritance, but a simple method copying. So `User` may inherit from another class and also include the mixin to "mix-in" the additional methods, like this:
+Meros yo'q, lekin bu nusxa ko'chirishning oddiy usuli. Shunday qilib, `User` boshqa sinfdan meros bo'lib, qo'shimcha usullarni aralashtirish uchun "mix-in" ni o'z ichiga oladi, masalan:
 
 ```js
 class User extends Person {
@@ -57,9 +57,9 @@ class User extends Person {
 Object.assign(User.prototype, sayHiMixin);
 ```
 
-Mixins can make use of inheritance inside themselves.
+Miksinlar o'zlari merosdan foydalanishlari mumkin.
 
-For instance, here `sayHiMixin` inherits from `sayMixin`:
+Masalan, quyidagi `sayHiMixin` `sayMixin` dan meros oladi:
 
 ```js run
 let sayMixin = {
@@ -69,11 +69,11 @@ let sayMixin = {
 };
 
 let sayHiMixin = {
-  __proto__: sayMixin, // (or we could use Object.setPrototypeOf to set the prototype here)
+  __proto__: sayMixin, // (yoki bu yerda prototipni o'rnatish uchun Object.setPrototypeOf dan foydalanishimiz mumkin)
 
   sayHi() {
     *!*
-    // call parent method
+    // ota-ona usulini chaqirish
     */!*
     super.say(`Hello ${this.name}`); // (*)
   },
@@ -88,43 +88,43 @@ class User {
   }
 }
 
-// copy the methods
+// usullarni ko'chirish
 Object.assign(User.prototype, sayHiMixin);
 
-// now User can say hi
+// user, foydalanuvchi endi hi deb ayta oladi
 new User("Dude").sayHi(); // Hello Dude!
 ```
 
-Please note that the call to the parent method `super.say()` from `sayHiMixin` (at lines labelled with `(*)`) looks for the method in the prototype of that mixin, not the class.
+Esda tutingki, `sayHiMixin` `super.say()` ota-ona usuliga chaqiruv (`(*)` bilan belgilangan satrlarda) sinfni emas, balki o'sha mix-in prototipidagi usulni qidiradi.
 
-Here's the diagram (see the right part):
+Mana diagramma (o'ng qismga qarang):
 
 ![](mixin-inheritance.svg)
 
-That's because methods `sayHi` and `sayBye` were initially created in `sayHiMixin`. So even though they got copied, their `[[HomeObject]]` internal property references `sayHiMixin`, as shown in the picture above.
+Buning sababi,  `sayHi` va `sayBye` usullari dastlab `sayHiMixin` da yaratilgan. Shunday qilib, ular nusxalangan bo'lsa ham, ularning `[[HomeObject]]` ichki xususiyati yuqoridagi rasmda ko'rsatilganidek, `sayHiMixin` ga ishora qiladi.
 
-As `super` looks for parent methods in `[[HomeObject]].[[Prototype]]`, that means it searches `sayHiMixin.[[Prototype]]`.
+`Super` `[[HomeObject]].[[Prototype]]`da asosiy usullarni qidirayotgani uchun u `sayHiMixin.[[Prototype]]`ni qidiradi.
 
-## EventMixin
+## EventMixin - mix-in hodisasi
 
-Now let's make a mixin for real life.
+Keling, haqiqiy hayot uchun miksin yarataylik.
 
-An important feature of many browser objects (for instance) is that they can generate events. Events are a great way to "broadcast information" to anyone who wants it. So let's make a mixin that allows us to easily add event-related functions to any class/object.
+Ko'pgina brauzer obyektlarining muhim xususiyati, masalan, ular hodisalarni yaratishlari mumkin. Voqealar - bu ma'lumotni istagan har bir kishiga "efirga uzatish" ning ajoyib usuli. Shunday qilib, keling, har qanday sinf/obyektga voqea bilan bog'liq funksiyalarni osongina qo'shish imkonini beruvchi mix-in ni yarataylik.
 
-- The mixin will provide a method `.trigger(name, [...data])` to "generate an event" when something important happens to it. The `name` argument is a name of the event, optionally followed by additional arguments with event data.
-- Also the method `.on(name, handler)` that adds `handler` function as the listener to events with the given name. It will be called when an event with the given `name` triggers, and get the arguments from the `.trigger` call.
-- ...And the method `.off(name, handler)` that removes the `handler` listener.
+- Mix-in `.trigger(nom, [...ma'lumotlar])` usulini ta'minlaydi, agar biror muhim voqea sodir bo'lsa, "hodisa" yaratadi. `name` argumenti hodisaning nomi bo'lib, ixtiyoriy ravishda voqea ma'lumotlari bilan qo'shimcha argumentlardan keyin keladi.
+- Shuningdek, `.on(name, handler)` usuli ham berilgan nomli hodisalarni tinglovchi sifatida `handler` funksiyasini qo'shadi. U berilgan `name` bilan voqea ishga tushganda chaqiriladi va `.trigger` chaqiruvidan argumentlarni oladi.
+- ...va `.off(name, handler)` usuli `handler` tinglovchini olib tashlaydi.
 
-After adding the mixin, an object `user` will be able to generate an event `"login"` when the visitor logs in. And another object, say, `calendar` may want to listen for such events to load the calendar for the logged-in person.
+Mix-in qo'shilgandan so'ng, `user` obyekti tashrif buyuruvchi tizimga kirganda `"login"` hodisasini yaratadi. Boshqa obyekt, masalan, `calendar` hodisani yuklash uchun tizimga kirgan shaxs bunday voqealarni tinglashni xohlashi mumkin. 
 
-Or, a `menu` can generate the event `"select"` when a menu item is selected, and other objects may assign handlers to react on that event. And so on.
+Yoki `menu` bandi tanlanganda `"select"`, tanlash hodisasini yaratishi va boshqa obyektlar ushbu hodisaga munosabat bildirish uchun ishlov beruvchilarni belgilashi mumkin va hokazo.
 
-Here's the code:
+Quyida kod berilgan:
 
 ```js run
 let eventMixin = {
   /**
-   * Subscribe to event, usage:
+   * Hodisani kuzatish va undan foydalanish:
    *  menu.on('select', function(item) { ... }
   */
   on(eventName, handler) {
@@ -136,7 +136,7 @@ let eventMixin = {
   },
 
   /**
-   * Cancel the subscription, usage:
+   * Obunani bekor qilish, foydalanish:
    *  menu.off('select', handler)
    */
   off(eventName, handler) {
@@ -150,59 +150,59 @@ let eventMixin = {
   },
 
   /**
-   * Generate an event with the given name and data
+   * Belgilangan nom va ma'lumotlar bilan voqea yarating
    *  this.trigger('select', data1, data2);
    */
   trigger(eventName, ...args) {
     if (!this._eventHandlers?.[eventName]) {
-      return; // no handlers for that event name
+      return; // bu hodisa nomi uchun ishlov beruvchilar yo'q
     }
 
-    // call the handlers
+    // ishlovchilarni chaqirish
     this._eventHandlers[eventName].forEach(handler => handler.apply(this, args));
   }
 };
 ```
 
 
-- `.on(eventName, handler)` -- assigns function `handler` to run when the event with that name occurs. Technically, there's an `_eventHandlers` property that stores an array of handlers for each event name, and it just adds it to the list.
-- `.off(eventName, handler)` -- removes the function from the handlers list.
-- `.trigger(eventName, ...args)` -- generates the event: all handlers from `_eventHandlers[eventName]` are called, with a list of arguments `...args`.
+- `.on(eventName, handler)` -- shu nomdagi voqea sodir bo'lganda ishga tushirish uchun `handler`, ishlab chiqaruvchi funksiyasini tayinlaydi. Texnik jihatdan, har bir hodisa nomi uchun ishlov beruvchilar massivini saqlaydigan `_eventHandlers` xususiyati mavjud va u faqat ro'yxatga qo'shadi.
+- `.off(eventName, handler)` -- funksiyani ishlov beruvchilar ro'yxatidan olib tashlaydi.
+- `.trigger(eventName, ...args)` -- hodisani yaratadi: `_eventHandlers[eventName]` dan barcha ishlov beruvchilar `...args` argumentlar ro`yxati bilan chaqiriladi.
 
-Usage:
+Foydalanish:
 
 ```js run
-// Make a class
+// Sinf yaratish
 class Menu {
   choose(value) {
     this.trigger("select", value);
   }
 }
-// Add the mixin with event-related methods
+// Hodisa bilan bog'liq usullar bilan mix-in ni qo'shing
 Object.assign(Menu.prototype, eventMixin);
 
 let menu = new Menu();
 
-// add a handler, to be called on selection:
+// tanlashda chaqiriladigan ishlov beruvchini qo'shing:
 *!*
 menu.on("select", value => alert(`Value selected: ${value}`));
 */!*
 
-// triggers the event => the handler above runs and shows:
-// Value selected: 123
+// hodisani ishga tushiradi => yuqoridagi ishlov beruvchi ishlaydi va ko'rsatadi:
+// Qiymat tanlandi: 123
 menu.choose("123");
 ```
 
-Now, if we'd like any code to react to a menu selection, we can listen for it with `menu.on(...)`.
+Agar biz biron bir kodning menyu tanloviga munosabat bildirishini xohlasak, uni `menu.on(...)`  orqali tinglashimiz mumkin.
 
-And `eventMixin` mixin makes it easy to add such behavior to as many classes as we'd like, without interfering with the inheritance chain.
+Va `eventMixin` mixin bu kabi xatti-harakatlarni meros zanjiriga aralashmasdan, biz xohlagancha ko'p sinflarga qo'shishni osonlashtiradi.
 
-## Summary
+## Xulosa
 
-*Mixin* -- is a generic object-oriented programming term: a class that contains methods for other classes.
+*Mixin* -- umumiy obyektga yo'naltirilgan dasturlash atamasi: boshqa sinflar uchun usullarni o'z ichiga olgan sinf.
 
-Some other languages allow multiple inheritance. JavaScript does not support multiple inheritance, but mixins can be implemented by copying methods into prototype.
+Ba'zi boshqa tillar bir nechta merosga ruxsat beradi. JavaScript bir nechta merosni qo'llab-quvvatlamaydi, ammo mix-inlarni prototipga nusxalash usullari orqali amalga oshirish mumkin.
 
-We can use mixins as a way to augment a class by adding multiple behaviors, like event-handling as we have seen above.
+Biz yuqorida ko'rganimizdek, bir nechta xatti-harakatlarni qo'shish orqali sinfni ko'paytirish uchun mix-inlardan foydalanamiz, masalan, voqealarni boshqarishda foydalansak bo'ladi.
 
-Mixins may become a point of conflict if they accidentally overwrite existing class methods. So generally one should think well about the naming methods of a mixin, to minimize the probability of that happening.
+Mix-inlar tasodifan mavjud sinf usullarini qayta yozsa, ziddiyat nuqtasiga aylanishi mumkin. Shunday qilib, odatda, bu sodir bo'lish ehtimolini minimallashtirish uchun aralashmaning nomlash usullari haqida yaxshilab o'ylash kerak.

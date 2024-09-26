@@ -1,14 +1,12 @@
-# Modifying the document
+# Hujjatni o'zgartirish
+DOM modifikatsiyasi "jonli" sahifalarni yaratish kalitidir.
 
-DOM modification is the key to creating "live" pages.
+Bu yerda biz "tezda" yangi elementlarni qanday yaratishni va mavjud sahifa tarkibini o'zgartirishni ko'rib chiqamiz.
+## Misol: xabarni ko'rsatish
 
-Here we'll see how to create new elements "on the fly" and modify the existing page content.
+Keling, misol yordamida ko'rsatamiz. Biz sahifaga `alert`dan ko'ra yoqimliroq ko'rinadigan xabarni qo'shamiz.
 
-## Example: show a message
-
-Let's demonstrate using an example. We'll add a message on the page that looks nicer than `alert`.
-
-Here's how it will look:
+Bu shunday ko'rinadi:
 
 ```html autorun height="80"
 <style>
@@ -23,57 +21,56 @@ Here's how it will look:
 
 *!*
 <div class="alert">
-  <strong>Hi there!</strong> You've read an important message.
+  <strong>Hi there!</strong> Siz muhim xabarni o'qidingiz.
 </div>
 */!*
 ```
 
-That was the HTML example. Now let's create the same `div` with JavaScript (assuming that the styles are in the HTML/CSS already).
+Bu HTML misoli edi. Keling, JavaScript bilan bir xil `div` ni yarataylik (styles, ya'ni uslublar allaqachon HTML/CSSda deb tasavvur qilamiz).
 
-## Creating an element
+## Elementni yaratish
 
-To create DOM nodes, there are two methods:
-
+DOM tugunlarini yaratish uchun ikkita usul mavjud:
 `document.createElement(tag)`
-: Creates a new *element node* with the given tag:
+: Berilgan teg bilan yangi *element node* yaratadi:
 
     ```js
     let div = document.createElement('div');
     ```
 
 `document.createTextNode(text)`
-: Creates a new *text node* with the given text:
+: Berilgan matn bilan yangi *text node* ni yaratadi:
 
     ```js
     let textNode = document.createTextNode('Here I am');
     ```
 
-Most of the time we need to create element nodes, such as the `div` for the message.
+Ko'pincha biz xabar uchun `div` kabi element tugunlarini yaratishimiz kerak.
 
-### Creating the message
+### Xabar yaratish
 
-Creating the message div takes 3 steps:
+Div xabarini yaratish uch bosqichdan iborat:
 
 ```js
-// 1. Create <div> element
+// 1. <div> elementni yarating
 let div = document.createElement('div');
 
-// 2. Set its class to "alert"
+// 2. Uning class ini "alert" ga o'rnating
 div.className = "alert";
 
-// 3. Fill it with the content
+// 3.Uni tarkib bilan to'ldiring
 div.innerHTML = "<strong>Hi there!</strong> You've read an important message.";
 ```
 
-We've created the element. But as of now it's only in a variable named `div`, not in the page yet. So we can't see it.
+Biz elementni yaratdik, lekin hozircha u sahifada emas, faqat `div` nomli o'zgaruvchida. Shuning uchun biz buni ko'ra olmaymiz.
 
-## Insertion methods
+## Kiritish usullari
 
-To make the `div` show up, we need to insert it somewhere into `document`. For instance, into `<body>` element, referenced by `document.body`.
+`Div` ko'rinishi uchun uni `document` ning biron bir joyiga kiritishimiz kerak, masalan, `document.body` tomonidan havola qilingan `<body>` elementiga.
 
-There's a special method `append` for that: `document.body.append(div)`.
+Buning uchun maxsus `append`, ya'ni qo'shish usuli mavjud: `document.body.append(div)`.
 
-Here's the full code:
+Mana to'liq kod:
 
 ```html run height="80"
 <style>
@@ -97,21 +94,21 @@ Here's the full code:
 </script>
 ```
 
-Here we called `append` on `document.body`, but we can call `append` method on any other element, to put another element into it. For instance, we can append something to `<div>` by calling `div.append(anotherElement)`.
+Bu yerda biz `document.body` da `append` deb nom oldik, lekin boshqa elementga boshqa element qo'yish uchun `append` usulini chaqirishimiz mumkin. Masalan, biz `<div>` ga `div.append(anotherElement)` ni chaqirish orqali biror narsa qo`shsak bo'ladi.
 
-Here are more insertion methods, they specify different places where to insert:
+Bu yerda qo'shimcha kiritish usullari mavjud, ular qayerga qo'yish kerakligini ko'rsatadilar:
 
-- `node.append(...nodes or strings)` -- append nodes or strings *at the end* of `node`,
-- `node.prepend(...nodes or strings)` -- insert nodes or strings *at the beginning* of `node`,
-- `node.before(...nodes or strings)` –- insert nodes or strings *before* `node`,
-- `node.after(...nodes or strings)` –- insert nodes or strings *after* `node`,
-- `node.replaceWith(...nodes or strings)` –- replaces `node` with the given nodes or strings.
+- `node.append(...nodes or strings)` -- `node` *oxirida* node lar yoki satrlarni qo'shing,
+- `node.prepend(...nodes or strings)` -- node lar yoki satrlarni `node` ning *boshiga* kiriting,
+- `node.before(...nodes or strings)` –- node lar yoki satrlarni `node` dan *oldin* kiriting,
+- `node.after(...nodes or strings)` –- node lar yoki satrlarni `node` dan *keyin* qo'ying,
+- `node.replaceWith(...nodes or strings)` –- `node` ni berilgan node lar yoki satrlar bilan almashtiradi.
 
-Arguments of these methods are an arbitrary list of DOM nodes to insert, or text strings (that become text nodes automatically).
+Ushbu usullarning argumentlari kiritish uchun DOM tugunlarining ixtiyoriy ro'yxati yoki matn satrlaridir (ular avtomatik ravishda matn node'lariga aylanadi). 
 
-Let's see them in action.
+Keling, ularni amalda ko'ramiz.
 
-Here's an example of using these methods to add items to a list and the text before/after it:
+Ro'yxatga elementlarni va undan oldingi/keyin matnni qo'shish uchun ushbu usullardan foydalanishga misol:
 
 ```html autorun
 <ol id="ol">
@@ -121,24 +118,24 @@ Here's an example of using these methods to add items to a list and the text bef
 </ol>
 
 <script>
-  ol.before('before'); // insert string "before" before <ol>
-  ol.after('after'); // insert string "after" after <ol>
+  ol.before('before'); // <ol> dan oldin "before" qatorini kiriting
+  ol.after('after'); // <ol> dan keyin "after" qatorini kiriting
 
   let liFirst = document.createElement('li');
   liFirst.innerHTML = 'prepend';
-  ol.prepend(liFirst); // insert liFirst at the beginning of <ol>
+  ol.prepend(liFirst); // <ol> ning boshiga liFirst ni kiriting
 
   let liLast = document.createElement('li');
   liLast.innerHTML = 'append';
-  ol.append(liLast); // insert liLast at the end of <ol>
+  ol.append(liLast); // <ol> ning oxiriga liLast ni kiriting
 </script>
 ```
 
-Here's a visual picture of what the methods do:
+Usullar nima vazifa bajarishining vizual rasmi:
 
 ![](before-prepend-append-after.svg)
 
-So the final list will be:
+Shunday qilib, yakuniy ro'yxat quyidagicha bo'ladi:
 
 ```html
 before
@@ -152,9 +149,9 @@ before
 after
 ```
 
-As said, these methods can insert multiple nodes and text pieces in a single call.
+Aytganimizdek, bu usullar bitta qo'ng'iroqda bir nechta tugun va matn qismlarini kiritishi mumkin.
 
-For instance, here a string and an element are inserted:
+Masalan, bu yerda satr va element kiritiladi:
 
 ```html run
 <div id="div"></div>
@@ -163,9 +160,9 @@ For instance, here a string and an element are inserted:
 </script>
 ```
 
-Please note: the text is inserted "as text", not "as HTML", with proper escaping of characters such as `<`, `>`.
+Iltimos, diqqat qiling: matn `<`, `>` kabi belgilardan to'g'ri qochish bilan "as HTML" (HTML sifatida emas), "ast text", ya'ni matn sifatida kiritiladi.
 
-So the final HTML is:
+Shunday qilib, yakuniy HTML:
 
 ```html run
 *!*
@@ -175,26 +172,26 @@ So the final HTML is:
 <div id="div"></div>
 ```
 
-In other words, strings are inserted in a safe way, like `elem.textContent` does it.
+Boshqacha qilib aytganda, satrlar xavfsiz tarzda kiritiladi, masalan, `elem.textContent` buni amalga oshiradi.
 
-So, these methods can only be used to insert DOM nodes or text pieces.
+Shunday qilib, bu usullar faqat DOM tugunlari yoki matn qismlarini kiritish uchun ishlatilishi mumkin.
 
-But what if we'd like to insert an HTML string "as html", with all tags and stuff working, in the same manner as `elem.innerHTML` does it?
+Agar biz HTML qatorini barcha teglar va ma'lumotlar `elem.innerHTML` bilan bir xil tarzda ishlaydigan "as hmtl", html sifatida kiritmoqchi bo'lsakchi?
 
-## insertAdjacentHTML/Text/Element
+## insertAdjacentHTML/Text/Element    
 
-For that we can use another, pretty versatile method: `elem.insertAdjacentHTML(where, html)`.
+Buning uchun biz boshqa, juda ko'p qirrali usuldan foydalanishimiz mumkin: `elem.insertAdjacentHTML(qayerda, html)`. 
 
-The first parameter is a code word, specifying where to insert relative to `elem`. Must be one of the following:
+Birinchi parametr `elem` ga nisbatan qayerga kiritish kerakligini ko'rsatuvchi kod so'zidir. Quyidagilardan biri bo'lishi kerak: 
 
-- `"beforebegin"` -- insert `html` immediately before `elem`,
-- `"afterbegin"` -- insert `html` into `elem`, at the beginning,
-- `"beforeend"` -- insert `html` into `elem`, at the end,
-- `"afterend"` -- insert `html` immediately after `elem`.
+- `"beforebegin"` -- `elem` dan oldin darhol `html` ni qo'ying, 
+- `"afterbegin"` -- boshida `elem` ga `html` ni kiriting,
+- `"beforeend"` -- oxirida `elem` ga `html` ni kiriting,
+- `"afterend"` -- `elem` dan keyin darhol `html` ni qo'ying. 
 
-The second parameter is an HTML string, that is inserted "as HTML".
+Ikkinchi parametr HTML qatori bo'lib, u "HTML sifatida" kiritiladi. 
 
-For instance:
+Masalan:        
 
 ```html run
 <div id="div"></div>
@@ -204,30 +201,29 @@ For instance:
 </script>
 ```
 
-...Would lead to:
+...Quyidagi holatga olib keladi:
 
 ```html run
 <p>Hello</p>
 <div id="div"></div>
 <p>Bye</p>
 ```
+Shunday qilib biz sahifaga ixtiyoriy HTML qo'shishimiz mumkin.
 
-That's how we can append arbitrary HTML to the page.
-
-Here's the picture of insertion variants:
+Qo'shish variantlari rasmi:
 
 ![](insert-adjacent.svg)
 
-We can easily notice similarities between this and the previous picture. The insertion points are actually the same, but this method inserts HTML.
+Bu va oldingi rasm o'rtasidagi o'xshashlikni osongina payqashimiz mumkin. Qo'shish nuqtalari aslida bir xil, ammo bu usul HTMLni kiritadi.
 
-The method has two brothers:
+Usulda ikkita sibling mavjud:
 
-- `elem.insertAdjacentText(where, text)` -- the same syntax, but a string of `text` is inserted "as text" instead of HTML,
-- `elem.insertAdjacentElement(where, elem)` -- the same syntax, but inserts an element.
+- `elem.insertAdjacentText(where, text)` -- bir xil sintaksis, lekin HTML o'rniga `text` qatori "as text" deb kiritiladi,
+- `elem.insertAdjacentElement(where, elem)` -- bir xil sintaksis, ammo elementni kiritadi.
 
-They exist mainly to make the syntax "uniform". In practice, only `insertAdjacentHTML` is used most of the time. Because for elements and text, we have methods `append/prepend/before/after` -- they are shorter to write and can insert nodes/text pieces.
+Ular asosan sintaksisni "uniform" qilish uchun mavjud. Amalda ko'pincha faqat `insertAdjacentHTML` ishlatiladi, chunki elementlar va matn uchun bizda `append/prepend/before/after` usullari mavjud -- ular yozish uchun qisqaroq va nodelarni/matn qismlarini kiritishi mumkin.
 
-So here's an alternative variant of showing a message:
+Shunday qilib, xabarni ko'rsatishning muqobil varianti:
 
 ```html run
 <style>
@@ -247,11 +243,11 @@ So here's an alternative variant of showing a message:
 </script>
 ```
 
-## Node removal
+## Node ni olib tashlash
 
-To remove a node, there's a method `node.remove()`.
+Node ni olib tashlash uchun `node.remove()` usuli mavjud.
 
-Let's make our message disappear after a second:
+Keling, xabarimizni bir soniyadan keyin yo'q qilaylik:
 
 ```html run untrusted
 <style>
@@ -276,32 +272,32 @@ Let's make our message disappear after a second:
 </script>
 ```
 
-Please note: if we want to *move* an element to another place -- there's no need to remove it from the old one.
+E'tibor bering: agar biz elementni boshqa joyga *ko'chirmoqchi* bo'lsak -- uni eskisidan olib tashlashning hojati yo'q.
 
-**All insertion methods automatically remove the node from the old place.**
+**Barcha kiritish usullari nodeni eski joydan avtomatik ravishda olib tashlaydi.**
 
-For instance, let's swap elements:
+Masalan, elementlarni almashtiramiz:
 
 ```html run height=50
 <div id="first">First</div>
 <div id="second">Second</div>
 <script>
-  // no need to call remove
-  second.after(first); // take #second and after it insert #first
+  // remove ni chaqirishga hojat yo'q
+  second.after(first); // #second ni oling va undan keyin #first ni kiriting
 </script>
 ```
 
-## Cloning nodes: cloneNode
+## Node larni klonlash: cloneNode
 
-How to insert one more similar message?
+Yana bir shunga o'xshash xabarni qanday kiritish kerak?
 
-We could make a function and put the code there. But the alternative way would be to *clone* the existing `div` and modify the text inside it (if needed).
+Biz funksiyani yaratib, kodni u yerga qo'yishimiz mumkin. Biroq, muqobil yo'l - mavjud `div` ni *klonlash* va uning ichidagi matnni o'zgartirish (agar kerak bo'lsa).
 
-Sometimes when we have a big element, that may be faster and simpler.
+Ba'zan bizda katta element bo'lsa, bu tezroq va sodda bo'lishi mumkin.
 
-- The call `elem.cloneNode(true)` creates a "deep" clone of the element -- with all attributes and subelements. If we call `elem.cloneNode(false)`, then the clone is made without child elements.
+- `Elem.cloneNode(true)` chaqiruvi elementning "deep (chuqur)" klonini yaratadi -- barcha atribyutlar va pastki elementlar bilan. Agar biz `elem.cloneNode(false)` deb atasak, u holda klon asosiy elementlarsiz amalga oshiriladi.
 
-An example of copying the message:
+Xabarni nusxalash misoli:
 
 ```html run height="120"
 <style>
@@ -320,21 +316,21 @@ An example of copying the message:
 
 <script>
 *!*
-  let div2 = div.cloneNode(true); // clone the message
-  div2.querySelector('strong').innerHTML = 'Bye there!'; // change the clone
+  let div2 = div.cloneNode(true); // xabarni klonlang
+  div2.querySelector('strong').innerHTML = 'Bye there!'; // klonni o'zgartiring
 
-  div.after(div2); // show the clone after the existing div
+  div.after(div2); // mavjud divdan keyin klonni ko'rsating
 */!*
 </script>
 ```
 
 ## DocumentFragment [#document-fragment]
 
-`DocumentFragment` is a special DOM node that serves as a wrapper to pass around lists of nodes.
+`DocumentFragment` - bu node lar ro'yxatini o'tkazish uchun o'rash vazifasini bajaradigan maxsus DOM node hisoblanadi.
 
-We can append other nodes to it, but when we insert it somewhere, then its content is inserted instead.
+Biz unga boshqa nodelarni qo'shishimiz mumkin, lekin biz uni biror joyga qo'shganimizda, uning o'rniga uning kontenti kiritiladi.
 
-For example, `getListContent` below generates a fragment with `<li>` items, that are later inserted into `<ul>`:
+Masalan, quyidagi `getListContent` keyinchalik `<ul>` ichiga kiritiladigan `<li>` elementlardan iborat fragment hosil qiladi:
 
 ```html run
 <ul id="ul"></ul>
@@ -357,8 +353,7 @@ ul.append(getListContent()); // (*)
 */!*
 </script>
 ```
-
-Please note, at the last line `(*)` we append `DocumentFragment`, but it "blends in", so the resulting structure will be:
+E'tibor bering, oxirgi `(*)` qatoriga biz `DocumentFragment` qo'shamiz, lekin u birlashadi, ya'ni "blends in", natijada tuzilma quyidagicha bo'ladi:
 
 ```html
 <ul>
@@ -368,7 +363,7 @@ Please note, at the last line `(*)` we append `DocumentFragment`, but it "blends
 </ul>
 ```
 
-`DocumentFragment` is rarely used explicitly. Why append to a special kind of node, if we can return an array of nodes instead? Rewritten example:
+`DocumentFragment` kamdan-kam hollarda aniq ishlatiladi. Agar biz nodelar qatorini qaytarishimiz mumkin bo'lsa, nima uchun maxsus turdagi nodega qo'shiladi? Qayta yozilgan misol:
 
 ```html run
 <ul id="ul"></ul>
@@ -387,27 +382,27 @@ function getListContent() {
 }
 
 *!*
-ul.append(...getListContent()); // append + "..." operator = friends!
+ul.append(...getListContent()); // append + "..." operatori = friends!
 */!*
 </script>
 ```
 
-We mention `DocumentFragment` mainly because there are some concepts on top of it, like [template](info:template-element) element, that we'll cover much later.
+Biz `DocumentFragment` ni, asosan, [template](info:template-element) elementi kabi ba'zi tushunchalar borligi uchun eslatib o'tamiz, biz ularni keyinroq ko'rib chiqamiz. 
 
-## Old-school insert/remove methods
+## Old school, ya'ni eski maktab qo'shish/o'chirish usullari
 
 [old]
 
-There are also "old school" DOM manipulation methods, existing for historical reasons.
+Tarixiy sabablarga ko'ra mavjud bo'lgan "old school" DOM manipulyatsiyasi usullari ham mavjud.
 
-These methods come from really ancient times. Nowadays, there's no reason to use them, as modern methods, such as `append`, `prepend`, `before`, `after`, `remove`, `replaceWith`, are more flexible.
+Bu usullar haqiqatan ham qadim zamonlardan beri mavjud. Hozirda ulardan foydalanishga hech qanday asos yo'q, chunki `append`, `prepend`, `before`, `after`, `remove`, `replaceWith` kabi zamonaviy usullar ancha moslashuvchan.
 
-The only reason we list these methods here is that you can find them in many old scripts:
+Ushbu usullarni bu yerda sanab o'tishimizning yagona sababi shundaki, siz ularni ko'plab eski skriptlarda topishingiz mumkin:
 
 `parentElem.appendChild(node)`
-: Appends `node` as the last child of `parentElem`.
+: `node` ni `parentElem` ning oxirgi bolasi sifatida qo'shadi.
 
-    The following example adds a new `<li>` to the end of `<ol>`:
+    Quyidagi misol `<ol>` oxiriga yangi `<li>` qo'shadi:
 
     ```html run height=100
     <ol id="list">
@@ -425,9 +420,9 @@ The only reason we list these methods here is that you can find them in many old
     ```
 
 `parentElem.insertBefore(node, nextSibling)`
-: Inserts `node` before `nextSibling` into `parentElem`.
+: `NextSibling` oldidan `node`ni `parentElem` ga kiritadi.
 
-    The following code inserts a new list item before the second `<li>`:
+   Quyidagi kod ikkinchi `<li>` oldiga yangi ro'yxat elementini kiritadi:
 
     ```html run height=100
     <ol id="list">
@@ -444,19 +439,19 @@ The only reason we list these methods here is that you can find them in many old
     */!*
     </script>
     ```
-    To insert `newLi` as the first element, we can do it like this:
+    Birinchi element sifatida `newLi` ni kiritish uchun biz buni shunday qilishimiz mumkin:
 
     ```js
     list.insertBefore(newLi, list.firstChild);
     ```
 
 `parentElem.replaceChild(node, oldChild)`
-: Replaces `oldChild` with `node` among children of `parentElem`.
+: `parentElem` bolalari orasida `oldChild` `node` bilan almashtiriladi.
 
 `parentElem.removeChild(node)`
-: Removes `node` from `parentElem` (assuming `node` is its child).
+: `node`ni `parentElem` dan olib tashlaydi (agar `node` uning bolasi bo'lsa).
 
-    The following example removes first `<li>` from `<ol>`:
+  Quyidagi misol `<ol>` dan birinchi `<li>`ni olib tashlaydi:
 
     ```html run height=100
     <ol id="list">
@@ -471,13 +466,13 @@ The only reason we list these methods here is that you can find them in many old
     </script>
     ```
 
-All these methods return the inserted/removed node. In other words, `parentElem.appendChild(node)` returns `node`. But usually the returned value is not used, we just run the method.
+Ushbu usullarning barchasi kiritilgan/olib tashlangan nodeni qaytaradi. Boshqacha qilib aytganda, `parentElem.appendChild(node)` `node`ni qaytaradi, lekin odatda qaytarilgan qiymat ishlatilmaydi, biz faqat usulni ishga tushiramiz.
 
-## A word about "document.write"
+## "document.write" haqida bir so'z
 
-There's one more, very ancient method of adding something to a web-page: `document.write`.
+Veb-sahifaga biror narsa qo'shishning yana bir juda qadimiy usuli bor: `document.write`.
 
-The syntax:
+Sintaksis:
 
 ```html run
 <p>Somewhere in the page...</p>
@@ -489,73 +484,75 @@ The syntax:
 <p>The end</p>
 ```
 
-The call to `document.write(html)` writes the `html` into page "right here and now". The `html` string can be dynamically generated, so it's kind of flexible. We can use JavaScript to create a full-fledged webpage and write it.
+`document.write(html)` ga qo'ng'iroq `html` ni "hozir va shu yerda" sahifasiga yozadi. `html` qatori dinamik ravishda yaratilishi mumkin, shuning uchun u anchagina moslashuvchan. To'liq veb-sahifa yaratish va uni yozish uchun JavaScriptdan foydalanishimiz mumkin.
 
-The method comes from times when there was no DOM, no standards... Really old times. It still lives, because there are scripts using it.
+Usul DOM, standartlar bo'lmagan eski vaqtlardan kelib chiqadi...  U hali ham yashaydi, chunki undan foydalanadigan skriptlar mavjud.
 
-In modern scripts we can rarely see it, because of the following important limitation:
+Muhim cheklovlar sabab zamonaviy skriptlarda biz uni kamdan-kam ko'rishimiz mumkin:
 
-**The call to `document.write` only works while the page is loading.**
+**`Document.write`ga qo'ng'iroq faqat sahifa yuklanayotganda ishlaydi.**
 
-If we call it afterwards, the existing document content is erased.
+Agar biz uni keyinroq chaqirsak, mavjud hujjat tarkibi o'chiriladi.    
 
-For instance:
+Masalan:
 
 ```html run
-<p>After one second the contents of this page will be replaced...</p>
+<p>Bir soniyadan keyin bu sahifaning kontenti almashtiriladi...
+
+</p>
 *!*
 <script>
-  // document.write after 1 second
-  // that's after the page loaded, so it erases the existing content
+  // 1 sekunddan keyin document.write
+  // Bu sahifa yuklangandan keyin, shuning uchun u mavjud tarkibni o'chiradi
   setTimeout(() => document.write('<b>...By this.</b>'), 1000);
 </script>
 */!*
 ```
 
-So it's kind of unusable at "after loaded" stage, unlike other DOM methods we covered above.
+Shunday qilib, biz yuqorida aytib o'tgan boshqa DOM usullaridan farqli ravishda "after loaded", ya'ni (yuklangandan keyin) bosqichda foydalanish mumkin emas. 
 
-That's the downside.
+Salbiy tomoni shu.
 
-There's an upside also. Technically, when `document.write` is called while the browser is reading ("parsing") incoming HTML, and it writes something, the browser consumes it just as if it were initially there, in the HTML text.
+Biroq buning o'ziga xos tomoni ham bor. Texnik jihatdan, brauzer kiruvchi HTMLni o'qiyotganda ("tahlil") `document.write` chaqirilsa va u biror narsa yozsa, brauzer uni xuddi HTML matnida bo'lgani kabi iste'mol qiladi.
 
-So it works blazingly fast, because there's *no DOM modification* involved. It writes directly into the page text, while the DOM is not yet built.
+Shunday qilib, u juda tez ishlaydi, chunki *hech qanday DOM modifikatsiyasi mavjud emas*. U to'g'ridan-to'g'ri sahifa matniga yozadi, DOM hali qurilmagan. 
 
-So if we need to add a lot of text into HTML dynamically, and we're at page loading phase, and the speed matters, it may help. But in practice these requirements rarely come together. And usually we can see this method in scripts just because they are old.
+Shunday qilib, agar biz HTMLga dinamik ravishda ko'p matn qo'shishimiz kerak bo'lsa, biz sahifani yuklash bosqichida bo'lsak va tezlik muhim bo'lsa, bu yordam berishi mumkin. Ammo amalda bu talablar kamdan-kam uchraydi. Odatda biz bu usulni skriptlarda eski bo'lgani uchun ko'rishimiz mumkin.
 
-## Summary
+## Xulosa
 
-- Methods to create new nodes:
-    - `document.createElement(tag)` -- creates an element with the given tag,
-    - `document.createTextNode(value)` -- creates a text node (rarely used),
-    - `elem.cloneNode(deep)` -- clones the element, if `deep==true` then with all descendants.  
+- Yangi node larni yaratish usullari:
+    - `document.createElement(tag)` -- berilgan teg bilan element yaratadi,
+    - `document.createTextNode(value)` -- matn node ni yaratadi (kamdan-kam ishlatiladi),
+    - `elem.cloneNode(deep)` -- agar `deep==true` bo'lsa barcha avlodlar bilan elementni klonlaydi.
 
-- Insertion and removal:
-    - `node.append(...nodes or strings)` -- insert into `node`, at the end,
-    - `node.prepend(...nodes or strings)` -- insert into `node`, at the beginning,
-    - `node.before(...nodes or strings)` –- insert right before `node`,
-    - `node.after(...nodes or strings)` –- insert right after `node`,
-    - `node.replaceWith(...nodes or strings)` –- replace `node`.
-    - `node.remove()` –- remove the `node`.
+- O'rnatish va olib tashlash:
+    - `node.append(...nodes or strings)` -- oxirida `node` ga kiriting,
+    - `node.prepend(...nodes or strings)` -- boshida `node`ga kiriting,
+    - `node.before(...nodes or strings)` –- `node` dan oldin to'g'ri kiriting,
+    - `node.after(...nodes or strings)` –- `node`dan keyin to'g'ri kiriting,
+    - `node.replaceWith(...nodes or strings)` –- `node` ni almashtiring.
+    - `node.remove()` –- `node` ni olib tashlang.
 
-    Text strings are inserted "as text".
+    Matn satrlari "matn sifatida" kiritiladi.
 
-- There are also "old school" methods:
+- Shuningdek, "old school" usullari mavjud:
     - `parent.appendChild(node)`
     - `parent.insertBefore(node, nextSibling)`
     - `parent.removeChild(node)`
     - `parent.replaceChild(newElem, node)`
 
-    All these methods return `node`.
+    Ushbu usullarning barchasi `node` ni qaytaradi.
 
-- Given some HTML in `html`, `elem.insertAdjacentHTML(where, html)` inserts it depending on the value of `where`:
-    - `"beforebegin"` -- insert `html` right before `elem`,
-    - `"afterbegin"` -- insert `html` into `elem`, at the beginning,
-    - `"beforeend"` -- insert `html` into `elem`, at the end,
-    - `"afterend"` -- insert `html` right after `elem`.
+   - `html` faylida ba'zi HTML berilgan bo'lsa, `elem.insertAdjacentHTML(qayerda, html)` uni `where` qiymatiga qarab kiritadi:
+    - `"beforebegin"` -- `elem` oldiga `html` ni qo'ying,
+    - `"afterbegin"` -- boshida `elem` ga `html` ni kiriting,
+    - `"beforeend"` -- oxirida `elem` ga `html` ni kiriting,
+    - `"afterend"` -- `elem` dan keyin darhol `html` ni qo'ying.
 
-    Also there are similar methods, `elem.insertAdjacentText` and `elem.insertAdjacentElement`, that insert text strings and elements, but they are rarely used.
+    Shuningdek, matn satrlari va elementlarini kirituvchi `elem.insertAdjacentText` va `elem.insertAdjacentElement` kabi usullar mavjud, lekin ular kamdan-kam qo'llaniladi.
 
-- To append HTML to the page before it has finished loading:
+- Yuklash tugagunga qadar sahifaga HTML qo'shish uchun:
     - `document.write(html)`
 
-    After the page is loaded such a call erases the document. Mostly seen in old scripts.
+    Sahifani yuklagandan so'ng, bunday qo'ng'iroq hujjatni o'chiradi. Bu ko'pincha eski skriptlarda ko'rinadi.
