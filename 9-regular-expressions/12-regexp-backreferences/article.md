@@ -1,6 +1,6 @@
 # Patterndagi qayta havolalar: \N and \k<name>
 
-Biz `pattern:(...)` guruhlarini olish mazmunidan nafaqat natijada yoki almashtirish qatorida, balki naqshning o'zida ham foydalanishimiz mumkin.
+Biz `pattern:(...)` guruhlarini olish mazmunidan nafaqat natijada yoki almashtirish qatorida, balki patternning o'zida ham foydalanishimiz mumkin.
 
 ## Raqam bo'yicha qayta havola: \N
 
@@ -41,7 +41,7 @@ alert( str.match(regexp) ); // "She's the one!"
 
 Endi u ishlaydi! Muntazam iboralar mexanizmi birinchi qo'shtirnoq `pattern:(['"])` ni topadi va uning mazmunini yodlaydi. Bu birinchi tortib olish guruhidir.
 
-Keyinchalik `pattern:\1` pattern'da "birinchi guruhdagi kabi matnni toping" degan ma'noni anglatadi, bizning holatimizda bu aynan bir xil qo'shtirnoq.
+Keyinchalik `pattern:\1` patternda "birinchi guruhdagi kabi matnni toping" degan ma'noni anglatadi, bizning holatimizda bu aynan bir xil qo'shtirnoq.
 
 Shunga o'xshab, `pattern:\2` ikkinchi guruh mazmunini, `pattern:\3` - 3-guruh va hokazolarni bildiradi.
 
