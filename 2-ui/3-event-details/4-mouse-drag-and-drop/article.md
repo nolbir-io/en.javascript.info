@@ -1,54 +1,54 @@
-# Drag'n'Drop with mouse events
+# Sichqoncha hodisalari bilan Drag'n'Drop qilish
 
-Drag'n'Drop is a great interface solution. Taking something and dragging and dropping it is a clear and simple way to do many things, from copying and moving documents (as in file managers) to ordering (dropping items into a cart).
+Drag'n'Drop - bu ajoyib interfeys yechimi. Biror narsani sudrab olib tashlash ko'p ishlarni bajarishning aniq va oddiy usulidir, bu usuldan hujjatlarni nusxalash va ko'chirishdan (fayl menejerlarida bo'lgani kabi) buyurtma berishgacha (elementlarni savatga tashlash) foydalanish mumkin.
 
-In the modern HTML standard there's a [section about Drag and Drop](https://html.spec.whatwg.org/multipage/interaction.html#dnd) with special events such as `dragstart`, `dragend`, and so on.
+Zamonaviy HTML standartida `dragstart`, `dragend` va hokazo kabi maxsus hodisalarga ega bo'lgan [Drag and Drop haqida bo'lim](https://html.spec.whatwg.org/multipage/interaction.html#dnd) mavjud.
 
-These events allow us to support special kinds of drag'n'drop, such as handling dragging a file from OS file-manager and dropping it into the browser window. Then JavaScript can access the contents of such files.
+Ushbu hodisalar bizga drag'n'dropning maxsus turlarini qo'llab-quvvatlashga imkon beradi, masalan, OS fayl boshqaruvchisidan faylni sudrab olib, uni brauzer oynasiga tushirish. Keyin JavaScript bunday fayllar tarkibiga kirishi mumkin.
 
-But native Drag Events also have limitations. For instance, we can't prevent dragging from a certain area. Also we can't make the dragging "horizontal" or "vertical" only. And there are many other drag'n'drop tasks that can't be done using them. Also, mobile device support for such events is very weak.
+Ammo mahalliy Drag voqealari ham cheklovlarga ega. Misol uchun, biz ma'lum bir hududdan tortib olishni oldini ololmaymiz. Bundan tashqari, biz tortishni faqat "gorizontal" yoki "vertikal" qila olmaymiz. Boshqa ko'plab drag'n'drop vazifalari mavjud bo'lib, ular yordamida bajarib bo'lmaydi. Bundan tashqari, bunday hodisalar uchun mobil qurilmalarni qo'llab-quvvatlash juda zaif.
 
-So here we'll see how to implement Drag'n'Drop using mouse events.
+Shunday qilib, biz sichqoncha hodisalari yordamida Drag'n'Drop-ni qanday amalga oshirishni ko'rib chiqamiz.
 
-## Drag'n'Drop algorithm
+## Drag'n'Drop algoritmi
 
-The basic Drag'n'Drop algorithm looks like this:
+Drag'n'Drop asosiy algoritmi quyidagicha ko'rinishda bo'ladi:
 
-1. On `mousedown` - prepare the element for moving, if needed (maybe create a clone of it, add a class to it or whatever).
-2. Then on `mousemove` move it by changing `left/top` with `position:absolute`.
-3. On `mouseup` - perform all actions related to finishing the drag'n'drop.
+1. `mousedown` da - agar kerak bo'lsa, elementni siljitish uchun tayyorlang (uning klonini yarating, unga sinf qo'shing yoki boshqa narsa).
+2. Keyin `mousemove` tugmachasida `left/top` ni `position:absolute` bilan almashtirib, uni siljiting.
+3. `mouseup` da - drag'n'dropni tugatish bilan bog'liq barcha amallarni bajaring.
 
-These are the basics. Later we'll see how to add other features, such as highlighting current underlying elements while we drag over them.
+Bular asoslar. Keyinchalik biz boshqa xususiyatlarni qanday qo'shishni ko'rib chiqamiz, masalan, biz ularni sudrab o'tayotganda joriy asosiy elementlarni ajratib ko'rsatishimiz mumkin.
 
-Here's the implementation of dragging a ball:
+Bu yerda to'pni sudrab borishning amalga oshirilishi:
 
 ```js
 ball.onmousedown = function(event) {
-  // (1) prepare to moving: make absolute and on top by z-index
+  // (1) harakatga tayyorlang: z-indeksi bo'yicha vazifani mutlaq va tepada bajaring
   ball.style.position = 'absolute';
   ball.style.zIndex = 1000;
 
-  // move it out of any current parents directly into body
-  // to make it positioned relative to the body
+  // uni har qanday joriy ota-onadan to'g'ridan-to'g'ri tanaga ko'chiring
+  // uni tanaga nisbatan tekis joylashtiring
   document.body.append(ball);
 
-  // centers the ball at (pageX, pageY) coordinates
+  // to'pni (pageX, pageY) koordinatalarida markazlashtiradi
   function moveAt(pageX, pageY) {
     ball.style.left = pageX - ball.offsetWidth / 2 + 'px';
     ball.style.top = pageY - ball.offsetHeight / 2 + 'px';
   }
 
-  // move our absolutely positioned ball under the pointer
+  // mutlaq joylashtirilgan to'pimizni ko'rsatgich ostida harakatlantiring
   moveAt(event.pageX, event.pageY);
 
   function onMouseMove(event) {
     moveAt(event.pageX, event.pageY);
   }
 
-  // (2) move the ball on mousemove
+  // (2) to'pni sichqoncha bilan harakatlantiring
   document.addEventListener('mousemove', onMouseMove);
 
-  // (3) drop the ball, remove unneeded handlers
+  // (3) to'pni tashlang, keraksiz ishlov beruvchilarni olib tashlang
   ball.onmouseup = function() {
     document.removeEventListener('mousemove', onMouseMove);
     ball.onmouseup = null;
@@ -56,20 +56,18 @@ ball.onmousedown = function(event) {
 
 };
 ```
-
-If we run the code, we can notice something strange. On the beginning of the drag'n'drop, the ball "forks": we start dragging its "clone".
+Agar biz kodni ishga tushirsak, g'alati narsani sezishimiz mumkin. Tortish va tushirishning boshida to'p "vilkalar" qiladi: biz uning "klonini" sudrab boshlaymiz.
 
 ```online
-Here's an example in action:
+Mana amaldagi misol:
 
 [iframe src="ball" height=230]
 
-Try to drag'n'drop with the mouse and you'll see such behavior.
+Sichqoncha bilan sudrab tashlashga harakat qiling va siz bunday xatti-harakatni ko'rasiz.
 ```
+Buning sababi, brauzerda tasvirlar va boshqa ba'zi elementlar uchun o'ziga xos sudrab olib tashlash yordami mavjud. U avtomatik ravishda ishlaydi va biznikiga zid keladi.
 
-That's because the browser has its own drag'n'drop support for images and some other elements. It runs automatically and conflicts with ours.
-
-To disable it:
+Uni o'chirish uchun:
 
 ```js
 ball.ondragstart = function() {
@@ -77,42 +75,41 @@ ball.ondragstart = function() {
 };
 ```
 
-Now everything will be all right.
+Endi hammasi yaxshi ishlaydi.
 
 ```online
-In action:
+Amaldagi misol:
 
 [iframe src="ball2" height=230]
 ```
+Yana bir muhim jihat -- biz `mousemove` ni `ball` da emas, `document` da kuzatib boramiz. Bir qarashda sichqoncha har doim to'p ustida turgandek tuyulishi mumkin va biz unga `mousemove` tugmachasini qo'yishimiz mumkin.
 
-Another important aspect -- we track `mousemove` on `document`, not on `ball`. From the first sight it may seem that the mouse is always over the ball, and we can put `mousemove` on it.
+Ammo biz eslaganimizdek, `mousemove` tez-tez ishga tushadi, lekin har bir piksel uchun emas. Shunday qilib, tez harakat qilgandan so'ng, ko'rsatgich to'pdan hujjatning o'rtasida (yoki hatto derazadan tashqarida) sakrashi mumkin.
 
-But as we remember, `mousemove` triggers often, but not for every pixel. So after swift move the pointer can jump from the ball somewhere in the middle of document (or even outside of the window).
+Shuning uchun biz uni qo'lga olish uchun `document` ni tinglashimiz kerak.
 
-So we should listen on `document` to catch it.
+## To'g'ri joylashishni aniqlash
 
-## Correct positioning
-
-In the examples above the ball is always moved so that its center is under the pointer:
+Yuqoridagi misollarda to'p har doim uning markazi ko'rsatkich ostida bo'lishi uchun harakatlantiriladi:
 
 ```js
 ball.style.left = pageX - ball.offsetWidth / 2 + 'px';
 ball.style.top = pageY - ball.offsetHeight / 2 + 'px';
 ```
+Yomon emas, lekin salbiy ta'siri bor. Drag'n'dropni boshlash uchun biz to'pning istalgan joyida `mousedown` ni bosishimiz mumkin. Ammo agar uni chetidan "olib qo'ysa", to'p birdan "sakrab" sichqoncha ko'rsatgichi ostida markazga aylanadi.
 
-Not bad, but there's a side effect. To initiate the drag'n'drop, we can `mousedown` anywhere on the ball. But if "take" it from its edge, then the ball suddenly "jumps" to become centered under the mouse pointer.
+Ko'rsatkichga nisbatan elementning dastlabki siljishini saqlasak yaxshi bo'lardi.
 
-It would be better if we keep the initial shift of the element relative to the pointer.
-
-For instance, if we start dragging by the edge of the ball, then the pointer should remain over the edge while dragging.
+Misol uchun, agar biz to'pning chetidan sudrab olishni boshlasak, u holda ko'rsatgich sudralayotganda chetida qolishi kerak.
 
 ![](ball_shift.svg)
 
-Let's update our algorithm:
 
-1. When a visitor presses the button (`mousedown`) - remember the distance from the pointer to the left-upper corner of the ball in variables `shiftX/shiftY`. We'll keep that distance while dragging.
+  Keling, algoritmimizni yangilaymiz:
 
-    To get these shifts we can substract the coordinates:
+1. Mehmon tugmani bosganda (`mousedown`) - `shiftX/shiftY` o'zgaruvchilarida ko'rsatgichdan to'pning chap-yuqori burchagigacha bo'lgan masofani eslab qoling. Surish paytida biz bu masofani ushlab turamiz.
+
+     Ushbu siljishlarni olish uchun biz koordinatalarni ayirishimiz mumkin:
 
     ```js
     // onmousedown
@@ -120,16 +117,16 @@ Let's update our algorithm:
     let shiftY = event.clientY - ball.getBoundingClientRect().top;
     ```
 
-2. Then while dragging we position the ball on the same shift relative to the pointer, like this:
+2. Keyin sudrab ketayotganda biz to'pni ko'rsatgichga nisbatan bir xil siljishda joylashtiramiz, masalan:
 
     ```js
     // onmousemove
-    // ball has position:absolute
+    // to'pning pozitsiyasi: mutlaq
     ball.style.left = event.pageX - *!*shiftX*/!* + 'px';
     ball.style.top = event.pageY - *!*shiftY*/!* + 'px';
     ```
 
-The final code with better positioning:
+Yaxshiroq joylashuvga ega yakuniy kod:
 
 ```js
 ball.onmousedown = function(event) {
@@ -145,8 +142,8 @@ ball.onmousedown = function(event) {
 
   moveAt(event.pageX, event.pageY);
 
-  // moves the ball at (pageX, pageY) coordinates
-  // taking initial shifts into account
+  // to'pni (pageX, pageY) koordinatalari bo'yicha harakatlantiradi
+   // dastlabki siljishlarni hisobga olgan holda
   function moveAt(pageX, pageY) {
     ball.style.left = pageX - *!*shiftX*/!* + 'px';
     ball.style.top = pageY - *!*shiftY*/!* + 'px';
@@ -156,10 +153,10 @@ ball.onmousedown = function(event) {
     moveAt(event.pageX, event.pageY);
   }
 
-  // move the ball on mousemove
+  // mousemove da to'pni siljiting
   document.addEventListener('mousemove', onMouseMove);
 
-  // drop the ball, remove unneeded handlers
+  // to'pni tashlang, keraksiz ishlov beruvchilarni olib tashlang
   ball.onmouseup = function() {
     document.removeEventListener('mousemove', onMouseMove);
     ball.onmouseup = null;
@@ -173,32 +170,31 @@ ball.ondragstart = function() {
 ```
 
 ```online
-In action (inside `<iframe>`):
+Amalda (inside `<iframe>`):
 
 [iframe src="ball3" height=230]
 ```
+Agar to'pni uning o'ng pastki burchagidan sudrab olib borsak, farq ayniqsa sezilarli bo'ladi. Oldingi misolda to'p ko'rsatgich ostida "sakrab o'tadi". Endi u ko'rsatgichni joriy holatdan bemalol kuzatib boradi.
 
-The difference is especially noticeable if we drag the ball by its right-bottom corner. In the previous example the ball "jumps" under the pointer. Now it fluently follows the pointer from the current position.
+## Potentsial pasayish maqsadlari (droppables)
 
-## Potential drop targets (droppables)
+Oldingi misollarda to'pni qolish uchun "har qanday joyga" tashlab yuborish mumkin edi. Haqiqiy hayotda biz odatda bitta elementni olib, boshqasiga tashlaymiz. Masalan, "fayl" "papka" yoki boshqa narsa.
 
-In previous examples the ball could be dropped just "anywhere" to stay. In real-life we usually take one element and drop it onto another. For instance, a "file" into a "folder" or something else.
+Mavhum gapiradigan bo'lsak, biz "tortib olinadigan" elementni olamiz va uni "tashlab olinadigan" elementga tushiramiz.
 
-Speaking abstract, we take a "draggable" element and drop it onto "droppable" element.
+Biz quyidagilarni bilishimiz kerak:
+- Drag'n'Drop oxirida element tushirilgan joy -- tegishli amalni bajarish uchun,
+- va ajratib ko'rsatishimiz uchun sudrab o'tayotganimizni biling.
 
-We need to know:
-- where the element was dropped at the end of Drag'n'Drop -- to do the corresponding action,
-- and, preferably, know the droppable we're dragging over, to highlight it.
+Yechim qiziqarli va biroz qiyin, shuning uchun uni shu yerda yoritamiz.
 
-The solution is kind-of interesting and just a little bit tricky, so let's cover it here.
+Birinchi fikr nima bo'lishi mumkin? Ehtimol, potentsial tushiriladigan narsalarga `mouseover/mouseup` ishlov beruvchilarini o'rnatish kerakmi?
 
-What may be the first idea? Probably to set `mouseover/mouseup` handlers on potential droppables?
+Lekin bu ishlamayapti.
 
-But that doesn't work.
+Muammo shundaki, biz sudrab ketayotganimizda, sudrab olinadigan element har doim boshqa elementlardan yuqori bo'ladi. Va sichqoncha hodisalari faqat yuqori elementda sodir bo'ladi, uning ostidagi elementlarda emas.
 
-The problem is that, while we're dragging, the draggable element is always above other elements. And mouse events only happen on the top element, not on those below it.
-
-For instance, below are two `<div>` elements, red one on top of the blue one (fully covers). There's no way to catch an event on the blue one, because the red is on top:
+Masalan, quyida ikkita `<div>` elementi mavjud, qizili ko'kning tepasida (to'liq qoplaydi). Ko'k rangda hodisani ushlashning iloji yo'q, chunki qizil rang tepada:
 
 ```html run autorun height=60
 <style>
@@ -213,34 +209,33 @@ For instance, below are two `<div>` elements, red one on top of the blue one (fu
 <div style="background:red" onmouseover="alert('over red!')"></div>
 ```
 
-The same with a draggable element. The ball is always on top over other elements, so events happen on it. Whatever handlers we set on lower elements, they won't work.
+Draggable element bilan ham xuddi shunday. To'p har doim boshqa elementlarning tepasida bo'ladi, shuning uchun unda voqealar sodir bo'ladi. Pastki elementlarga qanday ishlov beruvchilarni o'rnatmasak ham, ular ishlamaydi.
 
-That's why the initial idea to put handlers on potential droppables doesn't work in practice. They won't run.
+Shuning uchun potentsial tushiriladigan qurilmalarga ishlov beruvchilarni qo'yish haqidagi dastlabki g'oya amalda ishlamaydi. Ular yugurmaydilar.
 
-So, what to do?
+Xo'sh, nima qilish kerak?
 
-There's a method called `document.elementFromPoint(clientX, clientY)`. It returns the most nested element on given window-relative coordinates (or `null` if given coordinates are out of the window). If there are multiple overlapping elements on the same coordinates, then the topmost one is returned.
+`document.elementFromPoint(clientX, clientY)` deb nomlangan usul mavjud. U berilgan oynaning nisbiy koordinatalarida eng ko'p joylashtirilgan elementni qaytaradi (yoki agar berilgan koordinatalar oynadan tashqarida bo'lsa `null`). Agar bir xil koordinatalarda bir-biriga o'xshash bir nechta elementlar mavjud bo'lsa, eng yuqori qismi qaytariladi.
 
-We can use it in any of our mouse event handlers to detect the potential droppable under the pointer, like this:
+Ko'rsatgich ostida tushishi mumkin bo'lgan potentsialni aniqlash uchun biz uni har qanday sichqoncha hodisasi ishlov beruvchilarida ishlatishimiz mumkin, masalan:
 
 ```js
-// in a mouse event handler
-ball.hidden = true; // (*) hide the element that we drag
+// sichqoncha hodisasi ishlov beruvchisida
+ball.hidden = true; // (*) biz tortadigan elementni yashiring
 
 let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-// elemBelow is the element below the ball, may be droppable
+// elemBelow - to'p ostidagi element, uni tashlab yuborish mumkin
 
 ball.hidden = false;
 ```
+Iltimos, diqqat qiling: `(*)` chaqiruvidan oldin to'pni yashirishimiz kerak. Aks holda biz odatda ushbu koordinatalarda to'pga ega bo'lamiz, chunki u ko'rsatgich ostidagi yuqori element: `elemBelow=ball`. Shunday qilib, biz uni yashiramiz va darhol yana ko'rsatamiz.
 
-Please note: we need to hide the ball before the call `(*)`. Otherwise we'll usually have a ball on these coordinates, as it's the top element under the pointer: `elemBelow=ball`. So we hide it and immediately show again.
+Biz ushbu koddan istalgan vaqtda qaysi element ustida "uchib ketayotganimizni" tekshirishimiz mumkin. Va bu sodir bo'lganda tushishni boshqaring.
 
-We can use that code to check what element we're "flying over" at any time. And handle the drop when it happens.
-
-An extended code of `onMouseMove` to find "droppable" elements:
+"Droppable" elementlarni topish uchun `onMouseMove` ning kengaytirilgan kodi:
 
 ```js
-// potential droppable that we're flying over right now
+// Biz hozir uchib o'tayotganimiz potentsial
 let currentDroppable = null;
 
 function onMouseMove(event) {
@@ -250,54 +245,53 @@ function onMouseMove(event) {
   let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
   ball.hidden = false;
 
-  // mousemove events may trigger out of the window (when the ball is dragged off-screen)
-  // if clientX/clientY are out of the window, then elementFromPoint returns null
+   // sichqonchani siljitish hodisalari derazadan tashqariga chiqishi mumkin (to'p ekrandan tashqariga tortilganda)
+   // agar clientX/clientY oynadan tashqarida bo'lsa, elementFromPoint nullni qaytaradi
   if (!elemBelow) return;
 
-  // potential droppables are labeled with the class "droppable" (can be other logic)
+  // potentsial tushiriladiganlar "droppable" klassi bilan etiketlanadi (boshqa mantiq bo'lishi mumkin)
   let droppableBelow = elemBelow.closest('.droppable');
 
   if (currentDroppable != droppableBelow) {
-    // we're flying in or out...
-    // note: both values can be null
-    //   currentDroppable=null if we were not over a droppable before this event (e.g over an empty space)
-    //   droppableBelow=null if we're not over a droppable now, during this event
+    // biz uchib kiramiz yoki uchib chiqamiz ...
+     // Eslatma: ikkala qiymat ham null bo'lishi mumkin
+     // currentDroppable=null, agar biz ushbu hodisadan oldin tushirish mumkin bo'lmagan bo'lsak (masalan, bo'sh joy ustida)
+     // droppableBelow=null, agar biz hozir, ushbu tadbir davomida, tushirish imkoniyatidan oshib ketmasak
 
     if (currentDroppable) {
-      // the logic to process "flying out" of the droppable (remove highlight)
+      // tushirilishi mumkin bo'lgan "flying out" ni qayta ishlash mantig'i (highlightni olib tashlash)
       leaveDroppable(currentDroppable);
     }
     currentDroppable = droppableBelow;
     if (currentDroppable) {
-      // the logic to process "flying in" of the droppable
+      // droppable "flying in" ni qayta ishlash mantiqi
       enterDroppable(currentDroppable);
     }
   }
 }
 ```
-
-In the example below when the ball is dragged over the soccer goal, the goal is highlighted.
+Quyidagi misolda to'pni futbol darvozasi ustidan sudrab olib borishda gol ta'kidlangan.
 
 [codetabs height=250 src="ball4"]
 
-Now we have the current "drop target", that we're flying over, in the variable `currentDroppable` during the whole process and can use it to highlight or any other stuff.
+Endi bizda butun jarayon davomida `currentDroppable` o'zgaruvchisida uchib o'tayotgan joriy "drop target" mavjud va undan ajratib ko'rsatish yoki boshqa narsalarni ishlatishimiz mumkin.
 
-## Summary
+## Xulosa
 
-We considered a basic Drag'n'Drop algorithm.
+Biz asosiy Drag and Drop algoritmini ko'rib chiqdik.
 
-The key components:
+Asosiy komponentlar:
 
-1. Events flow: `ball.mousedown` -> `document.mousemove` -> `ball.mouseup` (don't forget to cancel native `ondragstart`).
-2. At the drag start -- remember the initial shift of the pointer relative to the element: `shiftX/shiftY` and keep it during the dragging.
-3. Detect droppable elements under the pointer using `document.elementFromPoint`.
+1. Hodisalar oqimi: `ball.mousedown` -> `document.mousemove` -> `ball.mouseup` (native `ondragstart` ni bekor qilishni unutmang).
+2. Drag startda -- elementga nisbatan ko'rsatgichning dastlabki siljishini eslab qoling: `shiftX/shiftY` va uni sudrab olib borishda saqlang.
+3. `document.elementFromPoint` yordamida ko'rsatgich ostidagi tushiriladigan elementlarni aniqlang.
 
-We can lay a lot on this foundation.
+Biz bu poydevorga ko'p narsalarni qo'yishimiz mumkin.
 
-- On `mouseup` we can intellectually finalize the drop: change data, move elements around.
-- We can highlight the elements we're flying over.
-- We can limit dragging by a certain area or direction.
-- We can use event delegation for `mousedown/up`. A large-area event handler that checks  `event.target` can manage Drag'n'Drop for hundreds of elements.
-- And so on.
+- `mouseup` da biz tushishni intellektual tarzda yakunlashimiz mumkin: ma'lumotlarni o'zgartirish, elementlarni harakatlantirish.
+- Biz uchib o'tayotgan elementlarni ajratib ko'rsatishimiz mumkin.
+- Biz sudrab olishni ma'lum bir maydon yoki yo'nalish bo'yicha cheklashimiz mumkin.
+- Biz `mousedown/up` uchun hodisa delegatsiyasidan foydalanishimiz mumkin. `event.target` ni tekshiradigan keng maydonli hodisa ishlov beruvchisi Drag'n'Drop-ni yuzlab elementlar uchun boshqarishi mumkin.
+- Va hokazo.
 
-There are frameworks that build architecture over it: `DragZone`, `Droppable`, `Draggable` and other classes. Most of them do the similar stuff to what's described above, so it should be easy to understand them now. Or roll your own, as you can see that that's easy enough to do, sometimes easier than adapting a third-party solution.
+Uning ustida arxitektura quruvchi ramkalar mavjud: `DragZone`, `Droppable`, `Draggable` va boshqa sinflar. Ularning aksariyati yuqorida tavsiflanganlarga o'xshash ishlarni qiladi, shuning uchun ularni hozir tushunish oson bo'lishi kerak. Yoki o'zingizni aylantiring, chunki buni amalga oshirish juda oson, ba'zida uchinchi tomon yechimini moslashtirishdan ko'ra osonroq.

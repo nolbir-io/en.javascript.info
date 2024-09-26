@@ -1,10 +1,10 @@
 # Zamonaviy "use strict"
 
-Uzoq vaqt davomida JavaScript bir-biriga to'g'ri kelish muammosisiz rivojlanib keldi. Tilga yangi funksiyalar qo‘shildi, eski funksiyalar esa o‘zgarmadi.
+Uzoq vaqt davomida JavaScript moslik muammosisiz rivojlandi. Tilga yangi xususiyatlar qo'shildi, eski funksiyalar esa o'zgarmadi.
 
-Buning foydali jihati, mavjud kod hech qachon buzilmadi. Ammo salbiy tomoni shunda ediki, JavaScript yaratuvchilari tomonidan qilingan har qanday xato yoki nomukammal qaror tilda abadiy qolib ketgan.
+Bu mavjud kodni hech qachon buzmaslikning foydasiga ega edi. Ammo salbiy tomoni shundaki, JavaScript yaratuvchilari tomonidan qilingan har qanday xato yoki nomukammal qaror tilda abadiy qolib ketgan.
 
-2009 yil ya'ni ECMAScript 5 (ES5) paydo bo'lgunga qadar shunday bo'lgan. U tilga yangi xususiyatlarni qo'shdi va ba'zi mavjudlarini o'zgartirdi. Eski kodning ishlashini ta'minlash uchun bunday o'zgartirishlarning aksariyati to'g'ridan to'gri o'chirib qo'yilgan. Siz ularni `"use strict"` maxsus ko'rsatmasi yordamida faollashtirishingiz kerak.
+Bu 2009 yilgacha ECMAScript 5 (ES5) paydo bo'lgunga qadar shunday edi. U tilga yangi xususiyatlarni qo'shdi va mavjudlarini o'zgartirdi. Eski kodning ishlashini ta'minlash uchun bunday o'zgartirishlarning aksariyati sukut bo'yicha o'chirilgan. Siz ularni `"use strict"` maxsus ko'rsatmasi bilan faollashtirishingiz kerak.
 
 ## "use strict"
 
@@ -18,7 +18,7 @@ Misol uchun:
 ...
 ```
 
-Tez orada biz funktsiyalar (buyruqlarni guruhlash usuli) ni o'rganamiz, shuning uchun funksiya boshida `"use strict"` ni qo'yishimiz mumkinligini oldindan aytib o'tamiz. Buni bajarish faqat ushbu funktsiyadagina qat'iy rejimni yoqadi. Lekin odatda odamlar uni butun skript uchun ishlatishadi.
+Tez orada biz funksiyalar (buyruqlarni guruhlash usuli) ni o'rganamiz, shuning uchun funksiya boshida `"use strict"` ni qo'yishimiz mumkinligini oldindan aytib o'tamiz. Buni bajarish faqat ushbu funksiyadagina qat'iy rejimni yoqadi. Lekin ko'pchilik dasturchilar uni butun skript uchun ishlatishadi.
 
 ```warn header=`"Iltimos \"use strict"\ skriptlaringizning yuqori qismida ekanligiga ishonch hosil qiling, aks holda qat'iy rejim yoqilmasligi mumkin."
 
@@ -36,16 +36,16 @@ alert("some code");
 Faqat `"use strict"`ni ustidagi izohlar ko'rinishi mumkin.
 
 ```warn header="`use strict`ni bekor qilishning hech qanday usuli yo'q"
-Engine ni eski holatiga qaytaradigan "no use strict" kabi hech qanday ko'rsatma mavjud emas.
+Dvigatelni eski holatiga qaytaradigan "no use strict" kabi hech qanday ko'rsatma mavjud emas.
 
-Qattiq rejimga kirganimizdan so'ng, orqaga qaytish yo'q.
+Qat'iy rejimga kirganimizdan so'ng, orqaga qaytish yo'q.
 
 
 ## Brauzer konsoli
 
 Kodni ishga tushurish uchun [developer console](info:devtools) dan foydalanganingizda, `use strict` to'g'ridan to'gri ishlamasligiga e'tibor bering.
 
-Ba'zan, `use strict` ni qo'llashdagi o'zgarishlar orqali siz noto'g'ri natijalarga erishishingiz mumkin.
+Ba'zan, `use strict` ni qo'llashdagi o'zgarishlar orqali siz noto'g'ri natijalarga duch kelishingiz mumkin.
 
 Xo'sh, aslida konsolda "qat'iy rejim" dan qanday foydalanish kerak?
 
@@ -57,25 +57,25 @@ Birinchi, bir nechta satrlarni kiritish uchun `key:Shift+Enter` tugmalarini bosi
 <Enter ishga tushirish uchun>
 ```
 
-U ko'pgina brauzerlarda, jumladan Firefox va Chrome larda ishlaydi.
+U ko'pgina brauzerlarda, jumladan Firefox va Chromeda ishlaydi.
 
-Agar bunday bo'lmasa, masalan, eski brauzerda, "use strict" ni ta'minlashning yomon, ammo ishonchli usuli mavjud. Uni shunday o'ramga ichiga soling:
+Agar bunday bo'lmasa, masalan, eski brauzerda, "use strict" ni ta'minlashning yomon, ammo ishonchli usuli mavjud. Uni shunday o'ramga soling:
 
 ```js
 (function() {
   'use strict';
 
-  // ...bu yerga sizning kodingiz...
+  // ...bu yerda sizning kodingiz...
 })()
 ```
 
 ## "use strict" dan foydalanishimiz kerakmi?
 
-Savol aniq tuyulishi mumkin, ammo aslida unday emas.
+Savol aniq javobga egadek tuyulishi mumkin, ammo unday emas.
 
-Skriptlarni `"use strict"`.... bilan boshlashni tavsiya qilish mumkin. Lekin nima ajoyib ekanini bilasizmi?
+Skriptlarni `"use strict"`.... bilan boshlashni tavsiya qilish mumkin, lekin ushbu harakat aynan nimasi bilan ajralib turishini bilasizmi?
 
-Zamonaviy JavaScript "sinflar" va "modullar" - ilg'or til tuzilmalarini (biz ularga albatta etib boramiz) qo'llab quvvatlaydi, ular "use strict" ni avtomatik ravishda yoqadi. Shunday qilib, agar biz ulardan foydalansak, "use strict" ni qo'shishimiz shart bo'lmaydi.
+Zamonaviy JavaScript "sinflar" va "modullar" - ilg'or til tuzilmalarini (biz ularga albatta yetib boramiz) qo'llab quvvatlaydi, ular "use strict" ni avtomatik ravishda yoqadi. Shunday qilib, agar biz ulardan foydalansak, "use strict" ni qo'shishimiz shart bo'lmaydi.
 
 **Demak, hozircha `"use strict";` shunchaki, skriptlaringizning yuqori qismidagi mehmon. Keyinchalik, kodingiz sinflar va modullar ichida joylashganda, uni olib tashlashingiz mumkin.**
 

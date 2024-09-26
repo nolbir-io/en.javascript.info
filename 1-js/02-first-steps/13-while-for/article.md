@@ -1,26 +1,26 @@
-# Loop-lar: while va for
+# Looplar: while va for
 
 Ba'zida harakatlarni takrorlashimizga to'g'ri keladi.
 
-Masalan, ro'yxatdagi tovarlarni ketma-ket chiqarish yoki 1 dan 10 gacha bo'lgan har bir raqam uchun bir xil kodni ishlatish.
+Masalan, ro'yxatdagi mahsulotlarni ketma-ket chiqarish yoki 1 dan 10 gacha bo'lgan har bir raqam uchun bir xil kodni ishlatish.
 
-*Loop-lar* bir xil kodni ko'p marotaba qaytarishning usullaridir.
+*Looplar* bir xil kodni ko'p marotaba qaytarishning usulidir.
 
 ## "while" loop
-```smart header="The for..of and for..in loops"
-A small announcement for advanced readers.
+```smart header="The for..of va for..in looplari"
+Ilg'or o'quvchilar uchun kichik e'lon.
 
-This article covers only basic loops: `while`, `do..while` and `for(..;..;..)`.
+Ushbu maqola faqat asosiy sikllarni qamrab oladi: `while`, `do..while` va `for(..;..;..)`.
 
-If you came to this article searching for other types of loops, here are the pointers:
+Agar siz ushbu maqolaga boshqa turdagi halqalarni qidirib kelgan bo'lsangiz, quyidagi ko'rsatkichlarga e'tibor qarating:
 
-- See [for..in](info:object#forin) to loop over object properties.
-- See [for..of](info:array#loops) and [iterables](info:iterable) for looping over arrays and iterable objects.
+- Obyekt xususiyatlari ustidan aylanish uchun [for..in](info:object#forin) ga qarang.
+- Massivlar va takrorlanadigan obyektlar ustida aylanish uchun [for..of](info:array#loops) va [iterables](info:iterable) ga qarang.
 
-Otherwise, please read on.
+E'tibor bilan o'qing
 ```
 
-## The "while" loop
+## "while" loop
 
 `while` loop quyidagicha sintaksisga ega:
 
@@ -31,13 +31,13 @@ while (condition) {
 }
 ```
 
-`Shart` rost bo'lganda, loop-dagi `kod` bajariladi.
+`Condition` rost bo'lganda, loopdagi `kod` bajariladi.
 
 Masalan, quyidagi kod `i < 3` bo'lganda `i` ni chiqaradi:
 
 ```js run
 let i = 0;
-while (i < 3) { // shows 0, then 1, then 2
+while (i < 3) { // 0, keyin 1, keyin 2 ni ko'rsatadi
   alert( i );
   i++;
 }
@@ -45,25 +45,24 @@ while (i < 3) { // shows 0, then 1, then 2
 
 Loop tanasining bitta bajarilishi *iteratsiya* deb ataladi. Yuqoridagi misoldagi loop uchta iteratsiyani amalga oshiradi.
 
-Agar yuqoridagi misolda `i++` bo'lmasa, loop (nazariy jihatdan) abadiy takrorlanadi. Amalda, brauzer bunday loop-larni to'xtatish imkonini beradi va biz server tomonidagi JavaScript-da  jarayonni to'xtatishimiz mumkin.
+Agar yuqoridagi misolda `i++` bo'lmasa, loop (nazariy jihatdan) abadiy takrorlanadi. Amalda, brauzer bunday looplarni to'xtatish imkonini beradi va biz server tomonidagi JavaScriptda jarayonni to'xtatishimiz mumkin.
 
 Har qanday ifoda yoki o'zgaruvchi shunchaki taqqoslash emas, balki loop sharti bo'lishi mumkin: shart hisoblanadi va `while` orqali boolean qiymatga aylantiriladi.
 
-For instance, a shorter way to write `while (i != 0)` is `while (i)`:
-Misalan, `while (i != 0)` ni yozishning qisqa yo'li `while (i)` dir:
+Masalan, `while (i != 0)` ni yozishning qisqa yo'li `while (i)` dir:
 
 ```js run
 let i = 3;
 *!*
-while (i) { // when i becomes 0, the condition becomes falsy, and the loop stops
+while (i) { // i 0 ga aylanganda shart noto'g'ri bo'ladi va sikl to'xtaydi
 */!*
   alert( i );
   i--;
 }
 ```
 
-````smart header="Curly braces are not required for a single-line body"
-Agar loop tanasi yagona ifodaga ega bo'lsa, u holda `{...}` jingalak qavslarni tushirib qoldirishimiz mukin:
+````smart header="Bir qatorli body uchun figurali qavslar kerak emas"
+Agar loop tanasi yagona ifodaga ega bo'lsa, u holda `{...}` figurali qavslarni tushirib qoldirishimiz mukin:
 ```js run
 let i = 3;
 *!*
@@ -74,7 +73,7 @@ while (i) alert(i--);
 
 ## "do..while" loop
 
-Shartni tekshirish `do..while` sintaksisi yordamida loop-ning asosiy qismidan *pastga* ko'chirilishi mumkin:
+Shartni tekshirish `do..while` sintaksisi yordamida loopning asosiy qismidan *pastga* ko'chirilishi mumkin:
 
 ```js
 do {
@@ -82,7 +81,7 @@ do {
 } while (condition);
 ```
 
-Loop avval tanani bajaradi, keyin shartni tekshiradi va haqiqat bo'lganda, uni qayta-qayta bajaraveradi.
+Loop avval bodyni bajaradi, keyin shartni tekshiradi va true bo'lganda, uni qayta-qayta bajaraveradi.
 
 Masalan:
 
@@ -94,13 +93,13 @@ do {
 } while (i < 3);
 ```
 
-Sintaksisning bu shakli faqat shartning to'g'ri bo'lishidan qat'i nazar, loop-ning tanasi **kamida bir marta** bajarilishini xohlaganimizdagina qo'llanilishi kerak. Odatda, boshqa shakl afzal ko'riladi: `while(…) {…}`.
+Sintaksisning bu shakli faqat shartning to'g'ri bo'lishidan qat'iy nazar, loopning tanasi **kamida bir marta** bajarilishini xohlaganimizdagina qo'llanilishi kerak. Odatda, boshqa shakl afzal ko'riladi: `while(…) {…}`.
 
 ## "for" loop
 
-`for` loop ancha murakkab, lekin u ham eng keng foydalaniladigan looplardan.
+`for` loop ancha murakkab, lekin u ham eng keng foydalaniladigan looplardan biri hisoblanadi.
 
-Shu shunday ko'rinishga ega:
+Bu quyidagidek ko'rinishga ega:
 
 ```js
 for (begin; condition; step) {
@@ -108,10 +107,10 @@ for (begin; condition; step) {
 }
 ```
 
-Keling, ushbu qismlarning ma'nosini misol orqali bilib olamiz. Quyidagi loop `i` uchun `alert(i)`ni `0` dan `3`(o'z ichiga olmagan holda)gacha bajaradi:
+Keling, ushbu qismlarning ma'nosini misollar orqali ko'rib chiqamiz. Quyidagi loop `i` uchun `alert(i)`ni `0` dan `3`(o'z ichiga olmagan holda)gacha bajaradi:
 
 ```js run
-for (let i = 0; i < 3; i++) { // shows 0, then 1, then 2
+for (let i = 0; i < 3; i++) { // 0, keyin 1, keyin 2 ni ko'rsatadi
   alert(i);
 }
 ```
@@ -120,9 +119,9 @@ Keling, `for` iborasini qismma-qism ko'rib chiqamiz:
 
 | qism  |          |                                                                            |
 |-------|----------|----------------------------------------------------------------------------|
-| boshlash | `let i = 0`    | Loop-ga kirayotganda bir marta bajariladi.                                      |
+| boshlash | `let i = 0`    | Loopga kirayotganda bir marta bajariladi.                                      |
 | shart | `i < 3`| Har loop iteratsiyasi oldidan tekshiriladi. Agar yolg'on bo'lsa, bajarilish to'xtaydi.              |
-| tana | `alert(i)`| Shart sort bo'lganida qayta va qayta ishga tushaveradi.                         |
+| tana | `alert(i)`| Shart true bo'lganida qayta va qayta ishga tushaveradi.                         |
 | bosqich | `i++`      | Har bir iteratsiyada tanadan keyin bajariladi. |
 
 Umumiy loop algoritmi quyidagicha ishlaydi:
@@ -135,11 +134,11 @@ Run begin
 → ...
 ```
 
-Ya'ni, `begin` bir marta bajariladi va keyin takrorlanadi: har bir `shart` tekshiruvidan keyin, `body` va `bosqich` lar bajariladi.
+Ya'ni, `begin` bir marta bajariladi va keyin takrorlanadi: har bir `condition` tekshiruvidan keyin, `body` va `step*` lar bajariladi.
 
-Agar siz loop-larda yangi bo'lsangiz, misolga qaytish va u qanday ishlashini qog'ozga bosqichma-bosqich qaytadan yozishlik yordam berishi mumkin.
+Agar siz looplarda yangi bo'lsangiz, misolga qaytish va u qanday ishlashini qog'ozga bosqichma-bosqich qaytadan yozishlik yordam berishi mumkin.
 
-Mana bizning holatimizda aynan nima sodir bo'ladi:
+Mana, bizning holatimizda aynan nima sodir bo'ladi:
 
 ```js
 // for (let i = 0; i < 3; i++) alert(i)
@@ -155,26 +154,26 @@ if (i < 3) { alert(i); i++ }
 // ...finish, because now i == 3
 ```
 
-````smart header="Inline variable declaration"
-Bu erda "counter" o'zgaruvchisi `i` loop-da to'g'ridan-to'g'ri e'lon qilinadi. Bu "inline" o'zgaruvchilar deklaratsiyasi deb ataladi. Bunday o'zgaruvchilar faqat loop ichida ko'rinadi.
+````smart header="Inline o'zgaruvchilar deklaratsiyasi"
+Bu yerda "counter" o'zgaruvchisi `i` loopda to'g'ridan-to'g'ri e'lon qilinadi. Bu "inline" o'zgaruvchilar deklaratsiyasi deb ataladi. Bunday o'zgaruvchilar faqat loop ichida ko'rinadi.
 
 ```js run
 for (*!*let*/!* i = 0; i < 3; i++) {
   alert(i); // 0, 1, 2
 }
-alert(i); // error, no such variable
+alert(i); // error, bunday o'zgaruvchi yo'q
 ```
 
-O'zgaruvchi aniqlash o'rniga biz mavjuddan foydalanishimiz mumkin:
+O'zgaruvchini aniqlash o'rniga biz mavjuddan foydalanishimiz mumkin:
 
 ```js run
 let i = 0;
 
-for (i = 0; i < 3; i++) { // use an existing variable
+for (i = 0; i < 3; i++) { // mavjud o'zgaruvchidan foydalaning
   alert(i); // 0, 1, 2
 }
 
-alert(i); // 3, visible, because declared outside of the loop
+alert(i); // 3, ko'rinarli, chunki sikldan tashqarida e'lon qilingan
 ```
 ````
 
@@ -184,14 +183,14 @@ alert(i); // 3, visible, because declared outside of the loop
 
 `for` ning istalgan qismini o'tkazib yuborish mumkin.
 
-Masalan, agar loop-ni boshlanishida hech narsa bajarilishini istamasak, `begin` ni tushirib qoldirishimiz mumkin.
+Masalan, agar loopni boshlanishida hech narsa bajarilishini istamasak, `begin` ni tushirib qoldirsak bo'ladi.
 
 Xuddi quyidagidek:
 
 ```js run
-let i = 0; // we have i already declared and assigned
+let i = 0; // biz i ni allaqachon e'lon qildik va tayinladik
 
-for (; i < 3; i++) { // no need for "begin"
+for (; i < 3; i++) { // "begin" ni amalga oshirishga hojat yo'q
   alert( i ); // 0, 1, 2
 }
 ```
@@ -206,21 +205,21 @@ for (; i < 3;) {
 }
 ```
 
-Bu loop-ni `while (i < 3)` bilan bir xil qiladi.
+Bu loopni `while (i < 3)` bilan bir xil qiladi.
 
 Biz barcha narsani olib tashlashimiz va cheksiz loop yaratishimiz mumkin:
 
 ```js
 for (;;) {
-  // repeats without limits
+  // cheksiz takrorlanadi
 }
 ```
 
-Ikkita `for` nuqtali vergul mavjud bo'lishi kerakligini yodda tuting. Aks holda, sintaksis xatolik kelib chiqishi mumkin.
+Ikkita `for` nuqtali vergul mavjud bo'lishi kerakligini yodda tuting. Aks holda, sintaksisda xatolik kelib chiqishi mumkin.
 
-## Loop-ni buzish
+## Loopni buzish
 
-Odatda, loop uning sharti yolg'on bo'lganga bajarilishdan to'xtaydi.
+Odatda, loop uning sharti yolg'on bo'lgani uchun bajarilishdan to'xtaydi.
 
 Lekin, maxsus `break` direktivi yordamida istalgan vaqt uni to'xtashga majbur qilishimiz mumkin.
 
@@ -231,7 +230,7 @@ let sum = 0;
 
 while (true) {
 
-  let value = +prompt("Enter a number", '');
+  let value = +prompt("Number kiriting", '');
 
 *!*
   if (!value) break; // (*)
@@ -243,14 +242,13 @@ while (true) {
 alert( 'Sum: ' + sum );
 ```
 
-Agar foydalanuvchi bo'sh qator kiritsa yoki kiritishni bekor qilsa, `break` direktivi `(*)` qatorda faollashtiriladi. U loop-ni zudlik bilan to'xtatadi va boshqaruvni tsikldan keyingi birinchi qatorga , ya'ni, `alert` ga o'tkazadi.
+Agar foydalanuvchi bo'sh qator kiritsa yoki kiritishni bekor qilsa, `break` direktivi `(*)` qatorda faollashtiriladi. U loopni zudlik bilan to'xtatadi va boshqaruvni sikldan keyingi birinchi qatorga, ya'ni, `alert` ga o'tkazadi.
 
-"Cheksiz loop + kerak bo'lganda `break`" kombinatsiyasi loop-ning shartini uning boshida yoki oxirida emas, balki uning o'rtasida yoki hatto tanasining bir nechta joylarida tekshirish kerak bo'lgan holatlar uchun juda mos keladi.
+"Cheksiz halqa + kerak bo'lganda `break`, ya'ni sindirish" kombinatsiyasi holatini halqaning boshida yoki oxirida emas, balki uning o'rtasida yoki hatto tanasining bir nechta joylarida tekshirish kerak bo'lgan holatlar uchun juda mos keladi.
 
 ## Keyingi iteratsiyaga o'tish [#continue]
 
-The `continue` directive is a "lighter version" of `break`. It doesn't stop the whole loop. Instead, it stops the current iteration and forces the loop to start a new one (if the condition allows).
-`continue` direktivi `break` ning "yengilroq versiyasi" dir. U butun loop-ni to'xtatmaydi. Buning o'rniga, u joriy iteratsiyani to'xtatadi va loop-ni (agar shart imkon bersa) yangisini boshlashga majbur qiladi.
+`continue` direktivi `break` ning "yengilroq versiyasi" dir. U butun loopni to'xtatmaydi. Buning o'rniga, u joriy iteratsiyani to'xtatadi va loopni (agar shart imkon bersa) yangisini boshlashga majbur qiladi.
 
 Undan joriy iteratsiyani tugatib, keyingisiga o'tmoqchi bo'lganimizda foydalanishimiz mumkin.
 
@@ -259,16 +257,16 @@ Quyidagi loop faqat toq qiymatlarni chiqarish uchun `continue` dan foydalanadi:
 ```js run no-beautify
 for (let i = 0; i < 10; i++) {
 
-  // if true, skip the remaining part of the body
+  // agar rost bo'lsa, tananing qolgan qismini o'tkazib yuboring
   *!*if (i % 2 == 0) continue;*/!*
 
-  alert(i); // 1, then 3, 5, 7, 9
+  alert(i); // 1, keyin 3, 5, 7, 9
 }
 ```
 
 `i` ning juft qiymatlari uchun, `continue` direktivi tanani bajarilishdan to'xtatadi va nazoratni `for` ning keyingi (sonli)iteratsiyasiga o'tkazadi. Shunday qilib, `alert` faqat toq sonlar uchungina chaqiriladi.
 
-````smart header="The `continue` directive helps decrease nesting"
+````smart header="`continue` direktivasi joylashtirishni kamaytirishga yordam beradi"``
 Toq sonlarni ko'rsatuvchi loop quyidagicha ko'rinishga ega:
 
 ```js run
@@ -281,14 +279,13 @@ for (let i = 0; i < 10; i++) {
 }
 ```
 
-Texnik nuqtai nazardan, bu yuqoridagi misol bilan bir xil. Albatta, biz `continue` dan foydalanish o'rniga kodni `if` blokiga o'rashimiz mumkin.
+Texnik jihatdan, bu yuqoridagi misol bilan bir xil. Albatta, biz `continue` dan foydalanish o'rniga kodni `if` blokiga o'rashimiz mumkin.
 
-Ammo nojo'ya ta'sir sifatida, bu yana bir darajali joylashishni yaratdi (jingalak qavslar ichidagi `alert` chaqiruvi). Agar `if` ichidagi kod bir necha qatordan uzun bo'lsa, bu umumiy o'qish qobiliyatini kamaytirishi mumkin.
-But as a side effect, this created one more level of nesting (the `alert` call inside the curly braces). If the code inside of `if` is longer than a few lines, that may decrease the overall readability.
+Ammo nojo'ya ta'sir sifatida, bu yana bir darajali joylashishni yaratadi (figurali qavslar ichidagi `alert` chaqiruvi). Agar `if` ichidagi kod bir necha qatordan uzun bo'lsa, bu umumiy o'qish qobiliyatini kamaytirishi mumkin.
 ````
 
-````warn header="No `break/continue` to the right side of '?'"
-Esda tutingki, ifoda bo'lmagan sintaksis konstruksiyalarini `?` ternary operatori bilan  ishlatib bo'lmaydi. Xususan, u erda `break/continue` kabi direktivlarga ruxsat berilmaydi.
+````warn header="'?' o'ng tomonida 'to'xtash/davom etish' yo'q"
+Esda tutingki, ifoda bo'lmagan sintaksis konstruksiyalarini `?` ternary operatori bilan ishlatib bo'lmaydi. Xususan, u yerda `break/continue` kabi direktivlarga ruxsat berilmaydi.
 
 Masalan, ushbu kodni oladigan bo'lsak:
 
@@ -300,24 +297,24 @@ if (i > 5) {
 }
 ```
 
-...va uni so'roq belgisi yordamida qayta yozsak:
+...va uni so'roq belgisi yordamida qayta yozamiz:
 
 ```js no-beautify
-(i > 5) ? alert(i) : *!*continue*/!*; // continue isn't allowed here
+(i > 5) ? alert(i) : *!*continue*/!*; // bu yerda continue ga ruxsat berilmagan
 ```
 
-...u ishlashdan to'xtaydi: sintaksis xatolik mavjud bo'lmaydi.
+...u ishlashdan to'xtaydi: sintaksisda xatolik mavjud bo'lmaydi.
 
 Bu `if` o`rniga `?` so'roq belgisi operatoridan foydalanmaslikning yana bir sababi. 
 ````
 
-// Not understood 
+// Tushunarli bo'lmadi 
 
-## Labels for break/continue
+## break/continue uchun teglar 
 
 Ba'zan biz bir vaqtning o'zida bir nechta ichki loop-larni aylanib chiqishimiz kerak.
 
-Masalan, quyidagi kodda, `(i, j)` kordinatalarini `(0, 0)` dan `(2, 2)` ga muvofiqlashtirgan holda `i` va `j` ni aylanib chiqamiz:
+Masalan, quyidagi kodda, `(i, j)` koordinatalarini `(0, 0)` dan `(2, 2)` ga muvofiqlashtirgan holda `i` va `j` ni aylanib chiqamiz:
 
 ```js run no-beautify
 for (let i = 0; i < 3; i++) {
@@ -325,8 +322,8 @@ for (let i = 0; i < 3; i++) {
   for (let j = 0; j < 3; j++) {
 
     let input = prompt(`Value at coords (${i},${j})`, '');
-
-    // what if we want to exit from here to Done (below)?
+ 
+   // Agar biz bu yerdan Done (pastda yozilgan) ga chiqishni istasak nima bo'ladi?
   }
 }
 
@@ -335,11 +332,10 @@ alert('Done!');
 
 Agar foydalanuvchi kiritishni bekor qilsa, bizga jarayonni to'xtatish usuli kerak bo'ladi.
 
-`input` dan keyingi ddiy `break` faqatgina ichki loop-ni to'xtatadi. 
-Bu yetarli emas -- label-lar, shunda ular yordamga keladi!
+`input` dan keyingi oddiy `break` faqatgina ichki loopni to'xtatadi. 
+Bu yetarli emas, demak, labellar ularga yordam beradi!
 
-*Label* bu loop-dan avval keladigan ikki nuqtali identifikator:
-A *label* is an identifier with a colon before a loop:
+*Label* bu loopdan avval keladigan ikki nuqtali identifikator:
 
 ```js
 labelName: for (...) {
@@ -347,7 +343,7 @@ labelName: for (...) {
 }
 ```
 
-Quyidagi loop-dagi `break <labelName>` ifoda label-ga o'tadi:
+Quyidagi loopdagi `break <labelName>` ifoda labelga o'tadi:
 
 ```js run no-beautify
 *!*outer:*/!* for (let i = 0; i < 3; i++) {
@@ -356,69 +352,65 @@ Quyidagi loop-dagi `break <labelName>` ifoda label-ga o'tadi:
 
     let input = prompt(`Value at coords (${i},${j})`, '');
 
-    // if an empty string or canceled, then break out of both loops
+    // bo'sh satr yoki bekor qilingan bo'lsa, ikkala ko'chadan ham chiqib ketish
     if (!input) *!*break outer*/!*; // (*)
 
-    // do something with the value...
+    // qiymat bilan biror vazifa bajaring ...
   }
 }
 
 alert('Done!');
 ```
 
-Yuqoridagi kodda, `break outer` `outer` deb atalgan label-dan yuqoriroqga qaraydi va u loop-dan chiqib ketadi.
+Yuqoridagi kodda, `break outer` `outer` deb atalgan labeldan yuqoriroqqa qaraydi va u loopdan chiqib ketadi.
 
-Shunday qilib nazorat `(*)` dan to'g'ri `alert('Done!')` ga keladi.
+Shunday qilib nazorat `(*)` dan to'g'ri `alert('Done!')` ga o'tadi.
 
-Biz label-ni alohida qatorga o'tkazishimiz ham mumkin:
+Biz labelni alohida qatorga o'tkazishimiz ham mumkin:
 
 ```js no-beautify
 outer:
 for (let i = 0; i < 3; i++) { ... }
 ```
 
-`continue` direktividan ham label bilan birga foydalansa bo'ladi. Bu holatda, kod bajarilishi label-langan loop-ning keyingi iteratsiyasiga sakraydi.
+`continue` direktividan ham label bilan birga foydalansa bo'ladi. Bu holatda, kod bajarilishi labellangan loop-ning keyingi iteratsiyasiga sakraydi.
 
-````warn header="Labels do not allow to \"jump\" anywhere"
-Label-lar koddagi katta o'lchamli joyga sakrashga imkon bermaydi.
+````warn header="Yorliqlar hech qanday joyga \"sakrash"ga ruxsat bermaydi"
+Labellar koddagi katta o'lchamli joyga sakrashga imkon qoldirmaydi.
 
 Masalan, buni bajarishning iloji yo'q:
-For example, it is impossible to do this:
 
 ```js
-break label; // jump to the label below (doesn't work)
+break label; // quyidagi labelga o'ting (ishlamaydi)
 
 label: for (...)
 ```
 
-`break` direktivi kod blokini ichida bo'lishi kerak. Texnik jihatdan, har qanday label-langan kod bloki shunday qiladi, e.g.:
-A `break` directive must be inside a code block. Technically, any labelled code block will do, e.g.:
+`break` direktivi kod blokining ichida bo'lishi kerak. Texnik jihatdan, har qanday labellangan kod bloki shunday qiladi, e.g.:
 
 ```js
 label: {
   // ...
-  break label; // works
+  break label; // ishlaydi
   // ...
 }
 ```
+Shunga qaramay, yuqoridagi misollarda ko'rganimizdek, 99,9% breaklardan looplarning ichki qismida foydalaniladi. 
 
-...Although, 99.9% of the time `break` is used inside loops, as we've seen in the examples above.
-Shunga qaramay, yuqoridagi misollarda ko'rganimizdek, 99,9% break-lardan loop-larning ichida foydalaniladi. 
-
-`continue` bu loop ichidagi yagona ehtimollik.
+`continue` bu loop ichidagi yagona ehtimollik hisoblanadi.
 ````
 
 ## Xulosa
 
-Biz loop-larning 3 ta turini ko'rib chiqdik:
+Biz looplarning 3 ta turini ko'rib chiqdik:
 
 - `while` -- Shart iteratsiyadan avval tekshiriladi.
 - `do..while` -- Shart iteratsiyadan keyin tekshiriladi.
 - `for (;;)` -- Shart har bir iteratsiyadan avval tekshiriladi, qo'shimcha sozlamalar mavjud.
 
 To make an "infinite" loop, usually the `while(true)` construct is used. Such a loop, just like any other, can be stopped with the `break` directive.
-"Cheksiz" loop-lar yaratish uchun odatda `while(true)` kontruktsiyasidan foydalaniladi. Bunday loop, xuddi qolganlari singari `break` direktivi yordamida to'xtatilishi mumkin.
+"Cheksiz" looplar yaratish uchun odatda `while(true)` kontruktsiyasidan foydalaniladi. Bunday loop, xuddi qolganlari singari `break` direktivi yordamida to'xtatilishi mumkin.
 
-Agar biz joriy iteratsiyada hech qilishni xohlamasak va keyingisiga o'tishni istasak, `continue` direktividan foydalanishimiz mumkin.
+Agar biz joriy iteratsiyada hech narsa qilishni xohlamasak va keyingisiga o'tishni istasak, `continue` direktividan foydalanishimiz mumkin.
 
-`break/continue` loop-dan avval label-larni qo'llab quvvatlaydi. Label bu `break/continue` ichki loopdan tashqisiga o'tishining yagona yo'lidir.
+`break/continue` loopdan avval labellarni qo'llab quvvatlaydi. Label `break/continue` nomli ichki loopdan tashqisiga o'tishining yagona yo'lidir.

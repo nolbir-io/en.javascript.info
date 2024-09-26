@@ -1,26 +1,25 @@
-# Functions
+# Funksiyalar
 
-Quite often we need to perform a similar action in many places of the script.
+Ko'pincha biz skriptning ayrim joylarida o'xshash harakatni bajarishimiz kerak.
 
-For example, we need to show a nice-looking message when a visitor logs in, logs out and maybe somewhere else.
+Misol uchun, tashrif buyuruvchi tizimga kirganda, tizimdan chiqqanda va ehtimol boshqa joyda yaxshi ko'rinadigan xabarni ko'rsatishimiz lozim.
 
-Functions are the main "building blocks" of the program. They allow the code to be called many times without repetition.
+Funktsiyalar dasturning asosiy "qurilish bloklari" dir. Ular kodni takrorlanmasdan ko'p marta chaqirish imkonini bera
 
-We've already seen examples of built-in functions, like `alert(message)`, `prompt(message, default)` and `confirm(question)`. But we can create functions of our own as well.
+ Biz allaqachon `ogohlantirish (xabar)`,(alert message) `proompt(message, default)` (so'rov (xabar, standart))" va `confirm (question)`, ya'ni tasdiqlash (savol) kabi o'rnatilgan funksiyalarning misollarini ko'rganmiz. Ammo biz o'zimizning funksiyalarimizni ham yaratishimiz mumkin.
 
-## Function Declaration
+## Funksiya deklaratsiyasi
 
-To create a function we can use a *function declaration*.
+Funksiya yaratish uchun biz *funksiya deklaratsiyasi* dan foydalanishimiz mumkin.
 
-It looks like this:
+U quyidagi ko'rinishda bo'ladi:
 
 ```js
 function showMessage() {
   alert( 'Hello everyone!' );
 }
 ```
-
-The `function` keyword goes first, then goes the *name of the function*, then a list of *parameters* between the parentheses (comma-separated, empty in the example above, we'll see examples later) and finally the code of the function, also named "the function body", between curly braces.
+Avval `funksiya` kalit so'zi, so'ngra *funksiya nomi*, so'ngra qavslar orasidagi *parametrlar* ro'yxati (vergul bilan ajratilgan, yuqoridagi misolda bo'sh, misollarni keyinroq ko'rib chiqamiz) va nihoyat yozilgan kodga e'tibor qaratamiz. Figurali qavslar orasi "funksiya tanasi" deb ham ataladi.
 
 ```js
 function name(parameter1, parameter2, ... parameterN) {
@@ -28,9 +27,9 @@ function name(parameter1, parameter2, ... parameterN) {
 }
 ```
 
-Our new function can be called by its name: `showMessage()`.
+Bizning yangi funksiyamiz uning nomi bilan chaqirilishi mumkin: `showMessage()`.
 
-For instance:
+Masalan:
 
 ```js run
 function showMessage() {
@@ -42,18 +41,18 @@ showMessage();
 showMessage();
 */!*
 ```
+ 
+`showMessage()` chaqiruvi funksiya kodini bajaradi. Bu yerda biz xabarni ikki marta ko'ramiz.
 
-The call `showMessage()` executes the code of the function. Here we will see the message two times.
+Ushbu misol funksiyalarning asosiy maqsadlaridan biri - kodni takrorlashdan qochishni aniq ko'rsatib beradi.
 
-This example clearly demonstrates one of the main purposes of functions: to avoid code duplication.
+Agar xabarni yoki xabar ko'rinishini o'zgartirishimiz kerak bo'lsa, kodni bitta joyda uni chiqaradigan funktsiyada o'zgartirish kifoya qiladi.
 
-If we ever need to change the message or the way it is shown, it's enough to modify the code in one place: the function which outputs it.
+## Local variables (Mahalliy o'zgaruvchilar)
 
-## Local variables
+Funksiya ichida e'lon qilingan o'zgaruvchi faqat shu funksiya ichida ko'rinadi.
 
-A variable declared inside a function is only visible inside that function.
-
-For example:
+Masalan:
 
 ```js run
 function showMessage() {
@@ -66,12 +65,12 @@ function showMessage() {
 
 showMessage(); // Hello, I'm JavaScript!
 
-alert( message ); // <-- Error! The variable is local to the function
+alert( message ); // <-- Error! O'zgaruvchi funktsiya uchun mahalliydir.
 ```
 
-## Outer variables
+## Tashqi o'zgaruvchilar
 
-A function can access an outer variable as well, for example:
+Funksiya tashqi o'zgaruvchiga ham kirishi mumkin, masalan:
 
 ```js run no-beautify
 let *!*userName*/!* = 'John';
@@ -84,65 +83,65 @@ function showMessage() {
 showMessage(); // Hello, John
 ```
 
-The function has full access to the outer variable. It can modify it as well.
+Funksiya tashqi o'zgaruvchiga to'liq kirish huquqiga ega. Buni ham o'zgartirishi mumkin.
 
-For instance:
+Masalan:
 
 ```js run
 let *!*userName*/!* = 'John';
 
 function showMessage() {
-  *!*userName*/!* = "Bob"; // (1) changed the outer variable
+  *!*userName*/!* = "Bob"; // (1) tashqi o'zgaruvchini o'zgartirdi
 
   let message = 'Hello, ' + *!*userName*/!*;
   alert(message);
 }
 
-alert( userName ); // *!*John*/!* before the function call
+alert( userName ); // *!*John*/!* funksiya chaqiruvidan oldin
 
 showMessage();
 
-alert( userName ); // *!*Bob*/!*, the value was modified by the function
+alert( userName ); // *!*Bob*/!*, qiymat funktsiya tomonidan o'zgartirildi
 ```
 
-The outer variable is only used if there's no local one.
+Tashqi o'zgaruvchi faqat mahalliy bo'lmasa ishlatiladi.
 
-If a same-named variable is declared inside the function then it *shadows* the outer one. For instance, in the code below the function uses the local `userName`. The outer one is ignored:
+Masalan, quyidagi kodda funksiya mahalliy `userName` dan foydalanadi. Tashqi ko'rinish e'tiborga olinmaydi:
 
 ```js run
 let userName = 'John';
 
 function showMessage() {
 *!*
-  let userName = "Bob"; // declare a local variable
+  let userName = "Bob"; // mahalliy o'zgaruvchini e'lon qilish
 */!*
 
   let message = 'Hello, ' + userName; // *!*Bob*/!*
   alert(message);
 }
 
-// the function will create and use its own userName
+// funksiya o'z foydalanuvchi nomini yaratadi va ishlatadi
 showMessage();
 
-alert( userName ); // *!*John*/!*, unchanged, the function did not access the outer variable
+alert( userName ); // *!*John*/!*, o'zgarishsiz, funktsiya tashqi o'zgaruvchiga kira olmadi
 ```
 
-```smart header="Global variables"
-Variables declared outside of any function, such as the outer `userName` in the code above, are called *global*.
+```smart header="Global variables" (Global o'zgaruvchilar)
+Har qanday funksiyadan tashqarida e'lon qilingan o'zgaruvchilar, masalan, yuqorida berilgan koddagi tashqi `userName` *global* deb ataladi.
 
-Global variables are visible from any function (unless shadowed by locals).
+Global o'zgaruvchilar har qanday funksiyadan ko'rinadi (agar mahalliy o'zgaruvchi tomonidan soya qilinmasa).
 
-It's a good practice to minimize the use of global variables. Modern code has few or no globals. Most variables reside in their functions. Sometimes though, they can be useful to store project-level data.
+Global o'zgaruvchilardan foydalanishni minimallashtirish yaxshi amaliyotdir. Zamonaviy kodda globallar kam yoki umuman yo'q. Aksariyat o'zgaruvchilar ularning funktsiyalarida joylashgan. Ba'zan ular loyiha darajasidagi ma'lumotlarni saqlash uchun foydali bo'lishi mumkin.
 ```
 
-## Parameters
+## Parametrlar
 
-We can pass arbitrary data to functions using parameters.
+Parametrlar yordamida funksiyalarga asossiz ma'lumotlarni o'tkazishimiz mumkin.
 
-In the example below, the function has two parameters: `from` and `text`.
+Quyidagi misolda funksiya ikkita parametrga ega: `from` and `text`.
 
 ```js run
-function showMessage(*!*from, text*/!*) { // parameters: from, text
+function showMessage(*!*from, text*/!*) { // parameterlar: from, text
   alert(from + ': ' + text);
 }
 
@@ -150,15 +149,15 @@ function showMessage(*!*from, text*/!*) { // parameters: from, text
 *!*showMessage('Ann', "What's up?");*/!* // Ann: What's up? (**)
 ```
 
-When the function is called in lines `(*)` and `(**)`, the given values are copied to local variables `from` and `text`. Then the function uses them.
+Funksiya `(*)` va `(**)` qatorlarda chaqirilganda, berilgan qiymatlar `from` va `text` mahalliy o'zgaruvchilarga ko'chiriladi. Keyin funksiya ulardan foydalanadi.
 
-Here's one more example: we have a variable `from` and pass it to the function. Please note: the function changes `from`, but the change is not seen outside, because a function always gets a copy of the value:
+Yana bir misol: bizda `from` o'zgaruvchisi bor va uni funksiyaga o'tkazamiz. Iltimos, diqqat qiling: funksiya `from` dan o'zgaradi, lekin o'zgarish tashqarida ko'rinmaydi, chunki funksiya har doim qiymatning nusxasini oladi:
 
 ```js run
 function showMessage(from, text) {
 
 *!*
-  from = '*' + from + '*'; // make "from" look nicer
+  from = '*' + from + '*'; // "from"ni chiroyli ko'rinishga keltiring
 */!*
 
   alert( from + ': ' + text );
@@ -168,75 +167,76 @@ let from = "Ann";
 
 showMessage(from, "Hello"); // *Ann*: Hello
 
-// the value of "from" is the same, the function modified a local copy
+//"from" qiymati bir xil, funksiya mahalliy nusxani o'zgartirdi
 alert( from ); // Ann
 ```
 
-When a value is passed as a function parameter, it's also called an *argument*.
+Qiymat funksiya parametri sifatida uzatilsa, u *argument* deb ham ataladi.
 
-In other words, to put these terms straight:
+Boshqacha qilib aytganda, ushbu atamalarni to'g'ri ifodalash uchun:
 
-- A parameter is the variable listed inside the parentheses in the function declaration (it's a declaration time term).
-- An argument is the value that is passed to the function when it is called (it's a call time term).
+- Parametr - bu funksiya deklaratsiyasida qavslar ichida ko'rsatilgan o'zgaruvchidir (bu e'lon qilish muddati).
+- Argument bu funksiya chaqirilganda unga uzatiladigan qiymatdir (bu chaqiruv vaqti muddati).
 
-We declare functions listing their parameters, then call them passing arguments.
+Biz funksiya parametrlarini sanab o'tamiz, keyin ularni o'tish argumentlari deb ataymiz.
 
-In the example above, one might say: "the function `showMessage` is declared with two parameters, then called with two arguments: `from` and `"Hello"`".
+Yuqoridagi misolda shunday deyish mumkin: `showMessage` funksiyasi ikkita parametr bilan e'lon qilinadi, keyin ikkita argument bilan chaqiriladi: ``from`` va `Hello`.
 
 
-## Default values
+## Default values (Standart qiymatlar)
 
-If a function is called, but an argument is not provided, then the corresponding value becomes `undefined`.
+Agar funksiya chaqirilsa, lekin argument taqdim etilmasa, mos keladigan qiymat `undefined` (aniqlanmagan) bo'ladi.
 
-For instance, the aforementioned function `showMessage(from, text)` can be called with a single argument:
+Masalan, yuqorida aytib o'tilgan `showMessage(from, text)` funksiyasini bitta argument bilan chaqirish mumkin:
 
 ```js
 showMessage("Ann");
 ```
 
-That's not an error. Such a call would output `"*Ann*: undefined"`. As the value for `text` isn't passed, it becomes `undefined`.
+Bu xato emas. Bunday qo'ng'iroq `"*Ann*: undefined"`ni chiqaradi. `text` qiymati o'tkazilmagani uchun u `undefined` bo'ladi.
 
-We can specify the so-called "default" (to use if omitted) value for a parameter in the function declaration, using `=`:
+Funksiya deklaratsiyasida parametr uchun "standart" (agar foydalanish uchun o'tkazib yuborilmagan bo'lsa) qiymatini `=` yordamida belgilashimiz mumkin:
 
 ```js run
 function showMessage(from, *!*text = "no text given"*/!*) {
   alert( from + ": " + text );
 }
 
-showMessage("Ann"); // Ann: no text given
+showMessage("Ann"); // Ann: matn berilmagan
 ```
 
-Now if the `text` parameter is not passed, it will get the value `"no text given"`.
+Endi `text` parametri o'tkazilmasa, u `no text given` (matn berilmagan) qiymatini oladi.
 
-The default value also jumps in if the parameter exists, but strictly equals `undefined`, like this:
+Agar parametr mavjud bo'lsa, standart qiymat ham o'tadi, lekin qat'iy ravishda `undefined` ga teng, masalan:
 
 ```js
-showMessage("Ann", undefined); // Ann: no text given
+showMessage("Ann", undefined); // Ann: matn berilmagan
 ```
 
-Here `"no text given"` is a string, but it can be a more complex expression, which is only evaluated and assigned if the parameter is missing. So, this is also possible:
+Bu yerda `"no text given"` satr mavjud, lekin u murakkabroq ifoda bo'lishi mumkin, u faqat parametr yetishmayotgan bo'lsa baholanadi va tayinlanadi. Shunday qilib, bu vazifani bajarish ham mumkin:
 
 ```js run
 function showMessage(from, text = anotherFunction()) {
-  // anotherFunction() only executed if no text given
-  // its result becomes the value of text
+  // anotherFunction() matn berilmagan taqdirdagina bajariladi
+  // uning natijasi matn qiymatiga aylanadi
 }
 ```
 
-```smart header="Evaluation of default parameters"
-In JavaScript, a default parameter is evaluated every time the function is called without the respective parameter.
+```smart header="Evaluation of default parameters" ("Standart parametrlarni baholash")
+JavaScriptda har safar funksiya tegishli parametrsiz chaqirilganda standart parametr baholanadi.
 
-In the example above, `anotherFunction()` isn't called at all, if the `text` parameter is provided.
+Yuqoridagi misolda `text` parametri taqdim etilgan bo'lsa, `atherFunction()` umuman chaqirilmaydi.
 
-On the other hand, it's independently called every time when `text` is missing.
+Boshqa tomondan, u har safar `text` yo'qolganda mustaqil ravishda chaqiriladi.
 ```
 
-````smart header="Default parameters in old JavaScript code"
-Several years ago, JavaScript didn't support the syntax for default parameters. So people used other ways to specify them.
+````smart header="Default parameters in old JavaScript code" (Eski JavaScript kodidagi standart parametrlar")
 
-Nowadays, we can come across them in old scripts.
+Bir necha yil oldin, JavaScript standart parametrlar uchun sintaksisni qo'llab-quvvatlamagan. Shuning uchun odamlar ularni aniqlashning boshqa usullaridan foydalanganlar.
 
-For example, an explicit check for `undefined`:
+Hozirgi kunda biz ularni eski skriptlarda uchratishimiz mumkin.
+
+Masalan, `undefined` uchun aniq tekshirish:
 
 ```js
 function showMessage(from, text) {
@@ -254,8 +254,8 @@ function showMessage(from, text) {
 
 ```js
 function showMessage(from, text) {
-  // If the value of text is falsy, assign the default value
-  // this assumes that text == "" is the same as no text at all
+  // Agar matn qiymati noto'g'ri bo'lsa, standart qiymatni belgilang
+  // bu matn == "" umuman matn yo'qligi bilan bir xil ekanligini nazarda tutadi
   text = text || 'no text given';
   ...
 }
@@ -263,18 +263,18 @@ function showMessage(from, text) {
 ````
 
 
-### Alternative default parameters
+### Muqobil standart parametrlar
 
-Sometimes it makes sense to assign default values for parameters at a later stage after the function declaration.
+Ba'zan funktsiya e'lon qilinganidan keyingi bosqichda parametrlar uchun standart qiymatlarni belgilash muhim.
 
-We can check if the parameter is passed during the function execution, by comparing it with `undefined`:
+Funksiyani bajarish jarayonida parametr berilgan yoki yo'qligini `undefined` bilan solishtirish orqali tekshirishimiz mumkin:
 
 ```js run
 function showMessage(text) {
   // ...
 
 *!*
-  if (text === undefined) { // if the parameter is missing
+  if (text === undefined) { // agar parametr yetishmayotgan bo'lsa
     text = 'empty message';
   }
 */!*
@@ -282,24 +282,24 @@ function showMessage(text) {
   alert(text);
 }
 
-showMessage(); // empty message
+showMessage(); // bo'sh xabar
 ```
 
-...Or we could use the `||` operator:
+...Yoki `||` operatoridan foydalanishimiz mumkin:
 
 ```js
 function showMessage(text) {
-  // if text is undefined or otherwise falsy, set it to 'empty'
+  // agar matn aniqlanmagan yoki noto'g'ri bo'lsa, uni "empty" qiling
   text = text || 'empty';
   ...
 }
 ```
 
-Modern JavaScript engines support the [nullish coalescing operator](info:nullish-coalescing-operator) `??`, it's better when most falsy values, such as `0`, should be considered "normal":
+Zamonaviy JavaScript dvigatellari [nullish coalescing operator](info:nullish-coalescing-operator) `??` ni qo'llab-quvvatlaydi, `0` kabi noto'g'ri qiymatlarning ko'pchiligi "normal" hisoblanadi:
 
 ```js run
 function showCount(count) {
-  // if count is undefined or null, show "unknown"
+  // agar raqam aniqlanmagan yoki null bo'lsa, "unknown" ("noma'lum") ni ko'rsating
   alert(count ?? "unknown");
 }
 
@@ -308,11 +308,11 @@ showCount(null); // unknown
 showCount(); // unknown
 ```
 
-## Returning a value
+## Qiymatni qaytarish
 
-A function can return a value back into the calling code as the result.
+Funksiya natija sifatida qiymatni chaqiruvchi kodga qaytarishi mumkin.
 
-The simplest example would be a function that sums two values:
+Eng oddiy misol ikkita qiymatni jamlaydigan funksiya bo'lishi mumkin:
 
 ```js run no-beautify
 function sum(a, b) {
@@ -323,9 +323,9 @@ let result = sum(1, 2);
 alert( result ); // 3
 ```
 
-The directive `return` can be in any place of the function. When the execution reaches it, the function stops, and the value is returned to the calling code (assigned to `result` above).
+`Return` direktivasi funktsiyaning istalgan joyida bo'lishi mumkin. Bajarish unga yetganda, funktsiya to'xtaydi va qiymat chaqiruvchi kodga qaytariladi (yuqoridagi `result` tayinlangan).
 
-There may be many occurrences of `return` in a single function. For instance:
+Bitta funktsiyada `return` ko'p bo'lishi mumkin. Masalan:
 
 ```js run
 function checkAge(age) {
@@ -349,9 +349,9 @@ if ( checkAge(age) ) {
 }
 ```
 
-It is possible to use `return` without a value. That causes the function to exit immediately.
+Qiymatsiz `return` dan foydalanish mumkin. Bu funksiyaning darhol chiqishiga olib keladi.
 
-For example:
+Masalan:
 
 ```js
 function showMovie(age) {
@@ -368,8 +368,10 @@ function showMovie(age) {
 
 In the code above, if `checkAge(age)` returns `false`, then `showMovie` won't proceed to the `alert`.
 
-````smart header="A function with an empty `return` or without it returns `undefined`"
-If a function does not return a value, it is the same as if it returns `undefined`:
+Yuqoridagi kodda, agar `checkAge(age)` `false` qiymatini qaytarsa, `showMovie` `alert` ga o'tmaydi.
+
+````smart header="A function with an empty `return` or without it returns `undefined`" 
+Agar funksiya qiymatni qaytarmasa, u xuddi `undefined` ni qaytargandek bo'ladi:
 
 ```js run
 function doNothing() { /* empty */ }
@@ -377,7 +379,7 @@ function doNothing() { /* empty */ }
 alert( doNothing() === undefined ); // true
 ```
 
-An empty `return` is also the same as `return undefined`:
+Bo'sh `return` ham `return undefined` bilan bir xil:
 
 ```js run
 function doNothing() {
@@ -388,23 +390,23 @@ alert( doNothing() === undefined ); // true
 ```
 ````
 
-````warn header="Never add a newline between `return` and the value"
-For a long expression in `return`, it might be tempting to put it on a separate line, like this:
+````warn header="Hech qachon "qaytish" va qiymat o'rtasida yangi qator qo'shmang"
+`Return` dagi uzoq ifoda uchun uni alohida qatorga qo'yish jozibador bo'lishi mumkin, masalan:
 
 ```js
 return
  (some + long + expression + or + whatever * f(a) + f(b))
 ```
-That doesn't work, because JavaScript assumes a semicolon after `return`. That'll work the same as:
+Bu ishlamaydi, chunki JavaScript "qaytish" dan keyin nuqta-vergulni oladi. Bu xuddi quyidagidek ishlaydi:
 
 ```js
 return*!*;*/!*
  (some + long + expression + or + whatever * f(a) + f(b))
 ```
 
-So, it effectively becomes an empty return.
+Shunday qilib, u samarali ravishda "empty return" ga aylanadi.
 
-If we want the returned expression to wrap across multiple lines, we should start it at the same line as `return`. Or at least put the opening parentheses there as follows:
+Agar qaytarilgan ifodani bir nechta satrlar bo'ylab o'tishini xohlasak, uni `return` bilan bir qatordan boshlashimiz kerak. Yoki hech bo'lmaganda ochilish qavslarini quyidagicha qo'ying:
 
 ```js
 return (
@@ -413,67 +415,67 @@ return (
   whatever * f(a) + f(b)
   )
 ```
-And it will work just as we expect it to.
+Va u biz kutgandek ishlaydi.
 ````
 
-## Naming a function [#function-naming]
+## Funksiyani nomlash [#function-naming]
 
-Functions are actions. So their name is usually a verb. It should be brief, as accurate as possible and describe what the function does, so that someone reading the code gets an indication of what the function does.
+Funktsiyalar - bu harakatlar. Shuning uchun ularning nomi odatda fe'ldir. U qisqa, iloji boricha aniq bo'lishi va funksiya nima qilishini tasvirlab berishi kerak, shunda kodni o'qiyotgan kishi funksiya nima qilayotgani haqida ko'rsatma oladi.
 
-It is a widespread practice to start a function with a verbal prefix which vaguely describes the action. There must be an agreement within the team on the meaning of the prefixes.
+Harakatni noaniq tasvirlaydigan og'zaki prefiks bilan funksiyani boshlash keng tarqalgan amaliyotdir. Prefikslarning ma'nosi bo'yicha jamoa ichida kelishuv bo'lishi kerak.
 
-For instance, functions that start with `"show"` usually show something.
+Masalan, `"show"` bilan boshlanadigan funksiyalar odatda biror narsani ko'rsatadi.
 
-Function starting with...
+...bilan boshlanadigan funksiyalar
 
-- `"get…"` -- return a value,
-- `"calc…"` -- calculate something,
-- `"create…"` -- create something,
-- `"check…"` -- check something and return a boolean, etc.
+- `"get…"` -- qiymatni qaytaradi,
+- `"calc…"` -- nimanidir hisoblaydi,
+- `"create…"` -- nimanidir yaratadi,
+- `"check…"` -- biror narsani tekshirib, booleanni qaytaradi va h.k.
 
-Examples of such names:
+Yuqoridagi nomlarga misollar:
 
 ```js no-beautify
-showMessage(..)     // shows a message
-getAge(..)          // returns the age (gets it somehow)
-calcSum(..)         // calculates a sum and returns the result
-createForm(..)      // creates a form (and usually returns it)
-checkPermission(..) // checks a permission, returns true/false
+showMessage(..)     // xabarni ko'rsating
+getAge(..)          // yoshni qaytaradi (buni qandaydir tarzda oladi)
+calcSum(..)         // summani hisoblab chiqadi va natijani qaytaradi
+createForm(..)      // shakl yaratadi (va odatda uni qaytaradi)
+checkPermission(..) // ruxsatni tekshiradi, true/false ni qaytaradi
 ```
 
-With prefixes in place, a glance at a function name gives an understanding what kind of work it does and what kind of value it returns.
+Prefikslar o'rnatilgan bo'lsa, funktsiya nomiga qarash uning qanday ishni bajarishini va qanday qiymatni qaytarishini tushunish imkonini beradi.
 
-```smart header="One function -- one action"
-A function should do exactly what is suggested by its name, no more.
+```smart header="Bir funksiya -- bir harakat"
+Funktsiya o'z nomi bilan taklif qilingan narsani bajarishi kerak, boshqasini emas.
 
-Two independent actions usually deserve two functions, even if they are usually called together (in that case we can make a 3rd function that calls those two).
+Ikki mustaqil harakat odatda ikkita funktsiyaga loyiqdir, hatto ular odatda birgalikda chaqirilsa ham (bu holda biz bu ikkalasini chaqiradigan uchinchi funksiyani yaratishimiz mumkin).
 
-A few examples of breaking this rule:
+Ushbu qoidani buzishning bir nechta misollari:
 
-- `getAge` -- would be bad if it shows an `alert` with the age (should only get).
-- `createForm` -- would be bad if it modifies the document, adding a form to it (should only create it and return).
-- `checkPermission` -- would be bad if it displays the `access granted/denied` message (should only perform the check and return the result).
+- `getAge` -- yoshi bilan `alert` ko'rsatsa yomon bo'lardi (faqat olish kerak).
+- `createForm` -- agar u hujjatni o'zgartirsa, unga shakl qo'shsa yomon bo'ladi (faqat uni yaratish va qaytarish kerak).
+- `checkPermission` -- `kirish ruxsat berilgan/rad etilgan` xabarini ko'rsatsa, yomon bo'lardi (faqat tekshirishni amalga oshirish va natijani qaytarish kerak).
 
-These examples assume common meanings of prefixes. You and your team are free to agree on other meanings, but usually they're not much different. In any case, you should have a firm understanding of what a prefix means, what a prefixed function can and cannot do. All same-prefixed functions should obey the rules. And the team should share the knowledge.
+Ushbu misollar prefikslarning umumiy ma'nolarini nazarda tutadi. Siz va sizning jamoangiz boshqa ma'nolar bo'yicha kelisha olasiz, lekin odatda ular unchalik farq qilmaydi. Qanday bo'lmasin, siz prefiks nimani anglatishini, prefiksli funksiya nimani amalga oshirishi va nima qila olmasligini aniq tushunishingiz kerak. Barcha bir xil prefiksli funksiyalar qoidalarga bo'ysunishi kerak. Va jamoa bilimlarni baham ko'rishi kerak.
 ```
 
-```smart header="Ultrashort function names"
-Functions that are used *very often* sometimes have ultrashort names.
+```smart header="Ultra qisqa funksiya nomlari"
+*Juda tez-tez* ishlatiladigan funksiyalar ba'zan ultraqisqa nomlarga ega.
 
-For example, the [jQuery](https://jquery.com/) framework defines a function with `$`. The [Lodash](https://lodash.com/) library has its core function named `_`.
+Masalan, [jQuery](https://jquery.com/) ramkasi `$` bilan funksiyani belgilaydi. [Lodash](https://lodash.com/) kutubxonasi `_` nomli asosiy funksiyasiga ega.
 
-These are exceptions. Generally function names should be concise and descriptive.
+Bu istisnolar. Odatda funktsiya nomlari qisqa va tavsiflovchi bo'lishi kerak.
 ```
 
-## Functions == Comments
+## Funksiyalar == Izohlar
 
-Functions should be short and do exactly one thing. If that thing is big, maybe it's worth it to split the function into a few smaller functions. Sometimes following this rule may not be that easy, but it's definitely a good thing.
+Funksiyalar qisqa bo'lishi va aniq bir ishni bajarishi kerak. Agar bu narsa katta bo'lsa, funksiyani bir nechta kichikroq funktsiyalarga bo'lish bunga arziydi. Ba'zan bu qoidaga rioya qilish unchalik oson bo'lmasligi mumkin, lekin bu, albatta, yaxshi narsa.
 
-A separate function is not only easier to test and debug -- its very existence is a great comment!
+Alohida funktsiyani sinab ko'rish va debug (disk raskadrovka) qilish oson emas -- uning mavjudligi ajoyib izohdir!
 
-For instance, compare the two functions `showPrimes(n)` below. Each one outputs [prime numbers](https://en.wikipedia.org/wiki/Prime_number) up to `n`.
+Misol uchun, quyidagi ikkita `showPrimes(n)` funksiyasini solishtiring. Har biri `n` gacha [tub sonlarni](https://en.wikipedia.org/wiki/Prime_number) chiqaradi.
 
-The first variant uses a label:
+Birinchi variant yorliqdan foydalanadi:
 
 ```js
 function showPrimes(n) {
@@ -483,12 +485,12 @@ function showPrimes(n) {
       if (i % j == 0) continue nextPrime;
     }
 
-    alert( i ); // a prime
+    alert( i ); // tub son
   }
 }
 ```
 
-The second variant uses an additional function `isPrime(n)` to test for primality:
+Ikkinchi variantda birlamchilikni tekshirish uchun qo'shimcha `isPrime(n)` funksiyasidan foydalaniladi:
 
 ```js
 function showPrimes(n) {
@@ -507,14 +509,13 @@ function isPrime(n) {
   return true;
 }
 ```
+Ikkinchi variantni tushunish osonroq, shunday emasmi? Kod qismi o'rniga biz harakat nomini ko'ramiz (`isPrime`). Ba'zan odamlar bunday kodni *o'zini tavsiflash* deb atashadi.
 
-The second variant is easier to understand, isn't it? Instead of the code piece we see a name of the action (`isPrime`). Sometimes people refer to such code as *self-describing*.
+Shunday qilib, biz ularni qayta ishlatish niyatimiz bo'lmasa ham, funksiyalar yaratilishi mumkin. Ular kodni tuzadilar va uni o'qish imkoniyatini yaratadi.
 
-So, functions can be created even if we don't intend to reuse them. They structure the code and make it readable.
+## Xulosa
 
-## Summary
-
-A function declaration looks like this:
+Funktsiya deklaratsiyasi quyidagicha ko'rinadi:
 
 ```js
 function name(parameters, delimited, by, comma) {
@@ -522,18 +523,18 @@ function name(parameters, delimited, by, comma) {
 }
 ```
 
-- Values passed to a function as parameters are copied to its local variables.
-- A function may access outer variables. But it works only from inside out. The code outside of the function doesn't see its local variables.
-- A function can return a value. If it doesn't, then its result is `undefined`.
+- Funksiyaga parametr sifatida berilgan qiymatlar uning mahalliy o'zgaruvchilariga ko'chiriladi.
+- Funksiya tashqi o'zgaruvchilarga kirishi mumkin. Ammo u faqat ichkaridan ishlaydi. Funksiyadan tashqaridagi kod mahalliy o'zgaruvchilarni ko'rmaydi.
+- Funksiya qiymatni qaytarishi mumkin. Agar shunday bo'lmasa, uning natijasi `undefined` hisoblanadi.
 
-To make the code clean and easy to understand, it's recommended to use mainly local variables and parameters in the function, not outer variables.
+Kodni toza va tushunarli qilish uchun funksiyada tashqi o'zgaruvchilardan emas, asosan mahalliy o'zgaruvchilar va parametrlardan foydalanish tavsiya etiladi.
 
-It is always easier to understand a function which gets parameters, works with them and returns a result than a function which gets no parameters, but modifies outer variables as a side effect.
+Parametrlarni oladigan, ular bilan ishlaydigan va natija qaytaradigan funktsiyani tushunish har doim parametrlarga ega bo'lmagan, ammo tashqi o'zgaruvchilarni yon ta'sir sifatida o'zgartiradigan funksiyaga qaraganda osonroqdir.
 
-Function naming:
+Funksiyani nomlash:
 
-- A name should clearly describe what the function does. When we see a function call in the code, a good name instantly gives us an understanding what it does and returns.
-- A function is an action, so function names are usually verbal.
-- There exist many well-known function prefixes like `create…`, `show…`, `get…`, `check…` and so on. Use them to hint what a function does.
+- Nom funksiya nima qilishini aniq tasvirlab berishi kerak. Kodda funktsiya chaqiruvini ko'rganimizda, yaxshi nom bizga darhol nima qilishini va qaytib kelishini tushunish imkonini beradi.
+- Funksiya - bu harakat, shuning uchun funktsiya nomlari odatda og'zaki bo'ladi.
+- `create…`, `show…`, `get…`, `check…` va boshqalar kabi ko'plab taniqli funktsiya prefikslari mavjud. Funksiya nima qilishini ko'rsatish uchun ulardan foydalaning.
 
-Functions are the main building blocks of scripts. Now we've covered the basics, so we actually can start creating and using them. But that's only the beginning of the path. We are going to return to them many times, going more deeply into their advanced features.
+Funksiyalar skriptlarning asosiy qurilish bloklari hisoblanadi. Endi biz asoslarni ko'rib chiqdik, shuning uchun biz ularni yaratish va ishlatishni boshlashimiz mumkin. Ammo bu faqat yo'lning boshlanishi. Biz ularga ko'p marta qaytamiz, ularning ilg'or xususiyatlariga chuqurroq kirib boramiz.

@@ -1,27 +1,27 @@
 
-# O'zgaruvchi doirasi, Closure
+# O'zgaruvchi doirasi va Closure (yopilish)
 
-JavaScript juda funktsiyaga yo'naltirilgan tildir. Bu bizga katta erkinlik beradi. Funktsiya istalgan vaqtda yaratilishi, boshqa funktsiyaga argument sifatida uzatilishi va keyin kodning butunlay boshqa joyidan chaqirilishi mumkin.
+JavaScript funksiyaga yaxshi yo'naltirilgan tildir. Bu bizga katta erkinlik beradi. Funksiya istalgan vaqtda yaratilishi, boshqa funksiyaga argument sifatida uzatilishi va keyin kodning butunlay boshqa joyidan chaqirilishi mumkin.
 
-Biz allaqachon bilamizki, funktsiya undan tashqaridagi o'zgaruvchilarga ("tashqi" o'zgaruvchilarga) kira oladi.
+Biz allaqachon bilamizki, funksiya undan tashqaridagi o'zgaruvchilarga ("tashqi" o'zgaruvchilarga) kira oladi.
 
-Ammo funktsiya yaratilgandan keyin tashqi o'zgaruvchilar o'zgarsa nima bo'ladi? Funktsiya yangi yoki eski qiymatlarni oladimi?
+Ammo funksiya yaratilgandan keyin tashqi o'zgaruvchilar o'zgarsa nima bo'ladi? Funksiya yangi yoki eski qiymatlarni oladimi?
 
-Va agar funktsiya argument sifatida uzatilsa va kodning boshqa joyidan chaqirilsa, u yangi joyda tashqi o'zgaruvchilarga kirish huquqiga ega bo'ladimi?
+Va agar funksiya argument sifatida uzatilsa va kodning boshqa joyidan chaqirilsa, u yangi joyda tashqi o'zgaruvchilarga kirish huquqiga ega bo'ladimi?
 
-Keling, ushbu va yanada murakkab stsenariylarni tushunish uchun bilimimizni kengaytiraylik.
+Keling, yuqoridagi va boshqa yanada murakkab ssenariylarni tushunish uchun bilimimizni kengaytiramiz.
 
-`` ``smart header="Bu yerda `let/const` o‘zgaruvchilari haqida gaplashamiz"
+`` ``smart header="Bu yerda `let/const` o'zgaruvchilari haqida gaplashamiz"
 JavaScriptda o'zgaruvchini e'lon qilishning 3 ta usuli mavjud: `let`, `const` (zamonaviylar) va `var` (o'tmish qoldig'i).
 
 - Ushbu maqolada biz misollarda `let` o'zgaruvchilardan foydalanamiz.
-- `const` bilan e'lon qilingan o'zgaruvchilar xuddi shunday harakat qiladilar, shuning uchun bu maqola `const` haqida ham.
-- Eski `var` ba`zi sezilarli farqlarga ega, ular <info:var> maqolasida yoritiladi.
+- `const` bilan e'lon qilingan o'zgaruvchilar xuddi shunday harakat qiladilar, shuning uchun bu maqola `const` haqida ham ma'lumot beradi.
+- Eski `var` ba'zi sezilarli farqlarga ega, ular <info:var> maqolasida yoritiladi.
 ```
 ```
 ## Kod bloklari
 
-Agar oʻzgaruvchi `{...}` kod blokida eʼlon qilingan boʻlsa, u faqat shu blok ichida koʻrinadi.
+Agar o'zgaruvchi `{...}` kod blokida e'lon qilingan bo'lsa, u faqat shu blok ichida ko'rinadi.
 
 Masalan:
 
@@ -34,7 +34,7 @@ Masalan:
   alert(message); // Salom
 }
 
-alert(message); // Error: message undefined
+alert(message); // Error: aniqlanmagan xabar
 ```
 
 Biz bundan o'z vazifasini bajaradigan, faqat unga tegishli bo'lgan o'zgaruvchilar bilan kod qismini ajratish uchun foydalanishimiz mumkin:
@@ -54,7 +54,7 @@ Biz bundan o'z vazifasini bajaradigan, faqat unga tegishli bo'lgan o'zgaruvchila
 ```
 
 ``smart header="Bloksiz xatolik yuz beradi"
-E'tibor bering, alohida bloklarsiz, mavjud o'zgaruvchi nomi bilan `let` dan foydalansak, xato bo'ladi:
+E'tibor bering: alohida bloklarsiz, mavjud o'zgaruvchi nomi bilan `let` dan foydalansak, xato bo'ladi:
 
 ```js run
 // messageni ko'rsatish
@@ -69,7 +69,7 @@ alert(message);
 ```
 ``
 
-`if`, `for`, `while` va hokazolar uchun `{...}` da e`lon qilingan o`zgaruvchilar ham faqat ichida ko`rinadi:
+`if`, `for`, `while` va hokazolar uchun `{...}` da e'lon qilingan o'zgaruvchilar ham faqat ichki qismda ko`rinadi:
 
 ```js run
 if (true) {
@@ -81,9 +81,9 @@ if (true) {
 alert(phrase); // Error, bunday o'zgaruvchi yo'q
 ```
 
-Bu yerda `if` tugagandan so‘ng, quyidagi `alert` `phrase`ni ko‘rmaydi, shuning uchun error chiqadi.
+Bu yerda `if` tugagandan keyin quyidagi `alert` `phrase` ni ko'rmaydi, shuning uchun error yuzaga keladi.
 
-Bu juda zo'r, chunki u bizga `if` tarmog'iga xos bo'lgan blok-lokal o'zgaruvchilarni yaratishga imkon beradi.
+Bu juda zo'r, chunki bizga `if` tarmog'iga xos bo'lgan blok-lokal o'zgaruvchilarni yaratishga imkon beradi.
 
 Xuddi shunday narsa `for` va `while` sikllari uchun ham amal qiladi:
 
@@ -96,15 +96,15 @@ for (let i = 0; i < 3; i++) {
 alert(i); // Error, bunday o'zgaruvchi yo'q
 ```
 
-Vizual ravishda `let i` `{...}` dan tashqarida. Lekin bu yerda `for` konstruksiyasi alohida ahamiyatga ega: uning ichida e’lon qilingan o‘zgaruvchi blokning bir qismi hisoblanadi.
+Vizual ravishda `let i` `{...}` dan tashqarida. Lekin bu yerda `for` konstruksiyasi alohida ahamiyatga ega: uning ichida e'lon qilingan o'zgaruvchi blokning bir qismi hisoblanadi.
 
-## Ichma-ich funktsiyalar
+## Ichma-ich funksiyalar
 
-Funktsiya boshqa funktsiya ichida yaratilganda "nested" deb ataladi.
+Funksiya boshqa funksiya ichida yaratilganda "nested" deb ataladi.
 
-Buni JavaScript bilan osonlik bilan qilish mumkin.
+Buni JavaScript yordamida osonlik bilan qilish mumkin.
 
-Biz undan kodimizni tartibga solish uchun foydalanishimiz mumkin, masalan:
+Biz undan kodimizni tartibga solish uchun foydalanamiz, masalan:
 
 ```js
 function sayHiBye(firstName, lastName) {
@@ -122,9 +122,9 @@ function sayHiBye(firstName, lastName) {
 
 Bu yerda qulaylik uchun *nested* funksiyasi `getFullName()` yaratilgan. U tashqi o'zgaruvchilarga kirishi mumkin va shuning uchun to'liq ismni qaytarishi mumkin. JavaScriptda ichki o'rnatilgan funktsiyalar juda keng tarqalgan.
 
-Qizig'i shundaki, o'rnatilgan funktsiyani qaytarish mumkin: yangi ob'ektning mulki sifatida yoki natijada o'zi. Keyin uni boshqa joyda ishlatish mumkin. Qaerda bo'lishidan qat'i nazar, u hali ham bir xil tashqi o'zgaruvchilarga kirish huquqiga ega.
+Qizig'i shundaki, o'rnatilgan funksiyani yangi obyektning mulki sifatida yoki natijaning o'zi sifatida qaytarish mumkin. Keyin uni boshqa joyda ishlatsa bo'ladi. Qayerda bo'lishidan qat'iy nazar, u hali ham bir xil tashqi o'zgaruvchilarga kirish huquqiga ega.
 
-Quyida `makeCounter` har bir chaqiruvda keyingi raqamni qaytaruvchi “hisoblagich” funksiyasini yaratadi:
+Quyida `makeCounter` har bir chaqiruvda keyingi raqamni qaytaruvchi "hisoblagich" funksiyasini yaratadi:
 
 ```js run
 function makeCounter() {
@@ -142,16 +142,16 @@ alert( counter() ); // 1
 alert( counter() ); // 2
 ```
 
-Ushbu kodning sodda bo'lishiga qaramay, biroz o'zgartirilgan variantlari, masalan, avtomatlashtirilgan testlar uchun tasodifiy qiymatlarni yaratish uchun [tasodifiy raqamlar generatori] (https://en.wikipedia.org/wiki/Pseudorandom_number_generator) sifatida amaliy qo'llanilishiga ega.
+Ushbu kodning sodda bo'lishiga qaramay, biroz o'zgartirilgan variantlari, masalan, avtomatlashtirilgan testlarga mo'ljallangan tasodifiy qiymatlarni yaratish uchun [tasodifiy raqamlar generatori] (https://en.wikipedia.org/wiki/Pseudorandom_number_generator) sifatida amaliy qo'llanilishga ega.
 
-U qanday ishlaydi? Agar biz bir nechta hisoblagich yaratsak, ular mustaqil bo'ladimi? Bu erda o'zgaruvchilar bilan nima sodir bo'lmoqda?
+U qanday ishlaydi? Agar biz bir nechta hisoblagich yaratsak, ular mustaqil bo'ladimi? Bu yerda o'zgaruvchilar bilan nima sodir bo'lmoqda?
 
-Bunday narsalarni tushunish JavaScript-ni umumiy bilish uchun juda yaxshi va murakkabroq stsenariylar uchun foydalidir. Shunday qilib, keling, bir oz chuqurroq boraylik.
+Bunday narsalarni tushunish JavaScriptni umumiy bilish uchun juda yaxshi va murakkabroq ssenariylar uchun foydalidir. Shunday qilib, keling, mavzuga biroz chuqurroq yondashamiz.
 
 ## Leksik muhit
 
-```warn header="Bu yerda ajdarlar!"
-Chuqur texnik tushuntirish oldinda.
+```warn header="Bu yerda ajdarlar bor!"
+Keyinroq chuqur texnik tushuntirish beriladi.
 
 Men past darajadagi til tafsilotlaridan qochishni istardim, ularsiz har qanday tushunish kam va to'liq bo'lmaydi, shuning uchun tayyorlaning.
 ```
@@ -160,67 +160,67 @@ Aniqlik uchun tushuntirish bir necha bosqichlarga bo'lingan.
 
 ### 1-qadam. O'zgaruvchilar
 
-JavaScript-da har bir ishlaydigan funksiya, `{...}` kod bloki va umuman skript *Leksik muhit* deb nomlanuvchi ichki (yashirin) bog'langan ob'ektga ega.
+JavaScriptda ishlaydigan har bir funksiya, `{...}` kod bloki va umuman skript *Leksik muhit* deb nomlanuvchi ichki (yashirin) bog'langan obyektga ega.
 
 Leksik muhit obyekti ikki qismdan iborat:
 
-1. *Atrof-muhit yozuvi* -- barcha mahalliy o'zgaruvchilarni o'z xususiyatlari sifatida saqlaydigan ob'ekt (va "bu" qiymati kabi boshqa ma'lumotlar).
+1. *Atrof-muhit yozuvi* -- barcha mahalliy o'zgaruvchilarni o'z xususiyatlari sifatida saqlaydigan obyekt (va "this" qiymati kabi boshqa ma'lumotlar).
 2. Tashqi kod bilan bog'liq bo'lgan *tashqi leksik muhitga* havola.
 
-**"O'zgaruvchi" bu faqat maxsus ichki ob'ekt, 'Atrof-muhit yozuvi' xususiyatidir. "O'zgaruvchini olish yoki o'zgartirish" "ushbu ob'ektning xususiyatini olish yoki o'zgartirish" degan ma'noni anglatadi.**
+**"O'zgaruvchi" bu faqat maxsus ichki obyekt, 'Atrof-muhit yozuvi' xususiyatidir. "O'zgaruvchini olish yoki o'zgartirish" "ushbu obyektning xususiyatini olish yoki o'zgartirish" degan ma'noni anglatadi.**
 
-Funktsiyasiz ushbu oddiy kodda faqat bitta leksik muhit mavjud:
+Funksiyasiz ushbu oddiy kodda faqat bitta leksik muhit mavjud:
 
 ![lexical environment](lexical-environment-global.svg)
 
-Bu butun skript bilan bog'langan *global* Leksik muhit deb ataladi.
+Bu butun skript bilan bog'langan *global* leksik muhit deb ataladi.
 
-Yuqoridagi rasmda to'rtburchak atrof-muhit yozuvi (o'zgaruvchi ombori) va o'q tashqi ma'lumotni anglatadi. Global leksik muhitda tashqi havola yo'q, shuning uchun o'q `null` ni ko'rsatadi.
+Yuqoridagi rasmda to'rtburchak atrof-muhit yozuvi (o'zgaruvchi ombori) va strelka tashqi ma'lumotni anglatadi. Global leksik muhitda tashqi havola yo'q, shuning uchun strelka `null` ni ko'rsatadi.
 
-Kod bajarila boshlagach va davom etar ekan, leksik muhit o'zgaradi.
+Kodni bajarish davom etar ekan, leksik muhit o'zgaradi.
 
-Quyida bir oz ko'proq kod:
+Quyida bir oz ko'proq kod yozilgan:
 
 ![lexical environment](closure-variable-phrase.svg)
 
 O'ng tomondagi to'rtburchaklar global leksik muhitning bajarilishi davomida qanday o'zgarishini ko'rsatadi:
 
 1. Skript boshlanganda, leksik muhit barcha e'lon qilingan o'zgaruvchilar bilan oldindan to'ldiriladi.
-    - Dastlab, ular "Boshlanmagan" holatidadir. Bu maxsus ichki holat, ya'ni vosita o'zgaruvchi haqida biladi, lekin `let` bilan e'lon qilinmaguncha unga havola qilib bo'lmaydi. Bu o'zgaruvchi mavjud bo'lmagani bilan deyarli bir xil.
-2. Shundan so'ng `let phrase` ta'rifi paydo bo'ladi. Hali hech qanday topshiriq yoʻq, shuning uchun uning qiymati `undefined`. Biz o'zgaruvchini shu nuqtadan oldinga ishlatishimiz mumkin.
-3. `phrase` qiymat tayinlanadi.
+    - Dastlab, ular "boshlanmagan" holatda turibdi. Bu maxsus ichki holat, ya'ni vosita o'zgaruvchi haqida biladi, lekin `let` bilan e'lon qilinmaguncha unga havola qilib bo'lmaydi. Bu o'zgaruvchi mavjud bo'lmagani bilan deyarli bir xil.
+2. Shundan so'ng `let phrase` ta'rifi paydo bo'ladi. Hali hech qanday topshiriq yoʻq, shuning uchun uning qiymati `undefined`. Biz o'zgaruvchini shu nuqtadan oldinda ishlatishimiz mumkin.
+3. `phrase` uchun qiymat tayinlanadi.
 4. `phrase` qiymatini o'zgartiradi.
 
 Hozircha hamma narsa oddiy ko'rinadi, shunday emasmi?
 
-- O'zgaruvchi - bu hozir bajarilayotgan blok/funksiya/skript bilan bog'langan maxsus ichki ob'ektning xossasi.
-- O'zgaruvchilar bilan ishlash aslida ushbu ob'ektning xususiyatlari bilan ishlashdir.
+- O'zgaruvchi - bu hozir bajarilayotgan blok/funksiya/skript bilan bog'langan maxsus ichki obyektning xossasi.
+- O'zgaruvchilar bilan ishlash aslida ushbu obyektning xususiyatlari bilan ishlashdir.
 
-```smart header="Leksik muhit spetsifikatsiya ob'ektidir"
-"Leksik Muhit" spetsifikatsiya ob'ektidir: u faqat [til spetsifikatsiyasida] (https://tc39.es/ecma262/#sec-lexical-environments) narsalar qanday ishlashini tasvirlash uchun "nazariy jihatdan" mavjud. Biz ushbu ob'ektni kodimizga kirita olmaymiz va uni to'g'ridan-to'g'ri boshqara olmaymiz.
+```smart header="Leksik muhit spetsifikatsiya obyektidir"
+"Leksik Muhit" spetsifikatsiya obyektidir: u faqat [til spetsifikatsiyasida] (https://tc39.es/ecma262/#sec-lexical-environments) narsalar qanday ishlashini tasvirlash uchun "nazariy jihatdan" mavjud. Biz ushbu obyektni kodimizga kirita olmaymiz va uni to'g'ridan-to'g'ri boshqara olmaymiz.
 
 JavaScript dvigatellari, shuningdek, ko'rinadigan xatti-harakatlar tavsiflanganidek qolsa, uni optimallashtirishi, xotirani saqlash va boshqa ichki fokuslarni bajarish uchun foydalanilmaydigan o'zgaruvchilarni o'chirishi mumkin.
 ```
 
 ### 2-qadam. Funktsiya deklaratsiyasi
 
-Funktsiya ham o'zgaruvchi kabi qiymatdir.
+Funksiya ham o'zgaruvchi kabi qiymatdir.
 
-**Farqi shundaki, Funktsiya deklaratsiyasi darhol to'liq ishga tushiriladi.**
+**Farqi shundaki, funktsiya deklaratsiyasi darhol to'liq ishga tushiriladi.**
 
-Leksik muhit yaratilganda, Funktsiya deklaratsiyasi darhol foydalanishga tayyor funktsiyaga aylanadi (`let` dan farqli o'laroq, bu deklaratsiyagacha yaroqsiz).
+Leksik muhit yaratilganda, funktsiya deklaratsiyasi darhol foydalanishga tayyor funktsiyaga aylanadi (`let` dan farqli o'laroq, bu deklaratsiyagacha yaroqsiz).
 
-Shuning uchun biz Funktsiya deklaratsiyasi deb e'lon qilingan funktsiyani deklaratsiyadan oldin ham ishlatishimiz mumkin.
+Shuning uchun biz funktsiya deklaratsiyasi deb e'lon qilingan funktsiyani deklaratsiyadan oldin ham ishlatishimiz mumkin.
 
-Masalan, funktsiyani qo'shganda global leksik muhitning dastlabki holati:
+Masalan, funksiyani qo'shganda global leksik muhitning dastlabki holati:
 
 ![](closure-function-declaration.svg)
 
-Tabiiyki, bu xatti-harakat faqat funksiya deklaratsiyasiga taalluqlidir, bunda biz o‘zgaruvchiga funktsiya tayinlashimiz mumkin emas, masalan, `let say = function(name)...` kabi.
+Tabiiyki, bu xatti-harakat faqat funksiya deklaratsiyasiga taalluqlidir, bunda biz o'zgaruvchiga funksiya tayinlashimiz mumkin emas, masalan, `let say = function(name)...` kabi.
 
 ### 3-qadam. Ichki va tashqi leksik muhit
 
-Funktsiya ishga tushganda, chaqiruv boshida, chaqiruvning mahalliy o'zgaruvchilari va parametrlarini saqlash uchun avtomatik ravishda yangi Leksik muhit yaratiladi.
+Funktsiya ishga tushganda, chaqiruv boshida, chaqiruvning mahalliy o'zgaruvchilari va parametrlarini saqlash uchun avtomatik ravishda yangi leksik muhit yaratiladi.
 
 Masalan, `say("John")` uchun u shunday ko'rinadi (bajarish strelka bilan belgilangan qatorda):
 
@@ -237,14 +237,14 @@ Masalan, `say("John")` uchun u shunday ko'rinadi (bajarish strelka bilan belgila
 
 ![](lexical-environment-simple.svg)
 
-Funktsiyani chaqirish paytida bizda ikkita leksik muhit mavjud: ichki (funktsiya chaqiruvi uchun) va tashqi (global):
+Funksiyani chaqirish paytida bizda ikkita leksik muhit mavjud: ichki (funksiya chaqiruvi uchun) va tashqi (global):
 
-- Ichki leksik muhit `say` amaldagi bajarilishiga mos keladi. U bitta xususiyatga ega: `name`, funktsiya argumenti. Biz `say("John")` deb chaqirdik, shuning uchun `name` qiymati `"John"`.
+- Ichki leksik muhit `say` amaldagi bajarilishiga mos keladi. U bitta xususiyatga ega: `name`, funksiya argumenti. Biz `say("John")` deb chaqirdik, shuning uchun `name` qiymati `"John"`.
 - Tashqi leksik muhit global leksik muhitdir. Unda `phrase` o'zgaruvchisi va funksiyaning o'zi mavjud.
 
-Ichki leksik muhit `tashqi` muhitga ishora qiladi.
+Ichki leksik muhit `outer` (tashqi) muhitga ishora qiladi.
 
-**Kod o‘zgaruvchiga kirishni istasa -- avval ichki leksik muhit, so‘ngra tashqi, so‘ngra ko‘proq tashqi va global bo‘lgunga qadar qidiriladi.**
+**Kod o'zgaruvchiga kirishni istasa -- avval ichki leksik muhit, so'ngra tashqi, so'ngra ko'proq tashqi va global bo'lgunga qadar qidiriladi.**
 
 Agar o'zgaruvchi hech qanday joyda topilmasa, bu qat'iy rejimdagi xatodir (`use strict`siz, mavjud bo'lmagan o'zgaruvchiga tayinlash eski kod bilan moslik uchun yangi global o'zgaruvchini yaratadi).
 
@@ -256,7 +256,7 @@ Ushbu misolda qidiruv quyidagicha davom etadi:
 ![lexical environment lookup](lexical-environment-simple-lookup.svg)
 
 
-### 4-qadam. Funktsiyani qaytarish
+### 4-qadam. Funksiyani qaytarish
 
 Keling, `makeCounter` misoliga qaytaylik.
 
@@ -272,7 +272,7 @@ function makeCounter() {
 let counter = makeCounter();
 ```
 
-Har bir `makeCounter()` chaqiruvining boshida ushbu `makeCounter` ishga tushirilishi uchun o‘zgaruvchilarni saqlash uchun yangi Leksik muhit obyekti yaratiladi.
+Har bir `makeCounter()` chaqiruvining boshida ushbu `makeCounter` ishga tushirilishi uchun o'zgaruvchilarni saqlash uchun yangi leksik muhit obyekti yaratiladi.
 
 Shunday qilib, bizda yuqoridagi misoldagi kabi ikkita ichki leksik muhit mavjud:
 
@@ -280,17 +280,17 @@ Shunday qilib, bizda yuqoridagi misoldagi kabi ikkita ichki leksik muhit mavjud:
 
 Farqi shundaki, `makeCounter()` bajarilayotganda faqat bitta qatordan kichik ichki funksiya yaratiladi: `return count++`. Biz uni hali ishga tushirmayapmiz, faqat yaratamiz.
 
-Barcha funktsiyalar ular yaratilgan leksik muhitni eslab qoladi. Texnik jihatdan bu yerda hech qanday sehr yo‘q: barcha funksiyalar funksiya yaratilgan leksik muhitga havolani saqlaydigan `[[Atrof-muhit]]` nomli yashirin xususiyatga ega:
+Barcha funksiyalar yaratilgan leksik muhitni eslab qoladi. Texnik jihatdan bu yerda hech qanday sehr yo'q: barcha funksiyalar funksiya yaratilgan leksik muhitga havolani saqlaydigan `[[Atrof-muhit]]` nomli yashirin xususiyatga ega:
 
 ![](closure-makecounter-environment.svg)
 
-Demak, `counter.[[Atrof-muhit]]` `{count: 0}` Leksik muhitga havolaga ega. Funktsiya qayerda chaqirilganidan qat'i nazar, qayerda yaratilganligini shunday eslab qoladi. `[[Atrof-muhit]]` mos yozuvi funksiya yaratish vaqtida bir marta va abadiy oʻrnatiladi.
+Demak, `counter.[[Atrof-muhit]]` `{count: 0}` Leksik muhit havolasiga ega. Funksiya qayerda chaqirilganidan qat'iy nazar, qayerda yaratilganligini shunday eslab qoladi. `[[Atrof-muhit]]` mos yozuvi funksiya yaratish vaqtida bir marta va abadiy o'rnatiladi.
 
 Keyinchalik, `counter()` chaqirilganda, chaqiruv uchun yangi Leksik Muhit yaratiladi va uning tashqi Leksik Muhit havolasi `counter[[Environment]]`dan olinadi:
 
 ![](closure-makecounter-nested-call.svg)
 
-Endi `counter()` ichidagi kod `count` o‘zgaruvchisini qidirganda, u avval o‘zining leksik muhitini (bo‘sh, chunki u yerda mahalliy o‘zgaruvchilar yo‘q), so‘ngra tashqi `makeCounter()` chaqiruvining leksik muhitini qidiradi, qaerdan topadi va o'zgartiradi.
+Endi `counter()` ichidagi kod `count` o'zgaruvchisini qidirganda, u avval o'zining leksik muhitini (bo'sh, chunki u yerda mahalliy o'zgaruvchilar yo'q), so'ngra tashqi `makeCounter()` chaqiruvining leksik muhitini qidirib topadi va o'zgartiradi.
 
 **O'zgaruvchi o'zi yashaydigan leksik muhitda yangilanadi.**
 
@@ -298,25 +298,25 @@ Ijrodan keyingi holat:
 
 ![](closure-makecounter-nested-call-2.svg)
 
-Agar biz `counter()` ni bir necha marta chaqirsak, `count` o‘zgaruvchisi bir joyda `2`, `3` va hokazolarga ko‘payadi.
+Agar biz `counter()` ni bir necha marta chaqirsak, `count` o'zgaruvchisi bir joyda `2`, `3` va hokazolarga ko'payadi.
 
 ``smart header="Yopish(closure)"
 Ishlab chiquvchilar odatda bilishi kerak bo'lgan "closure" degan umumiy dasturlash atamasi mavjud.
 
-[yopish](https://en.wikipedia.org/wiki/Closure_(computer_programming)) bu tashqi oʻzgaruvchilarni eslab qoladigan va ularga kira oladigan funksiyadir. Ba'zi tillarda bu mumkin emas yoki funksiya uni amalga oshirish uchun maxsus tarzda yozilishi kerak. Ammo yuqorida aytib o'tilganidek, JavaScriptda barcha funktsiyalar tabiiy ravishda yopiladi (faqat bitta istisno mavjud, <info:new-function> da yoritiladi).
+[yopish](https://en.wikipedia.org/wiki/Closure_(computer_programming)) bu tashqi o'zgaruvchilarni eslab qoladigan va ularga kira oladigan funksiyadir. Ba'zi tillarda bu mumkin emas yoki funksiya uni amalga oshirish uchun maxsus tarzda yozilishi kerak. Ammo yuqorida aytib o'tilganidek, JavaScriptda barcha funktsiyalar tabiiy ravishda yopiladi (faqat bitta istisno mavjud, bu holat <info:new-function> da yoritiladi).
 
-Ya'ni: ular yashirin `[[Environment]]` xususiyati yordamida qayerda yaratilganligini avtomatik ravishda eslab qoladi va keyin ularning kodi tashqi o'zgaruvchilarga kira oladi.
+Ya'ni ular yashirin `[[Environment]]` xususiyati yordamida qayerda yaratilganligini avtomatik ravishda eslab qoladi va keyin ularning kodi tashqi o'zgaruvchilarga kira oladi.
 
-Intervyuda frontend dasturchisiga “closure(yopilish) nima?” degan savol beriladi, toʻgʻri javob closurening taʼrifi va JavaScriptdagi barcha funksiyalar closure ekanligini tushuntirish va texnik tafsilotlar haqida yana bir necha soʻz boʻlishi mumkin: `[[Environment]]` xususiyati va Leksik muhitlar qanday ishlashi.
+Intervyuda frontend dasturchisiga "closure(yopilish) nima?" degan savol beriladi, to'g'ri javob closurening ta'rifi va JavaScriptdagi barcha funksiyalar closure ekanligini tushuntirish va texnik tafsilotlar, `[[Environment]]` xususiyati va Leksik muhitlar qanday ishlashi haqida yana so'z borishi mumkin.
 ``
 
 ## Axlat yig'ish
 
-Odatda, funktsiya chaqiruvi tugagandan so'ng, leksik muhit barcha o'zgaruvchilar bilan xotiradan o'chiriladi. Buning sababi, unga havolalar yo'q. Har qanday JavaScript ob'ekti kabi, u faqat mavjud bo'lganda xotirada saqlanadi.
+Odatda, funksiya chaqiruvi tugagandan so'ng, leksik muhit barcha o'zgaruvchilar bilan xotiradan o'chiriladi. Buning sababi, unga yo'naltirilgan havolalar yo'q. Har qanday JavaScript obyekti kabi, u faqat mavjud bo'lganda xotirada saqlanadi.
 
-Ammo, agar funktsiya tugaganidan keyin ham kirish mumkin bo'lgan ichki o'rnatilgan funksiya mavjud bo'lsa, u lug'aviy muhitga havola qiluvchi `[[Environment]]` xususiyatiga ega.
+Ammo, agar funksiya tugaganidan keyin ham kirish mumkin bo'lgan ichki o'rnatilgan funksiya mavjud bo'lsa, u lug'aviy muhitga havola qiluvchi `[[Environment]]` xususiyatiga ega.
 
-Bunday holda, leksik muhitga funktsiya tugagandan keyin ham kirish mumkin, shuning uchun u tirik qoladi.
+Bunday holda, leksik muhitga funksiya tugagandan keyin ham kirish mumkin, shuning uchun u saqlanib qoladi.
 
 Masalan:
 
@@ -332,7 +332,7 @@ function f() {
 let g = f(); // g.[[Environment]] tegishli f() chaqiruvining leksik muhitiga havolani saqlaydi
 ```
 
-E'tibor bering, agar `f()` ko'p marta chaqirilsa va natijada olingan funksiyalar saqlangan bo'lsa, barcha mos keladigan Leksik muhit ob'ektlari ham xotirada saqlanib qoladi. Quyidagi kodda ularning uchtasi:
+E'tibor bering, agar `f()` ko'p marta chaqirilsa va natijada olingan funksiyalar saqlangan bo'lsa, barcha mos keladigan Leksik muhit obyektlari ham xotirada saqlanib qoladi. Quyidagi kodda ularning uchtasi:
 
 ```js
 function f() {
@@ -342,13 +342,13 @@ function f() {
 }
 
 // Massivda 3 ta funksiya, ularning har biri leksik muhitga bog'langan
-// mos keladigan f() ishga tushirishdan
+// mos keladigan f() ishga tushirilgan
 let arr = [f(), f(), f()];
 ```
 
-Lexical Environment ob'ekti erishib bo'lmaydigan holga kelganda o'ladi (xuddi boshqa har qanday ob'ekt kabi). Boshqacha qilib aytganda, u faqat unga havola qiluvchi kamida bitta ichki funksiya mavjud bo'lganda mavjud.
+Lexical Environment obyekti erishib bo'lmaydigan holga kelganda xuddi boshqa har qanday obyekt kabi o'ladi. Boshqacha qilib aytganda, u faqat o'ziga havola qiluvchi kamida bitta ichki funksiya bor bo'lganda mavjud.
 
-Quyidagi kodda, ichki o'rnatilgan funksiya o'chirilgandan so'ng, uni o'rab turgan leksik muhit (va shuning uchun `value` xotiradan tozalanadi:
+Quyidagi kodda, ichki o'rnatilgan funksiya o'chirilgandan so'ng, uni o'rab turgan leksik muhit bor va shuning uchun `value` xotiradan tozalanadi:
 
 ```js
 function f() {
@@ -366,13 +366,13 @@ g = null; // ...va endi xotira tozalandi
 
 ### Real hayotdagi optimallashtirish
 
-Ko'rib turganimizdek, nazariy jihatdan funktsiya tirikligida barcha tashqi o'zgaruvchilar ham saqlanib qoladi.
+Ko'rib turganimizdek, nazariy jihatdan funksiya tirikligida barcha tashqi o'zgaruvchilar ham saqlanib qoladi.
 
 Lekin amalda JavaScript dvigatellari buni optimallashtirishga harakat qiladi. Ular o'zgaruvchilardan foydalanishni tahlil qiladilar va agar koddan tashqi o'zgaruvchi ishlatilmaganligi aniq bo'lsa, u o'chiriladi.
 
 **V8 (Chrome, Edge, Opera) ning muhim yon ta'siri shundaki, bunday o'zgaruvchi disk raskadrovkada mavjud bo'lmaydi.**
 
-Quyidagi misolni Chrome brauzerida Developer Tools ochiq holda ishga tushirib ko‘ring.
+Quyidagi misolni Chrome brauzerida Developer Tools ochiq holda ishga tushirib ko'ring.
 
 U to'xtatilganda, konsolda `alerr(value)` ni kiriting.
 
@@ -393,7 +393,7 @@ g();
 
 Ko'rib turganingizdek -- bunday o'zgaruvchi yo'q! Nazariy jihatdan, unga kirish mumkin bo'lishi kerak, ammo dvigatel uni optimallashtirdi.
 
-Bu nosozliklarni tuzatish bilan bog'liq kulgili (agar ko'p vaqt talab qilmasa) olib kelishi mumkin. Ulardan biri -- kutilgan o'rniga bir xil nomli tashqi o'zgaruvchini ko'rishimiz mumkin:
+Agar ko'p vaqt talab qilmasa, bu nosozliklar ularni tuzatish bilan bog'liq kulgili holatlarga olib kelishi mumkin. Ulardan biri -- kutilgan elementlar o'rniga bir xil nomli tashqi o'zgaruvchini ishlatib ko'rishimiz mumkin:
 
 ```js run global
 let value = "Surprise!";
@@ -412,6 +412,6 @@ let g = f();
 g();
 ```
 
-V8 ning bu xususiyati bilish yaxshi. Agar siz Chrome/Edge/Opera bilan debugging qilsangiz, ertami-kechmi siz uni uchratasiz.
+V8 ning bu xususiyatini bilish yaxshi. Agar siz Chrome/Edge/Opera bilan debugging qilsangiz, ertami-kechmi siz unga baribir duch kelasiz.
 
-Bu tuzatuvchidagi xato emas, balki V8 ning o'ziga xos xususiyati. Ehtimol, qachondir o'zgartiriladi. Siz har doim ushbu sahifadagi misollarni ishga tushirish orqali buni tekshirishingiz mumkin.
+Bu tuzatuvchidagi xato emas, balki V8 ning o'ziga xos xususiyatidir. Ehtimol, bu qachondir o'zgartirilar. Siz har doim ushbu sahifadagi misollarni ishga tushirish orqali buni tekshirishingiz mumkin.

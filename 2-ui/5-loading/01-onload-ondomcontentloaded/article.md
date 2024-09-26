@@ -1,39 +1,38 @@
-# Page: DOMContentLoaded, load, beforeunload, unload
+# Sahifa: DOMContentLoaded, load, beforeunload, unload
 
-The lifecycle of an HTML page has three important events:
+HTML-sahifaning hayotiy aylanishi uchta muhim hodisadan iborat:
 
-- `DOMContentLoaded` -- the browser fully loaded HTML, and the DOM tree is built, but external resources like pictures `<img>` and stylesheets may not yet have loaded.
-- `load` -- not only HTML is loaded, but also all the external resources: images, styles etc.
-- `beforeunload/unload` -- the user is leaving the page.
+- `DOMContentLoaded` -- brauzer HTML-ni to'liq yuklagan va DOM daraxti qurilgan, ammo `<img>` rasmlar va uslublar jadvallari kabi tashqi resurslar hali yuklanmagan bo'lishi mumkin.
+- `load` -- nafaqat HTML, balki barcha tashqi resurslar ham yuklanadi: tasvirlar, uslublar va h.k.
+- `beforeunload/unload` -- foydalanuvchi sahifani tark etmoqda.
 
-Each event may be useful:
+Har bir hodisa foydali bo'lishi mumkin:
 
-- `DOMContentLoaded` event -- DOM is ready, so the handler can lookup DOM nodes, initialize the interface.
-- `load` event -- external resources are loaded, so styles are applied, image sizes are known etc.
-- `beforeunload` event -- the user is leaving: we can check if the user saved the changes and ask them whether they really want to leave.
-- `unload` -- the user almost left, but we still can initiate some operations, such as sending out statistics.
+- `DOMContentLoaded` hodisasi -- DOM tayyor, shuning uchun ishlov beruvchi DOM tugunlarini qidirishi, interfeysni ishga tushirishi mumkin.
+- `load` hodisasi -- tashqi resurslar yuklanadi, shuning uchun uslublar qo'llaniladi, tasvir o'lchamlari ma'lum.
+- `beforeunload` hodisasi -- foydalanuvchi ketmoqda: foydalanuvchi o'zgarishlarni saqlaganligini tekshirib ko'rishimiz va ulardan haqiqatan ham ketishni xohlashini so'rashimiz mumkin.
+- `unload` -- foydalanuvchi deyarli tark etdi, lekin biz hali ham ba'zi operatsiyalarni boshlashimiz mumkin, masalan, statistikani yuborish.
 
-Let's explore the details of these events.
+Keling, ushbu voqealarning tafsilotlarini ko'rib chiqaylik.
 
 ## DOMContentLoaded
+`DOMContentLoaded` hodisasi `document` obyektida sodir bo`ladi.
 
-The `DOMContentLoaded` event happens on the `document` object.
-
-We must use `addEventListener` to catch it:
+Uni qo'lga olish uchun `addEventListener` dan foydalanishimiz kerak:
 
 ```js
 document.addEventListener("DOMContentLoaded", ready);
-// not "document.onDOMContentLoaded = ..."
+// "document.onDOMContentLoaded = ..." emas
 ```
 
-For instance:
+Masalan:
 
 ```html run height=200 refresh
 <script>
   function ready() {
     alert('DOM is ready');
 
-    // image is not yet loaded (unless it was cached), so the size is 0x0
+    // tasvir hali yuklanmagan (agar u keshlangan bo'lmasa), shuning uchun hajmi 0x0
     alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`);
   }
 
@@ -45,17 +44,17 @@ For instance:
 <img id="img" src="https://en.js.cx/clipart/train.gif?speed=1&cache=0">
 ```
 
-In the example, the `DOMContentLoaded` handler runs when the document is loaded, so it can see all the elements, including `<img>` below.
+Misolda, `DOMContentLoaded` ishlov beruvchisi hujjat yuklanganda ishlaydi, shuning uchun u barcha elementlarni, jumladan, quyida joylashgan `<img>`ni ko'rishi mumkin.
 
-But it doesn't wait for the image to load. So `alert` shows zero sizes.
+Lekin rasm yuklanishini kutmaydi. Shunday qilib, `alert` nol o'lchamlarni ko'rsatadi.
 
-At first sight, the `DOMContentLoaded` event is very simple. The DOM tree is ready -- here's the event. There are few peculiarities though.
+Bir qarashda, DOMContentLoaded hodisasi juda oddiy. DOM daraxti tayyor -- mana hodisa. Bir nechta o'ziga xosliklar mavjud.
 
-### DOMContentLoaded and scripts
+### DOMContentLoaded va skriptlar
 
-When the browser processes an HTML-document and comes across a `<script>` tag, it needs to execute before continuing building the DOM. That's a precaution, as scripts may want to modify DOM, and even `document.write` into it, so `DOMContentLoaded` has to wait.
+Brauzer HTML-hujjatni qayta ishlaganda va `<script>` tegiga duch kelganda, DOMni yaratishni davom ettirishdan oldin uni bajarishi kerak. Bu ehtiyot chorasi, chunki skriptlar DOMni o'zgartirishni va hatto `document.write` ni unga o'zgartirishni xohlashi mumkin, shuning uchun `DOMContentLoaded` kutishi kerak.
 
-So DOMContentLoaded definitely happens after such scripts:
+Shunday qilib, DOMContentLoaded, albatta, bunday skriptlardan keyin sodir bo'ladi:
 
 ```html run
 <script>
@@ -70,54 +69,52 @@ So DOMContentLoaded definitely happens after such scripts:
   alert("Library loaded, inline script executed");
 </script>
 ```
+Yuqoridagi misolda biz avval "Library loaded..." ni , keyin esa "DOM ready!" ni ko'ramiz (barcha skriptlar bajariladi).
 
-In the example above, we first see "Library loaded...", and then "DOM ready!" (all scripts are executed).
-
-```warn header="Scripts that don't block DOMContentLoaded"
-There are two exceptions from this rule:
-1. Scripts with the `async` attribute, that we'll cover [a bit later](info:script-async-defer), don't block `DOMContentLoaded`.
-2. Scripts that are generated dynamically with `document.createElement('script')` and then added to the webpage also don't block this event.
+```warn header="DOMContentLoaded ni bloklamaydigan skriptlar"
+Ushbu qoidadan ikkita istisno mavjud:
+1. Biz [birozdan keyin] (info:script-async-defer) qamrab oladigan `async` atribyutiga ega skriptlar `DOMContentLoaded`ni bloklamang.
+2. `document.createElement('script')` yordamida dinamik ravishda yaratilgan va keyin veb-sahifaga qo'shilgan skriptlar ham bu hodisani bloklamaydi.
 ```
 
-### DOMContentLoaded and styles
+### DOMContentLoaded va uslublar
 
-External style sheets don't affect DOM, so `DOMContentLoaded` does not wait for them.
+Tashqi uslublar jadvallari DOM ga ta'sir qilmaydi, shuning uchun `DOMContentLoaded` ularni kutmaydi.
 
-But there's a pitfall. If we have a script after the style, then that script must wait until the stylesheet loads:
+Lekin bir tuzoq bor. Agar bizda uslubdan keyin skript mavjud bo'lsa, u holda bu skript uslublar jadvali yuklanmaguncha kutishi kerak:
 
 ```html run
 <link type="text/css" rel="stylesheet" href="style.css">
 <script>
-  // the script doesn't execute until the stylesheet is loaded
+  // skript uslublar jadvali yuklanmaguncha bajarilmaydi
   alert(getComputedStyle(document.body).marginTop);
 </script>
 ```
+Buning sababi shundaki, skript yuqoridagi misoldagi kabi elementlarning koordinatalarini va boshqa uslubga bog'liq xususiyatlarini olishni xohlashi mumkin. Tabiiyki, uslublar yuklanishini kutish kerak.
 
-The reason for this is that the script may want to get coordinates and other style-dependent properties of elements, like in the example above. Naturally, it has to wait for styles to load.
+`DOMContentLoaded` skriptlarni kutganidek, endi u ulardan oldingi uslublarni ham kutadi.
 
-As `DOMContentLoaded` waits for scripts, it now waits for styles before them as well.
+### O'rnatilgan brauzerni avtomatik to'ldirish
 
-### Built-in browser autofill
+`DOMContentLoaded` da Firefox, Chrome va Opera avtomatik to'ldirish shakllari mavjud.
 
-Firefox, Chrome and Opera autofill forms on `DOMContentLoaded`.
+Misol uchun, agar sahifada login va parolga ega bo'lgan shakl mavjud bo'lsa va brauzer qiymatlarni eslab qolsa, u holda `DOMContentLoaded` da ularni avtomatik to'ldirishga harakat qilishi mumkin (agar foydalanuvchi tomonidan ma'qullangan bo'lsa).
 
-For instance, if the page has a form with login and password, and the browser remembered the values, then on `DOMContentLoaded` it may try to autofill them (if approved by the user).
-
-So if `DOMContentLoaded` is postponed by long-loading scripts, then autofill also awaits. You probably saw that on some sites (if you use browser autofill) -- the login/password fields don't get autofilled immediately, but there's a delay till the page fully loads. That's actually the delay until the `DOMContentLoaded` event.
+Shunday qilib, agar `DOMContentLoaded` uzoq vaqt yuklanadigan skriptlar tomonidan qoldirilsa, avtomatik to'ldirish ham kutiladi. Ehtimol, ba'zi saytlarda (agar siz brauzerni avtomatik to'ldirishdan foydalansangiz) -- login/parol maydonlari darhol avtomatik to'ldirilmasligini ko'rgansiz, lekin sahifa to'liq yuklanmaguncha kechikish ehtimoli mavjud. Bu `DOMContentLoaded` hodisasigacha kechikadi.
 
 
 ## window.onload [#window-onload]
 
-The `load` event on the `window` object triggers when the whole page is loaded including styles, images and other resources. This event is available via the `onload` property.
+`Window` obyektidagi `load` hodisasi butun sahifa, jumladan uslublar, tasvirlar va boshqa manbalar yuklanganda ishga tushadi. Ushbu hodisa `onload` xususiyati orqali mavjud.
 
-The example below correctly shows image sizes, because `window.onload` waits for all images:
+Quyidagi misolda tasvir o'lchamlari to'g'ri ko'rsatilgan, chunki `window.onload` barcha tasvirlarni kutadi:
 
 ```html run height=200 refresh
 <script>
-  window.onload = function() { // can also use window.addEventListener('load', (event) => {
+  window.onload = function() { // window.addEventListener dan ham foydalanish mumkin('load', (event) => {
     alert('Page loaded');
 
-    // image is loaded at this time
+    // image bu vaqtda yuklangan
     alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`);
   };
 </script>
@@ -126,46 +123,44 @@ The example below correctly shows image sizes, because `window.onload` waits for
 ```
 
 ## window.onunload
+Visitor sahifani tark etganda, `unload` hodisasi `window` ishga tushadi. Biz u yerda kechikish bilan bog'liq bo'lmagan ishni qilishimiz mumkin, masalan, tegishli qalqib chiquvchi oynalarni yopish.
 
-When a visitor leaves the page, the `unload` event triggers on `window`. We can do something there that doesn't involve a delay, like closing related popup windows.
+E'tiborga molik istisno tahliliy ma'lumotlarni yuborishdir.
 
-The notable exception is sending analytics.
+Aytaylik, biz sahifadan qanday foydalanish haqida ma'lumot to'playmiz: sichqonchani bosish, aylantirish, ko'rilgan sahifa maydonlari va boshqalar.
 
-Let's say we gather data about how the page is used: mouse clicks, scrolls, viewed page areas, and so on.
+Tabiiyki, `unload` hodisasi foydalanuvchi bizni tark etganda sodir bo'ladi va biz ma'lumotlarni serverimizda saqlamoqchimiz.
 
-Naturally, `unload` event is when the user leaves us, and we'd like to save the data on our server.
+Bunday ehtiyojlar uchun <https://w3c.github.io/beacon/> spetsifikatsiyasida tasvirlangan maxsus `navigator.sendBeacon(url, data)` usuli mavjud.
 
-There exists a special `navigator.sendBeacon(url, data)` method for such needs, described in the specification <https://w3c.github.io/beacon/>.
+U ma'lumotlarni fonda yuboradi. Boshqa sahifaga o'tish kechiktirilmaydi: brauzer sahifani tark etadi, lekin baribir `sendBeacon` ni bajaradi.
 
-It sends the data in background. The transition to another page is not delayed: the browser leaves the page, but still performs `sendBeacon`.
-
-Here's how to use it:
+Undan qanday foydalanish kerakligi quyida tushuntirilgan:
 ```js
-let analyticsData = { /* object with gathered data */ };
+let analyticsData = { /* to'plangan ma'lumotlarga ega obyekt */ };
 
 window.addEventListener("unload", function() {
   navigator.sendBeacon("/analytics", JSON.stringify(analyticsData));
 });
 ```
+- So'rov POST sifatida yuboriladi.
+- Biz <info:fetch> bobida ta'riflanganidek, biz nafaqat satrni, balki shakllar va boshqa formatlarni ham yuborishimiz mumkin, lekin odatda bu stringli obyektdir.
+- Ma'lumot 64 kb bilan cheklangan.
 
-- The request is sent as POST.
-- We can send not only a string, but also forms and other formats, as described in the chapter <info:fetch>, but usually it's a stringified object.
-- The data is limited by 64kb.
+`sendBeacon` so'rovi tugagach, brauzer hujjatni allaqachon tark etgan bo'lishi mumkin, shuning uchun serverdan javob olishning iloji yo'q (bu odatda tahlillar uchun bo'sh hisoblanadi).
 
-When the `sendBeacon` request is finished, the browser probably has already left the document, so there's no way to get server response (which is usually empty for analytics).
-
-There's also a `keepalive` flag for doing such "after-page-left" requests in  [fetch](info:fetch) method for generic network requests. You can find more information in the chapter <info:fetch-api>.
+Umumiy tarmoq so'rovlari uchun [fetch](info:fetch) usulida "chapdan keyingi sahifa" so'rovlarini bajarish uchun `keepalive` bayrog'i ham mavjud. Qo'shimcha ma'lumotni <info:fetch-api> bo'limida topishingiz mumkin.
 
 
-If we want to cancel the transition to another page, we can't do it here. But we can use another event -- `onbeforeunload`.
+Agar biz boshqa sahifaga o'tishni bekor qilmoqchi bo'lsak, biz buni bu yerda bajarolmaymiz. Lekin biz boshqa `onbeforeunload` hodisadan foydalanishimiz mumkin.
 
 ## window.onbeforeunload [#window.onbeforeunload]
 
-If a visitor initiated navigation away from the page or tries to close the window, the `beforeunload` handler asks for additional confirmation.
+Agar tashrifchi sahifadan uzoqda navigatsiyani boshlagan bo'lsa yoki oynani yopishga harakat qilsa, `beforeunload` ishlov beruvchisi qo'shimcha tasdiqlashni so'raydi.
 
-If we cancel the event, the browser may ask the visitor if they are sure.
+Agar biz tadbirni bekor qilsak, brauzer tashrif buyuruvchidan ishonch hosil qilishini so'rashi mumkin.
 
-You can try it by running this code and then reloading the page:
+Siz ushbu kodni ishga tushirish va sahifani qayta yuklash orqali sinab ko'rsangiz bo'ladi:
 
 ```js run
 window.onbeforeunload = function() {
@@ -173,33 +168,32 @@ window.onbeforeunload = function() {
 };
 ```
 
-For historical reasons, returning a non-empty string also counts as canceling the event. Some time ago browsers used to show it as a message, but as the [modern specification](https://html.spec.whatwg.org/#unloading-documents) says, they shouldn't.
+Tarixiy sabablarga ko'ra, bo'sh bo'lmagan qatorni qaytarish ham tadbirni bekor qilish hisoblanadi. Bir muncha vaqt oldin brauzerlar buni xabar sifatida ko'rsatishgan, ammo [zamonaviy spetsifikatsiya](https://html.spec.whatwg.org/#unloading-documents) aytganidek, bunday qilmaslik kerak.
 
-Here's an example:
+Mana, quyidagi namunaga e'tibor bering:
 
 ```js run
 window.onbeforeunload = function() {
   return "There are unsaved changes. Leave now?";
 };
 ```
+Behavior o'zgartirildi, chunki ba'zi veb-ustalar noto'g'ri va bezovta qiluvchi xabarlarni ko'rsatish orqali ushbu hodisani ishlovchini suiiste'mol qilishdi. Shunday qilib, hozirda eski brauzerlar uni xabar sifatida ko'rsatishi mumkin, ammo bundan tashqari, foydalanuvchiga ko'rsatilgan xabarni sozlashning hech qanday usuli yo'q.
 
-The behavior was changed, because some webmasters abused this event handler by showing misleading and annoying messages. So right now old browsers still may show it as a message, but aside of that -- there's no way to customize the message shown to the user.
+````warn header="`event.preventDefault()` `beforeunload` ishlov beruvchisida ishlamaydi`"
+Bu biroz g'alati tuyilishi mumkin, ammo ko'pchilik brauzerlar `event.preventDefault()` ni e'tiborga olmaydi.
 
-````warn header="The `event.preventDefault()` doesn't work from a `beforeunload` handler"
-That may sound weird, but most browsers ignore `event.preventDefault()`.
-
-Which means, following code may not work:
+Bu shuni anglatadiki, quyida berilgan kod ishlamasligi mumkin:
 ```js run
 window.addEventListener("beforeunload", (event) => {
-  // doesn't work, so this event handler doesn't do anything
+  // ishlamaydi, demak ushbu event handler hech qanday vazifani bajarmaydi
 	event.preventDefault();
 });
 ```
 
-Instead, in such handlers one should set `event.returnValue` to a string to get the result similar to the code above:
+Buning o'rniga, bunday ishlov beruvchilarda yuqoridagi kodga o'xshash natijani olish uchun `event.returnValue` ni qatorga o'rnatish kerak:
 ```js run
 window.addEventListener("beforeunload", (event) => {
-  // works, same as returning from window.onbeforeunload
+  // window.onbeforeunload dan qaytish bilan bir xil ishlaydi
 	event.returnValue = "There are unsaved changes. Leave now?";
 });
 ```
@@ -207,37 +201,36 @@ window.addEventListener("beforeunload", (event) => {
 
 ## readyState
 
-What happens if we set the `DOMContentLoaded` handler after the document is loaded?
+Hujjat yuklangandan so'ng `DOMContentLoaded` ishlov beruvchisini o'rnatsak nima bo'ladi?
 
-Naturally, it never runs.
+Tabiiyki, u hech qachon yugurmaydi.
 
-There are cases when we are not sure whether the document is ready or not. We'd like our function to execute when the DOM is loaded, be it now or later.
+Hujjat tayyor yoki tayyor emasligiga ishonchimiz komil bo'lmagan holatlar mavjud. Biz DOM yuklanganda funksiyamiz bajarilishini xohlaymiz, yo hozir yoki keyinroq.
 
-The `document.readyState` property tells us about the current loading state.
+`document.readyState` xususiyati bizga joriy yuklanish holati haqida xabar beradi.
 
-There are 3 possible values:
+3 ta mumkin bo'lgan qiymat mavjud:
 
-- `"loading"` -- the document is loading.
-- `"interactive"` -- the document was fully read.
-- `"complete"` -- the document was fully read and all resources (like images) are loaded too.
+- `"loading"` -- hujjat yuklanmoqda.
+- `"interactive"` -- hujjat to'liq o'qildi.
+- `"complete"` -- Hujjat to'liq o'qildi va barcha resurslar (masalan, tasvirlar) yuklandi.
 
-So we can check `document.readyState` and setup a handler or execute the code immediately if it's ready.
+Shunday qilib, biz `document.readyState` ni tekshirib, ishlov beruvchini o‘rnatishimiz yoki kod tayyor bo'lsa, darhol uni bajarishimiz mumkin.
 
-Like this:
+Shunga o'xshash:
 
 ```js
 function work() { /*...*/ }
 
 if (document.readyState == 'loading') {
-  // still loading, wait for the event
+  // hali ham yuklanmoqda, event ni kutib turing
   document.addEventListener('DOMContentLoaded', work);
 } else {
-  // DOM is ready!
+  // DOM tayyor!
   work();
 }
 ```
-
-There's also the `readystatechange` event that triggers when the state changes, so we can print all these states like this:
+Vaziyat o'zgarganda ishga tushadigan `readstatechange` hodisasi ham mavjud, shuning uchun biz ushbu barcha holatlarni quyidagicha chop etishimiz mumkin:
 
 ```js run
 // current state
@@ -247,11 +240,11 @@ console.log(document.readyState);
 document.addEventListener('readystatechange', () => console.log(document.readyState));
 ```
 
-The `readystatechange` event is an alternative mechanics of tracking the document loading state, it appeared long ago. Nowadays, it is rarely used.
+`readstatechange` hodisasi hujjatning yuklanish holatini kuzatishning muqobil mexanikasi bo'lib, u ancha oldin paydo bo'lgan. Hozirgi vaqtda u kamdan-kam qo'llaniladi.
 
-Let's see the full events flow for the completeness.
+Keling, to'liqlik uchun voqealar oqimini ko'rib chiqaylik.
 
-Here's a document with `<iframe>`, `<img>` and handlers that log events:
+Mana `<iframe>`, `<img>` va hodisalarni qayd qiluvchi ishlov beruvchilarga ega hujjat:
 
 ```html
 <script>
@@ -271,9 +264,9 @@ Here's a document with `<iframe>`, `<img>` and handlers that log events:
 </script>
 ```
 
-The working example is [in the sandbox](sandbox:readystate).
+Ishlaydigan namuna [sandbox](sandbox:readystate) da berilgan .
 
-The typical output:
+Oddiy namuna:
 1. [1] initial readyState:loading
 2. [2] readyState:interactive
 3. [2] DOMContentLoaded
@@ -282,23 +275,23 @@ The typical output:
 6. [4] readyState:complete
 7. [4] window onload
 
-The numbers in square brackets denote the approximate time of when it happens. Events labeled with the same digit happen approximately at the same time (+- a few ms).
+Kvadrat qavs ichidagi raqamlar bu sodir bo'ladigan taxminiy vaqtni bildiradi. Xuddi shu raqam bilan belgilangan hodisalar taxminan bir vaqtning o'zida sodir bo'ladi (+- bir necha milodiy).
 
-- `document.readyState` becomes `interactive` right before `DOMContentLoaded`. These two things actually mean the same.
-- `document.readyState` becomes `complete` when all resources (`iframe` and `img`) are loaded. Here we can see that it happens in about the same time as `img.onload` (`img` is the last resource) and `window.onload`. Switching to `complete` state means the same as `window.onload`. The difference is that `window.onload` always works after all other `load` handlers.
+- `document.readyState` `DOMContentLoaded` oldidan `interactive` bo`ladi. Bu ikki narsa aslida bir xil ma'noni anglatadi.
+- `document.readyState` barcha resurslar (`iframe` va `img`) yuklanganda `complete` hisoblanadi. Bu yerda biz `img.onload` (`img` oxirgi manba) va `window.onload` bilan bir vaqtda sodir bo'lishini ko'rishimiz mumkin. `complete` holatiga o'tish `window.onload` bilan bir xil degan ma'noni anglatadi. Farqi shundaki, `window.onload` har doim boshqa barcha `load` ishlov beruvchilardan keyin ishlaydi.
 
 
-## Summary
+## Xulosa
 
-Page load events:
+Page load hodisalari:
 
-- The `DOMContentLoaded` event triggers on `document` when the DOM is ready. We can apply JavaScript to elements at this stage.
-  - Script such as `<script>...</script>` or `<script src="..."></script>` block DOMContentLoaded, the browser waits for them to execute.
-  - Images and other resources may also still continue loading.
-- The `load` event on `window` triggers when the page and all resources are loaded. We rarely use it, because there's usually no need to wait for so long.
-- The `beforeunload` event on `window` triggers when the user wants to leave the page. If we cancel the event, browser asks whether the user really wants to leave (e.g we have unsaved changes).
-- The `unload` event on `window` triggers when the user is finally leaving, in the handler we can only do simple things that do not involve delays or asking a user. Because of that limitation, it's rarely used. We can send out a network request with `navigator.sendBeacon`.
-- `document.readyState` is the current state of the document, changes can be tracked in the `readystatechange` event:
-  - `loading` -- the document is loading.
-  - `interactive` -- the document is parsed, happens at about the same time as `DOMContentLoaded`, but before it.
-  - `complete` -- the document and resources are loaded, happens at about the same time as `window.onload`, but before it.
+- DOM tayyor bo'lganda `DOMContentLoaded` hodisasi `document` da ishga tushadi. Ushbu bosqichda biz JavaScriptni elementlarga qo'llashimiz mumkin.
+   - `<script>...</script>` yoki `<script src="..."></script>` bloki DOMContentLoaded kabi skript, brauzer ularning bajarilishini kutadi.
+   - Rasmlar va boshqa manbalar yuklanishida davom etishi mumkin.
+- `window` dagi `load` hodisasi sahifa va barcha resurslar yuklanganda ishga tushadi. Biz uni kamdan-kam ishlatamiz, chunki odatda uzoq kutishning hojati yo'q.
+- `window`dagi `beforeunload` hodisasi foydalanuvchi sahifani tark etmoqchi bo'lganda ishga tushadi. Agar biz hodisani bekor qilsak, brauzer foydalanuvchi haqiqatdan ham ketishni xohlashini so'raydi (masalan, bizda saqlanmagan o'zgarishlar mavjud).
+- `window` dagi `unload` hodisasi foydalanuvchi nihoyat chiqib ketayotganda ishga tushadi, ishlov beruvchida biz faqat kechikishlar yoki foydalanuvchidan so'rash bilan bog'liq bo'lmagan oddiy ishlarni bajarishimiz mumkin. Ushbu cheklov tufayli u kamdan-kam qo'llaniladi. Biz `navigator.sendBeacon` orqali tarmoq so'rovini yuborishimiz mumkin.
+- `document.readyState` - hujjatning joriy holati, o'zgarishlarni `readstatechange` hodisasida kuzatish mumkin:
+   - `loading` -- hujjat yuklanmoqda.
+   - `interactive` -- hujjat tahlil qilinadi, `DOMContentLoaded` bilan bir vaqtda, lekin undan oldin sodir bo'ladi.
+   - `complete` -- hujjat va resurslar yuklanadi, `window.onload` bilan bir vaqtda, lekin undan oldin sodir bo'ladi.

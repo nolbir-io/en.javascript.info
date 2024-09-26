@@ -1,8 +1,8 @@
-# Kodlash uslubi
+# Kod yozish uslubi
 
-Bizning kodimiz iloji boricha aniq va o'qishga oson bo'lishi kerak.
+Bizning yozgan kodimiz iloji boricha aniq va o'qishga oson bo'lishi kerak.
 
-Bu aslida dasturlash san'ati -- murakkab vazifani olib, uni to'g'ri va inson o'qiy oladigan tarzda kodlashdir. Bunda yaxshi kod uslubi katta yordam beradi.
+Bu aslida dasturlash san'ati -- murakkab vazifani olib, uni to'g'ri va inson o'qiy oladigan tarzda kod yozishdir. Bunda yaxshi kod uslubi katta yordam beradi.
 
 ## Sintaksis
 
@@ -18,15 +18,15 @@ function pow(x, n) {
     result *= x;
   }
 
-  return result;
+  natijani qaytarish;
 }
 
 let x = prompt("x?", "");
 let n = prompt("n?", "");
 
 if (n < 0) {
-  alert(`Power ${n} is not supported,
-    please enter a non-negative integer number`);
+  alert(`Power ${n} qoʻllab-quvvatlanmaydi,
+    manfiy bo'lmagan butun sonni kiriting`);
 } else {
   alert( pow(x, n) );
 }
@@ -34,15 +34,15 @@ if (n < 0) {
 
 -->
 
-Qoidalar va ularning sabablarini batafsil muhokama qilab chiqamiz.
+Qoidalar va ularning sabablarini batafsil muhokama qilib chiqamiz.
 
 ```warn header="Hech qanday \"kerak\" qoidalari yo'q
-Hech narsa qat'iy belgilab qo'yilmagan. Bular shunchaki uslubiy afzalliklar, diniy ishonch(doma)lar emas. 
+Hech narsa qat'iy belgilab qo'yilmagan. Bular shunchaki uslubiy afzalliklar, diniy ishonch (dogma)lar emas. 
 ```
 
-### Curly Braces Jingalak qavslar
+### Curly Braces - figurali qavslar
 
-Ko'plab JavaScript loyihalarida jingalak qavslar "Misr" uslubida ochilayotkan qavs bilan mos keladigan tugma (keyword) bilan bir qatorda yoziladi -- yangi qatorda emas. Shuningdek ochilish qavsdan oldin ham bo'sh joy bo'lishi kerak, masalan:
+Ko'plab JavaScript loyihalarida figurali qavslar "Misr" uslubida ochilayotgan qavs bilan mos keladigan tugma (keyword) bilan bir qatorda yoziladi -- yangi qatorda emas. Shuningdek ochilish qavsdan oldin ham bo'sh joy bo'lishi kerak, masalan:
 
 ```js
 if (condition) {
@@ -56,7 +56,7 @@ Bir qatorli konstruksiya, masalan, `if (condition) doSomething()` muhim chekka h
  
  Quyidagilar izohlangan variantlar, endi shunday qilib ularning o'qilishi mumkinligini o'zingiz baholay olasiz:
 
-1. 😠 Ba'zida yangi boshlovchilar shu ishni qilishadi. Bu ish yomon! Jingalak qavslar kerak emas:
+1. 😠 Ba'zida yangi boshlovchilar shu ishni qilishadi. Bu ish yaxshi emas! Figurali qavslarning keragi yo'q:
     ```js
     if (n < 0) *!*{*/!*alert(`Power ${n} is not supported`);*!*}*/!*
     ```
@@ -112,11 +112,11 @@ Ikki turdagi indentlar mavjud:
 
 - **Gorizontal indentlar: 2 yoki 4 bo'sh joy.**
 
-    Gorizontal chekinish 2 yoki 4 bo'shliq yoki gorizontal tab belgisi (kalit `key:Tab` tugmasi) yordamida amalga oshiriladi. Qaysi birini tanlash kerak - qadimgi zamonda qolib ketkan. Hozirgi vaqtda bo'shliqlar keng tarqalgan.
+    Gorizontal chekinish 2 yoki 4 bo'shliq yoki gorizontal tab belgisi (kalit `key:Tab` tugmasi) yordamida amalga oshiriladi. Qaysi birini tanlash kerak - bu savol qadimgi zamonda qolib ketgan. Hozirgi vaqtda bo'shliqlar keng tarqalgan.
 
     Bo'shliqlarning tablarga nisbatan afzalliklaridan biri shundaki, bo'shliqlar tab belgisiga qaraganda ko'proq moslashuvchan konfiguratsiyalarga imkon beradi.
 
-    Masalan, biz parametrlarni ochilish qavs bilan tenglashtira olamiz, masalan:
+    Masalan, biz parametrlar ochilishini qavs bilan tenglashtira olamiz, masalan:
 
     ```js no-beautify
     show(parameters,
@@ -131,7 +131,7 @@ Ikki turdagi indentlar mavjud:
 
 - **Vertikal chekinishlar: kodni mantiqiy bloklarga bo'lish uchun bo'sh qatorlar.**
 
-    Hatto bitta funktsiyani ham ko'pincha mantiqiy bloklarga bo'lish mumkin.Quyidagi misolda o'zgaruvchilarni ishga tushirish, asosiy qaytariluvchi amal va natijani qaytarish vertikal ravishda ajratiladi:
+    Hatto bitta funktsiyani ham ko'pincha mantiqiy bloklarga bo'lish mumkin. Quyidagi misolda o'zgaruvchilarni ishga tushirish, asosiy qaytariluvchi amal va natijani qaytarish vertikal ravishda ajratiladi:
     ```js
     function pow(x, n) {
       let result = 1;
@@ -144,11 +144,11 @@ Ikki turdagi indentlar mavjud:
     }
     ```
 
-    Kodni o'qishga oson bo'lishiga yordam beruchi qo'shimcha yangi qator qo'shing. Vertikal chekinishsiz kodlar qatori to'qqiztadan oshish kerak emas. 
+    Kodni o'qishga oson bo'lishiga yordam beruchi qo'shimcha yangi qator qo'shing. Vertikal chekinishsiz kodlar qatori to'qqiztadan oshishi kerak emas. 
 
 ### Nuqtali vergullar
 
-Har bir ifodadan so'ng nuqtali vergul bo'lishi kera, hatto uni tashlab ketish mumkin bo'lsa ham. 
+Har bir ifodadan so'ng nuqtali vergul bo'lishi kerak, hatto uni tashlab ketish mumkin bo'lsa ham. 
 
 Nuqtali vergul chindan ham ixtiyoriy bo'lgan va kamdan-kam qo'llaniladigan tillar mavjud. Lekin  JavaScriptda, ma'lum vaziyatlar bor, ularda qator uzilishi nuqtali vergul deb qaralmaydi, bu narsa kodni xatolikka moyil qiladi. Bu haqida <info:structure#semicolon> bo'limida ko'proq ko'rib chiqsangiz bo'ladi. 
 
@@ -179,9 +179,9 @@ for (let i = 0; i < 10; i++) {
 }
 ```
 
-Shunga o'xshash narsani `if/else` va `return` bilan qilish mumkin.
+Shunga o'xshash narsani `if/else` va `return` bilan ham bajarish mumkin.
 
-Masalan, quyida keltirilgan ikkita konstruktsiya bir xil.
+Masalan, quyida keltirilgan ikkita konstruksiya bir xil.
 
 Tanlov 1:
 
@@ -220,11 +220,11 @@ function pow(x, n) {
 }
 ```
 
-Ikkinchisi ko'proq o'qisa bo'ladigan, chunki `n < 01` ning "maxsus holati" erta ko'rib chiqiladi. Tekshirish tugallangandan so'ng, biz qo'shimcha joylashtirishsiz "asosiy" kod oqimiga o'tishimiz mumkin.
+Ikkinchisi o'qishga ancha oson, chunki `n < 01` ning "maxsus holati" ertaroq ko'rib chiqiladi. Tekshirish tugallangandan so'ng, biz qo'shimcha joylashtirishsiz "asosiy" kod oqimiga o'tishimiz mumkin.
 
-## Funktsiyani joylashtirish
+## Funksiyani joylashtirish
 
-Agar siz bir nechta "yordamchi" funktsiyalarni va ulardan foydalanadigan kodni yozayotgan bo'lsangiz, funktsiyalarni tartibga solishning uchta usuli mavjud.
+Agar siz bir nechta "yordamchi" funktsiyalarni va ulardan foydalanadigan kodni yozayotgan bo'lsangiz, funksiyalarni tartibga solishning uchta usuli mavjud.
 
 1. Funktsiyalarni ularni ishlatadigan kodning *yuqorisida* e'lon qilish:
 
@@ -268,19 +268,20 @@ Agar siz bir nechta "yordamchi" funktsiyalarni va ulardan foydalanadigan kodni y
       ...
     }
     ```
-3. Aralash: funktsiya birinchi marta ishlatilgan joyda e'lon qilinadi.
+3. Aralash: funksiya birinchi marta ishlatilgan joyda e'lon qilinadi.
 
 Ko'pincha ikkinchi variantga afzal ko'riladi.
 
-Chunki, kod o'qiyotkanimizda birinchi bilmoqchi bo'lgan narsamiz uni *nima qilishi*dir. Agar kod birinchi kelsa, u boshidan aniq bo'lib qoladi. Shunda funksiyalarni umuman o‘qishimiz shart bo‘lmasligi ham mumkin, ayniqsa ularning nomlari ular aslida nima qilayotganini tavsiflab tursa.
+Chunki, kodni o'qiyotganimizda birinchi bilmoqchi bo'lgan narsamiz uni *nima qilishi*dir. Agar kod birinchi kelsa, u boshidan aniq bo'lib qoladi. Shunda funksiyalarni umuman o'qishimiz shart bo'lmasligi ham mumkin, ayniqsa ularning nomlari ular aslida nima qilayotganini tavsiflab tursa.
 
 ## Uslub bo'yicha qo'llanmalar
 
-Uslublar qo'lllanmasi kodni "qanday yozish" bo'yicha umumiy qoidalarni o'zida jamlagan, misol uchun, qaysi qo'shtirnoqlardan foydalanish, qancha bo'sh joy ajratish, maksimal chiziq uzunligi va hokazo va ko'plab kichik narsalar.
+Uslublar qo'lllanmasi kodni "qanday yozish" bo'yicha umumiy qoidalarni o'zida jamlagan, misol uchun, qaysi qo'shtirnoqlardan foydalanish, qancha bo'sh joy ajratish, maksimal chiziq uzunligi va hokazo.
 
-Jamoaning barcha a'zolari bir xil uslublar qo'llanmasidan foydalanganda, jamoaning qays a'zosi yozganidan qat'i nazar, kod bir xil ko'rinadi.
+Jamoaning barcha a'zolari bir xil uslublar qo'llanmasidan foydalanganda, jamoaning qays a'zosi yozganidan qat'iy nazar, kod bir xil ko'rinadi.
 
-Albatta, jamoa har doim o'z uslubiy qo'llanmasini yozishi mumkin, lekin odatda bunga hojat yo'q. Tanlash uchun ko'plab mavjud qo'llanmalar mavjud.
+Albatta, jamoa har doim o'z uslubiy qo'llanmasini yozishi mumkin, lekin odatda bunga hojat yo'q. Tanlash uchun 
+ko'plab qo'llanmalar mavjud.
 
 Ba'zi mashhur tanlovlar:
 
@@ -294,9 +295,9 @@ Agar siz yangi dasturchi bo'lsangiz, shu bo'limning boshidagi yordam beruvchi sa
 
 ## Avtomatlashtirilgan linterlar
 
-Linters - bu kodingiz uslubini avtomatik ravishda tekshiradigan va takomillashtirish uchun takliflar beradigan vositalar.
+Linter - bu kodingiz uslubini avtomatik ravishda tekshiradigan va takomillashtirish uchun takliflar beradigan vositalar.
 
-Ularning ajoyib jihati shundaki, tekshirish jarayonida ular o'zgaruvchilar yoki funksiyadagi imloviy xatolikalar singari xatoliklarni ham topib beradi. Shu jihati uchun ham, xatto ma'lum bir "kod uslubi"ga bog'lanib qolishni istamasangiz ham, bundan foydalanish tavsiya etiladi. 
+Ularning ajoyib jihati shundaki, tekshirish jarayonida ular o'zgaruvchilar singari funksiyadagi imloviy xatolikalarni ham topib beradi. Shu jihati uchun ham, xatto ma'lum bir "kod uslubi"ga bog'lanib qolishni istamasangiz, bundan foydalanish tavsiya etiladi. 
 
 Ba'zi mashhur linting vositalari:
 
@@ -306,14 +307,14 @@ Ba'zi mashhur linting vositalari:
 
 Ularning barchasi vazifani bajara oladi. Muallif [ESLint](https://eslint.org/) dan foydalanadi.
 
-Ko'p linterlar ko'plab mashhur muharrirlar bilan birlashtirilgan: ahunchaki muharrirda plaginni yoqing va uslubni sozlang.
+Ko'p linterlar ko'plab mashhur muharrirlar bilan birlashtirilgan: shunchaki muharrirda plaginni yoqing va uslubni sozlang.
 
 Masalan, ESLint uchun quyidagilarni bajarishingiz kerak bo'ladi:
 
-1.  [Node.js](https://nodejs.org/) ni O'rnating.
+1.  [Node.js](https://nodejs.org/) ni o'rnating.
 2. ESLint-ni `npm install -g eslint` buyrug'i bilan o'rnating (npm bu JavaScript paketini o'rnatuvchidir).
 3. JavaScript loyihangizning ildizida (barcha fayllaringiz joylashgan papkada) `.eslintrc` nomli konfiguratsiya faylini yarating.
-4. ESLint bilan integratsiyalashuvchi muharrir uchun plaginni o'rnating/yoqing. Ko'pchilik muharrirlar bitta plagini bo'ladi.
+4. ESLint bilan integratsiyalashuvchi muharrir uchun plaginni o'rnating/yoqing. Ko'pchilik muharrirlarda bitta plagin bo'ladi.
 
 `.eslintrc` fayliga misol:
 
@@ -332,16 +333,16 @@ Masalan, ESLint uchun quyidagilarni bajarishingiz kerak bo'ladi:
 }
 ```
  
-`"extends"` direkivikatsiyasi konfiguratsiya "eslint:recommended" sozlamalar to'plamiga asoslanganligini bildiradi. Shundan keyin, o'zimiznikini belgilaymiz.
+`"extends"` direktivi konfiguratsiya "eslint:recommended" sozlamalar to'plamiga asoslanganligini bildiradi. Shundan keyin, o'zimizning direktivimizni belgilaymiz.
 
 Uslublar qoidalari to'plamini websitedan yuklab olib, ularni kengaytirish ham mumkin. O'rnatish haqida batafsil ma'lumot uchun <https://eslint.org/docs/user-guide/getting-started> ga qarang.
 
 Bundan tashqari, ba'zi IDE-larda o'rnatilgan linting mavjud, bu qulay, ammo ESLint kabi moslashtirilmaydi.
 
-## Summary
+## Xulosa
 
 Ushbu bobda tasvirlangan barcha sintaksis qoidalari (va havola qilingan uslublar qo'llanmalari) kodingizning o'qish qobiliyatini oshirishga qaratilgan. Ularning barchasi munozarali.
 
-"Yaxshiroq" kod yozish haqida o'ylaganimizda, o'zimizga quyidagi savollarni berishimiz kerak bo'ladi: "Nima kodni o'qilishi va tushunishni osonlashtiradi?" va "Xatolardan qochishimizga nima yordam beradi?" Bular kod uslublarini tanlash va muhokama qilishda yodda tutish kerak bo'lgan asosiy narsalar.
+"Yaxshiroq" kod yozish haqida o'ylaganimizda, o'zimizga quyidagi savollarni berishimiz kerak bo'ladi: "Nima kodni o'qilishi va tushunishni osonlashtiradi?" va "Xatolardan qochishimizga nima yordam beradi?" Bular kod uslublarini tanlash va muhokama qilishda yodda tutish kerak bo'lgan asosiy narsalardir.
 
-Mashhur uslublar bo'yicha qo'llanmalarni o'qish sizga kod uslubi tendentsiyalari va eng yaxshi amaliyotlar haqidagi so'nggi g'oyalardan xabardor bo'lish imkonini beradi.
+Mashhur uslublar bo'yicha qo'llanmalarni o'qish sizga kod uslubi tendensiyalari va eng yaxshi amaliyotlar haqidagi so'nggi g'oyalardan xabardor bo'lish imkonini beradi.

@@ -1,14 +1,14 @@
-# Multiline mode of anchors ^ $, flag "m"
+# Ankorlarning ko'p qatorli rejimi ^ $, flag "m"
 
-The multiline mode is enabled by the flag `pattern:m`.
+Ko'p qatorli rejim `pattern:m` bayrog'i bilan yoqiladi.
 
-It only affects the behavior of `pattern:^` and `pattern:$`.
+Bu faqat `pattern:^` va `pattern:$` xatti-harakatlariga ta'sir qiladi.
 
-In the multiline mode they match not only at the beginning and the end of the string, but also at start/end of line.
+Ko'p qatorli rejimda ular faqat satrning boshida va oxirida emas, balki satr boshida/oxirida ham mos keladi.
 
-## Searching at line start ^
+## Qator boshida izlanmoqda ^
 
-In the example below the text has multiple lines. The pattern `pattern:/^\d/gm` takes a digit from the beginning of each line:
+Quyidagi misolda matn bir nechta qatorlardan iborat. `pattern:/^\d/gm` pattern har bir satr boshidan raqam oladi:
 
 ```js run
 let str = `1st place: Winnie
@@ -20,7 +20,7 @@ console.log( str.match(/^\d/gm) ); // 1, 2, 3
 */!*
 ```
 
-Without the flag `pattern:m` only the first digit is matched:
+`pattern:m` bayrog'isiz faqat birinchi raqam mos keladi:
 
 ```js run
 let str = `1st place: Winnie
@@ -32,19 +32,17 @@ console.log( str.match(/^\d/g) ); // 1
 */!*
 ```
 
-That's because by default a caret `pattern:^` only matches at the beginning of the text, and in the multiline mode -- at the start of any line.
+Buning sababi shundaki, sukut bo'yicha `pattern:^` karet faqat matn boshida, ko'p qatorli rejimda esa istalgan satr boshida mos keladi.
 
 ```smart
-"Start of a line" formally means "immediately after a line break": the test  `pattern:^` in multiline mode matches at all positions preceded by a newline character `\n`.
-
-And at the text start.
+"Qator boshi" rasmiy ravishda "satr uzilishidan so'ng" degan ma'noni anglatadi: ko'p qatorli rejimdagi `pattern:^` testi yangi qator belgisi `\n` oldidagi va matn boshidagi barcha pozitsiyalarga mos keladi.
 ```
 
-## Searching at line end $
+## $ qator oxirida qidirilmoqda
 
-The dollar sign `pattern:$` behaves similarly.
+Dollar belgisi `pattern:$` xuddi shunday harakat qiladi.
 
-The regular expression `pattern:\d$` finds the last digit in every line
+`Pattern:\d$` muntazam ifodasi har bir satrdagi oxirgi raqamni topadi
 
 ```js run
 let str = `Winnie: 1
@@ -54,21 +52,19 @@ Eeyore: 3`;
 console.log( str.match(/\d$/gm) ); // 1,2,3
 ```
 
-Without the flag `pattern:m`, the dollar `pattern:$` would only match the end of the whole text, so only the very last digit would be found.
+`Pattern:m` bayrog'i bo'lmasa, dollar `pattern:$` faqat butun matnning oxiriga to'g'ri keladi, shuning uchun faqat oxirgi raqam topiladi.
 
 ```smart
-"End of a line" formally means "immediately before a line break": the test  `pattern:$` in multiline mode matches at all positions succeeded by a newline character `\n`.
-
-And at the text end.
+"Qator oxiri" rasmiy ravishda "satr uzilishidan oldin" degan ma'noni anglatadi: ko'p qatorli rejimdagi `pattern:$` testi `\n` yangi qator belgisidan keyingi va matn oxiridagi barcha pozitsiyalarda mos keladi. 
 ```
 
-## Searching for \n instead of ^ $
+## ^ $ o'rniga \n qidirilmoqda
 
-To find a newline, we can use not only anchors `pattern:^` and `pattern:$`, but also the newline character `\n`.
+Yangi qatorni topish uchun biz nafaqat `pattern:^` va `pattern:$` ankorlaridan, balki yangi qator `\n` belgisidan ham foydalanishimiz mumkin.
 
-What's the difference? Let's see an example.
+Nima farqi bor? Keling, bir misolni ko'rib chiqaylik.
 
-Here we search for `pattern:\d\n` instead of `pattern:\d$`:
+Bu yerda `pattern:\d$` o'rniga `pattern:\d\n` ni qidiramiz:
 
 ```js run
 let str = `Winnie: 1
@@ -78,10 +74,10 @@ Eeyore: 3`;
 console.log( str.match(/\d\n/g) ); // 1\n,2\n
 ```
 
-As we can see, there are 2 matches instead of 3.
+Ko'rib turganimizdek, 3 ta o'rniga 2 ta o'yin bor.
 
-That's because there's no newline after `subject:3` (there's text end though, so it matches `pattern:$`).
+Buning sababi, `subject: 3` dan keyin yangi qator yo'q (ammo matn oxiri bor, shuning uchun u `pattern: $` ga mos keladi).
 
-Another difference: now every match includes a newline character `match:\n`. Unlike the anchors `pattern:^` `pattern:$`, that only test the condition (start/end of a line), `\n` is a character, so it becomes a part of the result.
+Yana bir farq: endi har bir o'yinda `match:\n` yangi qator belgisi mavjud. Faqat shartni (satrning boshi/oxiri) sinovdan o'tkazuvchi `pattern:^` `pattern:$` langar(anchor)laridan farqli o'laroq, `\n` belgidir, shuning uchun u natijaning bir qismiga aylanadi.
 
-So, a `\n` in the pattern is used when we need newline characters in the result, while anchors are used to find something at the beginning/end of a line.
+Shunday qilib, naqshdagi `\n` natijada yangi qator belgilari kerak bo'lganda, langarlar esa satr boshida/oxirida biror narsani topish uchun ishlatiladi.

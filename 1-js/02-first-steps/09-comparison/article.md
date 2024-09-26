@@ -1,6 +1,6 @@
 # Taqqoslashlar 
 
-Biz matematikadan ko'plab taqqoslash operatorlarini bilamiz.
+Biz matematika fanida ko'plab taqqoslash operatorlarini bilamiz.
 
 Ular JavaScriptda quyidagicha yoziladi:
 
@@ -9,13 +9,13 @@ Ular JavaScriptda quyidagicha yoziladi:
 - Teng: `a == b`, yodda tuting: `==` juft tenglik belgisi tenglik tekshiruvini bildiradi, bitta `a = b` esa tayinlashni bildiradi..
 - Teng emas: matematikada inkor bu <code>&ne;</code>, lekin JavaScriptda u <code>a != b</code> kabi yoziladi.
 
-Ushbu maqolada biz turli xil taqqoslash turlari, JavaScript ularni qanday yaratishi, shu jumladan muhim xususiyatlar haqida ko'proq bilib olamiz.
+Ushbu maqolada biz turli xil taqqoslash turlari, JavaScript ularni qanday yaratishi, shu jumladan, muhim xususiyatlar haqida ko'proq bilib olamiz.
 
-Oxirida siz "JavaScript g'alatiliklari" bilan bog'liq muammolarni oldini olish uchun yaxshi qo'llanma topasiz.
+Oxirida siz "JavaScriptdagi g'alatiliklari" bilan bog'liq muammolarning oldini olish uchun yaxshi qo'llanmani topasiz.
 
 ## Boolean bu natija
 
-Barcha taqqoslash operatorlari boolean qiymat qaytaradi:
+Barcha taqqoslash operatorlari boolean qiymatini qaytaradi:
 
 - `true` -- "ha", "to'g'ri" yoki "rost" ni anglatadi.
 - `false` -- "yo'q", "noto'g'ri" yoki "yolg'on" ni anglatadi.
@@ -31,15 +31,15 @@ alert( 2 != 1 ); // true (correct)
 Taqqoslash natijasini har qanday qiymat kabi o'zgaruvchiga tayinlash mumkin:
 
 ```js run
-let result = 5 > 4; // assign the result of the comparison
+let result = 5 > 4; //taqqoslash natijasini belgilang
 alert( result ); // true
 ```
 
 ## String taqqoslash
 
-Bir string boshqasidan katta yoki emasligini ko'rish uchun JavaScript "lug'at" yoki "leksikografik" deb ataladigan tartibdan foydalanadi.
+Bir string boshqasidan katta yoki kichikligini ko'rish uchun JavaScript "lug'at" yoki "leksikografik" deb ataladigan tartibdan foydalanadi.
 
-Boshqacha qilib aytganda, string-lar harfma-harf taqqoslanadi.
+Boshqacha qilib aytganda, stringlar harfma-harf taqqoslanadi.
 
 Misol uchun:
 
@@ -52,14 +52,14 @@ alert( 'Bee' > 'Be' ); // true
 Ikki string-ni solishtirish algoritmi oddiy:
 
 1. Ikkala string-ning birinchi belgisini solishtiring.
-2. Agar birinchi string-ning birinchi belgisi boshqa string-dan katta (yoki kichik) bo'lsa, birinchi string ikkinchisidan katta (yoki kichik) bo'ladi. Tamom.
+2. Agar birinchi string-ning birinchi belgisi boshqa string-dan katta (yoki kichik) bo'lsa, birinchi string ikkinchisidan katta (yoki kichik) bo'ladi.
 3. Aks holda, agar ikkala string-ning birinchi belgilari bir xil bo'lsa, ikkinchi belgilarni shu tarzda solishtiring.
-4. Ikkala string-ning oxirigacha takrorlang.
+4. Ikkala stringni oxirigacha takrorlang.
 5. Agar ikkala string bir xil uzunlikda tugasa, ular tengdir. Aks holda, uzunroq satr katta bo'ladi.
 
 Yuqoridagi birinchi misolda `'Z' > 'A'` taqqoslash birinchi bosqichda natijaga erishadi.
 
-Ikkinchi taqqoslash `'Glow' va 'Glee'` uchun ko'proq qadamlar kerak, chunki string-lar har bir belgi bilan taqqoslanadi:
+Ikkinchi taqqoslash `'Glow' va 'Glee'` uchun ko'proq qadamlar kerak, chunki stringlar har bir belgi bilan taqqoslanadi:
 
 1. `G` bilan `G` bir xil.
 2. `l` bilan `l` bir xil.
@@ -68,20 +68,19 @@ Ikkinchi taqqoslash `'Glow' va 'Glee'` uchun ko'proq qadamlar kerak, chunki stri
 ```smart header="Not a real dictionary, but Unicode order"
 Yuqorida keltirilgan taqqoslash algoritmi taxminan lug'atlar yoki telefon kitoblarida qo'llaniladigan algoritmga teng, ammo u mutlaq bir xil emas.
 ```
-Masalan, string-ning holati muhim ahamiyat kasb etadi. Katta harf "A" kichik “a” ga teng emas. Qaysi biri kattaroq? Kichik `"a"`. Nega? Chunki kichik harf JavaScript ishlatadigan ichki kodlash jadvalida kattaroq indeksga ega (Unicode). Buning aniq tafsilotlari va oqibatlariga <info:string> bobida qaytamiz.
+Masalan, stringning holati muhim ahamiyat kasb etadi. Katta harf "A" kichik "a" ga teng emas. Qaysi biri kattaroq? Kichik `"a"`. Nega? Chunki kichik harf JavaScript ishlatadigan ichki kodlash jadvalida kattaroq indeksga ega (Unicode). Buning aniq tafsilotlari va oqibatlariga <info:string> bobida qaytamiz.
 ```
 ```
 
 ## Har xil turlarni taqqoslash
 
-When comparing values of different types, JavaScript converts the values to numbers.
 Har xil turlar qiymatlarini taqqoslayotganda JavaScript qiymatlarni number (sonlar) ga aylantirib oladi.
 
 Misol uchun:
 
 ```js run
-alert( '2' > 1 ); // true, string '2' becomes a number 2
-alert( '01' == 1 ); // true, string '01' becomes a number 1
+alert( '2' > 1 ); // true, "2" qatori 2 raqamiga aylanadi
+alert( '01' == 1 ); // true, "01" qatori 1 raqamiga aylanadi
 ```
 
 Boolean qiymatlar uchun, `true` `1` ga aylanadi va `false` `0` ga aylanadi.
@@ -93,8 +92,8 @@ alert( true == 1 ); // true
 alert( false == 0 ); // true
 ```
 
-````smart header="A funny consequence"
-Bir vaqtning o'zida ular bo'lishi mumkin:
+````smart header="Qiziq ketma-ketlik"
+Bir vaqtning o'zida ular quyidagicha bo'lishi mumkin:
 
 - Ikkala qiymat teng.
 - Biri boolean sifatida "to'g'ri", ikkinchisi boolean sifatida "noto'g'ri".
@@ -111,24 +110,24 @@ alert( Boolean(b) ); // true
 alert(a == b); // true!
 ```
 
-JavaScript nuqtai nazaridan, bu natija normal holatdir. Tenglik tekshiruvi qiymatlarni raqamli konvertatsiya yordamida o'zgartiradi (shuning uchun `"0"` `0` bo'ladi), tashqi `Boolean` konvertatsiya esa boshqa qoidalar to'plamidan foydalanadi.
+JavaScript nuqtai nazaridan, bu natija normal holatdir. Tenglik tekshiruvi qiymatlarni raqamli konversiya yordamida o'zgartiradi (shuning uchun `"0"` `0` bo'ladi), tashqi `Boolean` konvertatsiya esa boshqa qoidalar to'plamidan foydalanadi.
 ````
 
 ## Qat'iy tenglik
 
-Doimiy tenglik tekshiruvi `==` kamchilikga ega. U `0`ni `false`dan farqlay olmaydi:
+Doimiy tenglik tekshiruvi `==` kamchilikka ega. U `0`ni `false`dan farqlay olmaydi:
 
 ```js run
 alert( 0 == false ); // true
 ```
 
-Bo'sh string bilan ham xuddi shu xol takrorlanadi:
+Bo'sh string bilan ham xuddi shu holat takrorlanadi:
 
 ```js run
 alert( '' == false ); // true
 ```
 
-Buning sababi, har xil turdagi operandlarni tenglik operatori `==` raqamlarga aylantiradi. Bo'sh string, xuddi `false` kabi, nolga aylanadi.
+Buning sababi, har xil turdagi operandlarni tenglik operatori `==` raqamlarga aylantiradi. Bo'sh string, xuddi `false` kabi nolga aylanadi.
 
 Agar `0` ni `false` dan farqlamoqchi bo‘lsak, nima qilishimiz kerak?
 
@@ -139,12 +138,12 @@ Boshqacha qilib aytganda, agar `a` va `b` har xil turdan bo'lsa, `a === b` ularn
 Keling, sinab ko'ramiz:
 
 ```js run
-alert( 0 === false ); // false, because the types are different
+alert( 0 === false ); // false, chunki turlari har xil
 ```
 
 `!=` ga o'xshash "qat'iy tengsizlik" operatori `!==` ham mavjud.
 
-Qat'iy tenglik operatori yozish uchun biroz ko'proq vaqt talab etadi, lekin nima bo'layotganini aniq ko'rsatadi va xatolar uchun kamroq imkon qoldiradi.
+Qat'iy tenglik operatori yozish uchun biroz ko'proq vaqt talab etadi, lekin u nima bo'layotganini aniq ko'rsatadi va xatolar uchun kamroq imkon qoldiradi. 
 
 ## Null va undefined bilan taqqoslash
 
@@ -167,7 +166,7 @@ Noqat'iy tengsizlik tekshiruvi `==` uchun
 Matematik va boshqa taqqoslashlar `< > <= >=` uchun
 : `null/undefined` sonlarga aylantiriladi: `null` `0`ga aylanadi, `undefined` esa `NaN`ga aylanadi.
 
-Keling, ushbu qoidalarni qo'llaganimizda sodir bo'ladigan ba'zi kulgili narsalarni va eng muhimi, ular bilan qanday qilib tuzoqqa tushmaslik kerakligini ko'rib chiqaylik.
+Keling, ushbu qoidalarni qo'llaganimizda sodir bo'ladigan ba'zi kulgili narsalarni va eng muhimi, ular bilan qanday qilib tuzoqqa tushmaslik kerakligini ko'rib chiqamiz.
 
 ### G'alati natija: null vs 0
 
@@ -179,7 +178,7 @@ alert( null == 0 ); // (2) false
 alert( null >= 0 ); // (3) *!*true*/!*
 ```
 
-Matematik jihatdan, bu g'alati. Oxirgi natija "`null` noldan katta yoki tengligini" ko'rsatadi, demak yuqoridagi taqqoslashlardan biri `true` bo'lishi kerak, lekin ularning ikkisi ham false.
+Matematik jihatdan bu g'alati tuyuladi. Oxirgi natija "`null` noldan katta yoki tengligini" ko'rsatadi, demak yuqoridagi taqqoslashlardan biri `true` bo'lishi kerak, lekin ularning ikkisi ham false.
 
 Sababi shundaki, tenglik tekshiruvi `==` va taqqoslashlar `> < >= <=` turlicha ishlaydi. Taqqoslashlar `null`ni songa o'zgartiradi, unga `0` sifatida qaraydi. Shuning uchun (3) `null >= 0` true va (1) `null > 0` false.
 
@@ -199,20 +198,20 @@ Nega u nolni buncha yomon ko'radi? Doim false!
 
 Biz ushbu natijalarni olamiz chunki:
 
-- `(1)` va `(2)` taqqoslashlar `false` ni qaytaradi chunki `undefined` `NaN` ga o'zgaradi va `NaN` hamma taqqoslashlar uchun `false` qaytaruvchi maxsus son qiymatdir. 
-- `(3)` tenglik tekshiruvi `false` ni qaytaradi chunki `undefined` faqat `null` va `undefined` dan boshqa hech qayday qiymatga teng emas.
+- `(1)` va `(2)` taqqoslashlar `false` ni qaytaradi, chunki `undefined` `NaN` ga o'zgaradi va `NaN` hamma taqqoslashlar uchun `false` qaytaruvchi maxsus son qiymatdir. 
+- `(3)` tenglik tekshiruvi `false` ni qaytaradi, chunki `undefined` faqat `null` va `undefined` dan boshqa hech qayday qiymatga teng emas.
 
 ### Muammolardan qochamiz
 
-Nega biz bu misollarni ko'rib chiqdik? Bu o'ziga xos xususiyatlarni doimo esda tutishimiz kerakmi? Xo'sh, unchalik emas. Aslida, vaqt o'tishi bilan bu murakkab narsalar asta-sekin tanish bo'lib qoladi, ammo ular bilan bog'liq muammolardan qochishning ishonchli yo'li bor:
+Nega biz bu misollarni ko'rib chiqdik? Bu o'ziga xos xususiyatlarni doimo eslab turishimiz kerakmi? Xo'sh, aslida unday emas. Aslida, vaqt o'tishi bilan bu murakkab narsalar asta-sekin tanish bo'lib qoladi, ammo ular bilan bog'liq muammolardan qochishning ishonchli yo'li bor:
 
 - `===` qatiiy tenglikdan tashqari `undefined/null` bilan har qanday taqqoslashga alohida e'tibor bilan munosabatda bo'ling.
 - Agar nima qilayotganingizga ishonchingiz komil bo'lmasa, o'zgaruvchisi `null/undefined` bo'lishi mumkin bo'lgan `>= > < <=` taqqoslashlardan foydalanmang. Agar o'zgaruvchi ushbu qiymatlarga ega bo'lsa, ularni alohida tekshiring.
 
 ## Xulosa
 
-- Taqqoslash operatorlari boolean qiymat qaytaradi.
-- String-lar "lug'at" tartibida harfma-harf taqqoslanadi.
+- Taqqoslash operatorlari boolean qiymatini qaytaradi.
+- Stringlar "lug'at" tartibida harfma-harf taqqoslanadi.
 - Har xil turdagi qiymatlarni taqqoslaganda, ular raqamlarga aylanadi (qat'iy tenglik tekshiruvi bundan mustasno).
 - `Null` va `undefined` bir biriga `==` teng, boshqa hech qaysi qiymatga teng emas.
-- `>` yoki `<` taqqoslashlarini o'zgaruvchilar bilan ishlatayotganda ehtiyot bo'ling chunki ular vaqti vaqti bilan `null/undefined` bo'lishi mumkin. `Null/undefined` ni alohida tekshirish yaxshiroq. 
+- `>` yoki `<` taqqoslashlarini o'zgaruvchilar bilan ishlatayotganda ehtiyot bo'ling, chunki ular vaqti vaqti bilan `null/undefined` bo'lishi mumkin. `Null/undefined` ni alohida tekshirish yaxshiroq. 
