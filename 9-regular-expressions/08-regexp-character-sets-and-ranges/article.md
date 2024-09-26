@@ -13,7 +13,7 @@ Bu *to'plam* deb ataladi. To'plamlar regexpda oddiy belgilar bilan birga ishlati
 alert( "Mop top".match(/[tm]op/gi) ); // "Mop", "top"
 ```
 
-E'tibor bering, to'plamda bir nechta belgilar mavjud bo'lsa-da, ular o'yinda aynan bitta belgiga mos keladi.
+E'tibor bering, to'plamda bir nechta belgilar mavjud bo'lsada, ular o'yinda aynan bitta belgiga mos keladi.
 
 Shunday qilib, quyidagi misol hech qanday moslik keltirmaydi:
 
@@ -28,15 +28,15 @@ Shakl quyidagilarni qidiradi:
 - keyin `pattern:[oi]` harflaridan *biri*,
 - keyin `pattern:la`.
 
-Demak, bu yerda `match:Vola` yoki `match:Vila` uchun o'yin bo`lardi.
+Demak, bu yerda `match:Vola` yoki `match:Vila` uchun o'yin bo'ladi.
 
 ## Intervallar
 
 Kvadrat qavs ichida *belgilar oralig'i* ham bo'lishi mumkin.
 
-Masalan, `pattern:[a-z]` bu `a` dan `z` oralig'idagi belgi va `pattern:[0-5]` - `0` dan `5` gacha bo`lgan raqam.
+Masalan, `pattern:[a-z]` bu `a` dan `z` oralig'idagi belgi va `pattern:[0-5]` - `0` dan `5` gacha bo'lgan raqam.
 
-Quyidagi misolda biz `x` dan keyin `A` dan `F` gacha bo‘lgan ikkita raqam yoki harfni qidiramiz:
+Quyidagi misolda biz `x` dan keyin `A` dan `F` gacha bo'lgan ikkita raqam yoki harfni qidiramiz:
 
 ```js run
 alert( "Exception 0xAF".match(/x[0-9A-F][0-9A-F]/g) ); // xAF
@@ -50,7 +50,7 @@ Shuningdek, biz `[…]` ichidagi belgilar sinflaridan foydalanishimiz mumkin.
 
 Misol uchun, agar biz `pattern:\w` yoki tire `pattern:-` so'z belgisini qidirmoqchi bo'lsak, to'plam `pattern:[\w-]` bo'ladi.
 
-Bir nechta sinflarni birlashtirish ham mumkin, masalan. `pattern:[\s\d]` "bo'sh joy belgisi yoki raqam" degan ma'noni anglatadi.
+Bir nechta sinflarni birlashtirish ham mumkin, masalan, `pattern:[\s\d]` "bo'sh joy belgisi yoki raqam" degan ma'noni anglatadi.
 
 ```smart header="Belgilar sinflari ma'lum belgilar to'plami uchun stenografiyadir"
 Masalan:
@@ -62,7 +62,7 @@ Masalan:
 
 ### Misol: bir necha tilli \w
 
-`pattern:\w` belgilar sinfi `pattern:[a-zA-Z0-9_]` ning qisqartmasi boʻlgani uchun u xitoycha ierogliflar, kirill harflari va hokazolarni topa olmaydi.
+`pattern:\w` belgilar sinfi `pattern:[a-zA-Z0-9_]` ning qisqartmasi bo'lgani uchun u xitoycha ierogliflar, kirill harflari va hokazolarni topa olmaydi.
 
 Biz har qanday tilda so'z belgilarini qidiradigan universalroq pattern yozishimiz mumkin. Unicode xususiyatlari bilan buni bajarish oson: `pattern:[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]`.
 
@@ -117,16 +117,16 @@ Odatda, biz aniq maxsus belgini topmoqchi bo'lganimizda, `pattern:\.` kabi undan
 
 Kvadrat qavs ichida biz maxsus belgilarning katta qismidan tashlab ketmasdan foydalanishimiz mumkin:
 
-- `pattern:. + ( )` belgilari hech qachon qochish kerak emas.
+- `pattern:. + ( )` belgilari hech qachon qochishi kerak emas.
 - `Pattern:-` boshida yoki oxirida chiziqcha qo'yilmaydi (bu yerda u diapazonni belgilamaydi).
 - `Pattern:^` karetasi faqat boshida qochib qo'yiladi (bu yerda istisno degan ma'noni anglatadi).
 - Yopuvchi kvadrat qavs `pattern:]` har doim chiqarib tashlanadi (agar biz ushbu belgini izlashimiz kerak bo'lsa).
 
-Boshqacha qilib aytadigan bo'lsak, barcha maxsus belgilar qochmasdan ruxsat etiladi, faqat kvadrat qavslar uchun biror narsani anglatuvchi holatlar bundan mustasno hisoblanadi.
+Boshqacha qilib aytadigan bo'lsak, barcha maxsus belgilar qochmasidan ruxsat etiladi, faqat kvadrat qavslar uchun biror narsani anglatuvchi holatlar bundan mustasno hisoblanadi.
 
-Kvadrat qavs ichidagi nuqta `.` shunchaki nuqtani bildiradi. `Pattern:[.,]` pattern belgilaridan birini qidiradi: nuqta yoki vergul.
+Kvadrat qavs ichidagi nuqta `.` shunchaki nuqtani bildiradi. `Pattern:[.,]` pattern nuqta yoki verguldan birini qidiradi.
 
-Quyidagi misolda regexp `pattern:[-().^+]` `-().^+` belgilaridan birini qidiradi:
+Quyidagi misolda regexp `pattern:[-().^+]` `-().^+` belgilaridan bittasini izlaydi:
 
 ```js run
 // qochish kerak emas
@@ -159,9 +159,9 @@ Natija noto'g'ri, chunki sukut bo'yicha surrogat juftliklar haqida "bilmayman" m
 
 Muntazam ifoda mexanizmi `[𝒳𝒴]` ikki emas, balki to'rtta belgidan iborat deb hisoblaydi:
 1. `𝒳` `(1)` ning chap yarmi,
-2. `𝒳` `(2)` ning o`ng yarmi,
+2. `𝒳` `(2)` ning o'ng yarmi,
 3. `𝒴` `(3)` ning chap yarmi,
-4. `𝒴` `(4)` ning o`ng yarmi.
+4. `𝒴` `(4)` ning o'ng yarmi.
 
 Biz ularning kodlarini quyidagicha ko'rishimiz mumkin:
 
