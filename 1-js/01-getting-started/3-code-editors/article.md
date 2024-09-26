@@ -1,60 +1,53 @@
 # Kod muharrirlari 
 
-Kod muharrirlari bu - dasturchilar eng ko’p vaqtini o’tqazadigan joy. 
+Kod muharrirlari bu - dasturchilar eng ko'p vaqtini o'tqazadigan joy. 
 
-Kod muharrirlari ikki xil bo’ladi: IDEs va yengil tahrirlovchi. Ko’p odamlar har bir turidagi bittadan vositadan foydalanadi. 
+Kod muharrirlari ikki xil bo'ladi: IDE va yengil tahrirlovchilar. Ko'p odamlar har bir turdagi bitta vositadan foydalanadi. 
 
 ## IDE
 
- [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) (Integrated Development Environment) atamasi odatda “butun loyihada” ishlaydigan ko’p xususiyatli tahrirlash ma’nosini anglatadi.  Nomidan ko’rinib turibdiki, bu faqatkina muharrir emas, balki  to’liq miqyosdagi “dasturlash muhiti” hamdir. 
+ [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) (Integrated Development Environment) atamasi odatda "butun loyihada" ishlaydigan ko'p xususiyatli tahrirlash ma'nosini anglatadi.  Nomidan ko'rinib turibdiki, bu faqatkina muharrir emas, balki  to'liq miqyosdagi "dasturlash muhiti" hamdir. 
 
+ IDE loyihalarni yuklaydi (bular bir nechta fayl bo'lishi mumkin), fayllar o'rtasida yo'nalishni aniqlashga imkon beradi(navigatsiya),  butun loyihaga asoslangan holda avtomatik tarzda ma'lumotlarni kiritish bilan ta'minlaydi (faqatkina ochiq fayl emas) va versiya boshqaruv tizimi (masalan [git](https://git-scm.com/)), sinov muhiti va boshqa "loyiha darajasi" dagi narsalar bilan qo'shilib ishlaydi. 
+ 
+ Agar siz hali IDE ni tanlamagan bo'lsangiz quyidagi variantlarni ko'rib chiqing: 
 
- IDE bu loyihalarni yuklaydi ( bular bir nechata fayl bo’lishi mumkin), fayllar o’rtasida yo’nalishni aniqlashga imkon beradi(navigatsiya),  butun loyihaga asoslangan holda avtomatik tarzda ma’lumotlarni kiritish bilan ta’minlaydi ( bu faqatkina ochiq fayl emas) va versiyalarni boshqaruv tizimi (masalan [git](https://git-scm.com/)), a sinov muhiti va boshqa “loyiha darajasi” dagi narsalar bilan qo’shilib ishlaydi. 
+ - [Visual Studio Code](https://code.visualstudio.com/) (dastur bo'ylab, bepul).
+ - [WebStorm](http://www.jetbrains.com/webstorm/) ( dastur bo'ylab, pulli). 
 
-- [Visual Studio Code](https://code.visualstudio.com/) (cross-platform, free).
-- [WebStorm](https://www.jetbrains.com/webstorm/) (cross-platform, paid).
+ Windowslar uchun yana "Visual Studio" ham bor, lekin buni "Visual Studio Code" bilan adashtirib yubormaslik kerak. "Visual studio"  pulli va kuchli winows muharriri bo’lib, .NET dasturiga juda mos tushadi. U JavaScriptda ham yaxshi ishlaydi. Shuningdek uning bepul versiyasi ham mavjud [Visual Studio Community](https://www.visualstudio.com/vs/community/).
 
-
- Agar siz hali IDE ni tanlamagan bo’lsangiz quyidagi tanlov(variant)larni ko’rib chiqing: 
-
-- [Visual Studio Code](https://code.visualstudio.com/) (dastur bo’ylab, bepul).
-- [WebStorm](http://www.jetbrains.com/webstorm/) ( dastur bo’ylab, pullik). 
-
-●	Windowslar uchun yana “visual Studio” ham bor, lekin buni “visual studio Code” bilan adashtirib yubormaslik kerak. “ Visual studio”  pullik va kuchli winows muharriri bo’lib, .NET dasturiga juda mos tushadi. U JavaScriptda ham yaxshi ishlaydi. Shuningdek uning bepul versiyasi ham mavjud [Visual Studio Community](https://www.visualstudio.com/vs/community/).
-
-Ko’p IDElar pullik, lekin sinov muddati bor. Ularning narxi dasturchilarning maoshi bilan taqqoslaganda arzimas, shuning uchun o’zingizga eng zo’rini tanlang.
+Ko'p IDElar pullik, lekin sinov muddati bor. Ularning narxi dasturchilarning maoshi bilan taqqoslaganda juda arzon, shuning uchun o'zingizga eng zo'rini tanlang.
 
 ## Yengil muharrirlar
 
-“Yengil muharrirlar” IDElardek kuchli emas, lekin ular tez, sodda va oddiy. 
+"Yengil muharrirlar" IDElardek kuchli emas, lekin ular tez, sodda va oddiy. 
 
-Ular asosan fayllarni ochida va darhol tahrir qilishda ishlatiladi. 
+Ular asosan fayllarni ochiq holda va darhol tahrir qilishda ishlatiladi. 
 
-“yengil tahrirlovchi” va “IDE” o’rtsidagi asosiy farq shundaki, IDE loyiha-darajasida ishlaydi, shuning uchun u ishga tushganda ko’proq ma’lumot yuklaydi,agar kerak bo’lsa, loyiha tuzilishini tahlil qiladi, va hokazo. Agar siz faqat bitta fayl bilan ishlashingiz kerak bo’lsa, yengil tahrirlovchi ancha tez.  
-There are many options, for instance:
+"Yengil tahrirlovchi" va "IDE" o'rtsidagi asosiy farq shundaki, IDE loyiha darajasida ishlaydi, shuning uchun u ishga tushganda ko'proq ma'lumot yuklaydi ,agar kerak bo’lsa, loyiha tuzilishini tahlil qiladi va hokazo. Agar siz faqat bitta fayl bilan ishlashingiz kerak bo'lsa, yengil tahrirlovchi ancha tezroq ishlaydi.  
 
 - [Sublime Text](https://www.sublimetext.com/) (cross-platform, shareware).
 - [Notepad++](https://notepad-plus-plus.org/) (Windows, free).
 - [Vim](https://www.vim.org/) and [Emacs](https://www.gnu.org/software/emacs/) are also cool if you know how to use them.
 
-Amalda, yengil tahrirlovchi juda ko’p pluginlari (dasturga ko'proq vazifa bajarishi uchun qo'shiladigan qo'shimcha dastur) bo’lishi mumkin, jumladan katalog darajasidagi sintaksis tahlilchilari va  avtomatik tarzda ma’lumotlarni to’ldirish dasturlari. Shuning uchun, yengil tahrirlovchi va IDE o’rtasida yaqqol chegara yo’q. 
-Quyidagi tanlov(variant)lar ko'rib chiqishingizga:
+Amalda, yengil tahrirlovchi juda ko'p pluginlari (dasturga ko'proq vazifa bajarishi uchun qo'shiladigan qo'shimcha dastur) bo'lishi mumkin, jumladan katalog darajasidagi sintaksis tahlilchilari va  avtomatik tarzda ma'lumotlarni to'ldirish dasturlari. Shuning uchun, yengil tahrirlovchi va IDE o'rtasida yaqqol chegara yo'q. 
 
-- [Atom](https://atom.io/) (dastur bo'ylab, bepul).
-- [Sublime Text](http://www.sublimetext.com) (dastur bo'ylab, sinov versiya).
-- [Notepad++](https://notepad-plus-plus.org/) (Windows, bepul).
-- ●	Agar foydalanishni bilsangiz .[Vim](http://www.vim.org/) va [Emacs](https://www.gnu.org/software/emacs/)lar ham ajoyib.
+Quyidagi variantlarni ko'rib chiqing:
+
+ - [Sublime Text](https://www.sublimetext.com/) (oʻzaro platformalar, umumiy dastur).
+ - [Notepad++](https://notepad-plus-plus.org/) (Windows, bepul).
+ - [Vim](http://www.vim.org/) va [Emacs](https://www.gnu.org/software/emacs/) ham ajoyib, agar foydalanishni bilsangiz .
 
 ## Keling tortishmaylik
 
-Yuqorida takidlab o’tilgan tahrirlovchilarni o'zini yaxshi dasturchi dep biladigan, men yoki mening do’stlarim uzoq vaqtlardan beri foydalanib kelishmoqda va bundan juda xursandmiz. 
+Yuqorida ta'kidlab o'tilgan tahrirlovchilarni o'zini yaxshi dasturchi deb biladigan, men yoki mening do'stlarim uzoq vaqtlardan beri foydalanib kelishmoqda va bundan juda xursandmiz. 
 
-Bizding bu katta dunyoda boshqa ajoyib tahrirlovchi dasturlar ham bor. Iltimos o’zingizga eng yoqqanini tanlang. 
+Butun dunyoda boshqa ajoyib tahrirlovchi dasturlar ham bor. Bemalol o'zingizga eng yoqqanini tanlashingiz mumkin. 
 
-Boshqa jihozlar kabi, tahrirlovchi dasturini tanlash ham shaxsiy hisoblanadi, va sizning proyektingiz, odatingiz va o'z xohishingizga bog’liq. 
-The choice of an editor, like any other tool, is individual and depends on your projects, habits, and personal preferences.
+Boshqa jihozlar kabi tahrirlovchi dasturini tanlash ham shaxsiy tanlovingiz, loyihangiz, odatingiz va o'z xohishingizga bog'liq.
 
-The author's personal opinion:
+Muallifning shaxsiy fikri:
 
-- I'd use [Visual Studio Code](https://code.visualstudio.com/) if I develop mostly frontend.
-- Otherwise, if it's mostly another language/platform and partially frontend, then consider other editors, such as XCode (Mac), Visual Studio (Windows) or Jetbrains family (Webstorm, PHPStorm, RubyMine etc, depending on the language).
+- Agar men asosan frontend qismi bilan ishlasam, [Visual Studio Code](https://code.visualstudio.com/) dan foydalangan bo'lardim.
+- Aks holda, agar u asosan boshqa til/platforma va qisman frontend bo'lsa, XCode (Mac), Visual Studio (Windows) yoki Jetbrains oilasi (tilga qarab Webstorm, PHPStorm, RubyMine va boshqalar) kabi boshqa muharrirlarni ko'rib chiqing.
