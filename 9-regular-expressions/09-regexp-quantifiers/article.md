@@ -96,16 +96,16 @@ Ko'p ishlatiladigan miqdor ko'rsatgichlari uchun qisqartmalar mavjud:
 
 ## Ko'proq misollar
 
-Miqdor ko'rsatgichlari juda tez-tez ishlatiladi. Ular murakkab muntazam iboralarning asosiy "qurilish bloki" bo'lib xizmat qiladi, shuning uchun ko'proq misollarni ko'rib chiqamiz.
+Miqdor ko'rsatgichlari juda tez-tez ishlatiladi. Ular murakkab muntazam iboralarning asosiy "qurilish bloki" bo'lib xizmat qiladi, shuning uchun ko'proq misollarni ko'rib chiqamiz. 
 
-**O‘nli kasrlar uchun regexp (suzuvchi nuqtali raqam): `pattern:\d+\.\d+`**
+**O'nli kasrlar uchun regexp (suzuvchi nuqtali raqam): `pattern:\d+\.\d+`**
 
 Amaliyotda:
 ```js run
 alert( "0 1 12.345 7890".match(/\d+\.\d+/g) ); // 12.345
 ```
 
-**"<span>` yoki `<p>` kabi "atributlarsiz ochiladigan HTML tegi" uchun Regexp.**
+**"<span>` yoki `<p>` kabi "atribyutlarsiz ochiladigan HTML tegi" uchun Regexp.**
 
 1. Eng oddiysi: `pattern:/<[a-z]+>/i`
 
@@ -123,7 +123,7 @@ alert( "0 1 12.345 7890".match(/\d+\.\d+/g) ); // 12.345
     alert( "<h1>Hi!</h1>".match(/<[a-z][a-z0-9]*>/gi) ); // <h1>
     ```
 
- **Regexp "atributlarsiz HTML tegini ochish yoki yopish": `pattern:/<\/?[a-z][a-z0-9]*>/i`**
+ **Regexp "atribyutlarsiz HTML tegini ochish yoki yopish": `pattern:/<\/?[a-z][a-z0-9]*>/i`**
 
  Pattern boshiga ixtiyoriy slash `pattern:/?` qo'shdik. Undan teskari chiziq bilan qochish kerak edi, aks holda JavaScript bu patternning oxiri deb o'ylaydi.
 
@@ -138,5 +138,5 @@ Masalan, HTML teglari uchun biz oddiyroq regexpdan foydalanishimiz mumkin: `patt
 
 Biz `pattern:<\w+>` dan foydalana olamizmi yoki bizga `pattern:<[a-z][a-z0-9]*>` kerakmi?
 
-Haqiqiy hayotda ikkala variant ham qabul qilinadi. Bu "qo'shimcha" o'yinlarga qanchalik bardoshli bo'lishimiz va ularni boshqa usullar bilan natijadan olib tashlash qiyinmi yoki yo'qligiga bog'liq.
+Haqiqiy hayotda ikkala variant ham qabul qilinadi. Bu "qo'shimcha" o'yinlarga qanchalik bardoshli bo'lishimiz va ularni boshqa usullar bilan natijadan olib tashlashning qanchalik qiyinligiga bog'liq.
 ```
