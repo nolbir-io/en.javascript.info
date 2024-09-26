@@ -1,15 +1,15 @@
 
-# Reference Type
+# Havola turi
 
-```warn header="In-depth language feature"
-This article covers an advanced topic, to understand certain edge-cases better.
+```warn header="Chuqur til xususiyati"
+Ushbu maqola ba'zi chekka holatlarni yaxshiroq tushunish uchun ilg'or mavzuni qamrab oladi.
 
-It's not important. Many experienced developers live fine without knowing it. Read on if you want to know how things work under the hood.
+Bu muhim emas. Ko'pgina tajribali ishlab chiquvchilar buni bilmagan holda yaxshi yashaydilar. Ishlarning kaput ostida qanday ishlashini bilmoqchi bo'lsangiz, o'qing.
 ```
 
-A dynamically evaluated method call can lose `this`.
+Dinamik tarzda baholangan usul chaqiruvi `this` ni yo'qotishi mumkin.
 
-For instance:
+Masalan:
 
 ```js run
 let user = {
@@ -18,42 +18,42 @@ let user = {
   bye() { alert("Bye"); }
 };
 
-user.hi(); // works
+user.hi(); // ishlaydi
 
-// now let's call user.hi or user.bye depending on the name
+// endi ismga qarab user.hi yoki user.bye deb chaqiramiz
 *!*
 (user.name == "John" ? user.hi : user.bye)(); // Error!
 */!*
 ```
 
-On the last line there is a conditional operator that chooses either `user.hi` or `user.bye`. In this case the result is `user.hi`.
+Oxirgi qatorda `user.hi` yoki `user.bye` ni tanlaydigan shartli operator mavjud. Bu holda natija `user.hi` bo'ladi.
 
-Then the method is immediately called with parentheses `()`. But it doesn't work correctly!
+Keyin usul darhol `()` qavslar bilan chaqiriladi, lekin u to'g'ri ishlamayapti!
 
-As you can see, the call results in an error, because the value of `"this"` inside the call becomes `undefined`.
+Ko'rib turganingizdek, chaqiruv xatolikka olib keladi, chunki qo'ng'iroq ichidagi `this` qiymati `undefined` bo'ladi.
 
-This works (object dot method):
+Bu ishlaydi (obyekt nuqta usuli):
 ```js
 user.hi();
 ```
 
-This doesn't (evaluated method):
+Bu ishlamaydi (baholangan usul):
 ```js
 (user.name == "John" ? user.hi : user.bye)(); // Error!
 ```
 
-Why? If we want to understand why it happens, let's get under the hood of how `obj.method()` call works.
+Nega? Agar bu nima uchun sodir bo'lishini tushunmoqchi bo'lsak, keling, `obj.method()` chaqiruvi qanday ishlashini ko'rib chiqaylik.
 
-## Reference type explained
+## Tushuntirilgan ma'lumot turi 
 
-Looking closely, we may notice two operations in `obj.method()` statement:
+Diqqat bilan qaraydigan bo'lsak, `obj.method()` iborasida ikkita operatsiyani ko'rishimiz mumkin:
 
-1. First, the dot `'.'` retrieves the property `obj.method`.
-2. Then parentheses `()` execute it.
+1. Birinchidan, nuqta `'.'` `obj.method` xususiyatini qaytarib oladi.
+2. Keyin `()` qavslar uni bajaradi. 
 
-So, how does the information about `this` get passed from the first part to the second one?
+Xo'sh, `this` haqidagi ma'lumot birinchi qismdan ikkinchi qismga qanday o'tadi?
 
-If we put these operations on separate lines, then `this` will be lost for sure:
+Agar biz ushbu operatsiyalarni alohida qatorlarga qo'ysak, u holda `this` aniq yo'qoladi:
 
 ```js run
 let user = {
@@ -62,47 +62,47 @@ let user = {
 };
 
 *!*
-// split getting and calling the method in two lines
+// olish va usulni chaqirishni ikki qatorga ajrating
 let hi = user.hi;
-hi(); // Error, because this is undefined
+hi(); // Error, chunki this aniqlanmagan
 */!*
 ```
 
-Here `hi = user.hi` puts the function into the variable, and then on the last line it is completely standalone, and so there's no `this`.
+Bu yerda `hi = user.hi` funksiyani o'zgaruvchiga qo'yadi, so'ngra oxirgi qatorda u butunlay mustaqil bo'ladi va shuning uchun `this` mavjud emas.
 
-**To make `user.hi()` calls work, JavaScript uses a trick -- the dot `'.'` returns not a function, but a value of the special [Reference Type](https://tc39.github.io/ecma262/#sec-reference-specification-type).**
+**`user.hi()` qo'ng'iroqlarini ishlashi uchun JavaScript hiyla ishlatadi -- nuqta `'.'` funksiyani emas, balki maxsus [Reference Type](https://tc39.github) qiymatini qaytaradi. .(io/ecma262/#sec-reference-specification-type).**
 
-The Reference Type is a "specification type". We can't explicitly use it, but it is used internally by the language.
+Malumot turi "spetsifikatsiya turi" dir. Biz uni aniq ishlata olmaymiz, lekin u til tomonidan ichki tarzda ishlatiladi.
 
-The value of Reference Type is a three-value combination `(base, name, strict)`, where:
+Havola turi qiymati uch qiymatli `(base, name, strict)` birikmasidir:
 
-- `base` is the object.
-- `name` is the property name.
-- `strict` is true if `use strict` is in effect.
+- `base` obyekt.
+- `name` xususiyat nomi.
+- `strict` to'g'ri hisoblanadi, agar `use strict` amalda bo'lsa.
 
-The result of a property access `user.hi` is not a function, but a value of Reference Type. For `user.hi` in strict mode it is:
+`user.hi` xususiyatiga kirish natijasi funksiya emas, balki Reference Type qiymatidir. Qattiq rejimda `user.hi` uchun bu:
 
 ```js
-// Reference Type value
+// Reference Type qiymati
 (user, "hi", true)
 ```
 
-When parentheses `()` are called on the Reference Type, they receive the full information about the object and its method, and can set the right `this` (`user` in this case).
+Qavslar `()` Reference Type bo'yicha chaqirilganda, ular obyekt va uning usuli haqida to'liq ma'lumot oladi va o'ng `this` (bu holda `user`) ni o'rnatishi mumkin.
 
-Reference type is a special "intermediary" internal type, with the purpose to pass information from dot `.` to calling parentheses `()`.
+Ma'lumot turi maxsus "vositachi" ichki tipi bo'lib, ma'lumotni nuqta `.` dan `()` chaqiruvchi qavslarga o'tkazish uchun mo'ljallangan.
 
-Any other operation like assignment `hi = user.hi` discards the reference type as a whole, takes the value of `user.hi` (a function) and passes it on. So any further operation "loses" `this`.
+`hi = user.hi` ni tayinlash kabi har qanday boshqa amal mos yozuvlar turini bir butun sifatida bekor qiladi, `user.hi` (funksiya) qiymatini oladi va uni uzatadi. Shunday qilib, keyingi har qanday operatsiya `this` ni "yo'qotadi".
 
-So, as the result, the value of `this` is only passed the right way if the function is called directly using a dot `obj.method()` or square brackets `obj['method']()` syntax (they do the same here). There are various ways to solve this problem such as [func.bind()](/bind#solution-2-bind).
+Natijada, funksiya to'g'ridan-to'g'ri nuqta `obj.method()` yoki kvadrat qavslar obj['method']() sintaksisi yordamida chaqirilsa, bu qiymat faqat to'g'ri yo'l bilan o'tkaziladi (ular bu erda ham xuddi shunday qilishadi). Bu muammoni hal qilishning [func.bind()](/bind#solution-2-bind) kabi turli usullari mavjud.
 
-## Summary
+## Xulosa
 
-Reference Type is an internal type of the language.
+Reference Type - bu tilning ichki turi.
 
-Reading a property, such as with dot `.` in `obj.method()` returns not exactly the property value, but a special "reference type" value that stores both the property value and the object it was taken from.
+`obj.method()` da nuqta `.` kabi xususiyatni o'qish aniq xususiyat qiymatini emas, balki xususiyat qiymatini ham, u olingan obyektni ham saqlaydigan maxsus "havola turi" qiymatini qaytaradi.
 
-That's for the subsequent method call `()` to get the object and set `this` to it.
+Bu obyektni olish va unga `this` ni o'rnatish uchun `()` chaqiruvining keyingi usuli uchun mo'ljallangan.
 
-For all other operations, the reference type automatically becomes the property value (a function in our case).
+Boshqa barcha operatsiyalar uchun mos yozuvlar turi avtomatik ravishda xususiyat qiymatiga aylanadi (bizning holatlarimizda funksiya).
 
-The whole mechanics is hidden from our eyes. It only matters in subtle cases, such as when a method is obtained dynamically from the object, using an expression.
+Butun mexanika bizning ko'zimiz uchun yashirin. Bu faqat nozik holatlarda, masalan, ifoda yordamida obyektdan dinamik ravishda usul olinganda muhim ahamiyatga ega.

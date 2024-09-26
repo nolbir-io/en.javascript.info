@@ -1,15 +1,14 @@
 
-# Async iteration and generators
+# Asinxron iteratsiya va generatorlar
 
-Asynchronous iteration allow us to iterate over data that comes asynchronously, on-demand. Like, for instance, when we download something chunk-by-chunk over a network. And asynchronous generators make it even more convenient.
+Asinxron iteratsiya bizga talab bo'yicha asinxron ravishda keladigan ma'lumotlarni takrorlash imkonini beradi. Masalan, biz tarmoq orqali biror narsani bo'laklarga bo'lib yuklab olganimizda asinxron generatorlar uni yanada qulayroq qiladi.
 
-Let's see a simple example first, to grasp the syntax, and then review a real-life use case.
+Keling, sintaksisni tushunish uchun avval oddiy misol, keyin real hayotda foydalanish misolini ko'rib chiqamiz.
 
-## Recall iterables
+## Takrorlanuvchilarni eslang
+Keling, iterable lar, ya'ni takrorlanuvchilar mavzusini yodga olaylik.
 
-Let's recall the topic about iterables. 
-
-The idea is that we have an object, such as `range` here:
+G'oya shundan iboratki, bizda `range` obyekti mavjud:
 ```js
 let range = {
   from: 1,
@@ -17,17 +16,17 @@ let range = {
 };
 ```
 
-...And we'd like to use `for..of` loop on it, such as `for(value of range)`, to get values from `1` to `5`.
+ ...Va biz `1` dan `5` gacha qiymatlarni olish uchun `for(value of range)` kabi `for..of` siklidan foydalanmoqchimiz.
 
-In other words, we want to add an *iteration ability* to the object.
+Boshqacha qilib aytganda, biz obyektga *iteratsiya qobiliyati*ni qo'shmoqchimiz.
 
-That can be implemented using a special method with the name `Symbol.iterator`:
+Buni `Symbol.iterator` nomi bilan maxsus usul yordamida amalga oshirish mumkin:
 
-- This method is called in by the `for..of` construct when the loop is started, and it should return an object with the `next` method.
-- For each iteration, the `next()` method is invoked for the next value.
-- The `next()` should return a value in the form `{done: true/false, value:<loop value>}`, where `done:true` means the end of the loop.
+- Bu usul sikl boshlanganda `for..of` konstruksiyasi orqali chaqiriladi va u `next` usuli bilan obyektni qaytarishi kerak.
+- Har bir iteratsiya uchun `next` usuli keyingi qiymat uchun chaqiriladi.
+- `Next()` usuli `{done: true/false, value:<loop value>}` ko'rinishidagi qiymatni qaytarishi kerak, bu yerda `done:true` siklning oxirini bildiradi.
 
-Here's an implementation for the iterable `range`:
+Mana, takrorlanadigan `range` uchun dastur:
 
 ```js run
 let range = {
@@ -35,14 +34,14 @@ let range = {
   to: 5,
 
 *!*
-  [Symbol.iterator]() { // called once, in the beginning of for..of
+  [Symbol.iterator]() { // for..of boshida bir marta chaqirilgan
 */!*
     return {
       current: this.from,
       last: this.to,
 
 *!*
-      next() { // called every iteration, to get the next value
+      next() { // keyingi qiymatni olish uchun har bir iteratsiyani chaqiradi
 */!*
         if (this.current <= this.last) {
           return { done: false, value: this.current++ };
@@ -55,29 +54,28 @@ let range = {
 };
 
 for(let value of range) {
-  alert(value); // 1 then 2, then 3, then 4, then 5
+  alert(value); // 1 keyin 2, keyin 3, keyin 4, keyin 5
 }
 ```
 
-If anything is unclear, please visit the chapter [](info:iterable), it gives all the details about regular iterables.
+Agar biror narsa tushunarsiz bo'lsa, iltimos, [](info:iterable) bo'limiga tashrif buyuring, unda muntazam iterable lar haqida barcha tafsilotlar berilgan.
 
-## Async iterables
+## Asinxron takrorlanuvchilar
 
-Asynchronous iteration is needed when values come asynchronously: after `setTimeout` or another kind of delay. 
+ Asinxron iteratsiya qiymatlar asinxron kelganda: `setTimeout` yoki boshqa turdagi kechikishdan keyin kerak bo'ladi.
+ Eng keng tarqalgan holat shundaki, obyekt keyingi qiymatni yetkazib berish uchun tarmoq so'rovini amalga oshirishi kerak, biz uning hayotiy misolini birozdan keyin ko'ramiz. 
 
-The most common case is that the object needs to make a network request to deliver the next value, we'll see a real-life example of it a bit later.
+Obyektni asinxron ravishda takrorlanadigan qilish uchun:
 
-To make an object iterable asynchronously:
+1. `Symbol.iterator`ning o'rniga `Symbol.asyncIterator` ni ishlating. 
+2. `Next ()` usuli va'dani qaytarishi lozim (keyingi qiymat bilan birga bajarilishi kerak).
+    - `Async` kalit so'zi uni boshqaradi, biz shunchaki `async next()` ni yaratishimiz mumkin.
+3. Bunday obyektni takrorlash uchun biz `for await (iterable elementi)` siklidan foydalanishimiz kerak.
+    - `await` so'ziga e'tibor bering.
 
-1. Use `Symbol.asyncIterator` instead of `Symbol.iterator`.
-2. The `next()` method should return a promise (to be fulfilled with the next value).
-    - The `async` keyword handles it, we can simply make `async next()`.
-3. To iterate over such an object, we should use a `for await (let item of iterable)` loop.
-    - Note the `await` word.
+Boshlang'ich misol sifatida, avvalgisiga o'xshash takrorlanadigan `range` obyektini yaratamiz, lekin endi u qiymatlarni asinxron tarzda, soniyada bir marta qaytaradi.
 
-As a starting example, let's make an iterable `range` object, similar like the one before, but now it will return values asynchronously, one per second.
-
-All we need to do is to perform a few replacements in the code above:
+Biz qilishimiz kerak bo'lgan narsa yuqoridagi kodni bir necha marta almashtirishni amalga oshirishdir:
 
 ```js run
 let range = {
@@ -96,7 +94,7 @@ let range = {
 */!*
 
 *!*
-        // note: we can use "await" inside the async next:
+        //  Eslatma: biz async ichida "await" dan foydalanishimiz mumkin:
         await new Promise(resolve => setTimeout(resolve, 1000)); // (3)
 */!*
 
@@ -121,43 +119,43 @@ let range = {
 })()
 ```
 
-As we can see, the structure is similar to regular iterators:
+Ko'rib turganimizdek, struktura oddiy iteratorlarga o'xshaydi:
 
-1. To make an object asynchronously iterable, it must have a method `Symbol.asyncIterator` `(1)`.
-2. This method must return the object with `next()` method returning a promise `(2)`.
-3. The `next()` method doesn't have to be `async`, it may be a regular method returning a promise, but `async` allows us to use `await`, so that's convenient. Here we just delay for a second `(3)`.
-4. To iterate, we use `for await(let value of range)` `(4)`, namely add "await" after "for". It calls `range[Symbol.asyncIterator]()` once, and then its `next()` for values.
+1. Obyektni asinxron ravishda takrorlanadigan qilish uchun u `Symbol.asyncIterator` `(1)` usuliga ega bo'lishi kerak.
+2. Bu usul `(2)` promise ni qaytaradigan `next()` usuli bilan obyektni qaytarishi kerak.
+3. `Next()` usuli `async` bo'lishi shart emas, bu promise ni qaytaruvchi oddiy usul bo'lishi mumkin, lekin `async` bizga `await` dan foydalanishga imkon beradi, shuning uchun bu qulay. Bu yerda biz `3` ni bir soniya kechiktiramiz.
+4. Takrorlash uchun biz `for await(Let value of range)` va `(4)` dan foydalanamiz, ya'ni "for" dan keyin "await" ni qo'shamiz. U bir marta `range[Symbol.asyncIterator]()` ni, keyin esa qiymatlar uchun `next()` ni chaqiradi.
 
-Here's a small table with the differences:
+Quyida farqlar bilan kichik jadval berilgan:
 
-|       | Iterators | Async iterators |
+|       | Iteratorlar | Asinxron iteratorlar |
 |-------|-----------|-----------------|
-| Object method to provide iterator | `Symbol.iterator` | `Symbol.asyncIterator` |
-| `next()` return value is              | any value         | `Promise`  |
-| to loop, use                          | `for..of`         | `for await..of` |
+| Iteratorni ta'minlash uchun obyekt usuli| `Symbol.iterator` | `Symbol.asyncIterator` |
+| `next()` qaytish qiymati hisoblanadi        | istalgan qiymat          | `Promise`  |
+| loop uchun quyidagilardan foydalaning:                         | `for..of`         | `for await..of` |
 
-````warn header="The spread syntax `...` doesn't work asynchronously"
-Features that require regular, synchronous iterators, don't work with asynchronous ones.
+````warn header=" tarqalish sintaksisi `...` asinxron tarzda ishlamaydi"
+Muntazam, sinxron iteratorlarni talab qiladigan funksiyalar asinxronlar bilan ishlamaydi.
 
-For instance, a spread syntax won't work:
+Masalan, tarqalish sintaksisi ishlamaydi:
 ```js
-alert( [...range] ); // Error, no Symbol.iterator
+alert( [...range] ); // Error, Symbol.iterator mavjud emas
 ```
 
-That's natural, as it expects to find `Symbol.iterator`, not `Symbol.asyncIterator`.
+Bu tabiiy holat, chunki u `Symbol.asyncIterator` ni emas, `Symbol.iterator` ni topishni kutadi.
 
-It's also the case for `for..of`: the syntax without `await` needs `Symbol.iterator`.
+Bu `for..of` uchun ham shunday: `await` siz sintaksis uchun `Symbol.iterator` kerak.
 ````
 
-## Recall generators
+## Generatorlarni eslang
 
-Now let's recall generators, as they allow to make iteration code much shorter. Most of the time, when we'd like to make an iterable, we'll use generators.
+Endi generatorlarni eslaylik, chunki ular iteratsiya kodini ancha qisqartirishga imkon beradi. Ko'pincha, biz iteratsiya qilishni xohlasak, biz generatorlardan foydalanamiz.
 
-For sheer simplicity, omitting some important stuff, they are "functions that generate (yield) values". They are explained in detail in the chapter [](info:generators).
+Oddiylik uchun, ba'zi muhim narsalarni hisobga olmaganda, ular "qiymatlarni yaratuvchi (hosildorlik) funksiyalari" dir. Ular [](info:generators) bobida batafsil yoritilgan.
 
-Generators are labelled with `function*` (note the star) and use `yield` to generate a value, then we can use `for..of` to loop over them.
+Generatorlar `function*` (yulduzchaga e`tibor bering) bilan etiketlanadi va qiymat hosil qilish uchun `yield` dan foydalanamiz, keyin biz ularni aylantirish uchun `for..of` dan foydalanishimiz mumkin.
 
-This example generates a sequence of values from `start` to `end`:
+Bu misol `start`dan `end`gacha bo'lgan qiymatlar ketma-ketligini hosil qiladi:
 
 ```js run
 function* generateSequence(start, end) {
@@ -171,7 +169,7 @@ for(let value of generateSequence(1, 5)) {
 }
 ```
 
-As we already know, to make an object iterable, we should add `Symbol.iterator` to it.
+Biz allaqachon bilganimizdek, obyektni takrorlanadigan qilish uchun unga `Symbol.iterator` ni qo'shishimiz kerak.
 
 ```js
 let range = {
@@ -179,20 +177,20 @@ let range = {
   to: 5,
 *!*
   [Symbol.iterator]() {
-    return <object with next to make range iterable>
+  range ni takrorlanadigan qilish uchun obyektni next bilan qaytaring
   }
 */!*
 }
 ```
 
-A common practice for `Symbol.iterator` is to return a generator, it makes the code shorter, as you can see:
+`Symbol.iterator` uchun keng tarqalgan amaliyot generatorni qaytarishdir, ko'rib turganingizdek bu kodni qisqartiradi:
 
 ```js run
 let range = {
   from: 1,
   to: 5,
 
-  *[Symbol.iterator]() { // a shorthand for [Symbol.iterator]: function*()
+  *[Symbol.iterator]() { // [Symbol.iterator]: uchun qisqartma function*()
     for(let value = this.from; value <= this.to; value++) {
       yield value;
     }
@@ -200,33 +198,31 @@ let range = {
 };
 
 for(let value of range) {
-  alert(value); // 1, then 2, then 3, then 4, then 5
+  alert(value); // 1, keyin 2, keyin 3, keyin 4, keyin 5
 }
 ```
 
-Please see the chapter [](info:generators) if you'd like more details.
+Batafsil ma’lumot olishni istasangiz, [](info:generators) bobini ko'rib chiqing.
 
-In regular generators we can't use `await`. All values must come synchronously, as required by the `for..of` construct.
+Oddiy generatorlarda biz `await` dan foydalana olmaymiz. Barcha qiymatlar `for..of` konstruksiyasini talab qilganidek, ular sinxron tarzda kelishi kerak.
 
-What if we'd like to generate values asynchronously? From network requests, for instance. 
+Agar biz asinxron qiymatlarni yaratmoqchi bo'lsakchi? Masalan, tarmoq so'rovlari orqali bajarmoqchimiz.
 
-Let's switch to asynchronous generators to make it possible.
+Buni amalga oshirish uchun asinxron generatorlarga o'tamiz.
+## Asinxron generatorlar (vanihoyat).
 
-## Async generators (finally)
+Aksariyat amaliy ilovalar uchun biz asinxron ravishda qiymatlar ketma-ketligini yaratadigan obyektni yaratmoqchi bo'lsak, biz asinxron generatordan foydalanishimiz mumkin.
 
-For most practical applications, when we'd like to make an object that asynchronously generates a sequence of values, we can use an asynchronous generator.
+Sintaksis oddiy: `function*`ni `async` bilan oldinga qo'ying. Bu generatorni asinxron qiladi.
 
-The syntax is simple: prepend `function*` with `async`. That makes the generator asynchronous.
-
-And then use `for await (...)` to iterate over it, like this:
-
+Va keyin uni takrorlash uchun `for await (...)` dan foydalaning, masalan:
 ```js run
 *!*async*/!* function* generateSequence(start, end) {
 
   for (let i = start; i <= end; i++) {
 
 *!*
-    // Wow, can use await!
+    // await dan foydalanishimiz mumkin!
     await new Promise(resolve => setTimeout(resolve, 1000));
 */!*
 
@@ -239,47 +235,47 @@ And then use `for await (...)` to iterate over it, like this:
 
   let generator = generateSequence(1, 5);
   for *!*await*/!* (let value of generator) {
-    alert(value); // 1, then 2, then 3, then 4, then 5 (with delay between)
+    alert(value); // 1, keyin 2, keyin 3, keyin 4, keyin 5 (orasida biroz kechikish bilan)
   }
 
 })();
 ```
 
-As the generator is asynchronous, we can use `await` inside it, rely on promises, perform network requests and so on.
+Generator asinxron bo'lgani uchun biz uning ichida `await` dan foydalanishimiz, promise larga tayanishimiz, tarmoq so'rovlarini bajarishimiz lozim va hokazo.
 
-````smart header="Under-the-hood difference"
-Technically, if you're an advanced reader who remembers the details about generators, there's an internal difference.
+````smart header="hood ostidagi farq"
+Agar siz generatorlar haqidagi tafsilotlarni texnik jihatdan eslab qoladigan ilg'or o'quvchi bo'lsangiz, ichki farq mavjud.
 
-For async generators, the `generator.next()` method is asynchronous, it returns promises.
+Asinxron generatorlar uchun `generator.next()` usuli asinxron bo'lib, promise larni qaytaradi.
 
-In a regular generator we'd use `result = generator.next()` to get values. In an async generator, we should add `await`, like this:
+Oddiy generatorda qiymatlarni olish uchun `result = generator.next()` dan foydalanamiz. Asinxron generatorida biz `await` ni qo'shishimiz kerak, masalan: 
 
 ```js
-result = await generator.next(); // result = {value: ..., done: true/false}
+natija = await generator.next(); // natija = {value: ..., bajarildi: true/false}
 ```
-That's why async generators work with `for await...of`.
+Shuning uchun ham asinxron generatorlar `for await...of` bilan ishlaydi.
 ````
 
-### Async iterable range
+### Asinxron takrorlanadigan range (async iterable range) 
 
-Regular generators can be used as `Symbol.iterator` to make the iteration code shorter.
+Takrorlash kodini qisqartirish uchun oddiy generatorlardan `Symbol.iterator` sifatida foydalanish mumkin.
 
-Similar to that, async generators can be used as `Symbol.asyncIterator` to implement the asynchronous iteration.
+Shunga o'xshab, asinxron generatorlar asinxron iteratsiyani amalga oshirish uchun `Symbol.asyncIterator` sifatida ishlatiladi.
 
-For instance, we can make the `range` object generate values asynchronously, once per second, by replacing synchronous `Symbol.iterator` with asynchronous `Symbol.asyncIterator`:
+Masalan, sinxron `Symbol.iterator` ni asinxron `Symbol.asyncIterator` bilan almashtirib, biz `range` obyektini sekundiga bir marta asinxron qiymatlarni yarata olamiz:
 
 ```js run
 let range = {
   from: 1,
   to: 5,
 
-  // this line is same as [Symbol.asyncIterator]: async function*() {
+  // bu qator [Symbol.asyncIterator] bilan bir xil: async function*() {
 *!*
   async *[Symbol.asyncIterator]() {
 */!*
     for(let value = this.from; value <= this.to; value++) {
 
-      // make a pause between values, wait for something  
+      // qiymatlar orasida pauza qiling, biroz kuting 
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       yield value;
@@ -290,47 +286,46 @@ let range = {
 (async () => {
 
   for *!*await*/!* (let value of range) {
-    alert(value); // 1, then 2, then 3, then 4, then 5
+    alert(value); // 1, keyin 2, keyin 3, keyin 4, keyin 5
   }
 
 })();
 ```
 
-Now values come with a delay of 1 second between them.
+Endi qiymatlar ular orasida 1 soniya kechikish bilan keladi.
 
-```smart
-Technically, we can add both `Symbol.iterator` and `Symbol.asyncIterator` to the object, so it's both synchronously (`for..of`) and asynchronously (`for await..of`) iterable.
-
-In practice though, that would be a weird thing to do.
+```smart header``
+Texnik jihatdan obyektga `Symbol.iterator` va `Symbol.asyncIterator` ni qo'shishimiz mumkin, shuning uchun u sinxron (`for..of`) va asinxron (`for await..of`) takrorlanadi.
+Amalda esa bu g'alati ish bo'lardi.
 ```
 
-## Real-life example: paginated data
+## Haqiqiy misol: sahifalangan ma'lumotlar
 
-So far we've seen basic examples, to gain understanding. Now let's review a real-life use case.
+Hozirgacha biz tushunish uchun asosiy misollarni ko'rdik. Keling, haqiqiy hayotda foydalanish mumkin bo'lgan misolni ko'rib chiqaylik.
 
-There are many online services that deliver paginated data. For instance, when we need a list of users, a request returns a pre-defined count (e.g. 100 users) - "one page", and provides a URL to the next page.
+Sahifali ma'lumotlarni yetkazib beradigan ko'plab onlayn xizmatlar mavjud. Misol uchun, bizga foydalanuvchilar ro'yxati kerak bo'lganda, so'rov oldindan belgilangan sonni (masalan, 100ta foydalanuvchi) qaytaradi - "bir sahifa" va keyingi sahifaga URL manzilini beradi.
 
-This pattern is very common. It's not about users, but just about anything. 
+Ushbu usul juda keng tarqalgan. Bu faqat foydalanuvchilar haqida emas.
 
-For instance, GitHub allows us to retrieve commits in the same, paginated fashion:
+Misol uchun, GitHub bizga majburiyatlarni bir xil, sahifalangan tarzda olish imkonini beradi:
 
-- We should make a request to `fetch` in the form `https://api.github.com/repos/<repo>/commits`.
-- It responds with a JSON of 30 commits, and also provides a link to the next page in the `Link` header.
-- Then we can use that link for the next request, to get more commits, and so on.
+- Biz `https://api.github.com/repos/<repo>/commits` shaklida `fetch` qilish uchun so'rov yuborishimiz kerak.
+- U 30 ta topshiriqdan iborat JSON bilan javob beradi va shuningdek, `Link` sarlavhasidagi keyingi sahifaga havolani taqdim etadi.
+- Keyin biz ushbu havoladan keyingi so'rov, ko'proq majburiyatlarni olish va hokazolar uchun foydalanishimiz mumkin.
 
-For our code, we'd like to have a simpler way to get commits.
+Bizning kodimiz uchun biz majburiyatlarni olishning oddiyroq usuliga ega bo'lishni xohlaymiz.
 
-Let's make a function `fetchCommits(repo)` that gets commits for us, making requests whenever needed. And let it care about all pagination stuff. For us it'll be a simple async iteration `for await..of`.
+Keling, biz uchun majburiyatlarni oladigan, kerak bo'lganda so'rovlar yuboradigan `fetchCommits(repo)` funksiyasini yarataylik. Va u barcha sahifalash ishlari haqida qayg'ursin. Biz uchun bu `wait..of` uchun oddiy asinxron iteratsiya bo'ladi.
 
-So the usage will be like this:
+Shunday qilib, foydalanish quyida ko'rsatilgan: 
 
 ```js
 for await (let commit of fetchCommits("username/repository")) {
-  // process commit
+  // jarayonni bajarish
 }
 ```
 
-Here's such function, implemented as async generator:
+Bu yerda asinxron generator sifatida amalga oshiriladigan bunday funksiya mavjud:
 
 ```js
 async function* fetchCommits(repo) {
@@ -338,36 +333,36 @@ async function* fetchCommits(repo) {
 
   while (url) {
     const response = await fetch(url, { // (1)
-      headers: {'User-Agent': 'Our script'}, // github needs any user-agent header
+      headers: {'User-Agent': 'Our script'}, // github har qanday foydalanuvchi-agent sarlavhasiga muhtoj
     });
 
-    const body = await response.json(); // (2) response is JSON (array of commits)
+    const body = await response.json(); // (2) javob JSON (commit'lar massivi)
 
-    // (3) the URL of the next page is in the headers, extract it
+    // (3) keyingi sahifaning URL manzili sarlavhalarda, uni chiqarib oling
     let nextPage = response.headers.get('Link').match(/<(.*?)>; rel="next"/);
     nextPage = nextPage?.[1];
 
     url = nextPage;
 
-    for(let commit of body) { // (4) yield commits one by one, until the page ends
+    for(let commit of body) { // (4) yield sahifa tugaguniga qadar birma-bir bajariladi
       yield commit;
     }
   }
 }
 ```
 
-More explanations about how it works:
+Bu qanday ishlashi haqida ko'proq ma'lumotlar:
 
-1. We use the browser [fetch](info:fetch) method to download the commits.
+1. Biz topshiriqlarni yuklab olish uchun brauzer [fetch](info:fetch) usulidan foydalanamiz.
 
-    - The initial URL is `https://api.github.com/repos/<repo>/commits`, and the next page will be in the `Link` header of the response.
-    - The `fetch` method allows us to supply authorization and other headers if needed -- here GitHub requires `User-Agent`.
-2. The commits are returned in JSON format.
-3. We should get the next page URL from the `Link` header of the response. It has a special format, so we use a regular expression for that (we will learn this feature in [Regular expressions](info:regular-expressions)).
-    - The next page URL may look like `https://api.github.com/repositories/93253246/commits?page=2`. It's generated by GitHub itself.
-4. Then we yield the received commits one by one, and when they finish, the next `while(url)` iteration will trigger, making one more request.
+    - Dastlabki URL manzili `https://api.github.com/repos/<repo>/commits`, keyingi sahifa esa javobning `Link` sarlavhasida bo'ladi.
+    - `Fetch` usuli bizga kerak bo'lganda avtorizatsiya va boshqa sarlavhalarni taqdim etish imkonini beradi -- bu erda GitHub `User-Agent` ni talab qiladi.
+2. Commit lar JSON formatida qaytariladi.
+3. Javobning `Link` sarlavhasidan keyingi sahifa URL manzilini olishimiz kerak. Uning maxsus formati bor, biz buning uchun oddiy iboradan foydalanamiz (biz bu xususiyatni [Regular expressions](ma'lumot:regular-expressions) da o'rganamiz).
+    - Keyingi sahifa URL manzili `https://api.github.com/repositories/93253246/commits?page=2` kabi ko'rinishi mumkin. U GitHub tomonidan yaratilgan. 
+4. Keyin biz qabul qilingan majburiyatlarni birma-bir beramiz va ular tugagach, navbatdagi `while(url)` iteratsiyasi ishga tushadi va yana bitta so'rov yuboriladi.
 
-An example of use (shows commit authors in console):
+Foydalanish misoli (konsolda mualliflarni topshirishni ko'rsatadi):
 
 ```js run
 (async () => {
@@ -378,40 +373,39 @@ An example of use (shows commit authors in console):
 
     console.log(commit.author.login);
 
-    if (++count == 100) { // let's stop at 100 commits
+    if (++count == 100) { // keling, 100 ta commit da to'xtaylik
       break;
     }
   }
 
 })();
 
-// Note: If you are running this in an external sandbox, you'll need to paste here the function fetchCommits described above 
+// Eslatma: Agar siz buni tashqi sinov muhitida ishlatayotgan bo'lsangiz, yuqorida tavsiflangan fetchCommits funksiyasini bu yerga joylashtirishingiz kerak bo'ladi.
 ```
 
-That's just what we wanted. 
+Biz xohlagan narsa shu edi.
 
-The internal mechanics of paginated requests is invisible from the outside. For us it's just an async generator that returns commits.
+Sahifali so'rovlarning ichki mexanikasi tashqaridan ko'rinmaydi. Biz uchun bu shunchaki majburiyatlarni qaytaradigan asinxron generator.
 
-## Summary
+## Xulosa
 
-Regular iterators and generators work fine with the data that doesn't take time to generate.
+Muntazam iteratorlar va generatorlar yaratish uchun vaqt talab qilmaydigan ma'lumotlar bilan yaxshi ishlaydi.
 
-When we expect the data to come asynchronously, with delays, their async counterparts can be used, and `for await..of` instead of `for..of`.
+Ma'lumotlar asinxron, kechikishlar bilan kelishini kutganimizda `for..of` o'rniga `for await..of` asinxron hamkasblaridan foydalanish mumkin.
 
-Syntax differences between async and regular iterators:
+Asinxron va oddiy iteratorlar o'rtasidagi sintaktik farqlar:
 
-|       | Iterable | Async Iterable |
+|       | Iterable | Asinxron Iterable |
 |-------|-----------|-----------------|
-| Method to provide iterator | `Symbol.iterator` | `Symbol.asyncIterator` |
-| `next()` return value is          | `{value:…, done: true/false}`         | `Promise` that resolves to `{value:…, done: true/false}`  |
+| Iteratorni ta'minlash usuli | `Symbol.iterator` | `Symbol.asyncIterator` |
+| `next()` qaytish qiymati          | `{value:…, done: true/false}`         | ``{value:..., done: true/false}`ni hal qiladigan promise |
 
-Syntax differences between async and regular generators:
-
-|       | Generators | Async generators |
+Asinxron va oddiy generatorlar o'rtasidagi sintaktik farqlar:
+|       | Generatorlar | Asinxron generatorlar |
 |-------|-----------|-----------------|
-| Declaration | `function*` | `async function*` |
-| `next()` return value is          | `{value:…, done: true/false}`         | `Promise` that resolves to `{value:…, done: true/false}`  |
+| Deklaratsiya | `function*` | `async function*` |
+| `next()` return value          | `{value:…, done: true/false}`         | `{value:…, done: true/false}` ni hal qiladigan `promise`  |
 
-In web-development we often meet streams of data, when it flows chunk-by-chunk. For instance, downloading or uploading a big file.
+Veb dasturlashda biz ko'pincha ma'lumotlar oqimini uchratamiz, ular bo'lakma-bo'lak ko'rinishda. Katta faylni yuklab olish yoki yuklash bunga yorqin misol bo'la oladi.
 
-We can use async generators to process such data. It's also noteworthy that in some environments, like in browsers, there's also another API called Streams, that provides special interfaces to work with such streams, to transform the data and to pass it from one stream to another (e.g. download from one place and immediately send elsewhere).
+Bunday ma'lumotlarni qayta ishlash uchun asinxron generatorlardan foydalanishimiz mumkin. Shunisi e'tiborga loyiqki, ba'zi muhitlarda, masalan, brauzerlarda, bunday oqimlar bilan ishlash, ma'lumotlarni o'zgartirish va uni bir oqimdan boshqasiga o'tkazish uchun maxsus interfeyslarni ta'minlaydigan Streams deb nomlangan yana bir API ham mavjud. (masalan, bir joydan yuklab olib va darhol boshqa joyga yuborish mumkin).

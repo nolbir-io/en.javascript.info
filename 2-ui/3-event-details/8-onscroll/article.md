@@ -1,12 +1,12 @@
 # Scrolling
 
-The `scroll` event allows reacting to a page or element scrolling. There are quite a few good things we can do here.
+`Scroll` hodisasi sahifa yoki elementni aylantirishga munosabat bildirish imkonini beradi. Bu yerda biz bajara oladigan ko'pgina yaxshi narsalar mavjud.
 
-For instance:
-- Show/hide additional controls or information depending on where in the document the user is.
-- Load more data when the user scrolls down till the end of the page.
+Masalan:
+- Foydalanuvchi hujjatning qayerda joylashganiga qarab qo'shimcha boshqaruv elementlari yoki ma'lumotlarni ko'rsatish/yashirish.
+- Foydalanuvchi sahifani oxirigacha aylantirganda ko'proq ma'lumotlarni yuklash.
 
-Here's a small function to show the current scroll:
+Quyida joriy varaqni ko'rsatish uchun kichik funksiya berilgan:
 
 ```js autorun
 window.addEventListener('scroll', function() {
@@ -15,23 +15,23 @@ window.addEventListener('scroll', function() {
 ```
 
 ```online
-In action:
+Amaliy misol:
 
 Current scroll = <b id="showScroll">scroll the window</b>
 ```
 
-The `scroll` event works both on the `window` and on scrollable elements.
+`Scroll` hodisasi `window` da ham, scroll qilsa bo'ladigan elementlarda ham ishlaydi.
 
-## Prevent scrolling
+## Scrolling ning oldini olish
 
-How do we make something unscrollable?
+Qanday qilib biz biror narsani aylantirib bo'lmaydigan qilamiz?
 
-We can't prevent scrolling by using `event.preventDefault()` in `onscroll` listener, because it triggers *after* the scroll has already happened.
+`onscroll` tinglovchisida `event.preventDefault()` dan foydalanib, scrolling ning oldini ololmaymiz, chunki u aylantirish allaqachon sodir bo'lgandan *keyin* ishga tushadi.
 
-But we can prevent scrolling by `event.preventDefault()` on an event that causes the scroll, for instance `keydown` event for `key:pageUp` and `key:pageDown`.
+Lekin biz aylantirishni keltirib chiqaradigan hodisada `event.preventDefault()` orqali aylantirishni oldini olishimiz mumkin, masalan, `key:pageUp` va `key:pageDown` uchun `keydown` hodisasidan foydalanamiz.
 
-If we add an event handler to these events and `event.preventDefault()` in it, then the scroll won't start.
+Agar biz ushbu hodisalarga hodisa ishlov beruvchisini qo'shsak va unda `event.preventDefault()` bo'lsa, scroll qilish boshlanmaydi.
 
-There are many ways to initiate a scroll, so it's more reliable to use CSS, `overflow` property.
+O'tkazishni boshlashning ko'plab usullari mavjud, CSS dagi `overflow` xususiyatidan foydalanish ishonchliroq.
 
-Here are few tasks that you can solve or look through to see applications of `onscroll`.
+Mana bir nechta vazifalarni hal qilishingiz yoki `onscroll` ilovalarini ko'rib chiqishingiz mumkin.

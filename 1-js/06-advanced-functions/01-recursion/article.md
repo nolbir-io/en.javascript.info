@@ -1,18 +1,18 @@
-# Recursion and stack
+# Rekursiya va stack
 
-Let's return to functions and study them more in-depth.
+Keling, funksiyalarga qaytib, ularni yanada chuqurroq o'rganamiz.
 
-Our first topic will be *recursion*.
+Birinchi mavzumiz *rekursiya* bo'ladi.
 
-If you are not new to programming, then it is probably familiar and you could skip this chapter.
+Agar siz dasturlashda yangi bo'lmasangiz, bu mavzu sizga tanish bo'lishi mumkin va ushbu bobni o'tkazib yuborsangiz bo'ladi.
 
-Recursion is a programming pattern that is useful in situations when a task can be naturally split into several tasks of the same kind, but simpler. Or when a task can be simplified into an easy action plus a simpler variant of the same task. Or, as we'll see soon, to deal with certain data structures.
+Rekursiya - bu vazifa tabiiy ravishda bir xil, ammo bir nechta soddaroq vazifalarga bo'linishi mumkin bo'lgan holatlarda foydali dasturlash naqshidir (programming pattern). Biz undan vazifani oson harakatga va bir xil vazifaning oddiy variantiga soddalashtirish mumkin bo'lganda foydalansak bo'ladi yoki ma'lum ma'lumotlar tuzilmalari bilan shug'ullanish uchun ham ishlatiladi, buni tez orada ko'rib chiqamiz.
 
-When a function solves a task, in the process it can call many other functions. A partial case of this is when a function calls *itself*. That's called *recursion*.
+Funksiya vazifani hal qilganda, jarayonda u boshqa ko'plab funksiyalarni chaqirishi mumkin. Buning qisman holati funksiya *o'zini* chaqirishidir. Bu *rekursiya* deb ataladi.
 
-## Two ways of thinking
+## Ikki fikrlash usuli
 
-For something simple to start with -- let's write a function `pow(x, n)` that raises `x` to a natural power of `n`. In other words, multiplies `x` by itself `n` times.
+Oddiy narsadan boshlaymiz -- keling, `x` ni `n` tabiiy kuchiga oshiradigan `pow(x, n)` funksiyasini yozaylik. Boshqacha qilib aytganda, `x` ni o'ziga `n` marta ko'paytiradi.
 
 ```js
 pow(2, 2) = 4
@@ -20,15 +20,15 @@ pow(2, 3) = 8
 pow(2, 4) = 16
 ```
 
-There are two ways to implement it.
+Uni amalga oshirishning ikkita yo'li mavjud.
 
-1. Iterative thinking: the `for` loop:
+1. Takroriy fikrlash: `for` sikli:
 
     ```js run
     function pow(x, n) {
       let result = 1;
 
-      // multiply result by x n times in the loop
+      // natijani siklda x n marta ko'paytiring
       for (let i = 0; i < n; i++) {
         result *= x;
       }
@@ -39,7 +39,7 @@ There are two ways to implement it.
     alert( pow(2, 3) ); // 8
     ```
 
-2. Recursive thinking: simplify the task and call self:
+2. Rekursiv fikrlash: vazifani soddalashtiring va uning o'zini chaqiring:
 
     ```js run
     function pow(x, n) {
@@ -53,9 +53,9 @@ There are two ways to implement it.
     alert( pow(2, 3) ); // 8
     ```
 
-Please note how the recursive variant is fundamentally different.
+Iltimos, rekursiv variant qaysi jihati bilan farq qilishiga e'tibor bering.
 
-When `pow(x, n)` is called, the execution splits into two branches:
+`pow(x, n)` chaqirilsa, ijro ikki tarmoqqa bo'linadi:
 
 ```js
               if n==1  = x
@@ -65,74 +65,74 @@ pow(x, n) =
               else     = x * pow(x, n - 1)
 ```
 
-1. If `n == 1`, then everything is trivial. It is called *the base* of recursion, because it immediately produces the obvious result: `pow(x, 1)` equals `x`.
-2. Otherwise, we can represent `pow(x, n)` as `x * pow(x, n - 1)`. In maths, one would write <code>x<sup>n</sup> = x * x<sup>n-1</sup></code>. This is called *a recursive step*: we transform the task into a simpler action (multiplication by `x`) and a simpler call of the same task (`pow` with lower `n`). Next steps simplify it further and further until `n` reaches `1`.
+1. Agar `n == 1` bo'lsa, unda hamma narsa ahamiyatsiz. U rekursiyaning *asosi* deb ataladi, chunki u darhol aniq natijani ko'rsatadi: `pow(x, 1)` teng `x`.
+2. Aks holda, `pow(x, n)` ni `x * pow(x, n - 1)` shaklida ifodalashimiz mumkin. Matematikada <code>x<sup>n</sup> = x * x<sup>n-1</sup></code> yozish mumkin. Bu *rekursiv qadam* deb ataladi: biz vazifani oddiyroq harakatga (`x` ga ko'paytirish) va bir xil vazifaning oddiy chaqiruviga (pastki `n` bilan` pow`) aylantiramiz. Keyingi qadamlar `n` `1` ga yetguncha uni yanada soddalashtiradi.
 
-We can also say that `pow` *recursively calls itself* till `n == 1`.
+Aytishimiz mumkinki, `pow` *` n == 1`gacha o'zini* rekursiv chaqiradi.
 
-![recursive diagram of pow](recursion-pow.svg)
+![powning rekursiv diagrammasi](recursion-pow.svg)
 
 
-For example, to calculate `pow(2, 4)` the recursive variant does these steps:
+Masalan, `pow(2, 4)` ni hisoblash uchun rekursiv variant quyidagi amallarni bajaradi:
 
 1. `pow(2, 4) = 2 * pow(2, 3)`
 2. `pow(2, 3) = 2 * pow(2, 2)`
 3. `pow(2, 2) = 2 * pow(2, 1)`
 4. `pow(2, 1) = 2`
 
-So, the recursion reduces a function call to a simpler one, and then -- to even more simpler, and so on, until the result becomes obvious.
+Shunday qilib, rekursiya funksiya chaqiruvini oddiyroqqa qisqartiradi, keyin esa -- yanada soddaroq va natija aniq bo'lmaguncha davom etadi.
 
-````smart header="Recursion is usually shorter"
-A recursive solution is usually shorter than an iterative one.
+``smart header="Rekursiya odatda qisqaroq"
+Rekursiv yechimlar iterativlarga qaraganda qisqaroq bo'ladi.
 
-Here we can rewrite the same using the conditional operator `?` instead of `if` to make `pow(x, n)` more terse and still very readable:
+Bu yerda `pow(x, n)` ni yanada aniqroq va baribir o'qilishi mumkin bo'lishi uchun `if` o'rniga `?` shartli operatoridan foydalanib qayta yozishimiz mumkin:
 
-```js run
+````js run
 function pow(x, n) {
   return (n == 1) ? x : (x * pow(x, n - 1));
 }
-```
+`````
 ````
+``
+Ichki chaqiruvlarning maksimal soni (shu jumladan birinchisi) *rekursiya chuqurligi* deb ataladi. Bizning holatda, bu aniq `n` bo'ladi.
 
-The maximal number of nested calls (including the first one) is called *recursion depth*. In our case, it will be exactly `n`.
+Maksimal rekursiya chuqurligi JavaScript dvigateli tomonidan cheklangan. Biz uning 10000 ekanligiga ishonishimiz mumkin, ba'zi dvigatellar ko'proq ruxsat beradi, lekin 100000 ularning aksariyati uchun chegaradan tashqarida. Buni yengillashtirishga yordam beradigan avtomatik optimallashtirishlar mavjud ("quyruq chaqiruvlarini optimallashtirish"), lekin ular hali hamma joyda qo'llab-quvvatlanmaydi va ulardan faqat oddiy holatlarda foydalaniladi.
 
-The maximal recursion depth is limited by JavaScript engine. We can rely on it being 10000, some engines allow more, but 100000 is probably out of limit for the majority of them. There are automatic optimizations that help alleviate this ("tail calls optimizations"), but they are not yet supported everywhere and work only in simple cases.
+Bu rekursiyani qo'llashni cheklaydi, lekin u hali ham juda keng bo'lib qolmoqda. Rekursiv fikrlash usuli oddiyroq kodni beradi, saqlash osonroq bo'lgan ko'plab vazifalar mavjud.
 
-That limits the application of recursion, but it still remains very wide. There are many tasks where recursive way of thinking gives simpler code, easier to maintain.
+## Bajarish konteksti va stack
 
-## The execution context and stack
+Endi rekursiv chaqiruvlar qanday ishlashini tekshirib ko'ramiz. Buning uchun biz funksiyalar qopqog'ini ko'rib chiqamiz.
 
-Now let's examine how recursive calls work. For that we'll look under the hood of functions.
+Ishlayotgan funksiyani bajarish jarayoni haqidagi ma'lumotlar uning *bajarish kontekstida* saqlanadi.
 
-The information about the process of execution of a running function is stored in its *execution context*.
+[bajarish konteksti](https://tc39.github.io/ecma262/#sec-execution-contexts) funksiyaning bajarilishi haqidagi tafsilotlarni o'z ichiga olgan ichki ma'lumotlar strukturasidir: boshqaruv oqimi hozir qayerda, joriy o'zgaruvchilar, `this` qiymati (biz uni bu yerda ishlatmaymiz) va boshqalar.
 
-The [execution context](https://tc39.github.io/ecma262/#sec-execution-contexts) is an internal data structure that contains details about the execution of a function: where the control flow is now, the current variables, the value of `this` (we don't use it here) and few other internal details.
+Bitta funksiya chaqiruvi u bilan bog'langan aynan bitta bajarish kontekstiga ega.
 
-One function call has exactly one execution context associated with it.
+Funksiya ichki chaqiruvni amalga oshirganda, quyidagilar sodir bo'ladi:
 
-When a function makes a nested call, the following happens:
+- Joriy funksiya to'xtatildi.
+- U bilan bog'liq bajarilish konteksti *ijro etuvchi kontekstli stack* deb nomlangan maxsus ma'lumotlar strukturasida eslab qolinadi.
+- Ichki chaqiruv amalga oshiriladi.
+- U tugagandan so'ng, eski ijro konteksti stackdan olinadi va tashqi funksiya u to'xtagan joydan davom ettiriladi.
 
-- The current function is paused.
-- The execution context associated with it is remembered in a special data structure called *execution context stack*.
-- The nested call executes.
-- After it ends, the old execution context is retrieved from the stack, and the outer function is resumed from where it stopped.
-
-Let's see what happens during the `pow(2, 3)` call.
+Keling, `pow(2, 3)` chaqiruvi paytida nima sodir bo'lishini ko'rib chiqaylik.
 
 ### pow(2, 3)
 
-In the beginning of the call `pow(2, 3)` the execution context will store variables: `x = 2, n = 3`, the execution flow is at line `1` of the function.
+`pow(2, 3)` chaqiruvining boshida ijro konteksti o'zgaruvchilarni saqlaydi: `x = 2, n = 3`, bajarilish oqimi funksiyaning `1` qatorida.
 
-We can sketch it as:
+Biz uni quyidagicha chizishimiz mumkin:
 
 <ul class="function-execution-context-list">
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 3, at line 1 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 3, at line 1 }</span>
     <span class="function-execution-context-call">pow(2, 3)</span>
   </li>
 </ul>
 
-That's when the function starts to execute. The condition `n == 1` is falsy, so the flow continues into the second branch of `if`:
+O'shanda funksiya bajarila boshlaydi. `n == 1` sharti noto'g'ri, shuning uchun oqim `if` ning ikkinchi tarmog'ida davom etadi:
 
 ```js run
 function pow(x, n) {
@@ -149,76 +149,76 @@ alert( pow(2, 3) );
 ```
 
 
-The variables are same, but the line changes, so the context is now:
+O'zgaruvchilar bir xil, lekin qator o'zgaradi, kontekstni quyida ko'rishingiz mumkin:
 
 <ul class="function-execution-context-list">
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 3, at line 5 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 3, at line 5 }</span>
     <span class="function-execution-context-call">pow(2, 3)</span>
   </li>
 </ul>
 
-To calculate `x * pow(x, n - 1)`, we need to make a subcall of `pow` with new arguments `pow(2, 2)`.
+`x * pow(x, n - 1)` ni hisoblash uchun biz yangi `pow(2, 2)` argumentlari bilan `pow` ga qo'shimcha chaqiruv qilishimiz kerak.
 
 ### pow(2, 2)
 
-To do a nested call, JavaScript remembers the current execution context in the *execution context stack*.
+Ichki chaqiruvni amalga oshirish uchun JavaScript *ijro kontekst stekidagi* joriy bajarilish kontekstini eslab qoladi.
 
-Here we call the same function `pow`, but it absolutely doesn't matter. The process is the same for all functions:
+Bu yerda biz bir xil funksiyani `pow` deb ataymiz, lekin bu mutlaqo muhim emas. Jarayon barcha funktsiyalar uchun bir xil:
 
-1. The current context is "remembered" on top of the stack.
-2. The new context is created for the subcall.
-3. When the subcall is finished -- the previous context is popped from the stack, and its execution continues.
+1. Joriy kontekst stackning tepasida "eslab qolinadi".
+2. Chaqiruv uchun yangi kontekst yaratiladi.
+3. Chaqiruv tugagach -- oldingi kontekst stackdan chiqariladi va uning bajarilishi davom etadi.
 
-Here's the context stack when we entered the subcall `pow(2, 2)`:
+Mana biz `pow(2, 2)` chaqiruvqa kirganimizda kontekst to'plami:
 
 <ul class="function-execution-context-list">
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 2, at line 1 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 2, at line 1 }</span>
     <span class="function-execution-context-call">pow(2, 2)</span>
   </li>
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 3, at line 5 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 3, at line 5 }</span>
     <span class="function-execution-context-call">pow(2, 3)</span>
   </li>
 </ul>
 
-The new current execution context is on top (and bold), and previous remembered contexts are below.
+Yangi joriy ijro konteksti tepada (va qalin) va oldingi eslab qolingan kontekstlar quyida joylashgan.
 
-When we finish the subcall -- it is easy to resume the previous context, because it keeps both variables and the exact place of the code where it stopped.
+Chaqiruvni tugatganimizda -- oldingi kontekstni davom ettirish oson, chunki u ikkala o'zgaruvchini ham, kodning to'xtagan joyini ham saqlaydi.
 
-```smart
-Here in the picture we use the word "line", as in our example there's only one subcall in line, but generally a single line of code may contain multiple subcalls, like `pow(…) + pow(…) + somethingElse(…)`.
+``smart
+Bu yerda rasmda biz "chiziq" so'zidan foydalanamiz, chunki bizning misolimizda faqat bitta qo'shimcha chaqiruv mavjud, lekin odatda bitta kod satrida `pow(…) + pow(...) + somethingElse(...)` kabi bir nechta qo'shimcha chaqiruvlar bo'lishi mumkin.
 
-So it would be more precise to say that the execution resumes "immediately after the subcall".
+Shunday qilib, ijro "chaqiruvdan keyin darhol" davom etadi, deb aytsak, aniqroq bo'ladi.
 ```
-
+```
 ### pow(2, 1)
 
-The process repeats: a new subcall is made at line `5`, now with arguments `x=2`, `n=1`.
+Jarayon takrorlanadi: yangi chaqiruv `5` qatorida endi `x=2`, `n=1` argumentlari bilan amalga oshiriladi.
 
-A new execution context is created, the previous one is pushed on top of the stack:
+Yangi ijro konteksti yaratiladi, avvalgisi stack ustiga suriladi:
 
 <ul class="function-execution-context-list">
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 1, at line 1 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 1, at line 1 }</span>
     <span class="function-execution-context-call">pow(2, 1)</span>
   </li>
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 2, at line 5 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 2, at line 5 }</span>
     <span class="function-execution-context-call">pow(2, 2)</span>
   </li>
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 3, at line 5 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 3, at line 5 }</span>
     <span class="function-execution-context-call">pow(2, 3)</span>
   </li>
 </ul>
 
-There are 2 old contexts now and 1 currently running for `pow(2, 1)`.
+Hozirda 2 ta eski kontekst mavjud va bittasi hozirda `pow(2, 1)` uchun ishlaydi.
 
-### The exit
+### Chiqish
 
-During the execution of `pow(2, 1)`, unlike before, the condition `n == 1` is truthy, so the first branch of `if` works:
+`pow(2, 1)` bajarilayotganda, avvalgidan farqli o'laroq, `n == 1` sharti haqiqatdir, shuning uchun `if` ning birinchi bo`limi ishlaydi:
 
 ```js
 function pow(x, n) {
@@ -232,42 +232,42 @@ function pow(x, n) {
 }
 ```
 
-There are no more nested calls, so the function finishes, returning `2`.
+Endi ichki qo'ng'iroqlar yo'q, shuning uchun funksiya tugab, `2` ni qaytaradi.
 
-As the function finishes, its execution context is not needed anymore, so it's removed from the memory. The previous one is restored off the top of the stack:
+Funksiya tugashi bilan uning ijro konteksti endi kerak emas, shuning uchun u xotiradan o'chiriladi. Avvalgisi stackning yuqori qismidan tiklanadi:
 
 
 <ul class="function-execution-context-list">
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 2, at line 5 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 2, at line 5 }</span>
     <span class="function-execution-context-call">pow(2, 2)</span>
   </li>
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 3, at line 5 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 3, at line 5 }</span>
     <span class="function-execution-context-call">pow(2, 3)</span>
   </li>
 </ul>
 
-The execution of `pow(2, 2)` is resumed. It has the result of the subcall `pow(2, 1)`, so it also can finish the evaluation of `x * pow(x, n - 1)`, returning `4`.
+`pow(2, 2)` ijrosi qayta tiklandi. U `pow(2, 1)` qo'shimcha chaqiruvining natijasiga ega, shu sababdan u `x * pow(x, n - 1)` baholashni yakunlab, `4` qiymatini qaytara oladi.
 
-Then the previous context is restored:
+Keyin oldingi kontekst tiklanadi:
 
 <ul class="function-execution-context-list">
   <li>
-    <span class="function-execution-context">Context: { x: 2, n: 3, at line 5 }</span>
+    <span class="function-execution-context">Kontekst: { x: 2, n: 3, at line 5 }</span>
     <span class="function-execution-context-call">pow(2, 3)</span>
   </li>
 </ul>
 
-When it finishes, we have a result of `pow(2, 3) = 8`.
+U tugagach, bizda `pow(2, 3) = 8` natijasi bo'ladi.
 
-The recursion depth in this case was: **3**.
+Bu holatda rekursiya chuqurligi: **3**.
 
-As we can see from the illustrations above, recursion depth equals the maximal number of context in the stack.
+Yuqoridagi rasmlardan ko'rib turganimizdek, rekursiya chuqurligi stackdagi kontekstning maksimal soniga teng.
 
-Note the memory requirements. Contexts take memory. In our case, raising to the power of `n` actually requires the memory for `n` contexts, for all lower values of `n`.
+Xotira talablariga e'tibor bering. Kontekst xotirani oladi. Bizning holatda, `n` ning kuchiga ko'tarish aslida `n` kontekstlari uchun, `n` ning barcha pastki qiymatlari uchun xotirani talab qiladi.
 
-A loop-based algorithm is more memory-saving:
+Siklga asoslangan algoritm xotirani tejaydi:
 
 ```js
 function pow(x, n) {
@@ -281,19 +281,19 @@ function pow(x, n) {
 }
 ```
 
-The iterative `pow` uses a single context changing `i` and `result` in the process. Its memory requirements are small, fixed and do not depend on `n`.
+Takrorlanuvchi `pow` jarayonda `i` va `natija`ni o'zgartiruvchi yagona kontekstdan foydalanadi. Uning xotira talablari kichik, qat'iy va `n` ga bog'liq emas.
 
-**Any recursion can be rewritten as a loop. The loop variant usually can be made more effective.**
+**Har qanday rekursiyani sikl sifatida qayta yozish mumkin. Sikl variantini odatda samaraliroq qilish mumkin.**
 
-...But sometimes the rewrite is non-trivial, especially when a function uses different recursive subcalls depending on conditions and merges their results or when the branching is more intricate. And the optimization may be unneeded and totally not worth the efforts.
+...Ayniqsa, funksiya shartlarga qarab turli xil rekursiv chaqiruvlarni ishlatganda va ularning natijalarini birlashtirganda yoki tarmoqlanish yanada murakkab bo'lsa, ba'zida qayta yozish ahamiyatsiz. Va optimallashtirish keraksiz hisoblanadi va bu harakatlarga mutlaqo arzimaydi.
 
-Recursion can give a shorter code, easier to understand and support. Optimizations are not required in every place, mostly we need a good code, that's why it's used.
+Rekursiya qisqaroq, tushunish va qo'llab-quvvatlash osonroq kod berishi mumkin. Optimallashtirish hamma joyda talab qilinmaydi, asosan bizga yaxshi kod kerak, shuning uchun undan foydalanamiz.
 
-## Recursive traversals
+## Rekursiv o'tishlar
 
-Another great application of the recursion is a recursive traversal.
+Rekursiyaning yana bir ajoyib qo'llanilishi bu rekursiv o'tishdir.
 
-Imagine, we have a company. The staff structure can be presented as an object:
+Tasavvur qiling, bizning kompaniyamiz bor. Xodimlar tuzilishi obyekt sifatida taqdim etilishi mumkin:
 
 ```js
 let company = {
@@ -322,34 +322,34 @@ let company = {
 };
 ```
 
-In other words, a company has departments.
+Boshqacha tushuntirganda, kompaniyada bo'limlar mavjud.
 
-- A department may have an array of staff. For instance, `sales` department has 2 employees: John and Alice.
-- Or a department may split into subdepartments, like `development` has two branches: `sites` and `internals`. Each of them has their own staff.
-- It is also possible that when a subdepartment grows, it divides into subsubdepartments (or teams).
+- Bo'limda bir qator xodimlar bo'lishi mumkin. Masalan, `sales` bo'limida 2 nafar xodim bor: Jon va Elis.
+- Yoki bo'lim yanayam kichik bo'limlarga bo'linishi mumkin, masalan, `development` ikkita filialga ega: `sites` va `internals`. Ularning har biri ham yana o'z xodimlariga ega.
+- Bundan tashqari, bo'lim kengayganda, u kichik bo'limlarga (yoki jamoalarga) bo'linishi mumkin.
 
-    For instance, the `sites` department in the future may be split into teams for `siteA` and `siteB`. And they, potentially, can split even more. That's not on the picture, just something to have in mind.
+    Masalan, kelajakda `sites` bo'limi `siteA` va `siteB` guruhlariga bo'linishi mumkin. Va ular, ehtimol, ko'proq bo'linish ehtimoli ham mavjud. Rasmda yodda tutish kerak bo'lgan narsa yo'q.
 
-Now let's say we want a function to get the sum of all salaries. How can we do that?
+Aytaylik, biz barcha maoshlarning yig'indisini oladigan funktsiyani xohlaymiz. Buni qanday qilishimiz mumkin?
 
-An iterative approach is not easy, because the structure is not simple. The first idea may be to make a `for` loop over `company` with nested subloop over 1st level departments. But then we need more nested subloops to iterate over the staff in 2nd level departments like `sites`... And then another subloop inside those for 3rd level departments that might appear in the future? If we put 3-4 nested subloops in the code to traverse a single object, it becomes rather ugly.
+Iterativ yondashuv qiyin, chunki struktura oddiy emas. Birinchi g'oya, birinchi darajali bo'limlar ustida joylashgan pastki loop bilan `company` ustidan `for` siklini yaratish bo'lishi mumkin. Ammo keyin bizga `sites` kabi ikkimchi darajali bo'limlarda xodimlarni takrorlash uchun ko'proq ichki ichki tizimlar kerak bo'ladi... Va keyin kelajakda paydo bo'lishi mumkin bo'lgan uchinchi darajali bo'limlar ichida yana bir pastki loop kerakmi? Agar biz bitta obyektni aylanib o'tish uchun kodga 3-4 ta ichki subloop qo'ysak, u juda xunuk bo'lib qoladi.
 
-Let's try recursion.
+Keling, rekursiyani sinab ko'ramiz.
 
-As we can see, when our function gets a department to sum, there are two possible cases:
+Ko'rib turganimizdek, bizning funksiyamiz bo'limni yig'ish uchun olganida, ikkita mumkin bo'lgan holat mavjud:
 
-1. Either it's a "simple" department with an *array* of people -- then we can sum the salaries in a simple loop.
-2. Or it's *an object* with `N` subdepartments -- then we can make `N` recursive calls to get the sum for each of the subdeps and combine the results.
+1. Yoki bu "oddiy" bo'lim bo'lib, odamlarning *massividan* iborat bo'ladi -- keyin biz maoshlarni oddiy siklda yig'ishimiz mumkin.
+2. Yoki bu `N` bo'limlari bo'lgan *obyekt* -- keyin biz har bir kichik bo'lim uchun summani olish va natijalarni birlashtirish uchun `N` rekursiv chaqiruvlarni amalga oshirishimiz mumkin.
 
-The 1st case is the base of recursion, the trivial case, when we get an array.
+Birinchi holat rekursiyaning asosi, massivni olganimizdagi ahamiyatsiz holat.
 
-The 2nd case when we get an object is the recursive step. A complex task is split into subtasks for smaller departments. They may in turn split again, but sooner or later the split will finish at (1).
+Obyektni olganimizda ikkinchi holat rekursiv qadamdir. Murakkab vazifa kichikroq bo'limlar uchun kichik vazifalarga bo'lingan. Ular o'z navbatida yana bo'linishi mumkin, lekin ertami-kechmi bo'linish (1) da tugaydi.
 
-The algorithm is probably even easier to read from the code:
+Algoritmni koddan o'qish osonroq bo'lishi mumkin:
 
 
 ```js run
-let company = { // the same object, compressed for brevity
+let company = { // qisqalik uchun siqilgan bir xil obyekt
   sales: [{name: 'John', salary: 1000}, {name: 'Alice', salary: 1600 }],
   development: {
     sites: [{name: 'Peter', salary: 2000}, {name: 'Alex', salary: 1800 }],
@@ -357,15 +357,15 @@ let company = { // the same object, compressed for brevity
   }
 };
 
-// The function to do the job
+// Vazifani bajarish funksiyasi
 *!*
 function sumSalaries(department) {
-  if (Array.isArray(department)) { // case (1)
-    return department.reduce((prev, current) => prev + current.salary, 0); // sum the array
-  } else { // case (2)
+  if (Array.isArray(department)) { // hol (1)
+    return department.reduce((prev, current) => prev + current.salary, 0); // massivni yig'ish
+  } else { // hol (2)
     let sum = 0;
     for (let subdep of Object.values(department)) {
-      sum += sumSalaries(subdep); // recursively call for subdepartments, sum the results
+      sum += sumSalaries(subdep); // rekursiv bo'limlarni chaqiring, natijalarni jamlash
     }
     return sum;
   }
@@ -375,62 +375,62 @@ function sumSalaries(department) {
 alert(sumSalaries(company)); // 7700
 ```
 
-The code is short and easy to understand (hopefully?). That's the power of recursion. It also works for any level of subdepartment nesting.
+Umid qilamanki, kod qisqa va tushunarli. Bu rekursiyaning kuchi. Shuningdek, u har qanday darajadagi bo'limlarni joylashtirish uchun ishlaydi.
 
-Here's the diagram of calls:
+Mana chaqiruvlar diagrammasi:
 
 ![recursive salaries](recursive-salaries.svg)
 
-We can easily see the principle: for an object `{...}` subcalls are made, while arrays `[...]` are the "leaves" of the recursion tree, they give immediate result.
+Biz prinsipni osongina ko'rishimiz mumkin: `{...}` obyekt uchun qo'shimcha chaqiruvlar amalga oshiriladi, `[...]` massivlar rekursiya daraxtining "barglari" bo'lsa, ular darhol natija beradi.
 
-Note that the code uses smart features that we've covered before:
+E'tibor bering, kod biz ilgari ko'rib chiqqan aqlli xususiyatlardan foydalanadi:
 
-- Method `arr.reduce` explained in the chapter <info:array-methods> to get the sum of the array.
-- Loop `for(val of Object.values(obj))` to iterate over object values: `Object.values` returns an array of them.
+- Massiv yig'indisini olish uchun `arr.reduce` usuli <info:array-methods> bobida tushuntirilgan.
+- Obyekt qiymatlari ustidan takrorlash uchun `for(val of Object.values(obj))` sikli: `Object.values` ularning massivini qaytaradi.
 
 
-## Recursive structures
+## Rekursiv tuzilmalar
 
-A recursive (recursively-defined) data structure is a structure that replicates itself in parts.
+Rekursiv (rekursiv belgilangan) ma'lumotlar strukturasi o'zini qismlarga bo'lib takrorlaydigan tuzilmadir.
 
-We've just seen it in the example of a company structure above.
+Biz buni yuqoridagi kompaniya tuzilishi misolida ko'rdik.
 
-A company *department* is:
-- Either an array of people.
-- Or an object with *departments*.
+Kompaniya *bo'limi* bu:
+- Yoki bir massiv odamlar.
+- Yoki *bo'limlari* bo'lgan obyekt.
 
-For web-developers there are much better-known examples: HTML and XML documents.
+Veb-dasturchilar uchun ko'proq mashhur misollar mavjud: HTML va XML hujjatlari.
 
-In the HTML document, an *HTML-tag* may contain a list of:
-- Text pieces.
-- HTML-comments.
-- Other *HTML-tags* (that in turn may contain text pieces/comments or other tags etc).
+HTML hujjatida *HTML-tegi* quyidagilar ro'yxatini o'z ichiga olishi mumkin:
+- Matn qismlari.
+- HTML-kommentlar.
+- Boshqa *HTML-teglar* (ular o'z navbatida matn qismlari/sharhlari yoki boshqa teglar va hokazolarni o'z ichiga olishi mumkin).
 
-That's once again a recursive definition.
+Bu yana bir bor rekursiv ta'rif.
 
-For better understanding, we'll cover one more recursive structure named "Linked list" that might be a better alternative for arrays in some cases.
+Yaxshiroq tushunish uchun biz ba'zi hollarda massivlar uchun yaxshiroq alternativ "bog'langan ro'yxat" deb nomlangan yana bir rekursiv tuzilmani ko'rib chiqamiz.
 
-### Linked list
+### Bog'langan ro'yxat
 
-Imagine, we want to store an ordered list of objects.
+Tasavvur qiling, biz obyektlarning tartiblangan ro'yxatini saqlamoqchimiz.
 
-The natural choice would be an array:
+Tabiiy tanlov massiv bo'ladi:
 
 ```js
 let arr = [obj1, obj2, obj3];
 ```
 
-...But there's a problem with arrays. The "delete element" and "insert element" operations are expensive. For instance, `arr.unshift(obj)` operation has to renumber all elements to make room for a new `obj`, and if the array is big, it takes time. Same with `arr.shift()`.
+...Ammo massivlarda muammo bor. "Elementni o'chirish" va "elementni kiritish" operatsiyalari qimmat. Masalan, `arr.unshift(obj)` operatsiyasi yangi `obj` uchun joy ochish uchun barcha elementlarni qayta raqamlashi kerak va agar massiv katta bo'lsa, bu vaqt talab etadi. `arr.shift()` bilan ham xuddi shunday.
 
-The only structural modifications that do not require mass-renumbering are those that operate with the end of array: `arr.push/pop`. So an array can be quite slow for big queues, when we have to work with the beginning.
+Ommaviy raqamlashni talab qilmaydigan yagona tuzilmaviy modifikatsiyalar qatorning oxiri bilan ishlaydi: `arr.push/pop`. Shunday qilib, biz boshi bilan ishlashimiz kerak bo'lganda, katta navbatlar uchun massiv juda sekin bo'lishi mumkin.
 
-Alternatively, if we really need fast insertion/deletion, we can choose another data structure called a [linked list](https://en.wikipedia.org/wiki/Linked_list).
+Shu bilan bir qatorda, agar bizga tezda qo'shish/o'chirish kerak bo'lsa, biz [bog'langan ro'yxat] (https://en.wikipedia.org/wiki/Linked_list) deb nomlangan boshqa ma'lumotlar strukturasini tanlashimiz mumkin.
 
-The *linked list element* is recursively defined as an object with:
+*Bog'langan ro'yxat elementi* rekursiv ravishda obyekt sifatida belgilanadi:
 - `value`.
-- `next` property referencing the next *linked list element* or `null` if that's the end.
+- `next` keyingi *bog'langan ro'yxat elementiga* havola qiluvchi xususiyat yoki agar bu oxiri bo'lsa, "null" hisoblanadi.
 
-For instance:
+Masalan:
 
 ```js
 let list = {
@@ -448,11 +448,11 @@ let list = {
 };
 ```
 
-Graphical representation of the list:
+Ro'yxatning grafik ko'rinishi:
 
 ![linked list](linked-list.svg)
 
-An alternative code for creation:
+Yaratish uchun alternativ kod:
 
 ```js no-beautify
 let list = { value: 1 };
@@ -462,9 +462,9 @@ list.next.next.next = { value: 4 };
 list.next.next.next.next = null;
 ```
 
-Here we can even more clearly see that there are multiple objects, each one has the `value` and `next` pointing to the neighbour. The `list` variable is the first object in the chain, so following `next` pointers from it we can reach any element.
+Bu yerda biz bir nechta obyektlar mavjudligini yanada aniqroq ko'rishimiz mumkin, ularning har biri qo'shniga ishora qiluvchi `value` va `next` ga ega. `list` o'zgaruvchisi zanjirdagi birinchi obyektdir, shuning uchun `next` ko'rsatkichlardan keyin biz istalgan elementga kira olamiz.
 
-The list can be easily split into multiple parts and later joined back:
+Ro'yxat osongina bir nechta qismlarga bo'linishi va keyinroq birlashtirilishi mumkin:
 
 ```js
 let secondList = list.next.next;
@@ -473,15 +473,15 @@ list.next.next = null;
 
 ![linked list split](linked-list-split.svg)
 
-To join:
+Qo'shish uchun:
 
 ```js
 list.next.next = secondList;
 ```
 
-And surely we can insert or remove items in any place.
+Va, albatta, biz istalgan joyga narsalarni kiritishimiz yoki olib tashlashimiz mumkin.
 
-For instance, to prepend a new value, we need to update the head of the list:
+Masalan, yangi qiymatni qo'shish uchun biz ro'yxat boshini yangilashimiz kerak:
 
 ```js
 let list = { value: 1 };
@@ -490,14 +490,14 @@ list.next.next = { value: 3 };
 list.next.next.next = { value: 4 };
 
 *!*
-// prepend the new value to the list
+// ro'yxatga yangi qiymatni qo'shing
 list = { value: "new item", next: list };
 */!*
 ```
 
 ![linked list](linked-list-0.svg)
 
-To remove a value from the middle, change `next` of the previous one:
+Qiymatni o'rtadan olib tashlash uchun oldingisidagi `next` ni o'zgartiring:
 
 ```js
 list.next = list.next.next;
@@ -505,38 +505,38 @@ list.next = list.next.next;
 
 ![linked list](linked-list-remove-1.svg)
 
-We made `list.next` jump over `1` to value `2`. The value `1` is now excluded from the chain. If it's not stored anywhere else, it will be automatically removed from the memory.
+Biz `list.next` ni `1` dan `2` qiymatiga o'tkazdik. Endi `1` qiymati zanjirdan chiqarib tashlandi. Agar u boshqa joyda saqlanmasa, u avtomatik ravishda xotiradan o'chiriladi.
 
-Unlike arrays, there's no mass-renumbering, we can easily rearrange elements.
+Massivlardan farqli o'laroq, ommaviy qayta raqamlash yo'q, biz elementlarni osongina o'zgartirishimiz mumkin.
 
-Naturally, lists are not always better than arrays. Otherwise everyone would use only lists.
+Tabiiyki, ro'yxatlar har doim ham massivlardan yaxshiroq emas. Aks holda, hamma faqat ro'yxatlardan foydalangan bo'lardi.
 
-The main drawback is that we can't easily access an element by its number. In an array that's easy: `arr[n]` is a direct reference. But in the list we need to start from the first item and go `next` `N` times to get the Nth element.
+Asosiy kamchilik shundaki, biz elementga uning raqami bo'yicha osongina kira olmaymiz. Bu oson massivda: `arr[n]` to'g'ridan-to'g'ri havola. Lekin ro'yxatda biz birinchi elementdan boshlashimiz va N-elementni olish uchun `next` ga `N` marta borishimiz kerak.
 
-...But we don't always need such operations. For instance, when we need a queue or even a [deque](https://en.wikipedia.org/wiki/Double-ended_queue) -- the ordered structure that must allow very fast adding/removing elements from both ends, but access to its middle is not needed.
+...Ammo bizga bunday operatsiyalar har doim ham kerak bo'lmaydi. Misol uchun, bizga navbat yoki hatto [deque] (https://en.wikipedia.org/wiki/Double-ended_queue) kerak bo'lganda -- belementlarni ikkala uchidan juda tez qo'shish/o'chirish imkonini beradigan tartiblangan tuzilmani ishlatamiz, lekin uning o'rtasiga kirish kerak emas.
 
-Lists can be enhanced:
-- We can add property `prev` in addition to `next` to reference the previous element, to move back easily.
-- We can also add a variable named `tail` referencing the last element of the list (and update it when adding/removing elements from the end).
-- ...The data structure may vary according to our needs.
+Ro'yxatlar kengaytirilishi mumkin:
+- Oldingi elementga osongina orqaga o'tish uchun `next` ga qo'shimcha ravishda `prev` xususiyatini qo'shishimiz mumkin.
+- Ro'yxatning oxirgi elementiga havola qiluvchi `tail` nomli o'zgaruvchini ham qo'shishimiz mumkin (va oxiridan elementlarni qo'shish/o'chirishda uni yangilash).
+- ...Ma'lumotlar tuzilishi bizning ehtiyojlarimizga qarab farq qiladi.
 
-## Summary
+## Xulosa
 
-Terms:
-- *Recursion*  is a programming term that means calling a function from itself. Recursive functions can be used to solve tasks in elegant ways.
+Shartlar:
+- *Rekursiya* dasturlash atamasi bo'lib, funksiyani o'zidan chaqirishni anglatadi. Rekursiv funksiyalar vazifalarni nafis usullar bilan hal qilish uchun ishlatilishi mumkin.
 
-    When a function calls itself, that's called a *recursion step*. The *basis* of recursion is function arguments that make the task so simple that the function does not make further calls.
+    Funksiya o'zini chaqirganda, bu *rekursiya qadami* deb ataladi. Rekursiyaning *asoslari* funksiya argumentlari bo'lib, vazifani shu qadar sodda qiladiki, funksiya boshqa chaqiruvlarni amalga oshirmaydi.
 
-- A [recursively-defined](https://en.wikipedia.org/wiki/Recursive_data_type) data structure is a data structure that can be defined using itself.
+- [Recursively-defined](https://en.wikipedia.org/wiki/Recursive_data_type) ma'lumotlar strukturasi o'zi yordamida aniqlanishi mumkin bo'lgan ma'lumotlar strukturasidir.
 
-    For instance, the linked list can be defined as a data structure consisting of an object referencing a list (or null).
+    Masalan, bog'langan ro'yxatni ro'yxatga (yoki null) havola qiluvchi obyektdan iborat ma'lumotlar strukturasi sifatida aniqlash mumkin.
 
     ```js
     list = { value, next -> list }
     ```
 
-    Trees like HTML elements tree or the department tree from this chapter are also naturally recursive: they have branches and every branch can have other branches.
+    Ushbu bobdagi HTML elementlari daraxti yoki bo'lim daraxti kabi daraxtlar ham tabiiy ravishda rekursivdir: ularning shoxlari bor va har bir filialda boshqa shoxchalar bo'lishi mumkin.
 
-    Recursive functions can be used to walk them as we've seen in the `sumSalary` example.
+    Rekursiv funksiyalar ularni boshqarish uchun ishlatilishi mumkin, chunki biz `sumSalary` misolida ko'rganmiz.
 
-Any recursive function can be rewritten into an iterative one. And that's sometimes required to optimize stuff. But for many tasks a recursive solution is fast enough and easier to write and support.
+Har qanday rekursiv funksiya iterativ funksiyaga qayta yozilishi mumkin. Va bu ba'zan narsalarni optimallashtirish uchun talab qilinadi. Ammo ko'p vazifalar uchun rekursiv yechim yetarlicha tez, yozish va qo'llab-quvvatlash osonroq hisoblanadi.

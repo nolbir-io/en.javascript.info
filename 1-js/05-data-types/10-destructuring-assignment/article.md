@@ -1,26 +1,26 @@
-# Destructuring assignment
+# Destruktiv topshiriq
 
-The two most used data structures in JavaScript are `Object` and `Array`.
+JavaScriptda eng ko'p qo'llaniladigan ikkita ma'lumotlar tuzilmasi `Object` va `Array` (massiv) hisoblanadi.
 
-- Objects allow us to create a single entity that stores data items by key.
-- Arrays allow us to gather data items into an ordered list.
+- Obyektlar bizga kalit bo'yicha ma'lumotlar elementini saqlaydigan yagona obyektni yaratishga imkon beradi.
+- Massivlar bizga ma'lumotlar elementlarini tartiblangan ro'yxatga yig'ish imkonini beradi.
 
-Although, when we pass those to a function, it may need not be an object/array as a whole. It may need individual pieces.
+Garchi biz ularni funksiyaga o'tkazsak, u umuman obyekt/massiv bo'lishi shart emas. Buning uchun alohida qismlar kerak bo'lishi mumkin.
 
-*Destructuring assignment* is a special syntax that allows us to "unpack" arrays or objects into a bunch of variables, as sometimes that's more convenient.
+_Destruktiv topshiriq_ - massivlar yoki obyektlarni o'zgaruvchilar to'plamiga "ochish" imkonini beruvchi maxsus sintaksis, ba'zida bu ancha qulay.
 
-Destructuring also works great with complex functions that have a lot of parameters, default values, and so on. Soon we'll see that.
+Yo'q qilish, ya'ni destructuring, shuningdek, juda ko'p parametrlarga, standart qiymatlarga va boshqalarga ega bo'lgan murakkab funksiyalar bilan yaxshi ishlaydi. Tez orada buni ko'rib chiqamiz.
 
-## Array destructuring
+## Massivni destruksiya qilish
 
-Here's an example of how an array is destructured into variables:
+Massivning qanday o'zgaruvchilardan tuzilishiga misol:
 
 ```js
-// we have an array with the name and surname
+// bizda ism va familiyaga ega massiv bor
 let arr = ["John", "Smith"]
 
 *!*
-// destructuring assignment
+// destruktiv topshiriq
 // sets firstName = arr[0]
 // and surname = arr[1]
 let [firstName, surname] = arr;
@@ -30,82 +30,81 @@ alert(firstName); // John
 alert(surname);  // Smith
 ```
 
-Now we can work with variables instead of array members.
+Endi biz massiv a'zolari o'rniga o'zgaruvchilar bilan ishlashimiz mumkin.
 
-It looks great when combined with `split` or other array-returning methods:
+Bu `split` yoki massivni qaytarishning boshqa metodlari bilan birlashganda ajoyib ko'rinadi:
 
 ```js run
-let [firstName, surname] = "John Smith".split(' ');
+let [firstName, surname] = "John Smith".split(" ");
 alert(firstName); // John
-alert(surname);  // Smith
+alert(surname); // Smith
 ```
 
-As you can see, the syntax is simple. There are several peculiar details though. Let's see more examples, to better understand it.
+Ko'rib turganingizdek, sintaksis oddiy. Biroq, bir nechta o'ziga xos tafsilotlar mavjud. Buni yaxshiroq tushunish uchun ko'proq misollarni ko'rib chiqamiz.
 
-````smart header="\"Destructuring\" does not mean \"destructive\"."
-It's called "destructuring assignment," because it "destructurizes" by copying items into variables. But the array itself is not modified.
+``smart header="\"Destrukturalash\" \"destruktiv\" degani emas."
+Bu "destrukturizatsiya topshirig'i" deb ataladi, chunki u elementlarni o'zgaruvchilarga nusxalash orqali "destrukturizatsiya qiladi". Ammo massivning o'zi o'zgartirilmagan holda qoldiriladi.
 
-It's just a shorter way to write:
-```js
+Bu yozishning qisqaroq yo'li:
+
+````js
 // let [firstName, surname] = arr;
 let firstName = arr[0];
 let surname = arr[1];
 ```
 ````
 
-````smart header="Ignore elements using commas"
-Unwanted elements of the array can also be thrown away via an extra comma:
+``smart header="Vergul yordamida ortiqcha elementlarga e'tibor bermang"
+Massivning keraksiz elementlarini qo'shimcha vergul orqali ham tashlash mumkin:
 
 ```js run
 *!*
-// second element is not needed
+// ikkinchi element kerak emas
 let [firstName, , title] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
 */!*
 
 alert( title ); // Consul
 ```
+Yuqoridagi kodda massivning ikkinchi elementi o'tkazib yuborilgan, uchinchisi `title` ga tayinlangan va massivning qolgan elementlari ham o'tkazib yuborilgan (chunki ular uchun o'zgaruvchilar yo'q).
 
-In the code above, the second element of the array is skipped, the third one is assigned to `title`, and the rest of the array items is also skipped (as there are no variables for them).
 ````
 
-````smart header="Works with any iterable on the right-side"
+``smart header="O'ng tarafdagi har qanday takrorlanuvchi bilan ishlaydi"
 
-...Actually, we can use it with any iterable, not only arrays:
-
+...Aslida, biz uni faqat massivlar bilan emas, balki har qanday iteratsiya bilan ishlatishimiz mumkin:
 ```js
 let [a, b, c] = "abc"; // ["a", "b", "c"]
 let [one, two, three] = new Set([1, 2, 3]);
-```
-That works, because internally a destructuring assignment works by iterating over the right value. It's a kind of syntax sugar for calling `for..of` over the value to the right of `=` and assigning the values.
 ````
 
+Bu ishlaydi, chunki ichki tuzilmani buzish topshirig'i to'g'ri qiymatni takrorlash orqali bajariladi. Bu `=` ning o'ng tomonidagi qiymatdan `for..of` ni chaqirish va qiymatlarni belgilash uchun bir xil sintaksis shakaridir.
 
-````smart header="Assign to anything at the left-side"
-We can use any "assignables" on the left side.
+``smart header="Chap tarafdagi har qanday narsani tayinlang"
+Chap tomonda har qanday `assignables`, ya'ni tayinlashdan foydalanishimiz mumkin.
 
-For instance, an object property:
+Masalan, obyekt xususiyati:
+
 ```js run
 let user = {};
-[user.name, user.surname] = "John Smith".split(' ');
+[user.name, user.surname] = "John Smith".split(" ");
 
 alert(user.name); // John
 alert(user.surname); // Smith
 ```
 
-````
+``smart header=".entries() bilan sikllash"
 
-````smart header="Looping with .entries()"
-In the previous chapter we saw the [Object.entries(obj)](mdn:js/Object/entries) method.
+Oldingi bobda biz [Object.entries(obj)](mdn:js/Object/entries) metodini ko'rdik.
 
-We can use it with destructuring to loop over keys-and-values of an object:
+Obyektning kalitlari va qiymatlari ustidan aylanish uchun biz uni tuzilmani buzish bilan ishlatishimiz mumkin:
 
 ```js run
 let user = {
-  name: "John",
-  age: 30
+  ism: "John",
+  yosh: 30
 };
 
-// loop over keys-and-values
+// kalitlar va qiymatlar ustidan sikllash
 *!*
 for (let [key, value] of Object.entries(user)) {
 */!*
@@ -113,7 +112,7 @@ for (let [key, value] of Object.entries(user)) {
 }
 ```
 
-The similar code for a `Map` is simpler, as it's iterable:
+`Map` uchun o'xshash kod oddiyroq, chunki u takrorlanadi:
 
 ```js run
 let user = new Map();
@@ -121,73 +120,72 @@ user.set("name", "John");
 user.set("age", "30");
 
 *!*
-// Map iterates as [key, value] pairs, very convenient for destructuring
+// Map [kalit, qiymat] juftlari sifatida takrorlanadi, tuzilmani buzish uchun juda qulay
 for (let [key, value] of user) {
 */!*
-  alert(`${key}:${value}`); // name:John, then age:30
+  alert(`${key}:${value}`); // ism:John, keyin yosh:30
 }
 ```
-````
 
-````smart header="Swap variables trick"
-There's a well-known trick for swapping values of two variables using a destructuring assignment:
+``smart header="O'zgaruvchilarni almashtirish hiylasi"
+Ikki o'zgaruvchining qiymatlarini tuzilmani buzish topshirig'i yordamida almashtirishning mashhur hiylasi mavjud:
 
 ```js run
 let guest = "Jane";
 let admin = "Pete";
 
-// Let's swap the values: make guest=Pete, admin=Jane
+// Keling, qiymatlarni almashtiramiz: make guest=Pete, admin=Jane
 *!*
 [guest, admin] = [admin, guest];
 */!*
 
-alert(`${guest} ${admin}`); // Pete Jane (successfully swapped!)
+alert(`${guest} ${admin}`); // Pete Jane (muvaffaqiyatli almashtirildi!)
 ```
 
-Here we create a temporary array of two variables and immediately destructure it in swapped order.
+Bu yerda biz ikkita o'zgaruvchidan iborat vaqtinchalik massivni yaratamiz va uni almashtirilgan tartibda darhol yo'q qilamiz.
 
-We can swap more than two variables this way.
-````
+Shu tarzda ikkitadan ortiq o'zgaruvchilarni almashtirishimiz mumkin.
+``
 
-### The rest '...'
+### Rest metodi '...'
 
-Usually, if the array is longer than the list at the left, the "extra" items are omitted.
+Odatda, agar massiv chapdagi ro'yxatdan uzunroq bo'lsa, "qo'shimcha" elementlar o'tkazib yuboriladi.
 
-For example, here only two items are taken, and the rest is just ignored:
+Masalan, bu yerda faqat ikkita element olinadi, qolganlari esa e'tiborga olinmaydi:
 
 ```js run
 let [name1, name2] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
 
 alert(name1); // Julius
 alert(name2); // Caesar
-// Further items aren't assigned anywhere
+// Boshqa narsalar hech qayerga tayinlanmagan
 ```
 
-If we'd like also to gather all that follows -- we can add one more parameter that gets "the rest" using three dots `"..."`:
+Agar biz quyidagi narsalarni to'plashni istasak -- uchta nuqta `"..."` yordamida "qolganini" oladigan yana bitta parametr qo'shishimiz mumkin:
 
 ```js run
 let [name1, name2, *!*...rest*/!*] = ["Julius", "Caesar", *!*"Consul", "of the Roman Republic"*/!*];
 
 *!*
-// rest is array of items, starting from the 3rd one
+// rest 3-chidan boshlab elementlar to'plamidir
 alert(rest[0]); // Consul
 alert(rest[1]); // of the Roman Republic
 alert(rest.length); // 2
 */!*
 ```
 
-The value of `rest` is the array of the remaining array elements.
+`rest` qiymati massivning qolgan elementlari massividir.
 
-We can use any other variable name in place of `rest`, just make sure it has three dots before it and goes last in the destructuring assignment.
+Biz `rest` o'rniga istalgan boshqa o'zgaruvchi nomidan foydalanishimiz mumkin, shunchaki uning oldida uchta nuqta borligiga ishonch hosil qiling va tuzilmani buzish topshirig'ida oxirgi o'rinda turadi.
 
 ```js run
 let [name1, name2, *!*...titles*/!*] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
 // now titles = ["Consul", "of the Roman Republic"]
 ```
 
-### Default values
+### Standart qiymatlar
 
-If the array is shorter than the list of variables at the left, there'll be no errors. Absent values are considered undefined:
+Agar massiv chap tarafdagi o'zgaruvchilar ro'yxatidan qisqaroq bo'lsa, xatolik bo'lmaydi. Yo'q qiymatlar aniqlanmagan deb hisoblanadi:
 
 ```js run
 *!*
@@ -198,7 +196,7 @@ alert(firstName); // undefined
 alert(surname); // undefined
 ```
 
-If we want a "default" value to replace the missing one, we can provide it using `=`:
+Agar yetishmayotgan qiymatni almashtirish uchun "standart" qiymatni xohlasak, biz uni `=` yordamida ta'minlashimiz mumkin:
 
 ```js run
 *!*
@@ -206,37 +204,37 @@ If we want a "default" value to replace the missing one, we can provide it using
 let [name = "Guest", surname = "Anonymous"] = ["Julius"];
 */!*
 
-alert(name);    // Julius (from array)
-alert(surname); // Anonymous (default used)
+alert(name);    // Julius (massivdan)
+alert(surname); // Anonymous (standart)
 ```
 
-Default values can be more complex expressions or even function calls. They are evaluated only if the value is not provided.
+Standart qiymatlar murakkabroq ifodalar yoki hatto funksiya chaqiruvlari bo'lishi mumkin. Agar qiymat ko'rsatilmagan bo'lsa, ular baholanadi.
 
-For instance, here we use the `prompt` function for two defaults:
+Misol uchun, bu yerda biz ikkita standart uchun `prompt` funksiyasidan foydalanamiz:
 
 ```js run
-// runs only prompt for surname
-let [name = prompt('name?'), surname = prompt('surname?')] = ["Julius"];
+// faqat surname so'rovini ishga tushiradi
+let [name = prompt("name?"), surname = prompt("surname?")] = ["Julius"];
 
-alert(name);    // Julius (from array)
-alert(surname); // whatever prompt gets
+alert(name); // Julius (from array)
+alert(surname); // nima bo'lishidan qat'iy nazar
 ```
 
-Please note: the `prompt` will run only for the missing value (`surname`).
+E'tibor bering: `prompt` faqat yetishmayotgan qiymat uchun ishlaydi ("surname").
 
-## Object destructuring
+## Obyektni destrukturalash
 
-The destructuring assignment also works with objects.
+Destrukturlash topshirig'i obyektlar bilan ham ishlaydi.
 
-The basic syntax is:
+Asosiy sintaksis:
 
 ```js
 let {var1, var2} = {var1:…, var2:…}
 ```
 
-We should have an existing object on the right side, that we want to split into variables. The left side contains an object-like "pattern" for corresponding properties. In the simplest case, that's a list of variable names in `{...}`.
+O'ng tomonda biz o'zgaruvchilarga bo'linmoqchi bo'lgan mavjud obyektga ega bo'lishimiz kerak. Chap tomonda mos keladigan xususiyatlar uchun obyektga o'xshash `pattern` mavjud. Eng oddiy holatda, bu `{...}` ichidagi o'zgaruvchilar nomlari ro'yxati hisoblanadi.
 
-For instance:
+Masalan:
 
 ```js run
 let options = {
@@ -254,18 +252,18 @@ alert(width);  // 100
 alert(height); // 200
 ```
 
-Properties `options.title`, `options.width` and `options.height` are assigned to the corresponding variables.
+`options.title`, `options.width` va `options.height` xossalari mos keladigan o'zgaruvchilarga tayinlanadi.
 
-The order does not matter. This works too:
+Buyurtma muhim emas. Bu ham ishlaydi:
 
 ```js
-// changed the order in let {...}
-let {height, width, title} = { title: "Menu", height: 200, width: 100 }
+// letdagi tartibni o'zgartirdi {...}
+let { height, width, title } = { title: "Menu", height: 200, width: 100 };
 ```
 
-The pattern on the left side may be more complex and specify the mapping between properties and variables.
+Chap tarafdagi naqsh (pattern) murakkabroq bo'lishi mumkin, shu sababli xususiyatlar va o'zgaruvchilar o'rtasidagi xaritalashni belgilang.
 
-If we want to assign a property to a variable with another name, for instance, make `options.width` go into the variable named `w`, then we can set the variable name using a colon:
+Agar biz boshqa nomdagi o'zgaruvchiga xususiyat tayinlashni istasak, masalan, `options.width` ni `w` nomli o'zgaruvchiga kiriting, u holda o'zgaruvchi nomini ikki nuqta yordamida o'rnatishimiz mumkin:
 
 ```js run
 let options = {
@@ -288,9 +286,9 @@ alert(w);      // 100
 alert(h);      // 200
 ```
 
-The colon shows "what : goes where". In the example above the property `width` goes to `w`, property `height` goes to `h`, and `title` is assigned to the same name.
+Ikki nuqta "nima : qayerga ketishini" ni ko'rsatadi. Yuqoridagi misolda `width` xususiyati `w` ga, `height` xususiyati `h` ga, `title` esa bir xil nomga tayinlangan.
 
-For potentially missing properties we can set default values using `"="`, like this:
+Potensial yetishmayotgan xususiyatlar uchun biz `"="` yordamida standart qiymatlarni o'rnatishimiz mumkin, masalan:
 
 ```js run
 let options = {
@@ -306,9 +304,9 @@ alert(width);  // 100
 alert(height); // 200
 ```
 
-Just like with arrays or function parameters, default values can be any expressions or even function calls. They will be evaluated if the value is not provided.
+Massivlar yoki funksiya parametrlari kabi standart qiymatlar har qanday ifoda yoki hatto funksiya chaqiruvi bo'lishi mumkin. Qiymat taqdim etilmasa, ular baholanadi.
 
-In the code below `prompt` asks for `width`, but not for `title`:
+Quyidagi kodda `prompt` `width` ni so'raydi, lekin `title` uchun emas:
 
 ```js run
 let options = {
@@ -320,10 +318,10 @@ let {width = prompt("width?"), title = prompt("title?")} = options;
 */!*
 
 alert(title);  // Menu
-alert(width);  // (whatever the result of prompt is)
+alert(width);  // (prompt natijasi nima bo'lishidan qat'iy nazar)
 ```
 
-We also can combine both the colon and equality:
+Shuningdek, biz ikki nuqta va tenglikni birlashtira olamiz:
 
 ```js run
 let options = {
@@ -339,28 +337,28 @@ alert(w);      // 100
 alert(h);      // 200
 ```
 
-If we have a complex object with many properties, we can extract only what we need:
+Agar bizda juda ko'p xususiyatlarga ega bo'lgan murakkab obyekt bo'lsa, biz faqat kerakli narsani olishimiz mumkin:
 
 ```js run
 let options = {
   title: "Menu",
   width: 100,
-  height: 200
+  height: 200,
 };
 
-// only extract title as a variable
+// faqat sarlavhani o'zgaruvchi sifatida ajratib oling
 let { title } = options;
 
 alert(title); // Menu
 ```
 
-### The rest pattern "..."
+### Rest ko'rinishi "..."
 
-What if the object has more properties than we have variables? Can we take some and then assign the "rest" somewhere?
+Agar obyekt o'zgaruvchilarga qaraganda ko'proq xususiyatlarga ega bo'lsachi? Bir oz olib, keyin`rest` ni biron joyga tayinlashimiz mumkinmi?
 
-We can use the rest pattern, just like we did with arrays. It's not supported by some older browsers (IE, use Babel to polyfill it), but works in modern ones.
+Biz massivlarda bo'lgani kabi qolgan naqshdan ham foydalanishimiz mumkin. Bu ba'zi eski brauzerlar tomonidan qo'llab-quvvatlanmaydi (IE, uni polyfill qilish uchun Babeldan foydalaning), ammo zamonaviy brauzerlarda bu ishlaydi.
 
-It looks like this:
+Bu shunday ko'rinishga ega:
 
 ```js run
 let options = {
@@ -370,98 +368,102 @@ let options = {
 };
 
 *!*
-// title = property named title
-// rest = object with the rest of properties
+// title = nomli xususiyat
+// rest = rest xususiyatlariga ega obyekt
 let {title, ...rest} = options;
 */!*
 
-// now title="Menu", rest={height: 200, width: 100}
+// endi title="Menu", rest={height: 200, width: 100}
 alert(rest.height);  // 200
 alert(rest.width);   // 100
 ```
 
-````smart header="Gotcha if there's no `let`"
-In the examples above variables were declared right in the assignment: `let {…} = {…}`. Of course, we could use existing variables too, without `let`. But there's a catch.
+``smart header="Agar 'let' bo'lmasa"
 
-This won't work:
+Yuqoridagi misollarda o'zgaruvchilar to'g'ridan-to'g'ri topshiriqda e'lon qilingan: `let {…} = {…}`. Albatta, biz mavjud o'zgaruvchilardan `let` siz ham foydalanishimiz mumkin. Lekin bir muammo bor.
+
+Bu ishlamaydi:
+
 ```js run
 let title, width, height;
 
-// error in this line
+// bu qatordagi error
 {title, width, height} = {title: "Menu", width: 200, height: 100};
 ```
 
-The problem is that JavaScript treats `{...}` in the main code flow (not inside another expression) as a code block. Such code blocks can be used to group statements, like this:
+Muammo shundaki, JavaScript asosiy kod oqimidagi `{...}` ni (boshqa ifoda ichida emas) kod bloki sifatida ko'radi. Bunday kod bloklari bayonotlarni guruhlash uchun ishlatilishi mumkin, masalan:
 
 ```js run
 {
   // a code block
   let message = "Hello";
   // ...
-  alert( message );
+  alert(message);
 }
 ```
 
-So here JavaScript assumes that we have a code block, that's why there's an error. We want destructuring instead.
+Shunday qilib, bu yerda JavaScript bizda kod bloki bor deb taxmin qiladi, shuning uchun xatolik yuz berdi. Buning o'rniga biz destructuring ni xohlaymiz.
 
-To show JavaScript that it's not a code block, we can wrap the expression in parentheses `(...)`:
+JavaScriptni bu kod bloki emasligini ko'rsatish uchun biz ifodani `(...)` qavs ichiga o'rashimiz mumkin:
 
 ```js run
 let title, width, height;
 
-// okay now
+// Endi yaxshi
 *!*(*/!*{title, width, height} = {title: "Menu", width: 200, height: 100}*!*)*/!*;
 
 alert( title ); // Menu
 ```
-````
 
-## Nested destructuring
+``
 
-If an object or an array contain other nested objects and arrays, we can use more complex left-side patterns to extract deeper portions.
+## Ichma-ich destruksiya
 
-In the code below `options` has another object in the property `size` and an array in the property `items`. The pattern on the left side of the assignment has the same structure to extract values from them:
+Agar obyekt yoki massiv boshqa o'rnatilgan obyektlar va massivlarni o'z ichiga olsa, biz chuqurroq qismlarni ajratib olish uchun chap tomondagi murakkabroq naqshlardan foydalanishimiz mumkin.
+
+Quyidagi kodda `options` `size` xususiyatidagi boshqa obyekt va `items` xususiyatidagi massivga ega. Topshiriqning chap tomonidagi naqsh ulardan qiymatlarni olish uchun bir xil tuzilishga ega:
 
 ```js run
 let options = {
   size: {
     width: 100,
-    height: 200
+    height: 200,
   },
   items: ["Cake", "Donut"],
-  extra: true
+  extra: true,
 };
 
-// destructuring assignment split in multiple lines for clarity
+// aniqlik uchun bir nechta satrlarga bo'lingan destrukturlash
 let {
-  size: { // put size here
+  size: {
+    // hajmini bu yerga qo'ying
     width,
-    height
+    height,
   },
-  items: [item1, item2], // assign items here
-  title = "Menu" // not present in the object (default value is used)
+  items: [item1, item2], // elementlarni bu yerga kiriting
+  title = "Menu", // obyektda mavjud emas (standart qiymat ishlatiladi)
 } = options;
 
-alert(title);  // Menu
-alert(width);  // 100
+alert(title); // Menu
+alert(width); // 100
 alert(height); // 200
-alert(item1);  // Cake
-alert(item2);  // Donut
+alert(item1); // Cake
+alert(item2); // Donut
 ```
 
-All properties of `options` object except `extra` that is absent in the left part, are assigned to corresponding variables:
+Chap qismda mavjud bo'lmagan `extra` dan tashqari `options` obyektining barcha xususiyatlari tegishli o'zgaruvchilarga tayinlanadi:
 
 ![](destructuring-complex.svg)
 
-Finally, we have `width`, `height`, `item1`, `item2` and `title` from the default value.
+Nihoyat, bizda standart qiymatdan `width`, `height`, `item1`, `item2` va `title` mavjud.
 
-Note that there are no variables for `size` and `items`, as we take their content instead.
+E'tibor bering, `size` va `items` uchun hech qanday o'zgaruvchi yo'q, chunki biz ularning o'rniga ularning mazmunini olamiz.
 
-## Smart function parameters
+## Smart funksiya parametrlari
 
-There are times when a function has many parameters, most of which are optional. That's especially true for user interfaces. Imagine a function that creates a menu. It may have a width, a height, a title, items list and so on.
+Funktsiyaning ko'p parametrlari bo'lgan holatlar mavjud, ularning aksariyati ixtiyoriydir. Bu, ayniqsa, foydalanuvchi interfeyslari uchun to'g'ri keladi. Menyu yaratuvchi funksiyani tasavvur qiling. Uning kengligi, balandligi, sarlavhasi, elementlar ro'yxati va boshqalar bo'lishi mumkin.
 
-Here's a bad way to write such function:
+Mana bunday funksiyani yozishning yomon yo'li:
 
 ```js
 function showMenu(title = "Untitled", width = 200, height = 100, items = []) {
@@ -469,32 +471,32 @@ function showMenu(title = "Untitled", width = 200, height = 100, items = []) {
 }
 ```
 
-In real-life, the problem is how to remember the order of arguments. Usually IDEs try to help us, especially if the code is well-documented, but still... Another problem is how to call a function when most parameters are ok by default.
+Haqiqiy hayotda muammo argumentlar tartibini qanday eslab qolishdir. Odatda IDElar bizga yordam berishga harakat qiladi, ayniqsa, kod yaxshi hujjatlashtirilgan bo'lsa. Yana bir muammo - ko'pchilik parametrlar sukut bo'yicha normal bo'lsa, funksiyani qanday chaqirishdir.
 
-Like this?
+Shundaymi?
 
 ```js
-// undefined where default values are fine
-showMenu("My Menu", undefined, undefined, ["Item1", "Item2"])
+// standart qiymatlar yaxshi bo'lgan joyda undefined
+showMenu("My Menu", undefined, undefined, ["Item1", "Item2"]);
 ```
 
-That's ugly. And becomes unreadable when we deal with more parameters.
+Bu biroz xunuk ko'rinadi. Va biz ko'proq parametrlar bilan shug'ullansak, o'qib bo'lmaydi.
 
-Destructuring comes to the rescue!
+Bunday holda bizga destrukturalash yordamga keladi!
 
-We can pass parameters as an object, and the function immediately destructurizes them into variables:
+Biz parametrlarni obyekt sifatida o'tkazishimiz mumkin va funktsiya ularni darhol o'zgaruvchilarga tuzatmaydi:
 
 ```js run
-// we pass object to function
+// obyektni funktsiyaga o'tkazamiz
 let options = {
   title: "My menu",
   items: ["Item1", "Item2"]
 };
 
-// ...and it immediately expands it to variables
+// ...va u darhol uni o'zgaruvchilarga kengaytiradi
 function showMenu(*!*{title = "Untitled", width = 200, height = 100, items = []}*/!*) {
-  // title, items – taken from options,
-  // width, height – defaults used
+  // title, items – optionsdan olingan,
+  // width, height – standart ishlatilgan
   alert( `${title} ${width} ${height}` ); // My Menu 200 100
   alert( items ); // Item1, Item2
 }
@@ -502,7 +504,7 @@ function showMenu(*!*{title = "Untitled", width = 200, height = 100, items = []}
 showMenu(options);
 ```
 
-We can also use more complex destructuring with nested objects and colon mappings:
+Shuningdek, biz ichki o'rnatilgan obyektlar va ikki nuqtali xaritalar bilan murakkabroq destruksiyadan foydalanishimiz mumkin:
 
 ```js run
 let options = {
@@ -513,9 +515,9 @@ let options = {
 *!*
 function showMenu({
   title = "Untitled",
-  width: w = 100,  // width goes to w
-  height: h = 200, // height goes to h
-  items: [item1, item2] // items first element goes to item1, second to item2
+  width: w = 100,  // width w ga boradi
+  height: h = 200, // height h ga boradi
+  items: [item1, item2] // elementlar birinchi element item1ga, ikkinchi item2ga o'tadi
 }) {
 */!*
   alert( `${title} ${w} ${h}` ); // My Menu 100 200
@@ -526,7 +528,8 @@ function showMenu({
 showMenu(options);
 ```
 
-The full syntax is the same as for a destructuring assignment:
+To'liq sintaksis tuzilmani buzish topshirig'i bilan bir xil:
+
 ```js
 function({
   incomingProperty: varName = defaultValue
@@ -534,17 +537,17 @@ function({
 })
 ```
 
-Then, for an object of parameters, there will be a variable `varName` for property `incomingProperty`, with `defaultValue` by default.
+Keyin, parametrlar obyekti uchun `incomingProperty` xususiyati uchun `varName` o'zgaruvchisi bo'ladi, sukut bo'yicha `defaultValue`.
 
-Please note that such destructuring assumes that `showMenu()` does have an argument. If we want all values by default, then we should specify an empty object:
+Iltimos, shuni yodda tutingki, bunday destruksiya `showMenu()`da argument borligini nazarda tutadi. Agar biz barcha qiymatlarni sukut bo'yicha xohlasak, bo'sh obyektni ko'rsatishimiz kerak:
 
 ```js
-showMenu({}); // ok, all values are default
+showMenu({}); // yaxshi, barcha qiymatlar standart bo'yicha
 
-showMenu(); // this would give an error
+showMenu(); // bu xatolikka olib keladi
 ```
 
-We can fix this by making `{}` the default value for the whole object of parameters:
+Buni barcha parametrlar obyekti uchun `{}` standart qiymat qilib tuzatamiz:
 
 ```js run
 function showMenu({ title = "Menu", width = 100, height = 200 }*!* = {}*/!*) {
@@ -554,26 +557,27 @@ function showMenu({ title = "Menu", width = 100, height = 200 }*!* = {}*/!*) {
 showMenu(); // Menu 100 200
 ```
 
-In the code above, the whole arguments object is `{}` by default, so there's always something to destructurize.
+Yuqoridagi kodda barcha argumentlar obyekti sukut bo'yicha `{}`dir, shuning uchun har doim tuzilmani buzish uchun biror narsa mavjud.
 
-## Summary
+## Xulosa
 
-- Destructuring assignment allows for instantly mapping an object or array onto many variables.
-- The full object syntax:
-    ```js
-    let {prop : varName = default, ...rest} = object
-    ```
+- Tuzilishni buzish obyekt yoki massivni ko'p o'zgaruvchilarga bir zumda xaritalash imkonini beradi.
+- To'liq obyekt sintaksisi:
 
-    This means that property `prop` should go into the variable `varName` and, if no such property exists, then the `default` value should be used.
+  ```js
+  let {prop : varName = default, ...rest} = object
+  ```
 
-    Object properties that have no mapping are copied to the `rest` object.
+  Bu `prop` xususiyati `varName` o'zgaruvchisiga kirishi va agar bunday xususiyat mavjud bo'lmasa, `default` qiymatidan foydalanish kerakligini anglatadi.
 
-- The full array syntax:
+  Xaritaga ega bo'lmagan obyekt xususiyatlari `rest` obyektiga ko'chiriladi.
 
-    ```js
-    let [item1 = default, item2, ...rest] = array
-    ```
+- To'liq massiv sintaksisi:
 
-    The first item goes to `item1`; the second goes into `item2`, all the rest makes the array `rest`.
+  ```js
+  let [item1 = default, item2, ...rest] = array
+  ```
 
-- It's possible to extract data from nested arrays/objects, for that the left side must have the same structure as the right one.
+  Birinchi element `item1`ga o'tadi; ikkinchisi `item2` ga kiradi, qolganlari esa massivni `rest` qiladi.
+
+- Ichki massivlar/obyektlardan ma'lumotlarni ajratib olish mumkin, buning uchun chap tomon o'ng tomon bilan bir xil tuzilishga ega bo'lishi kerak.

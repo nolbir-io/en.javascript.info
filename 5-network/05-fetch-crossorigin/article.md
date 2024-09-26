@@ -1,42 +1,42 @@
-# Fetch: Cross-Origin Requests
+# Fetch: O'zaro kelib chiqish so'rovlari
 
-If we send a `fetch` request to another web-site, it will probably fail.
+Agar biz boshqa veb-saytga `fetch` so'rovini yuborsak, u muvaffaqiyatsiz bo'lishi mumkin.
 
-For instance, let's try fetching `http://example.com`:
+Masalan, `http://example.com` ni olishga harakat qilaylik:
 
 ```js run async
 try {
   await fetch('http://example.com');
 } catch(err) {
-  alert(err); // Failed to fetch
+  alert(err); // Olib bo'lmadi
 }
 ```
 
-Fetch fails, as expected.
+Kutilganidek, olib kelish muvaffaqiyatsiz tugadi.
 
-The core concept here is *origin* -- a domain/port/protocol triplet.
+Bu yerda asosiy tushuncha *kelib chiqishi* -- domen/port/protokol uchligidir.
 
-Cross-origin requests -- those sent to another domain (even a subdomain) or protocol or port -- require special headers from the remote side.
+O'zaro kelib chiqish so'rovlari -- boshqa domenga (hatto subdomenga), protokol yoki portga yuborilgan so'rovlar uzoq tomondan maxsus sarlavhalarni talab qiladi.
 
-That policy is called "CORS": Cross-Origin Resource Sharing.
+Ushbu siyosat "CORS" deb nomlanadi: bu o'zaro manbalar almashinuvi hisoblanadi.
 
-## Why is CORS needed? A brief history
+## Nima uchun CORS kerak? Qisqacha tarix
 
-CORS exists to protect the internet from evil hackers.
+CORS internetni yovuz xakerlardan himoya qilish uchun mavjud.
 
-Seriously. Let's make a very brief historical digression.
+Bu ancha jiddiy mavzu. Keling, qisqacha tarixiy ekspluatatsiya qilaylik.
 
-**For many years a script from one site could not access the content of another site.**
+**Ko'p yillar davomida bir saytning skripti boshqa sayt tarkibiga kira olmadi.**
 
-That simple, yet powerful rule was a foundation of the internet security. E.g. an evil script from website `hacker.com` could not access the user's mailbox at website `gmail.com`. People felt safe.
+Ushbu oddiy, ammo kuchli qoida internet xavfsizligining asosi edi. Masalan, `hacker.com` veb-saytidagi yomon skript `gmail.com` saytidagi foydalanuvchining pochta qutisiga kira olmadi. Odamlar o'zlarini xavfsiz his qilishdi.
 
-JavaScript also did not have any special methods to perform network requests at that time. It was a toy language to decorate a web page.
+O'sha paytda JavaScriptda tarmoq so'rovlarini bajarish uchun maxsus usullar mavjud emas, bu veb-sahifani bezash uchun o'yinchoq tili edi.
 
-But web developers demanded more power. A variety of tricks were invented to work around the limitation and make requests to other websites.
+Ammo veb-dasturchilar ko'proq kuch talab qilishdi. Cheklovni bartaraf etish va boshqa veb-saytlarga so'rov yuborish uchun turli xil fokuslar ixtiro qilindi.
 
-### Using forms
+### Shakllardan foydalanish
 
-One way to communicate with another server was to submit a `<form>` there. People submitted it into `<iframe>`, just to stay on the current page, like this:
+Boshqa server bilan bog'lanishning bir usuli u yerda `<form>` yuborish edi. Odamlar uni `<iframe>`ga joriy sahifada qolish uchun yuborishgan, masalan:
 
 ```html
 <!-- form target -->
@@ -44,7 +44,7 @@ One way to communicate with another server was to submit a `<form>` there. Peopl
 <iframe name="iframe"></iframe>
 */!*
 
-<!-- a form could be dynamically generated and submitted by JavaScript -->
+<!-- form dinamik ravishda yaratilishi va JavaScript tomonidan yuborilishi mumkin -->
 *!*
 <form target="iframe" method="POST" action="http://another.com/…">
 */!*
@@ -52,88 +52,88 @@ One way to communicate with another server was to submit a `<form>` there. Peopl
 </form>
 ```
 
-So, it was possible to make a GET/POST request to another site, even without networking methods, as forms can send data anywhere. But as it's forbidden to access the content of an `<iframe>` from another site, it wasn't possible to read the response.
+Shunday qilib, boshqa saytga GET/POST so'rovini hatto tarmoq usullarisiz ham qilish mumkin edi, chunki formalar ma'lumotlarni istalgan joyga yuborishi mumkin. Lekin boshqa saytdan `<iframe>` tarkibiga kirish taqiqlangani uchun javobni o'qib bo'lmadi.
 
-To be precise, there were actually tricks for that, they required special scripts at both the iframe and the page. So the communication with the iframe was technically possible. Right now there's no point to go into details, let these dinosaurs rest in peace.
+Aniqroq qilib aytadigan bo'lsak, buning uchun aslida fokuslar bor edi, ular iframe va sahifada maxsus skriptlarni talab qilishdi. Shunday qilib, iframe bilan aloqa texnik jihatdan mumkin edi. Hozir tafsilotlarga to'xtalib o'tishning ma'nosi yo'q, bu dinozavrlar tinchgina orom olishsin.
 
-### Using scripts
+### Skriptlardan foydalanish
 
-Another trick was to use a `script` tag. A script could have any `src`, with any domain, like `<script src="http://another.com/…">`. It's possible to execute a script from any website.
+Yana bir hiyla `skript` tegidan foydalanish edi. Skript har qanday `src`ga ega bo'lishi mumkin, masalan, `<script src="http://another.com/…">`. Skriptni istalgan veb-saytdan bajarish mumkin.
 
-If a website, e.g. `another.com` intended to expose data for this kind of access, then a so-called "JSONP (JSON with padding)" protocol was used.
+Agar veb-sayt, masalan. `another.com` ushbu turdagi kirish uchun ma'lumotlarni oshkor qilishni maqsad qilgan, keyin `JSONP (to'ldiruvchi JSON)` protokoli ishlatilgan.
 
-Here's how it worked.
+Quyida u qanday ishlaganini ko'rishingiz mumkin.
 
-Let's say we, at our site, need to get the data from `http://another.com`, such as the weather:
+Aytaylik, bizning saytimizda `http://another.com` dan ob-havo lumotlarni olishimiz kerak:
 
-1. First, in advance, we declare a global function to accept the data, e.g. `gotWeather`.
+1. Birinchidan, oldindan ma'lumotlarni qabul qilish uchun global funktsiyani e'lon qilamiz, masalan, `gotWeather`.
 
     ```js
-    // 1. Declare the function to process the weather data
+    // 1. Ob-havo ma'lumotlarini qayta ishlash funktsiyasini e'lon qiling
     function gotWeather({ temperature, humidity }) {
       alert(`temperature: ${temperature}, humidity: ${humidity}`);
     }
     ```
-2. Then we make a `<script>` tag with `src="http://another.com/weather.json?callback=gotWeather"`, using the name of our function as the `callback` URL-parameter.
+2. Keyin `src="http://another.com/weather.json?callback=gotWeather"` bilan `<script>` tegini yaratamiz, bunda funksiyamiz nomini `callback` URL-parametri sifatida ishlatamiz.
 
     ```js
     let script = document.createElement('script');
     script.src = `http://another.com/weather.json?callback=gotWeather`;
     document.body.append(script);
     ```
-3. The remote server `another.com` dynamically generates a script that calls `gotWeather(...)` with the data it wants us to receive.
+3. `Another.com` masofaviy serveri dinamik ravishda `gotWeather(...)` deb chaqiradigan skriptni ishlab chiqaradi, u biz olishni xohlagan ma'lumotlarga ega.
     ```js
-    // The expected answer from the server looks like this:
+    // Serverdan kutilgan javob shunday ko'rinishda bo'ladi:
     gotWeather({
       temperature: 25,
       humidity: 78
     });
     ```
-4. When the remote script loads and executes, `gotWeather` runs, and, as it's our function, we have the data.
+4. Masofaviy skript yuklanganda va bajarilganda `gotWeather` ishlaydi va bu bizning vazifamiz bo'lgani uchun bizda ma'lumotlar mavjud.
 
-That works, and doesn't violate security, because both sides agreed to pass the data this way. And, when both sides agree, it's definitely not a hack. There are still services that provide such access, as it works even for very old browsers.
+Bu ishlaydi va xavfsizlikni buzmaydi, chunki ikkala tomon ham ma'lumotlarni shu tarzda uzatishga kelishib oldilar. Agar ikkala tomon ham rozi bo'lsa, bu, albatta, xakerlik emas. Bunday kirishni ta'minlaydigan xizmatlar hali ham mavjud, chunki u juda eski brauzerlar uchun ham ishlaydi.
 
-After a while, networking methods appeared in browser JavaScript.
+Biroz vaqt o'tgach, JavaScript brauzerida tarmoq usullari paydo bo'ldi.
 
-At first, cross-origin requests were forbidden. But as a result of long discussions, cross-origin requests were allowed, but with any new capabilities requiring an explicit allowance by the server, expressed in special headers.
+Dastlab, o'zaro kelib chiqish so'rovlari ta'qiqlangan. Ammo uzoq davom etgan munozaralar natijasida o'zaro kelib chiqish so'rovlariga ruxsat berildi, lekin har qanday yangi imkoniyatlar bilan server tomonidan aniq ruxsatni talab qiladigan, maxsus sarlavhalarda ifodalangan.
 
-## Safe requests
+## Xavfsiz so'rovlar
 
-There are two types of cross-origin requests:
+O'zaro kelib chiqish so'rovlarining ikki turi mavjud:
 
-1. Safe requests.
-2. All the others.
+1. Xavfsiz so'rovlar.
+2. Qolganlarning hammasi.
 
-Safe Requests are simpler to make, so let's start with them.
+Xavfsiz so'rovlar qilish osonroq, shuning uchun ulardan boshlaylik.
 
-A request is safe if it satisfies two conditions:
+Agar so'rov ikki shartga javob bersa, xavfsiz hisoblanadi:
 
-1. [Safe method](https://fetch.spec.whatwg.org/#cors-safelisted-method): GET, POST or HEAD
-2. [Safe headers](https://fetch.spec.whatwg.org/#cors-safelisted-request-header) -- the only allowed custom headers are:
+1. [Safe method](https://fetch.spec.whatwg.org/#cors-safelisted-method): GET, POST yoki HEAD
+2. [Safe headers](https://fetch.spec.whatwg.org/#cors-safelisted-request-header) -- ruxsat etilgan yagona sarlavhalar:
     - `Accept`,
     - `Accept-Language`,
     - `Content-Language`,
-    - `Content-Type` with the value `application/x-www-form-urlencoded`, `multipart/form-data` or `text/plain`.
+    - `application/x-www-form-urlencoded`, `multipart/form-data` yoki `matn/plain` qiymati bilan `Content-Type`.
 
-Any other request is considered "unsafe". For instance, a request with `PUT` method or with an `API-Key` HTTP-header does not fit the limitations.
+Boshqa har qanday so'rov "xavfli" deb hisoblanadi. Masalan, `PUT` usuli yoki `API-Key` HTTP sarlavhali so'rov cheklovlarga mos kelmaydi.
 
-**The essential difference is that a safe request can be made with a `<form>` or a `<script>`, without any special methods.**
+**Muhim farq shundaki, xavfsiz so'rov hech qanday maxsus usullarsiz `<form>` yoki `<skript>` bilan amalga oshirilishi mumkin.**
 
-So, even a very old server should be ready to accept a safe request.
+Shunday qilib, hatto juda eski server ham xavfsiz so'rovni qabul qilishga tayyor bo'lishi kerak.
 
-Contrary to that, requests with non-standard headers or e.g. method `DELETE` can't be created this way. For a long time JavaScript was unable to do such requests. So an old server may assume that such requests come from a privileged source, "because a webpage is unable to send them".
+Buning aksincha, nostandart sarlavhali so'rovlar yoki h.k. `DELETE` usulini bu tarzda yaratib bo'lmaydi. Uzoq vaqt davomida JavaScript bunday so'rovlarni bajara olmadi. Shunday qilib, eski server bunday so'rovlar imtiyozli manbadan keladi deb taxmin qilishi mumkin, chunki "veb-sahifa ularni yubora olmaydi".
 
-When we try to make a unsafe request, the browser sends a special "preflight" request that asks the server -- does it agree to accept such cross-origin requests, or not?
+Xavfli so'rovni amalga oshirishga harakat qilganimizda, brauzer serverdan so'raladigan maxsus "preflight" so'rovini yuboradi -- u bunday o'zaro kelib chiqish so'rovlarini qabul qilishga rozimi yoki yo'qmi?
 
-And, unless the server explicitly confirms that with headers, an unsafe request is not sent.
+Va agar server sarlavhalar bilan xavfli so'rov yuborilmasligini aniq tasdiqlamasa, so'rov yuborilmaydi.
 
-Now we'll go into details.
+Endi biz tafsilotlarga o'tamiz.
 
-## CORS for safe requests
+## Xavfsiz so'rovlar uchun CORS
 
-If a request is cross-origin, the browser always adds the `Origin` header to it.
+Agar so'rov o'zaro kelib chiqishli bo'lsa, brauzer har doim unga `Origin` sarlavhasini qo'shadi.
 
-For instance, if we request `https://anywhere.com/request` from `https://javascript.info/page`, the headers will look like:
+Misol uchun, agar biz `https://javascript.info/page` dan `https://anywhere.com/request` so'rasak, sarlavhalar quyidagicha ko'rinadi:
 
 ```http
 GET /request
@@ -144,17 +144,17 @@ Origin: https://javascript.info
 ...
 ```
 
-As you can see, the `Origin` header contains exactly the origin (domain/protocol/port), without a path.
+Ko'rib turganingizdek, `Origin` sarlavhasi yo'lsiz aynan manbani (domen/protokol/port) o'z ichiga oladi.
 
-The server can inspect the `Origin` and, if it agrees to accept such a request, add a special header `Access-Control-Allow-Origin` to the response. That header should contain the allowed origin (in our case `https://javascript.info`), or a star `*`. Then the response is successful, otherwise it's an error.
+Server `Origin` ni tekshirishi mumkin va agar u bunday so'rovni qabul qilishga rozi bo'lsa, javobga `Access-Control-Allow-Origin` maxsus sarlavhasini qo'shishi mumkin. Sarlavhada ruxsat etilgan manbaa (bizning holimizda `https://javascript.info`) yoki yulduzcha `*` bo'lishi kerak. Keyin javob muvaffaqiyatli bo'ladi, aks holda bu xato.
 
-The browser plays the role of a trusted mediator here:
-1. It ensures that the correct `Origin` is sent with a cross-origin request.
-2. It checks for permitting `Access-Control-Allow-Origin` in the response, if it exists, then JavaScript is allowed to access the response, otherwise it fails with an error.
+Brauzer bu yerda ishonchli vositachi rolini o'ynaydi:
+1. O'zaro kelib chiqish so'rovi bilan to'g'ri `Origin` yuborilishini ta'minlaydi.
+2. U javobda `Access-Control-Allow-Origin` ruxsatini tekshiradi, agar mavjud bo'lsa, JavaScriptga javobga kirishga ruxsat beriladi, aks holda xatolik bilan ishlamay qoladi.
 
 ![](xhr-another-domain.svg)
 
-Here's an example of a permissive server response:
+Mana ruxsat beruvchi server javobiga misol:
 ```http
 200 OK
 Content-Type:text/html; charset=UTF-8
@@ -163,9 +163,9 @@ Access-Control-Allow-Origin: https://javascript.info
 */!*
 ```
 
-## Response headers
+## Javob sarlavhalari
 
-For cross-origin request, by default JavaScript may only access so-called "safe" response headers:
+O'zaro kelib chiqish so'rovi uchun, sukut bo'yicha JavaScript faqat "xavfsiz" javob sarlavhalariga kirishi mumkin:
 
 - `Cache-Control`
 - `Content-Language`
@@ -175,11 +175,11 @@ For cross-origin request, by default JavaScript may only access so-called "safe"
 - `Last-Modified`
 - `Pragma`
 
-Accessing any other response header causes an error.
+Boshqa har qanday javob sarlavhasiga kirish xatolikka olib keladi.
 
-To grant JavaScript access to any other response header, the server must send the `Access-Control-Expose-Headers` header. It contains a comma-separated list of unsafe header names that should be made accessible.
+JavaScriptga boshqa har qanday javob sarlavhasiga kirish huquqini berish uchun server `Access-Control-Expose-Headers` sarlavhasini yuborishi kerak. Unda kirish mumkin bo'lishi kerak bo'lgan xavfli sarlavha nomlarining vergul bilan ajratilgan ro'yxati mavjud.
 
-For example:
+Masalan:
 
 ```http
 200 OK
@@ -193,32 +193,32 @@ Access-Control-Expose-Headers: Content-Encoding,API-Key
 */!*
 ```
 
-With such an `Access-Control-Expose-Headers` header, the script is allowed to read the `Content-Encoding` and `API-Key` headers of the response.
+Bunday `Access-Control-Expose-Headers` sarlavhasi bilan skriptga javobning `Content-Encoding` va `API-Key` sarlavhalarini o'qishga ruxsat beriladi.
 
-## "Unsafe" requests
+## "Xavfsiz" so'rovlar
 
-We can use any HTTP-method: not just `GET/POST`, but also `PATCH`, `DELETE` and others.
+Biz har qanday HTTP usulidan foydalanishimiz mumkin: nafaqat `GET/POST`, balki `PATCH`, `DELETE` va boshqalar.
 
-Some time ago no one could even imagine that a webpage could make such requests. So there may still exist webservices that treat a non-standard method as a signal: "That's not a browser". They can take it into account when checking access rights.
+Bir muncha vaqt oldin hech kim veb-sahifa bunday so'rovlarni amalga oshirishi mumkinligini tasavvur ham qila olmadi. Shunday qilib, nostandart usulni signal sifatida ko'radigan veb-xizmatlar hali ham mavjud bo'lishi mumkin: "Bu brauzer emas". Ular kirish huquqlarini tekshirishda buni hisobga olishlari mumkin.
 
-So, to avoid misunderstandings, any "unsafe" request -- that couldn't be done in the old times, the browser does not make such requests right away. First, it sends a preliminary, so-called "preflight" request, to ask for permission.
+Shunday qilib, tushunmovchiliklarga yo'l qo'ymaslik uchun har qanday "xavfsiz" so'rov -- eski vaqtlarda amalga oshirilmagan, brauzer darhol bunday so'rovlarni qilmaydi. Birinchidan, u ruxsat so'rash uchun dastlabki "parvozdan oldin" (preflight) so'rovini yuboradi.
 
-A preflight request uses the method `OPTIONS`, no body and three headers:
+Parvoz oldidan so'rovda `OPTIONS` usuli qo'llaniladi, asosiy va uchta sarlavhasiz:
 
-- `Access-Control-Request-Method` header has the method of the unsafe request.
-- `Access-Control-Request-Headers` header provides a comma-separated list of its unsafe HTTP-headers.
-- `Origin` header tells from where the request came. (such as `https://javascript.info`)
+- `Access-Control-Request-Method` sarlavhasida xavfli so'rov usuli mavjud.
+- `Access-Control-Request-Headers` sarlavhasi xavfli HTTP sarlavhalarining vergul bilan ajratilgan ro'yxatini taqdim etadi.
+- `Origin` sarlavhasi so'rov qayerdan kelganligini bildiradi. (masalan, `https://javascript.info`)
 
-If the server agrees to serve the requests, then it should respond with empty body, status 200 and headers:
+Agar server so'rovlarga xizmat ko'rsatishga rozi bo'lsa, u bo'sh tana, status 200 va sarlavhalar bilan javob berishi kerak:
 
-- `Access-Control-Allow-Origin` must be either `*` or the requesting origin, such as `https://javascript.info`, to allow it.
-- `Access-Control-Allow-Methods` must have the allowed method.
-- `Access-Control-Allow-Headers` must have a list of allowed headers.
-- Additionally, the header `Access-Control-Max-Age` may specify a number of seconds to cache the permissions. So the browser won't have to send a preflight for subsequent requests that satisfy given permissions.
+- `Access-Control-Allow-Origin` ruxsat berish uchun `*` yoki so'ralayotgan manbaa bo'lishi kerak, masalan, `https://javascript.info`.
+- `Access-Control-Allow-Methods` ruxsat etilgan usulga ega bo'lishi kerak.
+- `Access-Control-Allow-Headers` ruxsat etilgan sarlavhalar ro'yxatiga ega bo'lishi kerak.
+- Bundan tashqari, `Access-Control-Max-Age` sarlavhasi ruxsatlarni keshlash uchun bir necha soniyalarni belgilashi mumkin. Shunday qilib, brauzer berilgan ruxsatlarni qondiradigan keyingi so'rovlar uchun oldindan parvoz yuborishi shart emas.
 
 ![](xhr-preflight.svg)
 
-Let's see how it works step-by-step on the example of a cross-origin `PATCH` request (this method is often used to update data):
+Keling, o'zaro kelib chiqishi `PATCH` so'rovi misolida uning qanday ishlashini bosqichma-bosqich ko'rib chiqamiz (bu usul ko'pincha ma'lumotlarni yangilash uchun ishlatiladi):
 
 ```js
 let response = await fetch('https://site.com/service.json', {
@@ -230,14 +230,14 @@ let response = await fetch('https://site.com/service.json', {
 });
 ```
 
-There are three reasons why the request is unsafe (one is enough):
-- Method `PATCH`
-- `Content-Type` is not one of: `application/x-www-form-urlencoded`, `multipart/form-data`, `text/plain`.
-- "Unsafe" `API-Key` header.
+So'rov xavfli bo'lishining uchta sababi bor (bittasi yetarli):
+- `PATCH` usuli
+- `Content-Type` quyidagilardan biri emas: `application/x-www-form-urlencoded`, `multipart/form-data`, `matn/plain`.
+- "Xavfsiz" `API-Key` sarlavhasi.
 
-### Step 1 (preflight request)
+### 1-qadam (parvozdan oldin so'rovi)
 
-Prior to sending such a request, the browser, on its own, sends a preflight request that looks like this:
+Bunday so'rovni yuborishdan avval, brauzer o'z-o'zidan parvozdan oldin so'rov yuboradi, bu quyidagicha ko'rinadi:
 
 ```http
 OPTIONS /service.json
@@ -247,25 +247,25 @@ Access-Control-Request-Method: PATCH
 Access-Control-Request-Headers: Content-Type,API-Key
 ```
 
-- Method: `OPTIONS`.
-- The path -- exactly the same as the main request: `/service.json`.
-- Cross-origin special headers:
-    - `Origin` -- the source origin.
-    - `Access-Control-Request-Method` -- requested method.
-    - `Access-Control-Request-Headers` -- a comma-separated list of "unsafe" headers.
+- Usul: `OPTIONS`.
+- Yo'l -- aynan asosiy so'rov bilan bir xil: `/service.json`.
+- Oʻzaro kelib chiqish maxsus sarlavhalari:
+     - `Origin` -- manba kelib chiqishi.
+     - `Access-Control-Request-Method` -- so'ralgan usul.
+     - `Access-Control-Request-Headers` -- vergul bilan ajratilgan "xavfli" sarlavhalar ro'yxati.
 
-### Step 2 (preflight response)
+### 2-qadam (parvoz oldidan javob)
 
-The server should respond with status 200 and the headers:
+Server 200 holati va sarlavhalari bilan javob berishi kerak:
 - `Access-Control-Allow-Origin: https://javascript.info`
 - `Access-Control-Allow-Methods: PATCH`
 - `Access-Control-Allow-Headers: Content-Type,API-Key`.
 
-That allows future communication, otherwise an error is triggered.
+Bu kelajakda muloqot qilish imkonini beradi, aks holda xatolik yuzaga keladi.
 
-If the server expects other methods and headers in the future, it makes sense to allow them in advance by adding them to the list.
+Agar server kelajakda boshqa usullar va sarlavhalarni kutsa, ularni ro'yxatga qo'shish orqali oldindan ruxsat berish mantiqan to'g'ri.
 
-For example, this response also allows `PUT`, `DELETE` and additional headers:
+Masalan, bu javob `PUT`, `DELETE` va qo'shimcha sarlavhalarga ham ruxsat beradi:
 
 ```http
 200 OK
@@ -275,15 +275,15 @@ Access-Control-Allow-Headers: API-Key,Content-Type,If-Modified-Since,Cache-Contr
 Access-Control-Max-Age: 86400
 ```
 
-Now the browser can see that `PATCH` is in `Access-Control-Allow-Methods` and `Content-Type,API-Key` are in the list `Access-Control-Allow-Headers`, so it sends out the main request.
+Endi brauzer `PATCH` `Access-Control-Allow-Methods` va `Content-Type,API-Key` `Access-Control-Allow-Headers` ro'yxatida ekanligini ko'rishi mumkin, shuning uchun u asosiy ma'lumotlarni yuboradi.
 
-If there's the header `Access-Control-Max-Age` with a number of seconds, then the preflight permissions are cached for the given time. The response above will be cached for 86400 seconds (one day). Within this timeframe, subsequent requests will not cause a preflight. Assuming that they fit the cached allowances, they will be sent directly.
+Agar bir necha soniyali `Access-Control-Max-Age` sarlavhasi bo'lsa, u holda parvozdan oldingi ruxsatnomalar berilgan vaqt uchun keshlanadi. Yuqoridagi javob 86400 soniya davomida keshlanadi (bir kun). Ushbu vaqt oralig'ida keyingi so'rovlar oldindan parvozga sabab bo'lmaydi. Ular keshlangan nafaqalarga mos deb faraz qilsak, ular to'g'ridan-to'g'ri yuboriladi.
 
-### Step 3 (actual request)
+### 3-qadam (haqiqiy so'rov)
 
-When the preflight is successful, the browser now makes the main request. The process here is the same as for safe requests.
+Preflight muvaffaqiyatli bo'lsa, brauzer endi asosiy so'rovni amalga oshiradi. Bu erda jarayon xavfsiz so'rovlar bilan bir xil.
 
-The main request has the `Origin` header (because it's cross-origin):
+Asosiy so'rov `Origin` sarlavhasiga ega (chunki u o'zaro kelib chiqishli sarlavha):
 
 ```http
 PATCH /service.json
@@ -293,37 +293,37 @@ API-Key: secret
 Origin: https://javascript.info
 ```
 
-### Step 4 (actual response)
+### 4-qadam (haqiqiy javob)
 
-The server should not forget to add `Access-Control-Allow-Origin` to the main response. A successful preflight does not relieve from that:
+Server asosiy javobga `Access-Control-Allow-Origin` qo'shishni unutmasligi kerak. Muvaffaqiyatli oldindan parvoz bundan xalos qilmaydi:
 
 ```http
 Access-Control-Allow-Origin: https://javascript.info
 ```
 
-Then JavaScript is able to read the main server response.
+Keyin JavaScript asosiy server javobini o'qiy oladi.
 
 ```smart
-Preflight request occurs "behind the scenes", it's invisible to JavaScript.
+Parvoz oldidan so'rov "sahna ortida" sodir bo'ladi, u JavaScriptga ko'rinmaydi.
 
-JavaScript only gets the response to the main request or an error if there's no server permission.
+JavaScript faqat asosiy so'rovga javob oladi yoki server ruxsati bo'lmasa, xatolik yuz beradi.
 ```
 
-## Credentials
+## Hisob ma'lumotlari
 
-A cross-origin request initiated by JavaScript code by default does not bring any credentials (cookies or HTTP authentication).
+Sukut bo'yicha JavaScript kodi bilan boshlangan o'zaro kelib chiqish so'rovi hech qanday hisob ma'lumotlarini (cookie fayllari yoki HTTP autentifikatsiyasi) olib kelmaydi.
 
-That's uncommon for HTTP-requests. Usually, a request to `http://site.com` is accompanied by all cookies from that domain. Cross-origin requests made by JavaScript methods on the other hand are an exception.
+Bu HTTP so'rovlari uchun odatiy holdir. Odatda, `http://site.com` so'roviga ushbu domendagi barcha cookie-fayllar hamroh bo'ladi. Boshqa tomondan, JavaScript usullari bilan qilingan o'zaro kelib chiqish so'rovlari bundan mustasno.
 
-For example, `fetch('http://another.com')` does not send any cookies, even those  (!) that belong to `another.com` domain.
+Masalan, `fetch('http://another.com')` hech qanday cookie-fayllarni, hatto ` another.com` domeniga tegishli (!) fayllarni yubormaydi.
 
-Why?
+Nega?
 
-That's because a request with credentials is much more powerful than without them. If allowed, it grants JavaScript the full power to act on behalf of the user and access sensitive information using their credentials.
+Buning sababi, hisob ma'lumotlari bo'lgan so'rov ularsiz so'rovlarga qaraganda ancha kuchli. Agar ruxsat berilsa, u JavaScriptga foydalanuvchi nomidan harakat qilish va uning hisob ma'lumotlaridan foydalangan holda maxfiy ma'lumotlarga kirish huquqini beradi.
 
-Does the server really trust the script that much? Then it must explicitly allow requests with credentials with an additional header.
+Server haqiqatan ham skriptga shunchalik ishonadimi? Keyin qo'shimcha sarlavhali hisobga olish ma'lumotlari bilan so'rovlarga aniq ruxsat berishi kerak.
 
-To send credentials in `fetch`, we need to add the option `credentials: "include"`, like this:
+Hisob ma'lumotlarini `fetch` da yuborish uchun `credentials: "include"` opsiyasini qo'shishimiz kerak, masalan:
 
 ```js
 fetch('http://another.com', {
@@ -331,11 +331,11 @@ fetch('http://another.com', {
 });
 ```
 
-Now `fetch` sends cookies originating from `another.com` with request to that site.
+Endi `fetch` o'sha saytga so'rov bilan `ather.com` saytidan olingan cookie-fayllarni yuboradi.
 
-If the server agrees to accept the request *with credentials*, it should add a header `Access-Control-Allow-Credentials: true` to the response, in addition to `Access-Control-Allow-Origin`.
+Agar server *hisob ma'lumotlari bilan* so'rovni qabul qilishga rozi bo'lsa, u javobga `Access-Control-Allow-Origin` dan tashqari `Access-Control-Allow-Credentials: true` sarlavhasini qo'shishi kerak.
 
-For example:
+Masalan:
 
 ```http
 200 OK
@@ -343,42 +343,42 @@ Access-Control-Allow-Origin: https://javascript.info
 Access-Control-Allow-Credentials: true
 ```
 
-Please note: `Access-Control-Allow-Origin` is prohibited from using a star `*` for requests with credentials. Like shown above, it must provide the exact origin there. That's an additional safety measure, to ensure that the server really knows who it trusts to make such requests.
+Esda tuting: `Access-Control-Allow-Origin` hisob ma'lumotlari bilan so'rovlar uchun yulduzcha `*` qo'llash ta'qiqlangan. Yuqorida ko'rsatilganidek, u yerda aniq kelib chiqishini ta'minlashi kerak. Bu qo'shimcha xavfsizlik chorasi bo'lib, server bunday so'rovlarni kimga topshirishini bilishini ta'minlaydi.
 
-## Summary
+## Xulosa
 
-From the browser point of view, there are two kinds of cross-origin requests: "safe" and all the others.
+Brauzer nuqtai nazaridan, o'zaro kelib chiqish so'rovlarining ikki turi mavjud: "xavfsiz" va boshqalar.
 
-"Safe" requests must satisfy the following conditions:
-- Method: GET, POST or HEAD.
-- Headers -- we can set only:
+"Xavfsiz" so'rovlar quyidagi shartlarga javob berishi kerak:
+- Usul: GET, POST yoki HEAD.
+- Sarlavhalar -- biz faqat:
     - `Accept`
     - `Accept-Language`
     - `Content-Language`
-    - `Content-Type` to the value `application/x-www-form-urlencoded`, `multipart/form-data` or `text/plain`.
+    - `Content-Type` - `application/x-www-form-urlencoded`, `multipart/form-data` yoki `matn/plain` qiymati.
 
-The essential difference is that safe requests were doable since ancient times using `<form>` or `<script>` tags, while unsafe were impossible for browsers for a long time.
+Muhim farq shundaki, xavfsiz so'rovlar qadim zamonlardan buyon `<form>` yoki `<script>` teglari yordamida amalga oshirilar edi, ammo uzoq vaqt davomida brauzerlar uchun xavfsiz so'rovlar imkonsiz edi.
 
-So, the practical difference is that safe requests are sent right away, with the `Origin` header, while for the other ones the browser makes a preliminary "preflight" request, asking for permission.
+Shunday qilib, amaliy farq shundaki, xavfsiz so'rovlar `Origin` sarlavhasi bilan darhol yuboriladi, qolganlari uchun brauzer ruxsat so'rab, "oldindan parvoz" so'rovini beradi.
 
-**For safe requests:**
+**Xavfsiz so'rovlar uchun:**
 
-- → The browser sends the `Origin` header with the origin.
-- ← For requests without credentials (not sent by default), the server should set:
-    - `Access-Control-Allow-Origin` to `*` or same value as `Origin`
-- ← For requests with credentials, the server should set:
-    - `Access-Control-Allow-Origin` to same value as `Origin`
-    - `Access-Control-Allow-Credentials` to `true`
+- → Brauzer `Origin` sarlavhasini kelib chiqishi bilan yuboradi.
+- ← Hisob ma'lumotlari bo'lmagan so'rovlar uchun (sukut bo'yicha yuborilmaydi), server quyidagilarni o'rnatishi kerak:
+     - `*` ga kirish-nazorat-ruxsat berish-kelib chiqishi yoki `Origin` bilan bir xil qiymat
+- ← Hisob ma'lumotlari bo'lgan so'rovlar uchun server quyidagilarni o'rnatishi kerak:
+     - `Origin` bilan bir xil qiymatga `Access-Control-Allow-Origin`
+     - `Access-Control-Allow-Credentials` dan `true` ga
 
-Additionally, to grant JavaScript access to any response headers except `Cache-Control`,  `Content-Language`, `Content-Type`, `Expires`, `Last-Modified` or `Pragma`, the server should list the allowed ones in `Access-Control-Expose-Headers` header.
+Bundan tashqari, JavaScriptga `Cache-Control`, `Content-Language`, `Content-Type`, `Expires`, `Last-Modified` yoki `Pragma` dan tashqari har qanday javob sarlavhalariga ruxsat berish uchun server ruxsat etilganlar ro'yxatini `Access-Control-Expose-Headers` sarlavhasida ko'rsatishi kerak. 
 
-**For unsafe requests, a preliminary "preflight" request is issued before the requested one:**
+**Xavfsiz so'rovlar uchun so'ralgandan oldin dastlabki "preflight" so'rovi beriladi:**
 
-- → The browser sends an `OPTIONS` request to the same URL, with the headers:
-    - `Access-Control-Request-Method` has requested method.
-    - `Access-Control-Request-Headers` lists unsafe requested headers.
-- ← The server should respond with status 200 and the headers:
-    - `Access-Control-Allow-Methods` with a list of allowed methods,
-    - `Access-Control-Allow-Headers` with a list of allowed headers,
-    - `Access-Control-Max-Age` with a number of seconds to cache the permissions.
-- Then the actual request is sent, and the previous "safe" scheme is applied.
+- → Brauzer sarlavhalari bilan bir xil URL manziliga `OPTIONS` so'rovini yuboradi:
+     - `Access-Control-Request-Method` so'ragan usul.
+     - `Access-Control-Request-Headers` xavfli so'ralgan sarlavhalarni ro'yxatga oladi.
+- ← Server 200 holati va sarlavhalari bilan javob berishi kerak:
+     - Ruxsat etilgan usullar ro'yxati bilan `Access-Control-Allow-Methods`;
+     - Ruxsat etilgan sarlavhalar ro'yxati bilan `Access-Control-Allow-Headers`,
+     - Ruxsatlarni keshlash uchun bir necha soniya bilan `Access-Control-Max-Age`.
+- Keyin haqiqiy so'rov yuboriladi va oldingi "xavfsiz" sxema qo'llaniladi.

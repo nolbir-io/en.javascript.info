@@ -1,40 +1,40 @@
 
-# Property flags and descriptors
+# Xususiyat bayroqlari va deskriptorlari
 
-As we know, objects can store properties.
+Ma'lumki, obyektlar xususiyatlarni saqlashi mumkin.
 
-Until now, a property was a simple "key-value" pair to us. But an object property is actually a more flexible and powerful thing.
+Hozirgacha xususiyat biz uchun oddiy "kalit-qiymat" juftligi edi. Lekin obyekt xususiyati aslida yanada moslashuvchan va kuchli narsadir.
 
-In this chapter we'll study additional configuration options, and in the next we'll see how to invisibly turn them into getter/setter functions.
+Ushbu bobda biz qo'shimcha konfiguratsiya opsiyalarini o'rganamiz va keyingisida ularni qanday qilib ko'rinmas holda getter/setter funksiyalariga aylantirishni ko'rib chiqamiz.
 
-## Property flags
+## Xususiyat bayroqlari
 
-Object properties, besides a **`value`**, have three special attributes (so-called "flags"):
+Obyekt xususiyatlari, **`value`**dan tashqari, uchta maxsus atribyutga ega ( ular"flags" deb ataladi):
 
-- **`writable`** -- if `true`, the value can be changed, otherwise it's read-only.
-- **`enumerable`** -- if `true`, then listed in loops, otherwise not listed.
-- **`configurable`** -- if `true`, the property can be deleted and these attributes can be modified, otherwise not.
+- **`writable`** -- agar `true` bo'lsa, qiymat o'zgartirilishi mumkin, u faqat o'qish uchun mo'ljallangan.
+- **`enumerable`** -- agar `true` bo'lsa, sikllar ro'yxatiga kiritiladi, aks holda ro'yxatga kiritilmaydi.
+- **`configurable`** -- agar `true` bo'lsa, xususiyat o'chirilishi va bu atribyutlar o'zgartirilishi mumkin, aks holda o'zgartirilmaydi.
 
-We didn't see them yet, because generally they do not show up. When we create a property "the usual way", all of them are `true`. But we also can change them anytime.
+Biz ularni hali ko'rmadik, chunki ular odatda ko'rinmaydi. Biz "odatiy usul" xususiyatini yaratganimizda, ularning barchasi `true` hisoblanadi, ammo biz ularni istalgan vaqtda o'zgartirishimiz mumkin.
 
-First, let's see how to get those flags.
+Birinchidan, bu bayroqlarni qanday olish kerakligini ko'rib chiqaylik.
 
-The method [Object.getOwnPropertyDescriptor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor) allows to query the *full* information about a property.
+[Object.getOwnPropertyDescriptor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor) usuli xususiyat haqidagi *to'liq* ma'lumotni so'rash imkonini beradi.
 
-The syntax is:
+Sintaksis:
 ```js
 let descriptor = Object.getOwnPropertyDescriptor(obj, propertyName);
 ```
 
 `obj`
-: The object to get information from.
+: Ma'lumot olish uchun obyekt.
 
 `propertyName`
-: The name of the property.
+: Xususiyatning nomi
 
-The returned value is a so-called "property descriptor" object: it contains the value and all the flags.
+Qaytarilgan qiymat "xususiyat deskriptori" deb ataladigan obyektdir: u qiymat va barcha bayroqlarni o'z ichiga oladi.
 
-For instance:
+Masalan:
 
 ```js run
 let user = {
@@ -44,7 +44,7 @@ let user = {
 let descriptor = Object.getOwnPropertyDescriptor(user, 'name');
 
 alert( JSON.stringify(descriptor, null, 2 ) );
-/* property descriptor:
+/* xususiyat deskriptori:
 {
   "value": "John",
   "writable": true,
@@ -53,24 +53,23 @@ alert( JSON.stringify(descriptor, null, 2 ) );
 }
 */
 ```
+Bayroqlarni o'zgartirish uchun biz [Object.defineProperty] (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) dan foydalanishimiz mumkin.
 
-To change the flags, we can use [Object.defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty).
-
-The syntax is:
+Sintaksis:
 
 ```js
 Object.defineProperty(obj, propertyName, descriptor)
 ```
 
 `obj`, `propertyName`
-: The object and its property to apply the descriptor.
+: Deskriptorni qo'llash uchun obyekt va uning xususiyati.
 
 `descriptor`
-: Property descriptor object to apply.
+: Qo'llash uchun xususiyat deskriptor obyekti.
 
-If the property exists, `defineProperty` updates its flags. Otherwise, it creates the property with the given value and flags; in that case, if a flag is not supplied, it is assumed `false`.
+Agar xususiyat mavjud bo'lsa, `defineProperty` o'z bayroqlarini yangilaydi. Aks holda, u berilgan qiymat va bayroqlar bilan xususiyatni yaratadi; u holda, agar bayroq taqdim etilmasa, u `false` deb qabul qilinadi.
 
-For instance, here a property `name` is created with all falsy flags:
+Misol uchun, bu yerda barcha noto'g'ri bayroqlar bilan `name` xususiyati yaratilgan:
 
 ```js run
 let user = {};
@@ -96,13 +95,14 @@ alert( JSON.stringify(descriptor, null, 2 ) );
  */
 ```
 
-Compare it with "normally created" `user.name` above: now all flags are falsy. If that's not what we want then we'd better set them to `true` in `descriptor`.
+Uni yuqoridagi "normal yaratilgan" `user.name` bilan solishtiring: endi barcha bayroqlar noto'g'ri. Agar bu biz xohlamagan holat bo'lsa, biz ularni `descriptor` da `true` ga o'rnatganimiz ma'qul.
 
-Now let's see effects of the flags by example.
 
-## Non-writable
+Endi bayroqlarning ta'sirini misol orqali ko'rib chiqamiz.
 
-Let's make `user.name` non-writable (can't be reassigned) by changing `writable` flag:
+## Yozilmaydigan (non-writable) 
+
+`writable` bayroqchasini o'zgartirish orqali `user.name`ni yozilmaydigan qilib qo'yamiz (qayta tayinlash mumkin emas):
 
 ```js run
 let user = {
@@ -116,17 +116,17 @@ Object.defineProperty(user, "name", {
 });
 
 *!*
-user.name = "Pete"; // Error: Cannot assign to read only property 'name'
+user.name = "Pete"; // Error: Faqat "name" xususiyatini o'qishga tayinlab bo'lmaydi
 */!*
 ```
+Agar ular biznikini bekor qilish uchun o'zlarining `defineProperty` ni qo'llamasalar, endi hech kim bizning foydalanuvchi nomini o'zgartira olmaydi.
 
-Now no one can change the name of our user, unless they apply their own `defineProperty` to override ours.
+```smart header="Xatolar faqat qattiq rejimda paydo bo'ladi"
 
-```smart header="Errors appear only in strict mode"
-In non-strict mode, no errors occur when writing to non-writable properties and such. But the operation still won't succeed. Flag-violating actions are just silently ignored in non-strict.
+Qattiq bo'lmagan, ya'ni non-strict rejimda yozilmaydigan xususiyatlarga va shunga o'xshashlarga yozishda hech qanday xatolik yuzaga kelmaydi. Ammo operatsiya hali ham muvaffaqiyatli bo'lmaydi. Bayroqni buzuvchi harakatlar qat'iy bo'lmaganda shunchaki e'tiborga olinmaydi.
 ```
 
-Here's the same example, but the property is created from scratch:
+Mana bir xil misol, lekin xususiyat noldan yaratilgan:
 
 ```js run
 let user = { };
@@ -134,7 +134,7 @@ let user = { };
 Object.defineProperty(user, "name", {
 *!*
   value: "John",
-  // for new properties we need to explicitly list what's true
+  // yangi xususiyatlar uchun biz nima true bo'lishini aniq sanab o'tishimiz kerak
   enumerable: true,
   configurable: true
 */!*
@@ -146,9 +146,9 @@ user.name = "Pete"; // Error
 
 ## Non-enumerable
 
-Now let's add a custom `toString` to `user`.
+Endi `user` ga maxsus `toString` ni qo'shamiz.
 
-Normally, a built-in `toString` for objects is non-enumerable, it does not show up in `for..in`. But if we add a `toString` of our own, then by default it shows up in `for..in`, like this:
+Odatda, obyektlar uchun o'rnatilgan `toString` ni sanab bo'lmaydi, u `for..in` da ko'rinmaydi. Ammo biz o'zimizga tegishli `toString` ni qo'shsak, u `for..in` da quyidagicha ko'rinadi:
 
 ```js run
 let user = {
@@ -158,11 +158,11 @@ let user = {
   }
 };
 
-// By default, both our properties are listed:
+// ikkala xususiyat ham ro'yxatga olingan:
 for (let key in user) alert(key); // name, toString
 ```
 
-If we don't like it, then we can set `enumerable:false`. Then it won't appear in a `for..in` loop, just like the built-in one:
+Agar bu bizga yoqmasa, biz `enumerable:false` ni o'rnatishimiz mumkin. Keyin u xuddi o'rnatilgani kabi `for..in` siklida ko'rinmaydi:
 
 ```js run
 let user = {
@@ -179,24 +179,24 @@ Object.defineProperty(user, "toString", {
 });
 
 *!*
-// Now our toString disappears:
+// Endi bizning toString yo'qoladi:
 */!*
 for (let key in user) alert(key); // name
 ```
 
-Non-enumerable properties are also excluded from `Object.keys`:
+Ro'yxatga olinmaydigan xususiyatlar `Object.keys` dan ham chiqarib tashlangan:
 
 ```js
 alert(Object.keys(user)); // name
 ```
 
-## Non-configurable
+## Sozlab bo'lmaydigan (Non-configurable)
 
-The non-configurable flag (`configurable:false`) is sometimes preset for built-in objects and properties.
+Sozlab bo'lmaydigan bayroq (`configurable:false`) ba'zan o'rnatilgan obyektlar va xususiyatlar uchun oldindan o'rnatiladi.
 
-A non-configurable property can't be deleted, its attributes can't be modified.
+Sozlab bo'lmaydigan xususiyatni o'chirib bo'lmaydi, uning atribyutlarini o'zgartirib bo'lmaydi.
 
-For instance, `Math.PI` is non-writable, non-enumerable and non-configurable:
+Masalan, `Math.PI` yozilmaydi, sanalmaydi va sozlanmaydi:
 
 ```js run
 let descriptor = Object.getOwnPropertyDescriptor(Math, 'PI');
@@ -211,28 +211,28 @@ alert( JSON.stringify(descriptor, null, 2 ) );
 }
 */
 ```
-So, a programmer is unable to change the value of `Math.PI` or overwrite it.
+Shunday qilib, dasturchi `Math.PI` qiymatini o'zgartira olmaydi yoki uning ustiga yoza olmaydi.
 
 ```js run
-Math.PI = 3; // Error, because it has writable: false
+Math.PI = 3; // Error, chunki u yozilishi mumkin: false
 
-// delete Math.PI won't work either
+// o'chirish, Math.PI ham ishlamaydi
 ```
 
-We also can't change `Math.PI` to be `writable` again:
+Shuningdek, `Math.PI` ni yoziladigan, ya'ni `writable` qilib o'zgartira olmaymiz:
 
 ```js run
-// Error, because of configurable: false
+// Error, confugurable sababli: false
 Object.defineProperty(Math, "PI", { writable: true });
 ```
 
-There's absolutely nothing we can do with `Math.PI`.
+`Math.PI` bilan mutlaqo hech narsa qila olmaymiz.
 
-Making a property non-configurable is a one-way road. We cannot change it back with `defineProperty`.
+Mulkni sozlanmaydigan qilib qo'yish bir tomonlama yo'ldir. Biz uni `defineProperty` bilan o'zgartira olmaymiz.
 
-**Please note: `configurable: false` prevents changes of property flags and its deletion, while allowing to change its value.**
+**Iltimos, diqqat qiling: `configurable: false` xususiyat bayroqlarini o'zgartirish va uni o'chirishning oldini oladi, shu bilan birga uning qiymatini o'zgartirishga imkon beradi.**
 
-Here `user.name` is non-configurable, but we can still change it (as it's writable):
+Bu yerda `user.name` sozlanmaydi, lekin biz uni o'zgartirishimiz mumkin (u yozilishi mumkin):
 
 ```js run
 let user = {
@@ -243,11 +243,11 @@ Object.defineProperty(user, "name", {
   configurable: false
 });
 
-user.name = "Pete"; // works fine
+user.name = "Pete"; // yaxshi ishlaydi
 delete user.name; // Error
 ```
 
-And here we make `user.name` a "forever sealed" constant, just like the built-in `Math.PI`:
+Bu yerda biz `user.name` ni o'rnatilgan `Math.PI` kabi "abadiy muhrlangan" konstantaga aylantiramiz:
 
 ```js run
 let user = {
@@ -259,24 +259,24 @@ Object.defineProperty(user, "name", {
   configurable: false
 });
 
-// won't be able to change user.name or its flags
-// all this won't work:
+// user.name yoki uning bayroqlarini o'zgartira olmaydi
+// bularning barchasi ishlamaydi:
 user.name = "Pete";
 delete user.name;
 Object.defineProperty(user, "name", { value: "Pete" });
 ```
 
-```smart header="The only attribute change possible: writable true -> false"
-There's a minor exception about changing flags.
+```smart header="Mumkin bo'lgan yagona atribut o'zgarishi: yoziladigan true -> false"
+Bayroqlarni o'zgartirishda kichik istisno mavjud.
 
-We can change `writable: true` to `false` for a non-configurable property, thus preventing its value modification (to add another layer of protection). Not the other way around though.
+Sozlanishi mumkin bo'lmagan xususiyat uchun `yoziladigan: true` ni `false` ga o'zgartirishimiz mumkin, bu esa uning qiymatini o'zgartirishga yo'l qo'ymaydi (boshqa himoya qatlamini qo'shish uchun).
 ```
 
 ## Object.defineProperties
 
-There's a method [Object.defineProperties(obj, descriptors)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties) that allows to define many properties at once.
+Bir vaqtning o'zida bir nechta xususiyatlarni aniqlash imkonini beruvchi [Object.defineProperties(obj, deskriptorlar)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties) usuli mavjud. .
 
-The syntax is:
+Sintaksis:
 
 ```js
 Object.defineProperties(obj, {
@@ -286,7 +286,7 @@ Object.defineProperties(obj, {
 });
 ```
 
-For instance:
+Masalan:
 
 ```js
 Object.defineProperties(user, {
@@ -296,54 +296,53 @@ Object.defineProperties(user, {
 });
 ```
 
-So, we can set many properties at once.
+Shunday qilib, biz bir vaqtning o'zida ko'plab xususiyatlarni o'rnatishimiz mumkin.
 
 ## Object.getOwnPropertyDescriptors
 
-To get all property descriptors at once, we can use the method [Object.getOwnPropertyDescriptors(obj)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors).
+Barcha xususiyat identifikatorlarini birdaniga olish uchun biz [Object.getOwnPropertyDescriptors(obj)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors) usulidan foydalanishimiz mumkin.
 
-Together with `Object.defineProperties` it can be used as a "flags-aware" way of cloning an object:
+`Object.defineProperties` bilan birgalikda obyektni klonlashning "bayroqlardan xabardor" usuli sifatida foydalanish mumkin:
 
 ```js
 let clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(obj));
 ```
 
-Normally when we clone an object, we use an assignment to copy properties, like this:
+Odatda obyektni klonlashda biz xususiyatlarni nusxalash uchun topshiriqdan foydalanamiz, masalan:
 
 ```js
 for (let key in user) {
   clone[key] = user[key]
 }
 ```
+...Ammo bu bayroqlarni nusxalamaydi. Shunday qilib, agar biz "yaxshiroq" klonni xohlasak, `Object.defineProperties` afzalroqdir.
 
-...But that does not copy flags. So if we want a "better" clone then `Object.defineProperties` is preferred.
+Yana bir farq shundaki, `for..in` ramziy va sanab bo'lmaydigan xususiyatlarni e'tiborsiz qoldiradi, lekin `Object.getOwnPropertyDescriptors` *barcha* xususiyat identifikatorlarini, shu jumladan, ramziy va sanab bo'lmaydiganlarni ham qaytaradi.
 
-Another difference is that `for..in` ignores symbolic and non-enumerable properties, but `Object.getOwnPropertyDescriptors` returns *all* property descriptors including symbolic and non-enumerable ones.
+## Obyektni global miqyosda muhrlash
 
-## Sealing an object globally
+Xususiyat deskriptorlari individual xususiyatlar darajasida ishlaydi.
 
-Property descriptors work at the level of individual properties.
-
-There are also methods that limit access to the *whole* object:
+*butun* obyektga kirishni cheklovchi usullar ham mavjud:
 
 [Object.preventExtensions(obj)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions)
-: Forbids the addition of new properties to the object.
+: Obyektga yangi xususiyatlar qo'shishni taqiqlaydi.
 
 [Object.seal(obj)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/seal)
-: Forbids adding/removing of properties. Sets `configurable: false` for all existing properties.
+: Xususiyatlarni qo'shish/o'chirishni taqiqlaydi. Barcha mavjud xususiyatlar uchun `configurable: false` ni o'rnatadi.
 
 [Object.freeze(obj)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
-: Forbids adding/removing/changing of properties. Sets `configurable: false, writable: false` for all existing properties.
+: Xususiyatlarni qo'shish/o'chirish/o'zgartirishni taqiqlaydi. Barcha mavjud xususiyatlar uchun `configurable: false, writable: false` ni o'rnatadi.
 
-And also there are tests for them:
+Shuningdek, ular uchun testlar ham mavjud:
 
 [Object.isExtensible(obj)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isExtensible)
-: Returns `false` if adding properties is forbidden, otherwise `true`.
+: Xususiyatlarni qo'shish taqiqlangan bo'lsa, `false` ni qaytaradi, aks holda `true`.
 
 [Object.isSealed(obj)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isSealed)
-: Returns `true` if adding/removing properties is forbidden, and all existing properties have `configurable: false`.
+: Xususiyatlarni qo'shish/o'chirish taqiqlangan bo'lsa va barcha mavjud xususiyatlar `configurable: false` qiymatini qaytaradi.
 
 [Object.isFrozen(obj)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isFrozen)
-: Returns `true` if adding/removing/changing properties is forbidden, and all current properties are `configurable: false, writable: false`.
+: Xususiyatlarni qo'shish/o'chirish/o'zgartirish ta'qiqlangan bo'lsa va barcha joriy xususiyatlar `configurable: false, writable: false` bo'lsa, `true `qiymatini qaytaradi.
 
-These methods are rarely used in practice.
+Amalda bu usullar kamdan-kam qo'llaniladi.

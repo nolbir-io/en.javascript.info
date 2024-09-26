@@ -5,37 +5,37 @@ libs:
 ---
 
 
-# Walking the DOM
+# DOM bo'ylab yurish
 
-The DOM allows us to do anything with elements and their contents, but first we need to reach the corresponding DOM object.
+DOM bizga elementlar va ularning mazmuni bilan hamma narsani qilish imkonini beradi, lekin birinchi navbatda tegishli DOM obyektiga erishishimiz kerak.
 
-All operations on the DOM start with the `document` object. That's the main "entry point" to DOM. From it we can access any node.
+DOMdagi barcha operatsiyalar `document` obyektidan boshlanadi. Bu DOMga asosiy "kirish nuqtasi" hisoblanadi. Undan biz istalgan node ga kirishimiz mumkin.
 
-Here's a picture of links that allow for travel between DOM nodes:
+Quyida DOM node lari o'rtasida sayohat qilish imkonini beruvchi havolalar rasmi berilgan:
 
 ![](dom-links.svg)
 
-Let's discuss them in more detail.
+Keling, ularni batafsilroq muhokama qilamiz.
 
-## On top: documentElement and body
+## Yuqorida: hujjat elementi va tanasi
 
-The topmost tree nodes are available directly as `document` properties:
+Eng yuqori daraxt node lari to'g'ridan-to'g'ri `document` xususiyatlari sifatida mavjud:
 
 `<html>` = `document.documentElement`
-: The topmost document node is `document.documentElement`. That's the DOM node of the `<html>` tag.
+: Hujjatning eng yuqori node lari `document.documentElement` hisoblanadi. Bu `<html>` tegining DOM tugunidir.
 
 `<body>` = `document.body`
-: Another widely used DOM node is the `<body>` element -- `document.body`.
+: Yana bir keng tarqalgan DOM tugunlari `<body>` elementidir -- `document.body`.
 
 `<head>` = `document.head`
-: The `<head>` tag is available as `document.head`.
+: `<head>` tegi `document.head` sifatida mavjud.
 
-````warn header="There's a catch: `document.body` can be `null`"
-A script cannot access an element that doesn't exist at the moment of running.
+````warn header=`"E'tibor beramiz: `document.body` `null` bo'lishi mumkin"`
+Skript ishlayotgan vaqtda mavjud bo'lmagan elementga kira olmaydi.
 
-In particular, if a script is inside `<head>`, then `document.body` is unavailable, because the browser did not read it yet.
+Xususan, agar skript `<head>` ichida bo'lsa, u holda `document.body` mavjud emas, chunki brauzer uni hali o'qimagan hisoblanadi.
 
-So, in the example below the first `alert` shows `null`:
+Shunday qilib, quyidagi misolda birinchi `alert` `null` ni ko'rsatadi:
 
 ```html run
 <html>
@@ -43,7 +43,7 @@ So, in the example below the first `alert` shows `null`:
 <head>
   <script>
 *!*
-    alert( "From HEAD: " + document.body ); // null, there's no <body> yet
+    alert( "From HEAD: " + document.body ); // null, bu yerda hali <body> mavjud emas
 */!*
   </script>
 </head>
@@ -51,7 +51,7 @@ So, in the example below the first `alert` shows `null`:
 <body>
 
   <script>
-    alert( "From BODY: " + document.body ); // HTMLBodyElement, now it exists
+    alert( "From BODY: " + document.body ); // HTMLBodyElement, endi mavjud
   </script>
 
 </body>
@@ -59,18 +59,18 @@ So, in the example below the first `alert` shows `null`:
 ```
 ````
 
-```smart header="In the DOM world `null` means \"doesn't exist\""
-In the DOM, the `null` value means "doesn't exist" or "no such node".
+```smart header="DOM dunyosida `null` \"mavjud emas\" degan ma'noni anglatadi.
+DOMda "null" qiymati "mavjud emas" yoki "bunday node yo'q" degan ma'noni anglatadi.
 ```
 
 ## Children: childNodes, firstChild, lastChild
 
-There are two terms that we'll use from now on:
+Biz bundan keyin ikkita atamani ishlatamiz: 
 
-- **Child nodes (or children)** -- elements that are direct children. In other words, they are nested exactly in the given one. For instance, `<head>` and `<body>` are children of `<html>` element.
-- **Descendants** -- all elements that are nested in the given one, including children, their children and so on.
+- **Child nodes (yoki children)** -- bevosita bola bo'lgan elementlar. Boshqacha qilib aytganda, ular aynan berilgan joyga joylashtirilgan. Masalan, `<head>` va `<body>` `<html>` elementining bolalaridir.
+- **Descendants** (avlodlar) -- berilgan bir joyga joylashtirilgan barcha elementlar, shu jumladan, bolalar, ularning bolalari va boshqalar.
 
-For instance, here `<body>` has children `<div>` and `<ul>` (and few blank text nodes):
+Masalan, bu yerda `<body>` `<div>` va `<ul>` bolalari (va bir nechta bo'sh matn node lari) mavjud:
 
 ```html run
 <html>
@@ -86,11 +86,11 @@ For instance, here `<body>` has children `<div>` and `<ul>` (and few blank text 
 </html>
 ```
 
-...And descendants of `<body>` are not only direct children `<div>`, `<ul>` but also more deeply nested elements, such as `<li>` (a child of `<ul>`) and `<b>` (a child of `<li>`) -- the entire subtree.
+...Va `<body>` avlodlari nafaqat bevosita `<div>`, `<ul>`, balki `<li>` (`<ul>` ning bolasi) va <b>` (`<li>` ning bolasi) kabi chuqurroq o`rnatilgan elementlar hamdir. Ular butun pastki daraxtdir.
 
-**The `childNodes` collection lists all child nodes, including text nodes.**
+**`childNodes` to'plamida barcha nodelar, jumladan, matn nodelari ro'yxati keltirilgan.**
 
-The example below shows children of `document.body`:
+Quyidagi berilgan misol `document.body` ning bolalarini ko'rsatadi:
 
 ```html run
 <html>
@@ -115,76 +115,76 @@ The example below shows children of `document.body`:
 </html>
 ```
 
-Please note an interesting detail here. If we run the example above, the last element shown is `<script>`. In fact, the document has more stuff below, but at the moment of the script execution the browser did not read it yet, so the script doesn't see it.
+Bu yerda qiziqarli tafsilotga e'tibor bering. Agar yuqoridagi misolni ishlatsak, oxirgi ko'rsatilgan element `<script>` bo'ladi. Aslida, hujjat quyida ko'proq narsalarga ega, ammo skriptni bajarish vaqtida brauzer uni hali o'qimaganligi uchun skript uni ko'rmaydi.
 
-**Properties `firstChild` and `lastChild` give fast access to the first and last children.**
+**`firstChild` va `lastChild` xususiyatlari birinchi va oxirgi bolalarga tezkor kirish imkonini beradi.**
 
-They are just shorthands. If there exist child nodes, then the following is always true:
+Ular shunchaki qisqartmalar. Agar bola node lari mavjud bo'lsa, unda quyidagilar har doim to'g'ri bo'ladi:
 ```js
 elem.childNodes[0] === elem.firstChild
 elem.childNodes[elem.childNodes.length - 1] === elem.lastChild
 ```
 
-There's also a special function `elem.hasChildNodes()` to check whether there are any child nodes.
+Bundan tashqari, har qanday bola nodelari mavjudligini tekshirish uchun `elem.hasChildNodes()` maxsus funksiyasi mavjud.
 
-### DOM collections
+### DOM to'plamlari
 
-As we can see, `childNodes` looks like an array. But actually it's not an array, but rather a *collection* -- a special array-like iterable object.
+Ko'rib turganimizdek, `childNodes` massivga o'xshaydi, lekin aslida bu massiv emas, balki *to'plam* -- massivga o'xshash maxsus takrorlanadigan obyektdir.
 
-There are two important consequences:
+Ikkita muhim natijalar mavjud:
 
-1. We can use `for..of` to iterate over it:
+1. Biz uni takrorlash uchun `for..of` dan foydalanishimiz mumkin:
   ```js
   for (let node of document.body.childNodes) {
-    alert(node); // shows all nodes from the collection
+    alert(node); // to'plamdagi hamma node larni ko'rsatadi
   }
   ```
-  That's because it's iterable (provides the `Symbol.iterator` property, as required).
+ Buning sababi, u takrorlanadigan (kerak bo'lganda, `Symbol.iterator` xususiyatini taqdim etadi).
 
-2. Array methods won't work, because it's not an array:
+2. Massiv (array) usullari ishlamaydi, chunki u massiv emas:
   ```js run
-  alert(document.body.childNodes.filter); // undefined (there's no filter method!)
+  alert(document.body.childNodes.filter); // aniqlanmagan (filter usuli mavjud emas!)
   ```
 
-The first thing is nice. The second is tolerable, because we can use `Array.from` to create a "real" array from the collection, if we want array methods:
+ Birinchi narsa ajoyib. Ikkinchisiga chidasa bo'ladi, chunki biz massiv usullarini xohlasak, to'plamdan "haqiqiy" massiv yaratish uchun `Array.from` dan foydalanishimiz mumkin:
 
   ```js run
   alert( Array.from(document.body.childNodes).filter ); // function
   ```
 
-```warn header="DOM collections are read-only"
-DOM collections, and even more -- *all* navigation properties listed in this chapter are read-only.
+```warn header="DOM to'plamlari faqat o'qish uchun"
+DOM to'plamlari va yana ko'p narsalar -- bu bobda keltirilgan *barcha* navigatsiya xususiyatlari faqat o'qish uchun mo'ljallangan.
 
-We can't replace a child by something else by assigning `childNodes[i] = ...`.
+Biz `childNodes[i] = ...`ni belgilab, bolani boshqa narsa bilan almashtira olmaymiz.
 
-Changing DOM needs other methods. We will see them in the next chapter.
+DOMni o'zgartirish boshqa usullarni talab qiladi, biz ularni keyingi bobda ko'ramiz.
 ```
 
-```warn header="DOM collections are live"
-Almost all DOM collections with minor exceptions are *live*. In other words, they reflect the current state of DOM.
+```warn header="DOM to'plamlari jonli"
+Kichik istisnolardan tashqari deyarli barcha DOM to'plamlari *jonli*. Boshqacha qilib aytganda, ular DOMning hozirgi holatini aks ettiradi.
 
-If we keep a reference to `elem.childNodes`, and add/remove nodes into DOM, then they appear in the collection automatically.
+Agar biz `elem.childNodes` havolasini saqlasak va DOMga node larni qo'shsak/o'chirsak, ular avtomatik ravishda to'plamda paydo bo'ladi.
 ```
 
-````warn header="Don't use `for..in` to loop over collections"
-Collections are iterable using `for..of`. Sometimes people try to use `for..in` for that.
+````warn header="To'plamlarni ko'chirish uchun `for..in` dan foydalanmang"
+To'plamlar `for..of` yordamida takrorlanadi. Ba'zan odamlar buning uchun `for..in` dan foydalanishga harakat qilishadi.
 
-Please, don't. The `for..in` loop iterates over all enumerable properties. And collections have some "extra" rarely used properties that we usually do not want to get:
+Iltimos, bunday qilmang. `For..in` sikli barcha sanab o'tiladigan xususiyatlarni takrorlaydi. To'plamlarda biz odatda olishni istamaydigan kamdan-kam ishlatiladigan "qo'shimcha" xususiyatlar mavjud:
 
 ```html run
 <body>
 <script>
-  // shows 0, 1, length, item, values and more.
+  // 0, 1, uzunlik, element, qiymatlar va boshqalarni ko'rsatadi.
   for (let prop in document.body.childNodes) alert(prop);
 </script>
 </body>
 ````
 
-## Siblings and the parent
+## Siblings, ya'ni (birodarlar) va ota-onalar
 
-*Siblings* are nodes that are children of the same parent.
+*Siblings* bir ota-onaning farzandlari bo'lgan node lardir.
 
-For instance, here `<head>` and `<body>` are siblings:
+Masalan, bu yerda `<head>` va `<body>` siblings hisoblanadi:
 
 ```html
 <html>
@@ -192,64 +192,64 @@ For instance, here `<head>` and `<body>` are siblings:
 </html>
 ```
 
-- `<body>` is said to be the "next" or "right" sibling of `<head>`,
-- `<head>` is said to be the "previous" or "left" sibling of `<body>`.
+- `<body>` `<head>`ning "keyingi" yoki "o'ng" sibling deb aytiladi,
+- `<head>` `<body>`ning "oldingi" yoki "chap" sibling deb aytiladi.
 
-The next sibling is in `nextSibling` property, and the previous one - in `previousSibling`.
+Keyingi sibling `nextSibling` xususiyatida, oldingisi esa `previousSibling` da.
 
-The parent is available as `parentNode`.
+Ota-ona `parentNode` sifatida mavjud.
 
-For example:
+Masalan:
 
 ```js run
-// parent of <body> is <html>
+// <body> ning ota-onasi <html>
 alert( document.body.parentNode === document.documentElement ); // true
 
-// after <head> goes <body>
+// <head> dan keyin <body> keladi
 alert( document.head.nextSibling ); // HTMLBodyElement
 
-// before <body> goes <head>
+// <body> dan avval <head> keladi
 alert( document.body.previousSibling ); // HTMLHeadElement
 ```
 
-## Element-only navigation
+## Faqat elementli navigatsiya
 
-Navigation properties listed above refer to *all* nodes. For instance, in `childNodes` we can see both text nodes, element nodes, and even comment nodes if they exist.
+Yuqorida sanab o'tilgan navigatsiya xususiyatlari *barcha* tugunlarga tegishli. Misol uchun, `childNodes` da biz ikkala matn node larini, element node larini va agar mavjud bo'lsa, sharh nodelarini ko'rishimiz mumkin.
 
-But for many tasks we don't want text or comment nodes. We want to manipulate element nodes that represent tags and form the structure of the page.
+Ammo ko'p vazifalar uchun biz matn yoki sharh tugunlarini xohlamaymiz. Biz teglarni ifodalovchi va sahifa strukturasini tashkil etuvchi element nodelarini manipulyatsiya qilmoqchimiz.
 
-So let's see more navigation links that only take *element nodes* into account:
+Shunday qilib, keling, faqat *element tugunlarini* hisobga oladigan ko'proq navigatsiya havolalarini ko'rib chiqaylik:
 
 ![](dom-links-elements.svg)
 
-The links are similar to those given above, just with `Element` word inside:
+Havolalar yuqorida keltirilganlarga o'xshash, faqat ichida `Element` so'zi mavjud:
 
-- `children` -- only those children that are element nodes.
-- `firstElementChild`, `lastElementChild` -- first and last element children.
-- `previousElementSibling`, `nextElementSibling` -- neighbor elements.
-- `parentElement` -- parent element.
+- `children` -- faqat element tugunlari bo'lgan nodelar.
+- `firstElementChild`, `lastElementChild` -- birinchi va oxirgi element bolalar.
+- `previousElementSibling`, `nextElementSibling` -- qo'shni elementlar.
+- `parentElement` -- ota-ona elementi.
 
-````smart header="Why `parentElement`? Can the parent be *not* an element?"
-The `parentElement` property returns the "element" parent, while `parentNode` returns "any node" parent. These properties are usually the same: they both get the parent.
+````smart header="Nega `parentElement`?Ota-ona element *bo'lmasligi* mumkinmi?»
+`parentElement` xususiyati "element" ota-onasini, `parentNode` esa "har qanday node" ota-onasini qaytaradi. Bu xususiyatlar odatda bir xil: ikkalasi ham ota-onani oladi.
 
-With the one exception of `document.documentElement`:
+Bunda `document.documentElement` da istisno mavjud:
 
 ```js run
 alert( document.documentElement.parentNode ); // document
 alert( document.documentElement.parentElement ); // null
 ```
 
-The reason is that the root node `document.documentElement` (`<html>`) has `document` as its parent. But `document` is not an element node, so `parentNode` returns it and `parentElement` does not.
+Sababi `document.documentElement` (`<html>`) da ildiz nodening ota-onasi sifatida `document` mavjud, lekin `document` element node emas, shuning uchun `parentNode` uni qaytaradi, `parentElement` esa qaytarmaydi.
 
-This detail may be useful when we want to travel up from an arbitrary element `elem` to `<html>`, but not to the `document`:
+Bu tafsilot biz ixtiyoriy element `elem`dan `<html>`ga o'tishni xohlaganimizda foydali bo'lishi mumkin, lekin `document`ga emas:
 ```js
-while(elem = elem.parentElement) { // go up till <html>
+while(elem = elem.parentElement) { // <html> gacha ko'taring
   alert( elem );
 }
 ```
 ````
 
-Let's modify one of the examples above: replace `childNodes` with `children`. Now it shows only elements:
+Yuqoridagi misollardan birini o'zgartiramiz: `childNodes` ni `children` bilan almashtiring. Endi u faqat elementlarni ko'rsatadi:
 
 ```html run
 <html>
@@ -274,31 +274,30 @@ Let's modify one of the examples above: replace `childNodes` with `children`. No
 </html>
 ```
 
-## More links: tables [#dom-navigation-tables]
+## Ko'proq havolalar: table lar [#dom-navigation-tables]
 
-Till now we described the basic navigation properties.
+Hozirgacha biz asosiy navigatsiya xususiyatlarini tasvirlab berdik.
+DOM elementlarining ayrim turlari qulaylik uchun ularning turiga xos qo'shimcha xususiyatlarni taqdim etishi mumkin.
 
-Certain types of DOM elements may provide additional properties, specific to their type, for convenience.
+Jadvallar bunga ajoyib misol bo'lib, ayniqsa muhim ishni ifodalaydi:
 
-Tables are a great example of that, and represent a particularly important case:
+**`<table>`** elementi (yuqorida keltirilganlarga qo'shimcha ravishda) quyidagi xususiyatlarni qo'llab-quvvatlaydi:
+- `table.rows` -- jadvalning `<tr>` elementlari to`plami.
+- `table.caption/tHead/tFoot` -- `<caption>`, `<thead>`, `<tfoot>` elementlariga havolalar.
+- `table.tBodies` -- `<tbody>` elementlar to'plami (standartga ko'ra ko'p bo'lishi mumkin, lekin har doim kamida bitta bo'ladi -- HTML manbasida bo'lmasa ham, brauzer uni DOMga joylashtiradi). 
 
-**The `<table>`** element supports (in addition to the given above) these properties:
-- `table.rows` -- the collection of `<tr>` elements of the table.
-- `table.caption/tHead/tFoot` -- references to elements `<caption>`, `<thead>`, `<tfoot>`.
-- `table.tBodies` -- the collection of `<tbody>` elements (can be many according to the standard, but there will always be at least one -- even if it is not in the source HTML, the browser will put it in the DOM).
-
-**`<thead>`, `<tfoot>`, `<tbody>`** elements provide the `rows` property:
-- `tbody.rows` -- the collection of `<tr>` inside.
+**`<thead>`, `<tfoot>`, `<tbody>`** elementlar `rows`, ya'ni satrlar xususiyatini ta'minlaydi:
+- `tbody.rows` -- ichidagi `<tr>` to'plami.
 
 **`<tr>`:**
-- `tr.cells` -- the collection of `<td>` and `<th>` cells inside the given `<tr>`.
-- `tr.sectionRowIndex` -- the position (index) of the given `<tr>` inside the enclosing `<thead>/<tbody>/<tfoot>`.
-- `tr.rowIndex` -- the number of the `<tr>` in the table as a whole (including all table rows).
+- `tr.cells` -- berilgan `<tr>` ichidagi `<td>` va `<th>` hujayralar to`plami.
+- `tr.sectionRowIndex` -- berilgan `<tr>` ning qo'shimcha `<thead>/<tbody>/<tfoot>` ichidagi o'rni (indeks).
+- `tr.rowIndex` -- umumiy jadvaldagi `<tr>` soni (jadvalning barcha satrlari bilan birga).
 
 **`<td>` and `<th>`:**
-- `td.cellIndex` -- the number of the cell inside the enclosing `<tr>`.
+- `td.cellIndex` -- o'rab turgan `<tr>` ichidagi katak soni.
 
-An example of usage:
+Foydalanish misoli:
 
 ```html run height=100
 <table id="table">
@@ -311,23 +310,23 @@ An example of usage:
 </table>
 
 <script>
-  // get td with "two" (first row, second column)
+  // get td with "two" (birinchi qator, ikkinchi ustun)
   let td = table.*!*rows[0].cells[1]*/!*;
-  td.style.backgroundColor = "red"; // highlight it
+  td.style.backgroundColor = "red"; // uni belgilab o'ting
 </script>
 ```
 
-The specification: [tabular data](https://html.spec.whatwg.org/multipage/tables.html).
+Spesifikatsiya: [jadval ma'lumotlari](https://html.spec.whatwg.org/multipage/tables.html).
 
-There are also additional navigation properties for HTML forms. We'll look at them later when we start working with forms.
+HTML shakllari uchun qo'shimcha navigatsiya xususiyatlari ham mavjud. Biz ularni keyinroq shakllar bilan ishlashni boshlaganimizda ko'rib chiqamiz.
 
-## Summary
+## Xulosa
 
-Given a DOM node, we can go to its immediate neighbors using navigation properties.
+DOM tugunini hisobga olgan holda, biz navigatsiya xususiyatlaridan foydalanib, uning yaqin qo'shnilariga borishimiz mumkin.
 
-There are two main sets of them:
+Ularning ikkita asosiy to'plami mavjud: 
 
-- For all nodes: `parentNode`, `childNodes`, `firstChild`, `lastChild`, `previousSibling`, `nextSibling`.
-- For element nodes only: `parentElement`, `children`, `firstElementChild`, `lastElementChild`, `previousElementSibling`, `nextElementSibling`.
+- Hamma node lar uchun: `parentNode`, `childNodes`, `firstChild`, `lastChild`, `previousSibling`, `nextSibling`.
+- Faqat element node lari uchun: `parentElement`, `children`, `firstElementChild`, `lastElementChild`, `previousElementSibling`, `nextElementSibling`.
 
-Some types of DOM elements, e.g. tables, provide additional properties and collections to access their content.
+DOM elementlarining ayrim turlari, masalan, jadvallar, ularning tarkibiga kirish uchun qo'shimcha xususiyatlar va to'plamlarni taqdim eting.

@@ -1,49 +1,48 @@
 
-# Escaping, special characters
+# Escaping, maxsus belgilar
 
-As we've seen, a backslash `pattern:\` is used to denote character classes, e.g. `pattern:\d`. So it's a special character in regexps (just like in regular strings).
+Ko'rib turganimizdek, teskari qiyshiq chiziq `pattern:\` belgilar sinflarini belgilash uchun ishlatiladi, masalan, `pattern:\d`. Demak, bu regexplardagi maxsus belgi (xuddi oddiy satrlardagi kabi) hisoblanadi.
 
-There are other special characters as well, that have special meaning in a regexp, such as `pattern:[ ] { } ( ) \ ^ $ . | ? * +`. They are used to do more powerful searches.
+Regexpda maxsus ma'noga ega bo'lgan boshqa maxsus belgilar ham mavjud, masalan, `pattern:[ ] { } ( ) \ ^ $ . | ? * +`. Ular yanada kuchli qidiruvlarni amalga oshirish uchun ishlatiladi.
 
-Don't try to remember the list -- soon we'll deal with each of them, and you'll know them by heart automatically.
+Ro'yxatni eslab qolishga urinmang -- tez orada biz ularning har biri bilan shug'ullanamiz va siz ularni avtomatik ravishda yoddan bilib olasiz.
 
-## Escaping
+## Escaping (qochish)
 
-Let's say we want to find literally a dot. Not "any character", but just a dot.
+Aytaylik, biz tom ma'noda nuqta topmoqchimiz. "Har qanday belgi" emas, faqat nuqta.
 
-To use a special character as a regular one, prepend it with a backslash: `pattern:\.`.
+Maxsus belgidan oddiy belgi sifatida foydalanish uchun uning oldiga teskari chiziq qo'ying: `pattern:\.`.
 
-That's also called "escaping a character".
-
-For example:
+Bu "belgidan qochish", ya'ni escaping a character deb ham ataladi.
+Masalan:
 ```js run
 alert( "Chapter 5.1".match(/\d\.\d/) ); // 5.1 (match!)
-alert( "Chapter 511".match(/\d\.\d/) ); // null (looking for a real dot \.)
+alert( "Chapter 511".match(/\d\.\d/) ); // null (haqiqiy nuqta qidirmoqda \.)
 ```
 
-Parentheses are also special characters, so if we want them, we should use `pattern:\(`. The example below looks for a string `"g()"`:
+Qavslar ham maxsus belgilardir, shuning uchun agar biz ularni xohlasak, `pattern:\(` dan foydalanishimiz kerak. Quyidagi misol `"g()"` qatorini qidiradi:
 
 ```js run
 alert( "function g()".match(/g\(\)/) ); // "g()"
 ```
 
-If we're looking for a backslash `\`, it's a special character in both regular strings and regexps, so we should double it.
+Agar biz `\` teskari chiziq, ya'ni backslashni izlayotgan bo'lsak, bu oddiy satrlarda ham, regexplarda ham maxsus belgi, shuning uchun biz uni ikki barobarga oshirishimiz kerak.
 
 ```js run
 alert( "1\\2".match(/\\/) ); // '\'
 ```
 
-## A slash
+## Slash
 
-A slash symbol `'/'` is not a special character, but in JavaScript it is used to open and close the regexp: `pattern:/...pattern.../`, so we should escape it too.
+slash belgisi maxsus belgi emas, lekin JavaScriptda u regexpni ochish va yopish uchun ishlatiladi: `pattern:/...pattern.../`, shuning uchun biz ham undan qochishimiz kerak. 
 
-Here's what a search for a slash `'/'` looks like:
+`'/'` qiyshiq chiziqni qidirish quyidagicha bo'ladi:
 
 ```js run
 alert( "/".match(/\//) ); // '/'
 ```
 
-On the other hand, if we're not using `pattern:/.../`, but create a regexp using `new RegExp`, then we don't need to escape it:
+Boshqa tomondan, agar biz `pattern:/.../` dan foydalanmasak, lekin `new RegExp` yordamida regexp yaratsak, undan qochishimiz shart emas:
 
 ```js run
 alert( "/".match(new RegExp("/")) ); // finds /
@@ -51,9 +50,9 @@ alert( "/".match(new RegExp("/")) ); // finds /
 
 ## new RegExp
 
-If we are creating a regular expression with `new RegExp`, then we don't have to escape `/`, but need to do some other escaping.
+Agar biz `new RegExp` bilan muntazam ifoda yaratayotgan bo'lsak, biz `/` dan qochishimiz shart emas, balki boshqa escaping ni bajarishimiz kerak.
 
-For instance, consider this:
+Masalan, buni ko'rib chiqing:
 
 ```js run
 let regexp = new RegExp("\d\.\d");
@@ -61,39 +60,39 @@ let regexp = new RegExp("\d\.\d");
 alert( "Chapter 5.1".match(regexp) ); // null
 ```
 
-The similar search in one of previous examples worked with `pattern:/\d\.\d/`, but `new RegExp("\d\.\d")` doesn't work, why?
+Oldingi misollardan biridagi shunga o'xshash qidiruv `pattern:/\d\.\d/` bilan ishlagan, lekin `new RegExp("\d\.\d")` ishlamayapti, nega?
 
-The reason is that backslashes are "consumed" by a string. As we may recall, regular strings have their own special characters, such as `\n`, and a backslash is used for escaping.
+Buning sababi shundaki, teskari chiziq chizig'i satr tomonidan "iste'mol qilinadi". Eslatib o'tamiz, oddiy satrlar o'ziga xos belgilarga ega, masalan, `\n` va qochish uchun teskari chiziq ishlatiladi.
 
-Here's how "\d\.\d" is perceived:
+"\d\.\d" quyidagicha qabul qilinadi:
 
 ```js run
 alert("\d\.\d"); // d.d
 ```
 
-String quotes "consume" backslashes and interpret them on their own, for instance:
+Satr quotelari teskari chiziqchalarni "iste'mol qiladi" va ularni mustaqil ravishda izohlaydi, masalan:
 
-- `\n` -- becomes a newline character,
-- `\u1234` -- becomes the Unicode character with such code,
-- ...And when there's no special meaning: like `pattern:\d` or `\z`, then the backslash is simply removed.
+- `\n` -- yangi satr belgisiga aylanadi,
+- `\u1234` -- bunday kod bilan Unicode belgisiga aylanadi,
+-  Va hech qanday maxsus ma'no bo'lmasa: `pattern:\d` yoki `\z` kabi, teskari chiziq shunchaki olib tashlanadi.
 
-So `new RegExp` gets a string without backslashes. That's why the search doesn't work!
+Shunday qilib, `new RegExp` teskari chiziqsiz qatorni oladi. Shuning uchun qidiruv ishlamaydi!
 
-To fix it, we need to double backslashes, because string quotes turn `\\` into `\`:
+Buni tuzatish uchun biz ikki marta teskari qiyshiq chiziq qo'yishimiz kerak, chunki qator tirnoqlari `\\` ni `\` ga aylantiradi:
 
 ```js run
 *!*
 let regStr = "\\d\\.\\d";
 */!*
-alert(regStr); // \d\.\d (correct now)
+alert(regStr); // \d\.\d (hozir to'g'ri)
 
 let regexp = new RegExp(regStr);
 
 alert( "Chapter 5.1".match(regexp) ); // 5.1
 ```
 
-## Summary
+## Xulosa
 
-- To search for special characters `pattern:[ \ ^ $ . | ? * + ( )` literally, we need to prepend them with a backslash `\` ("escape them").
-- We also need to escape `/` if we're inside `pattern:/.../` (but not inside `new RegExp`).
-- When passing a string to `new RegExp`, we need to double backslashes `\\`, cause string quotes consume one of them.
+- Maxsus belgilarni qidirish uchun `pattern:[ \ ^ $ . | ? * + ( )` so'zma-so'z, biz ularni teskari qirrali `\` ("escape them") bilan qo'yishimiz kerak.
+- Agar biz `pattern:/.../` ichida bo'lsak, `/` dan qochishimiz kerak (lekin `new RegExp` ichida emas).
+- `new RegExp` ga satrni o'tkazishda biz `\\` teskari chiziqni ikki marta qo'yishimiz lozim, buning natijasida qator qo'shtirnoqlari ulardan birini iste'mol qiladi.

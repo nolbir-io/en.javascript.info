@@ -1,25 +1,24 @@
 
-# Scripts: async, defer
+# Async, defer skriptlari
 
-In modern websites, scripts are often "heavier" than HTML: their download size is larger, and processing time is also longer.
+Zamonaviy veb-saytlarda skriptlar ko'pincha HTMLga qaraganda "og'irroq" bo'ladi: ularning yuklab olish hajmi kattaroq va ishlov berish vaqti ham uzoqroq.
 
-When the browser loads HTML and comes across a `<script>...</script>` tag, it can't continue building the DOM. It must execute the script right now. The same happens for external scripts `<script src="..."></script>`: the browser must wait for the script to download, execute the downloaded script, and only then can it process the rest of the page.
+Brauzer HTMLni yuklaganda va `<script>...</script>` tegiga duch kelgan vaqtda, u DOMni yaratishda davom eta olmaydi. U hozir skriptni bajarishi kerak. Xuddi shunday holat tashqi skriptlar uchun ham sodir bo'ladi `<script src="..."></script>`: brauzer skript yuklab olinishini kutishi, yuklab olingan skriptni bajarishi kerak va shundan keyingina u sahifaning qolgan qismini qayta ishlashi mumkin.
 
-That leads to two important issues:
+Bu ikkita muhim masalaga olib keladi:
 
-1. Scripts can't see DOM elements below them, so they can't add handlers etc.
-2. If there's a bulky script at the top of the page, it "blocks the page". Users can't see the page content till it downloads and runs:
+1. Skriptlar ostidagi DOM elementlarini ko'ra olmaydi, shuning uchun ular ishlov beruvchilarni qo'sha olmaydi va hokazo.
+2. Agar sahifaning yuqori qismida katta hajmli skript bo'lsa, u "sahifani bloklaydi". Foydalanuvchilar sahifa mazmunini yuklab olinmaguncha va ishga tushmaguncha ko'ra olmaydi:
 
 ```html run height=100
 <p>...content before script...</p>
 
 <script src="https://javascript.info/article/script-async-defer/long.js?speed=1"></script>
 
-<!-- This isn't visible until the script loads -->
+<!-- Skript yuklanguncha bu ko'rinmaydi -->
 <p>...content after script...</p>
 ```
-
-There are some workarounds to that. For instance, we can put a script at the bottom of the page. Then it can see elements above it, and it doesn't block the page content from showing:
+Buning uchun ba'zi vaqtinchalik yechimlar mavjud. Misol uchun, biz sahifaning pastki qismiga skript qo'yishimiz mumkin. Keyin u yuqoridagi elementlarni ko'radi va u sahifa tarkibini ko'rsatishni bloklamaydi:
 
 ```html
 <body>
@@ -29,11 +28,11 @@ There are some workarounds to that. For instance, we can put a script at the bot
 </body>
 ```
 
-But this solution is far from perfect. For example, the browser notices the script (and can start downloading it) only after it downloaded the full HTML document. For long HTML documents, that may be a noticeable delay.
+Ammo bu yechim mukammallikdan uzoqdir. Misol uchun, brauzer to'liq HTML hujjatini yuklab olgandan keyingina skriptga e'tibor beradi (va uni yuklab olishni boshlashi mumkin). Uzoq HTML hujjatlari uchun bu sezilarli kechikish bo'lish ehtimoli mavjud.
 
-Such things are invisible for people using very fast connections, but many people in the world still have slow internet speeds and use a far-from-perfect mobile internet connection.
+Bunday narsalar juda tez ulanishlardan foydalanadigan odamlar uchun ko'rinmaydi, lekin dunyodagi ko'p odamlar hali ham sekin internet tezligiga ega va mukammal mobil internet aloqasidan foydalanishadi.
 
-Luckily, there are two `<script>` attributes that solve the problem for us: `defer` and `async`.
+Yaxshiyamki, biz uchun muammoni hal qiladigan ikkita `<script>` atribyutlari mavjud: ular `defer` va `async`.
 
 ## defer
 
@@ -41,21 +40,25 @@ The `defer` attribute tells the browser not to wait for the script. Instead, the
 
 Here's the same example as above, but with `defer`:
 
+`Defer` atribyuti brauzerga skriptni kutmaslikni aytadi. Buning o'rniga, brauzer HTMLni qayta ishlashni davom ettiradi, DOMni yaratadi. Skript "background" da yuklanadi va DOM to'liq qurilganida ishlaydi.
+
+Mana yuqoridagi misol `defer` bilan quyida berilgan:
+
 ```html run height=100
 <p>...content before script...</p>
 
 <script defer src="https://javascript.info/article/script-async-defer/long.js?speed=1"></script>
 
-<!-- visible immediately -->
+<!-- darhol ko'rinadi -->
 <p>...content after script...</p>
 ```
 
-In other words:
+Boshqacha qilib aytadigan bo'lsak:
 
-- Scripts with `defer` never block the page.
-- Scripts with `defer` always execute when the DOM is ready (but before `DOMContentLoaded` event).
+- `defer` bilan skriptlar hech qachon sahifani bloklamaydi.
+- `defer` bilan skriptlar har doim DOM tayyor bo'lganda bajariladi (lekin `DOMContentLoaded` hodisasidan oldin).
 
-The following example demonstrates the second part:
+Quyidagi misol ikkinchi qismni ko'rsatadi:
 
 ```html run height=100
 <p>...content before scripts...</p>
@@ -69,45 +72,45 @@ The following example demonstrates the second part:
 <p>...content after scripts...</p>
 ```
 
-1. The page content shows up immediately.
-2. `DOMContentLoaded` event handler waits for the deferred script. It only triggers when the script is downloaded and executed.
+1. Sahifa tarkibi darhol paydo bo'ladi.
+2. `DOMContentLoaded` hodisa ishlovchisi kechiktirilgan skriptni kutadi. U faqat skript yuklab olinganda va bajarilganda ishga tushadi.
 
-**Deferred scripts keep their relative order, just like regular scripts.**
+**Kechiktirilgan skriptlar odatdagi skriptlar kabi o'zlarining nisbiy tartibini saqlaydi.**
 
-Let's say, we have two deferred scripts: the `long.js` and then `small.js`:
+Aytaylik, bizda ikkita kechiktirilgan skript bor: `long.js` va `small.js`:
 
 ```html
 <script defer src="https://javascript.info/article/script-async-defer/long.js"></script>
 <script defer src="https://javascript.info/article/script-async-defer/small.js"></script>
 ```
 
-Browsers scan the page for scripts and download them in parallel, to improve performance. So in the example above both scripts download in parallel. The `small.js` probably finishes first.
+Brauzerlar ish faoliyatini yaxshilash uchun sahifani skriptlar uchun skanerlaydi va ularni parallel ravishda yuklab oladi. Shunday qilib, yuqoridagi misolda ikkala skript ham parallel ravishda yuklab olinadi. `small.js` birinchi bo'lib tugaydi.
 
-...But the `defer` attribute, besides telling the browser "not to block", ensures that the relative order is kept. So even though `small.js` loads first, it still waits and runs after `long.js` executes.
+...Ammo `defer` atributi brauzerga "bloklanmaslik" ni aytishdan tashqari, nisbiy tartibning saqlanishini ta'minlaydi. Shunday qilib, `small.js` avval yuklansa ham, `long.js` bajarilgandan keyin ham kutadi va ishlaydi.
 
-That may be important for cases when we need to load a JavaScript library and then a script that depends on it.
+Bu JavaScript kutubxonasini va keyin unga bog'liq bo'lgan skriptni yuklashimiz kerak bo'lgan holatlar uchun muhim bo'lishi mumkin.
 
-```smart header="The `defer` attribute is only for external scripts"
-The `defer` attribute is ignored if the `<script>` tag has no `src`.
+```smart header=""`defer` atribyuti faqat tashqi skriptlar uchun`"
+Agar `<script>` tegida `src` bo'lmasa, `defer` atribyuti e'tiborga olinmaydi.
 ```
 
 ## async
 
-The `async` attribute is somewhat like `defer`. It also makes the script non-blocking. But it has important differences in the behavior.
+`async` atribyuti `defer`ga biroz o'xshash. Shuningdek, u skriptni bloklanmaydigan qiladi. Ammo uning xatti-harakatlarida muhim farqlar mavjud.
 
-The `async` attribute means that a script is completely independent:
+`async` atributi skript butunlay mustaqil ekanligini bildiradi:
 
-- The browser doesn't block on `async` scripts (like `defer`).
-- Other scripts don't wait for `async` scripts, and `async` scripts don't wait for them.
-- `DOMContentLoaded` and async scripts don't wait for each other:
-    - `DOMContentLoaded` may happen both before an async script (if an async script finishes loading after the page is complete)
-    - ...or after an async script (if an async script is short or was in HTTP-cache)
+- Brauzer `async` skriptlarni bloklamaydi (masalan, `defer`).
+- Boshqa skriptlar `async` skriptlarini kutmaydi va `async` skriptlar ularni kutmaydi.
+- `DOMContentLoaded` va async skriptlar bir-birini kutmaydi:
+     - `DOMContentLoaded` asinxron skriptdan oldin ham sodir bo'lishi mumkin (agar asinxron skript sahifa tugallangandan keyin yuklashni tugatsa)
+     - ... yoki asinxron skriptdan keyin (agar asinxron skript qisqa bo'lsa yoki HTTP keshida bo'lsa)
 
-In other words, `async` scripts load in the background and run when ready. The DOM and other scripts don't wait for them, and they don't wait for anything. A fully independent script that runs when loaded. As simple, as it can get, right?
+Boshqacha qilib aytganda, `async` skriptlar fonda yuklanadi va tayyor bo'lganda ishlaydi. DOM va boshqa skriptlar ularni kutishmaydi va ular hech narsani kutishmaydi. Ular yuklanganda ishlaydigan to'liq mustaqil skriptlardir. Judayam oddiy, shunday emasmi?
 
-Here's an example similar to what we've seen with `defer`: two scripts `long.js` and `small.js`, but now with `async` instead of `defer`.
+Mana biz `defer` bilan ko'rgan misolimizga o'xshash misol: ikkita `long.js` va `small.js` skriptlari, ammo hozir `defer` o'rniga `async` bilan misol keltirilgan.
 
-They don't wait for each other. Whatever loads first (probably `small.js`) -- runs first:
+Ular bir-birlarini kutishmaydi. Qaysi narsa avval yuklansa (ehtimol `small.js`) -- avval ishga tushadi:
 
 ```html run height=100
 <p>...content before scripts...</p>
@@ -122,46 +125,44 @@ They don't wait for each other. Whatever loads first (probably `small.js`) -- ru
 <p>...content after scripts...</p>
 ```
 
-- The page content shows up immediately: `async` doesn't block it.
-- `DOMContentLoaded` may happen both before and after `async`, no guarantees here.
-- A smaller script `small.js` goes second, but probably loads before `long.js`, so `small.js` runs first. Although, it might be that `long.js` loads first, if cached, then it runs first. In other words, async scripts run in the "load-first" order.
+- Sahifa tarkibi darhol paydo bo'ladi: `async` uni bloklamaydi.
+- `DOMContentLoaded` `async` dan oldin ham, keyin ham sodir bo'lishi mumkin, bu yerda hech qanday kafolat yo'q.
+- Kichikroq `small.js` skripti ikkinchi o'rinda turadi, lekin ehtimol `long.js`dan oldin yuklanadi, shuning uchun `small.js` birinchi bo'lib ishlaydi. `long.js` birinchi bo'lib yuklanadi, agar keshlangan bo'lsa, u birinchi bo'lib ishlaydi. Boshqacha qilib aytganda, asinxron skriptlar "birinchi yuklash" tartibida ishlaydi.
 
-Async scripts are great when we integrate an independent third-party script into the page: counters, ads and so on, as they don't depend on our scripts, and our scripts shouldn't wait for them:
+Async skriptlar mustaqil uchinchi tomon skriptini sahifaga integratsiyalashganda juda yaxshi: hisoblagichlar, reklamalar va boshqalar, chunki ular bizning skriptlarimizga bog'liq emas va bizning skriptlarimiz ularni kutmasligi kerak:
 
 ```html
-<!-- Google Analytics is usually added like this -->
+<!-- Google Analytics odatda shunday qo'shiladi -->
 <script async src="https://google-analytics.com/analytics.js"></script>
 ```
 
-```smart header="The `async` attribute is only for external scripts"
-Just like `defer`, the `async` attribute is ignored if the `<script>` tag has no `src`.
+```smart header="`async` atribyuti faqatgina tashqi skriptlar uchun mo'ljallangan"
+Xuddi `defer` kabi, `<script>` tegida `src` bo'lmasa, `async` atribyuti e'tiborga olinmaydi.
 ```
 
-## Dynamic scripts
+## Dinamik skriptlar
+Sahifaga skript qo'shishning yana bir muhim usuli bor.
 
-There's one more important way of adding a script to the page.
-
-We can create a script and append it to the document dynamically using JavaScript:
+Biz JavaScriptdan foydalanib skript yaratishimiz va uni hujjatga dinamik ravishda qo'shishimiz mumkin:
 
 ```js run
 let script = document.createElement('script');
 script.src = "/article/script-async-defer/long.js";
 document.body.append(script); // (*)
 ```
+Skript `(*)` hujjatga qo'shilishi bilanoq yuklashni boshlaydi.
 
-The script starts loading as soon as it's appended to the document `(*)`.
+**Dinamik skriptlar sukut bo'yicha "async" sifatida ishlaydi.**
 
-**Dynamic scripts behave as "async" by default.**
+Bu quyidagilarni anglatadi:
+- Ular hech narsani kutmaydilar, ularni hech narsa kutmaydi.
+- Birinchi yuklanadigan skript -- birinchi bo'lib ishlaydi ("birinchi yuklash" tartibi).
 
-That is:
-- They don't wait for anything, nothing waits for them.
-- The script that loads first -- runs first ("load-first" order).
+Agar `script.async=false` ni aniq belgilab qo'ysak, buni o'zgartirish mumkin. Keyin skriptlar xuddi `defer` kabi hujjat tartibida bajariladi.
 
-This can be changed if we explicitly set `script.async=false`. Then scripts will be executed in the document order, just like `defer`.
+Ushbu misolda `loadScript(src)` funksiyasi skript qo'shadi va `async` ni `false` ga o'rnatadi.
 
-In this example, `loadScript(src)` function adds a script and also sets `async` to `false`.
-
-So `long.js` always runs first (as it's added first):
+Shunday qilib, `long.js` har doim birinchi bo'lib ishlaydi (birinchi qo'shilganidek):
 
 ```js run
 function loadScript(src) {
@@ -171,35 +172,35 @@ function loadScript(src) {
   document.body.append(script);
 }
 
-// long.js runs first because of async=false
+// async=false tufayli long.js birinchi bo'lib ishlaydi
 loadScript("/article/script-async-defer/long.js");
 loadScript("/article/script-async-defer/small.js");
 ```
 
-Without `script.async=false`, scripts would execute in default, load-first order (the `small.js` probably first).
+`script.async=false` bo'lmasa, skriptlar sukut bo'yicha, birinchi navbatda yuklash tartibida bajariladi (`small.js` ehtimol birinchi).
 
-Again, as with the `defer`, the order matters if we'd like to load a library and then another script that depends on it.
+Yana, `defer` da bo'lgani kabi, biz kutubxonani va keyin unga bog'liq bo'lgan boshqa skriptni yuklamoqchi bo'lsak, buyurtma muhim ahamiyatga ega hisoblanadi.
 
 
-## Summary
+## Xulosa
 
-Both `async` and `defer` have one common thing: downloading of such scripts doesn't block page rendering. So the user can read page content and get acquainted with the page immediately.
+`async` ham, `defer` ham bitta umumiy narsaga ega: bunday skriptlarni yuklab olish sahifani ko'rsatishni bloklamaydi. Shunday qilib, foydalanuvchi sahifa mazmunini o'qishi va darhol sahifa bilan tanishishi mumkin.
 
-But there are also essential differences between them:
+Ammo ular orasida muhim farqlar ham mavjud:
 
-|         | Order | `DOMContentLoaded` |
+| | Buyurtma | `DOMContentLoaded` |
 |---------|---------|---------|
-| `async` | *Load-first order*. Their document order doesn't matter -- which loads first runs first |  Irrelevant. May load and execute while the document has not yet been fully downloaded. That happens if scripts are small or cached, and the document is long enough. |
-| `defer` | *Document order* (as they go in the document). |  Execute after the document is loaded and parsed (they wait if needed), right before `DOMContentLoaded`. |
+| `async` | *Birinchi navbatda yuklash*. Ularning hujjat tartibi -- qaysi yuklar birinchi bo'lib ishlashi muhim emas | Ahamiyatsiz. Hujjat hali to'liq yuklab olinmagan vaqtda yuklanishi va bajarilishi mumkin. Agar skriptlar kichik yoki keshlangan bo'lsa va hujjat yetarlicha uzun bo'lsa, bu sodir bo'ladi. |
+| `defer` | *Hujjat buyurtmasi* (hujjatda ko'rsatilgandek). | Hujjat yuklangandan va tahlil qilingandan so'ng (kerak bo'lsa, kutishadi) `DOMContentLoaded` dan oldin bajaring. |
 
-In practice, `defer` is used for scripts that need the whole DOM and/or their relative execution order is important.
+Amalda `defer` butun DOMga muhtoj bo'lgan skriptlar uchun ishlatiladi va ularning nisbiy bajarilish tartibi muhim.
 
-And  `async` is used for independent scripts, like counters or ads. And their relative execution order does not matter.
+`async` esa hisoblagichlar yoki reklamalar kabi mustaqil skriptlar uchun ishlatiladi va ularning nisbiy ijro tartibi muhim emas.
 
-```warn header="Page without scripts should be usable"
-Please note: if you're using `defer` or `async`, then user will see the page *before* the script loads.
+```warn header="Skriptsiz sahifa foydalanishga yaroqli bo'lishi kerak"
+Iltimos, diqqat qiling: agar siz `defer` yoki `async` dan foydalanayotgan bo'lsangiz, foydalanuvchi skript yuklanishidan *oldin* sahifani ko'radi.
 
-In such case, some graphical components are probably not initialized yet.
+Bunday holda, ba'zi grafik komponentlar hali ishga tushirilmagan.
 
-Don't forget to put "loading" indication and disable buttons that aren't functional yet. Let the user clearly see what he can do on the page, and what's still getting ready.
+"Yuklash" belgisini qo'yishni va hali ishlamaydigan tugmalarni o'chirishni unutmang. Foydalanuvchiga sahifada nima qilishi mumkinligini va hali nima tayyorlanayotganini aniq ko'rishiga imkon bering.
 ```

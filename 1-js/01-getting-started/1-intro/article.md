@@ -1,6 +1,8 @@
 # JavaScriptga kirish
 
+
 Keling, JavaScript nimasi bilan o'ziga xosligi, u bilan nimalarga erishishimiz mumkinligi va boshqa texnologiyalar bilan qanday qilib birga ishlashini ko'rib chiqamiz.
+
 
 ## JavaScript o'zi nima?
 
