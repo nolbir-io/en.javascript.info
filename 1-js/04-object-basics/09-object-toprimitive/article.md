@@ -276,4 +276,4 @@ Konversiya algoritmi:
 
 Bu usullarning barchasi ishlash uchun primitivni qaytarishi kerak (agar belgilangan bo'lsa).
 
-Amalda, ko'pincha `obj.toString()` ni ro'yxatga olish yoki debugging maqsadlarida obyektning "odam o'qiy oladigan" ko'rinishini qaytarishi kerak bo'lgan satrlarni o'zgartirish uchun "hammasini tutish" usuli sifatida qo'llash kifoya.
+Amalda, ko'pincha `obj.toString()` ni ro'yxatga olish yoki debugging maqsadlarida obyektning "odam o'qiy" ko'rinishini qaytarishi kerak bo'lgan satrlarni o'zgartirish uchun "hammasini tutish" usuli sifatida qo'llash kifoya.
