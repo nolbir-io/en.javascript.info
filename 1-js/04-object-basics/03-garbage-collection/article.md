@@ -213,4 +213,6 @@ Agar siz past darajadagi dasturlash bilan tanish bo'lsangiz, V8 axlat yig'uvchis
 
 [V8 blog](https://v8.dev/) shuningdek vaqti-vaqti bilan xotira boshqaruvidagi o'zgarishlar haqida ham maqolalar chop etib turadi. Tabiiyki, axlat yig'ishni o'rganish uchun siz V8 ichki qurilmalari haqida umumiy ma'lumotga ega bo'lishingiz va V8 muhandislaridan biri bo'lib ishlagan  [Vyacheslav Egorov](http://mrale.ph) blogini o'qib chiqishingiz kerak. Men aytmoqchimanki: "V8", chunki u Internetdagi maqolalar bilan eng yaxshi yoritilgan. Boshqa dvigatellar uchun ko'plab yondashuvlar o'xshash, ammo axlat yig'ish ancha farq qiladi.
 
+
 Dvigatellarni chuqur bilish past darajadagi optimallashtirish kerak bo'lganda yaxshi bo'ladi. Buni til bilan tanishganingizdan keyingi qadam sifatida rejalashtirish oqilona bo'lardi.
+
