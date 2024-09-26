@@ -1,64 +1,64 @@
 
-# Event loop: microtasks and macrotasks
+# Voqealar tsikli: mikrovazifalar va makrovazifalar
 
-Browser JavaScript execution flow, as well as in Node.js, is based on an *event loop*.
+Brauzer JavaScriptdagi bajarish oqimi, shuningdek, Node.js da *voqea tsikli* (event loop) ga asoslangan.
 
-Understanding how event loop works is important for optimizations, and sometimes for the right architecture.
+Voqealar tsiklining qanday ishlashini tushunishni optimallashtirish uchun, ba'zan esa to'g'ri arxitektura uchun muhimdir.
 
-In this chapter we first cover theoretical details about how things work, and then see practical applications of that knowledge.
+Ushbu bobda biz birinchi navbatda narsalar qanday ishlashi haqida nazariy tafsilotlarni ko'rib chiqamiz va keyin bu bilimlarning amaliy qo'llanilishini ko'rib chiqamiz.
 
 ## Event Loop
 
-The *event loop* concept is very simple. There's an endless loop, where the JavaScript engine waits for tasks, executes them and then sleeps, waiting for more tasks.
+*Event loop* tushunchasi juda oddiy. JavaScript dvigateli vazifalarni kutadi, ularni bajaradi va keyin uxlab, ko'proq vazifalarni kutadigan cheksiz tsikl mavjud.
 
-The general algorithm of the engine:
+Dvigatelning umumiy algoritmi:
 
-1. While there are tasks:
-    - execute them, starting with the oldest task.
-2. Sleep until a task appears, then go to 1.
+1. Vazifalar mavjud bo'lganda:
+     - eng avvalgi vazifadan boshlab ularni bajaring.
+2. Vazifa paydo bo'lguncha uxlab turing, keyin 1 ga o'ting.
 
-That's a formalization for what we see when browsing a page. The JavaScript engine does nothing most of the time, it only runs if a script/handler/event activates.
+Bu sahifani ko'zdan kechirib biz ko'rgan narsalarimizning rasmiylashtirilishiga guvoh bo'lamiz. JavaScript mexanizmi ko'pincha hech narsa qilmaydi, u faqat skript/ishlab chiqaruvchi/hodisa faollashtirilganda ishlaydi.
 
-Examples of tasks:
+Topshiriqlar namunalari:
 
-- When an external script `<script src="...">` loads, the task is to execute it.
-- When a user moves their mouse, the task is to dispatch `mousemove` event and execute handlers.
-- When the time is due for a scheduled `setTimeout`, the task is to run its callback.
-- ...and so on.
+- `<script src="...">` tashqi skript yuklanganda vazifa uni bajarishdan iborat.
+- Foydalanuvchi sichqonchani harakatlantirganda, vazifa `mousemove` hodisasini jo'natish va ishlov beruvchilarni bajarishdir.
+- Belgilangan `setTimeout` uchun vaqt tugagach, vazifa uni qayta chaqirishni amalga oshirishdir.
+- ...va hokazo.
 
-Tasks are set -- the engine handles them -- then waits for more tasks (while sleeping and consuming close to zero CPU).
+Vazifalar o'rnatildi -- dvigatel ularni boshqaradi -- keyin ko'proq vazifalarni kutadi (uyqu paytida va nolga yaqin protsessorni iste'mol qilishda).
 
-It may happen that a task comes while the engine is busy, then it's enqueued.
+Dvigatel band bo'lganda vazifa kelib, keyin navbatga qo'yilishi mumkin.
 
-The tasks form a queue, so-called "macrotask queue" (v8 term):
+Vazifalar "makrotasklar navbati" deb ataladigan navbatni hosil qiladi (v8 atamasi):
 
 ![](eventLoop.svg)
 
-For instance, while the engine is busy executing a `script`, a user may move their mouse causing `mousemove`, and `setTimeout` may be due and so on, these tasks form a queue, as illustrated on the picture above.
+Masalan, vosita `script` ni bajarish bilan band bo'lganida, foydalanuvchi sichqonchani siljitib, `mousemove` ga olib kelishi, `setTimeout` vaqti bo'lishi mumkin va hokazo, bu vazifalar yuqoridagi rasmda ko'rsatilganidek, navbat hosil qiladi.
 
-Tasks from the queue are processed on "first come – first served" basis. When the engine browser is done with the `script`, it handles `mousemove` event, then `setTimeout` handler, and so on.
+Navbatdagi topshiriqlar "birinchi kelgan - birinchi xizmat qiladi" tamoyili bo'yicha ko'rib chiqiladi. Dvigatel brauzeri `script` bilan bajarilganda, u `mousemove` hodisasini, keyin `setTimeout` ishlov beruvchisini va hokazolarni boshqaradi.
 
-So far, quite simple, right?
+Hozircha, juda oddiy, shunday emasmi?
 
-Two more details:
-1. Rendering never happens while the engine executes a task. It doesn't matter if the task takes a long time. Changes to the DOM are painted only after the task is complete.
-2. If a task takes too long, the browser can't do other tasks, such as processing user events. So after a time, it raises an alert like "Page Unresponsive", suggesting killing the task with the whole page. That happens when there are a lot of complex calculations or a programming error leading to an infinite loop.
+Yana ikkita tafsilot:
+1. Dvigatel vazifani bajarayotganda renderlash hech qachon sodir bo'lmaydi. Vazifaning uzoq davom etishi muhim emas. DOMga o'zgartirishlar faqat topshiriq tugagandan so'ng kiritiladi.
+2. Agar vazifa juda uzoq davom etsa, brauzer foydalanuvchi hodisalarini qayta ishlash kabi boshqa vazifalarni bajara olmaydi. Shunday qilib, bir muncha vaqt o'tgach, u "Sahifa javob bermayapti" kabi ogohlantirishni ko'taradi va bu vazifani butun sahifa bilan o'ldirishni taklif qiladi. Bu juda ko'p murakkab hisob-kitoblar yoki cheksiz tsiklga olib keladigan dasturlash xatosi mavjud bo'lganda sodir bo'ladi.
 
-That was the theory. Now let's see how we can apply that knowledge.
+Bu nazariya edi. Keling, bu bilimlarni qanday qo'llash mumkinligini ko'rib chiqaylik.
 
-## Use-case 1: splitting CPU-hungry tasks
+## 1-holat: protsessor talab qiladigan vazifalarni ajratish
 
-Let's say we have a CPU-hungry task.
+Aytaylik, bizda protsessor talab qiladigan vazifa bor.
 
-For example, syntax-highlighting (used to colorize code examples on this page) is quite CPU-heavy. To highlight the code, it performs the analysis, creates many colored elements, adds them to the document -- for a large amount of text that takes a lot of time.
+Misol uchun, sintaksisni ta'kidlash (ushbu sahifadagi kod misollarini ranglash uchun ishlatiladi) protsessor uchun juda og'ir. Kodni ajratib ko'rsatish uchun u tahlilni amalga oshiradi, ko'plab rangli elementlarni yaratadi, ularni ko'p vaqt talab qiladigan katta hajmdagi matn uchun hujjatga qo'shadi.
 
-While the engine is busy with syntax highlighting, it can't do other DOM-related stuff, process user events, etc. It may even cause the browser to "hiccup" or even "hang" for a bit, which is unacceptable.
+Dvigatel sintaksisni ajratib ko'rsatish bilan band bo'lsa-da, u boshqa DOM bilan bog'liq narsalarni bajara olmaydi, foydalanuvchi hodisalarini va hokazolarni qayta ishlay olmaydi. Bu hatto brauzerni biroz vaqtga "hiccib" qilishi yoki hatto "osilib qolishiga" olib kelishi mumkin, bu qabul qilinishi mumkin emas.
 
-We can avoid problems by splitting the big task into pieces. Highlight first 100 lines, then schedule `setTimeout` (with zero-delay) for the next 100 lines, and so on.
+Katta ishni qismlarga bo'lish orqali muammolardan qochishimiz mumkin. Dastlabki 100 qatorni ajratib ko'rsating, so'ngra keyingi 100 qator uchun `setTimeout` ni (nol kechikish bilan) rejalashtiring va hokazo.
 
-To demonstrate this approach, for the sake of simplicity, instead of text-highlighting, let's take a function that counts from `1` to `1000000000`.
+Ushbu yondashuvni ko'rsatish uchun soddalik uchun matnni ajratib ko'rsatish o'rniga `1` dan `1000000000` gacha hisoblangan funksiyani olaylik.
 
-If you run the code below, the engine will "hang" for some time. For server-side JS that's clearly noticeable, and if you are running it in-browser, then try to click other buttons on the page -- you'll see that no other events get handled until the counting finishes.
+Agar siz quyidagi kodni ishlatsangiz, vosita bir muncha vaqt "osilib qoladi". Server tomonidagi JS uchun bu yaqqol seziladi va agar siz uni brauzerda ishlatayotgan bo'lsangiz, sahifadagi boshqa tugmalarni bosishga harakat qiling -- sanash tugaguniga qadar boshqa hech qanday hodisalar ko'rib chiqilmasligini ko'rasiz.
 
 ```js run
 let i = 0;
@@ -67,7 +67,7 @@ let start = Date.now();
 
 function count() {
 
-  // do a heavy job
+  // qiyin ishlarni qiling
   for (let j = 0; j < 1e9; j++) {
     i++;
   }
@@ -78,9 +78,9 @@ function count() {
 count();
 ```
 
-The browser may even show a "the script takes too long" warning.
+Brauzer hatto "skript juda uzoq vaqt oladi" degan ogohlantirishni ham ko'rsatishi mumkin.
 
-Let's split the job using nested `setTimeout` calls:
+Keling, o'rnatilgan `setTimeout` qo'ng'iroqlari yordamida ishni ajratamiz:
 
 ```js run
 let i = 0;
@@ -89,7 +89,7 @@ let start = Date.now();
 
 function count() {
 
-  // do a piece of the heavy job (*)
+  // qiyin ishning bir qismini bajaring (*)
   do {
     i++;
   } while (i % 1e6 != 0);
@@ -97,7 +97,7 @@ function count() {
   if (i == 1e9) {
     alert("Done in " + (Date.now() - start) + 'ms');
   } else {
-    setTimeout(count); // schedule the new call (**)
+    setTimeout(count); // yangi qo'ng'iroqni rejalashtiring (**)
   }
 
 }
@@ -105,21 +105,21 @@ function count() {
 count();
 ```
 
-Now the browser interface is fully functional during the "counting" process.
+Endi brauzer interfeysi "hisoblash" jarayonida to'liq ishlaydi.
 
-A single run of `count` does a part of the job `(*)`, and then re-schedules itself `(**)` if needed:
+Bitta `count` ishning bir qismini `(*)` bajaradi va agar kerak bo'lsa, o'zini `(**)` rejalashtiradi:
 
-1. First run counts: `i=1...1000000`.
-2. Second run counts: `i=1000001..2000000`.
-3. ...and so on.
+1. Birinchi yugurish hisobi: `i=1...1000000`.
+2. Ikkinchi yugurish hisobi: `i=1000001..2000000`.
+3. ...va boshqalar.
 
-Now, if a new side task (e.g. `onclick` event) appears while the engine is busy executing part 1, it gets queued and then executes when part 1 finished, before the next part. Periodic returns to the event loop between `count` executions provide just enough "air" for the JavaScript engine to do something else, to react to other user actions.
+Agar dvigatel 1-qismni bajarish bilan band bo'lsa, yangi yon vazifa (masalan, `onclick` hodisasi) paydo bo'lsa, u navbatga qo'yiladi va 1-qism tugagach, keyingi qismdan oldin bajariladi. Vaqti-vaqti bilan `count` ijrosi orasidagi voqealar davriga qaytish JavaScript dvigatelining boshqa biror ishni bajarishi, foydalanuvchining boshqa harakatlariga munosabat bildirishi uchun yetarlicha "havo" beradi.
 
-The notable thing is that both variants -- with and without splitting the job by `setTimeout` -- are comparable in speed. There's not much difference in the overall counting time.
+Shunisi e'tiborga loyiqki, ikkala variant ham -- ishni `setTimeout` ga bo'lishsiz va bo'lmasdan - tezlik bo'yicha solishtirish mumkin. Umumiy hisoblash vaqtida unchalik katta farq yo'q.
 
-To make them closer, let's make an improvement.
+Ularni yaqinroq qilish uchun keling, yaxshilanishni amalga oshiraylik.
 
-We'll move the scheduling to the beginning of the `count()`:
+Biz rejalashtirishni `count()` boshiga o'tkazamiz:
 
 ```js run
 let i = 0;
@@ -128,9 +128,9 @@ let start = Date.now();
 
 function count() {
 
-  // move the scheduling to the beginning
+  // rejalashtirishni boshiga o'tkazing
   if (i < 1e9 - 1e6) {
-    setTimeout(count); // schedule the new call
+    setTimeout(count); // yangi qo'ng'iroqni rejalashtiring
   }
 
   do {
@@ -146,25 +146,25 @@ function count() {
 count();
 ```
 
-Now when we start to `count()` and see that we'll need to `count()` more, we schedule that immediately, before doing the job.
+Endi biz `count()` hisoblashni boshlaganimizda va ko'proq `count()` qilishimiz kerakligini ko'rganimizda, ishni bajarishdan oldin buni darhol rejalashtiramiz.
 
-If you run it, it's easy to notice that it takes significantly less time.
+Agar siz uni ishga tushirsangiz, bu sezilarli darajada kamroq vaqt talab qilishini sezish oson.
 
-Why?  
+Nega?
 
-That's simple: as you remember, there's the in-browser minimal delay of 4ms for many nested `setTimeout` calls. Even if we set `0`, it's `4ms` (or a bit more). So the earlier we schedule it - the faster it runs.
+Bu juda oddiy: eslaganingizdek, ko'plab `setTimeout` qo'ng'iroqlari uchun brauzerda minimal kechikish 4 ms bo'ladi. `0` ni o'rnatgan bo'lsak ham, u `4ms` (yoki biroz ko'proq). Shunday qilib, biz uni qanchalik erta rejalashtirsak, u shunchalik tez ishlaydi.
 
-Finally, we've split a CPU-hungry task into parts - now it doesn't block the user interface. And its overall execution time isn't much longer.
+Nihoyat, biz protsessor talab qiladigan vazifani qismlarga ajratdik – endi u foydalanuvchi interfeysini bloklamaydi. Va uning umumiy bajarilish muddati unchalik uzoq emas.
 
-## Use case 2: progress indication
+## Foydalanish holati 2: taraqqiyot ko'rsatkichi
 
-Another benefit of splitting heavy tasks for browser scripts is that we can show progress indication.
+Brauzer skriptlari uchun og'ir vazifalarni ajratishning yana bir afzalligi shundaki, biz taraqqiyot ko'rsatkichini ko'rsatishimiz mumkin.
 
-As mentioned earlier, changes to DOM are painted only after the currently running task is completed, irrespective of how long it takes.
+Yuqorida aytib o'tilganidek, DOM-ga o'zgartirishlar, qancha vaqt ketishidan qat'iy nazar, joriy ish bajarilgandan keyingina bo'yaladi.
 
-On one hand, that's great, because our function may create many elements, add them one-by-one to the document and change their styles -- the visitor won't see any "intermediate", unfinished state. An important thing, right?
+Bir tomondan, bu juda yaxshi, chunki bizning funksiyamiz ko'plab elementlarni yaratishi, ularni birma-bir hujjatga qo'shishi va uslublarini o'zgartirishi mumkin - tashrif buyuruvchi hech qanday "oraliq", tugallanmagan holatni ko'rmaydi. Muhim narsa, to'g'rimi?
 
-Here's the demo, the changes to `i` won't show up until the function finishes, so we'll see only the last value:
+Mana namuna, `i` dagi o'zgartirishlar funksiya tugamaguncha ko'rinmaydi, shuning uchun biz faqat oxirgi qiymatni ko'ramiz:
 
 
 ```html run
@@ -183,11 +183,11 @@ Here's the demo, the changes to `i` won't show up until the function finishes, s
 </script>
 ```
 
-...But we also may want to show something during the task, e.g. a progress bar.
+...Ammo biz ham vazifa davomida biror narsani ko'rsatishni xohlashimiz mumkin, masalan. taraqqiyot paneli.
 
-If we split the heavy task into pieces using `setTimeout`, then changes are painted out in-between them.
+Agar biz og'ir vazifani `setTimeout` yordamida qismlarga ajratsak, o'zgarishlar ularning orasiga bo'yalgan bo'ladi.
 
-This looks prettier:
+Bu yanada chiroyliroq ko'rinadi:
 
 ```html run
 <div id="progress"></div>
@@ -197,7 +197,7 @@ This looks prettier:
 
   function count() {
 
-    // do a piece of the heavy job (*)
+    // og'ir ishning bir qismini bajaring (*)
     do {
       i++;
       progress.innerHTML = i;
@@ -213,40 +213,39 @@ This looks prettier:
 </script>
 ```
 
-Now the `<div>` shows increasing values of `i`, a kind of a progress bar.
+Endi `<div>` `i` ning ortib borayotgan qiymatlarini ko'rsatadi, bu o'ziga xos taraqqiyot satri.
 
+## 3-holatdan foydalaning: voqeadan keyin biror narsa qilish
 
-## Use case 3: doing something after the event
+Voqeani qayta ishlovchida biz ba'zi harakatlarni hodisa ko'tarilguncha va barcha darajalarda ko'rib chiqilguncha qoldirishga qaror qilishimiz mumkin. Biz buni kodni nol kechikish `setTimeout` bilan o'rash orqali amalga oshiramiz.
 
-In an event handler we may decide to postpone some actions until the event bubbled up and was handled on all levels. We can do that by wrapping the code in zero delay `setTimeout`.
-
-In the chapter <info:dispatch-events> we saw an example: custom event `menu-open` is dispatched in `setTimeout`, so that it happens after the "click" event is fully handled.
+<info:dispatch-events> bobida biz bir misolni ko'rdik: maxsus hodisa `menyu-open` `setTimeout` da yuboriladi, shuning uchun u "click" hodisasi to'liq ishlov berilgandan keyin sodir bo'ladi.
 
 ```js
 menu.onclick = function() {
   // ...
 
-  // create a custom event with the clicked menu item data
+  // bosilgan menyu elementi ma'lumotlari bilan maxsus hodisa yarating
   let customEvent = new CustomEvent("menu-open", {
     bubbles: true
   });
 
-  // dispatch the custom event asynchronously
+  // moslashtirilgan hodisani asinxron tarzda yuboring
   setTimeout(() => menu.dispatchEvent(customEvent));
 };
 ```
 
-## Macrotasks and Microtasks
+## Makrovazifalar va mikrovazifalar
 
-Along with *macrotasks*, described in this chapter, there are *microtasks*, mentioned in the chapter <info:microtask-queue>.
+Ushbu bobda tasvirlangan *makrovazifalar* bilan bir qatorda <info:microtask-queue> bobida eslatib o'tilgan *mikrotopshiriqlar* ham mavjud.
 
-Microtasks come solely from our code. They are usually created by promises: an execution of `.then/catch/finally` handler becomes a microtask. Microtasks are used "under the cover" of `await` as well, as it's another form of promise handling.
+Mikrotasklar faqat bizning kodimizdan keladi. Ular odatda promise lar orqali yaratiladi: `.then/catch/finally` ishlov beruvchisining bajarilishi mikrotaskga aylanadi. Mikrovazifalar `await` so'zi bilan ham qo'llaniladi, chunki bu promise larni bajarishning yana bir shakli.
 
-There's also a special function `queueMicrotask(func)` that queues `func` for execution in the microtask queue.
+Shuningdek, mikrovazifalar navbatida bajarish uchun `func` ni navbatga qo'yuvchi maxsus `queueMicrotask(func)` funksiyasi ham mavjud.
 
-**Immediately after every *macrotask*, the engine executes all tasks from *microtask* queue, prior to running any other macrotasks or rendering or anything else.**
+**Har bir *makrovazifa* dan so'ng, vosita boshqa makrotopshiriqlar, renderlash yoki boshqa biror narsani ishga tushirishdan oldin *mikrovazifa* navbatdagi barcha vazifalarni darhol bajaradi.**
 
-For instance, take a look:
+Masalan, qarang:
 
 ```js run
 setTimeout(() => alert("timeout"));
@@ -257,23 +256,23 @@ Promise.resolve()
 alert("code");
 ```
 
-What's going to be the order here?
+Bu yerda qanday tartib bo'ladi?
 
-1. `code` shows first, because it's a regular synchronous call.
-2. `promise` shows second, because `.then` passes through the microtask queue, and runs after the current code.
-3. `timeout` shows last, because it's a macrotask.
+1. `code` birinchi navbatda ko'rsatiladi, chunki bu oddiy sinxron qo'ng'iroq.
+2. `promise` ikkinchi o'rinni ko'rsatadi, chunki `.then` mikrovazifalar qatoridan o'tadi va joriy koddan keyin ishlaydi.
+3. `timeout` oxirgi marta ko'rsatiladi, chunki bu makrotopshiriq.
 
-The richer event loop picture looks like this (order is from top to bottom, that is: the script first, then microtasks, rendering and so on):
+Voqealar siklining yanada boy tasviri quyidagicha ko'rinadi (tartib yuqoridan pastgacha, ya'ni: avval skript, keyin mikrovazifalar, renderlash va hokazo):
 
 ![](eventLoop-full.svg)
 
-All microtasks are completed before any other event handling or rendering or any other macrotask takes place.
+Barcha mikrovazifalar boshqa hodisalarni qayta ishlash, ko'rsatish yoki boshqa har qanday makrotask amalga oshirilishidan oldin bajariladi.
 
-That's important, as it guarantees that the application environment is basically the same (no mouse coordinate changes, no new network data, etc) between microtasks.
+Bu juda muhim, chunki u mikrotopshiriqlar o'rtasida dastur muhiti asosan bir xil bo'lishini kafolatlaydi (sichqoncha koordinatasi o'zgarmasligi, yangi tarmoq ma'lumotlari va boshqalar).
 
-If we'd like to execute a function asynchronously (after the current code), but before changes are rendered or new events handled, we can schedule it with `queueMicrotask`.
+Agar biz funksiyani asinxron tarzda (joriy koddan keyin) bajarishni istasak, lekin o'zgarishlar kiritilgunga qadar yoki yangi hodisalarni qayta ishlashdan oldin, biz uni `queueMicrotask` yordamida rejalashtirishimiz mumkin.
 
-Here's an example with "counting progress bar", similar to the one shown previously, but `queueMicrotask` is used instead of `setTimeout`. You can see that it renders at the very end. Just like the synchronous code:
+Bu yerda oldingi ko'rsatilganga o'xshash "hisoblash jarayoni satri" misoli keltirilgan, lekin `setTimeout` o'rniga `queueMicrotask` ishlatiladi. Ko'rish mumkinki, u xuddi sinxron kod kabi eng oxirida taqdim etiladi: 
 
 ```html run
 <div id="progress"></div>
@@ -283,7 +282,7 @@ Here's an example with "counting progress bar", similar to the one shown previou
 
   function count() {
 
-    // do a piece of the heavy job (*)
+    // og'ir ishning bir qismini bajaring (*)
     do {
       i++;
       progress.innerHTML = i;
@@ -301,39 +300,39 @@ Here's an example with "counting progress bar", similar to the one shown previou
 </script>
 ```
 
-## Summary
+## Xulosa
 
-A more detailed event loop algorithm (though still simplified compared to the [specification](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model)):
+Batafsilroq hodisa tsikli algoritmi ([spetsifikatsiya] (https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model) bilan solishtirganda anchagina soddalashtirilgan):
 
-1. Dequeue and run the oldest task from the *macrotask* queue (e.g. "script").
-2. Execute all *microtasks*:
-    - While the microtask queue is not empty:
-        - Dequeue and run the oldest microtask.
-3. Render changes if any.
-4. If the macrotask queue is empty, wait till a macrotask appears.
-5. Go to step 1.
+1. *Makrovazifa* navbatdagi eng eski vazifani (masalan, "skript") o'chiring va ishga tushiring.
+2. Barcha *mikrovazifalarni* bajaring:
+     - Mikrovazifa navbati bo'sh bo'lmasa:
+         - Eng qadimgi mikrovazifani o'chiring va ishga tushiring.
+3. Agar mavjud bo'lsa, o'zgarishlarni ko'rsating.
+4. Agar vazifa navbati bo'sh bo'lsa, makrotopshiriq paydo bo'lguncha kuting.
+5. 1-bosqichga o'ting.
 
-To schedule a new *macrotask*:
-- Use zero delayed `setTimeout(f)`.
+Yangi *makrovazifani* rejalashtirish uchun:
+- Nol kechiktirilgan `setTimeout(f)` dan foydalaning.
 
-That may be used to split a big calculation-heavy task into pieces, for the browser to be able to react to user events and show progress between them.
+Bu brauzer foydalanuvchi voqealariga munosabat bildira olishi va ular orasidagi taraqqiyotni ko'rsatishi uchun katta hisob-kitob ishlarini qismlarga bo'lish uchun ishlatilishi mumkin.
 
-Also, used in event handlers to schedule an action after the event is fully handled (bubbling done).
+Bundan tashqari, voqea to'liq ko'rib chiqilgandan so'ng (bubbling tugallangandan) keyin harakatni rejalashtirish uchun voqea ishlov beruvchilarida foydalaniladi.
 
-To schedule a new *microtask*
-- Use `queueMicrotask(f)`.
-- Also promise handlers go through the microtask queue.
+Yangi *mikrovazifani* rejalashtirish uchun
+- `queueMicrotask(f)` dan foydalaning.
+- Shuningdek, promise handler lar mikrovazifalar qatoriga o'tadi.
 
-There's no UI or network event handling between microtasks: they run immediately one after another.
+Mikrovazifalar o'rtasida foydalanuvchi interfeysi yoki tarmoq hodisalarini boshqarish yo'q: ular birin-ketin ishlaydi.
 
-So one may want to `queueMicrotask` to execute a function asynchronously, but within the environment state.
+Shunday qilib, funksiyani asinxron, lekin muhit holatida bajarish uchun `queueMicrotask`ni qo'yishni xohlashingiz mumkin.
 
 ```smart header="Web Workers"
-For long heavy calculations that shouldn't block the event loop, we can use [Web Workers](https://html.spec.whatwg.org/multipage/workers.html).
+Voqealar davrini bloklamasligi kerak bo'lgan uzoq og'ir hisoblar uchun biz [Web Workers] (https://html.spec.whatwg.org/multipage/workers.html) dan foydalanishimiz mumkin.
 
-That's a way to run code in another, parallel thread.
+Bu boshqa parallel oqimda kodni ishlatishning bir usuli.
 
-Web Workers can exchange messages with the main process, but they have their own variables, and their own event loop.
+Veb ishchilari asosiy jarayon bilan xabarlar almashishlari mumkin, lekin ularning o'z o'zgaruvchilari va o'z voqealar tsikli mavjud.
 
-Web Workers do not have access to DOM, so they are useful, mainly, for calculations, to use multiple CPU cores simultaneously.
+Veb ishchilari DOM-ga kirish imkoniga ega emaslar, shuning uchun ular asosan hisob-kitoblar uchun bir vaqtning o'zida bir nechta CPU yadrolaridan foydalanish uchun foydalidir.
 ```

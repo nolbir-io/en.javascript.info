@@ -1,99 +1,99 @@
 # XMLHttpRequest
 
-`XMLHttpRequest` is a built-in browser object that allows to make HTTP requests in JavaScript.
+`XMLHttpRequest` JavaScriptda HTTP so'rovlarini amalga oshirish imkonini beruvchi o'rnatilgan brauzer obyektidir.
 
-Despite having the word "XML" in its name, it can operate on any data, not only in XML format. We can upload/download files, track progress and much more.
+Nomida "XML" so'zi bo'lishiga qaramay, u nafaqat XML formatida, balki har qanday ma'lumotlarda ham ishlashi mumkin. Biz fayllarni yuklash/yuklab olish, taraqqiyotni kuzatish va boshqa ko'p narsalarni qilishimiz mumkin.
 
-Right now, there's another, more modern method `fetch`, that somewhat deprecates `XMLHttpRequest`.
+Hozirda `XMLHttpRequest` ni biroz bekor qiladigan yana bir zamonaviy `fetch` usuli mavjud.
 
-In modern web-development `XMLHttpRequest` is used for three reasons:
+Zamonaviy veb-dasturlashda `XMLHttpRequest` uchta sababga ko'ra ishlatiladi:
 
-1. Historical reasons: we need to support existing scripts with `XMLHttpRequest`.
-2. We need to support old browsers, and don't want polyfills (e.g. to keep scripts tiny).
-3. We need something that `fetch` can't do yet, e.g. to track upload progress.
+1. Tarixiy sabablar: biz `XMLHttpRequest` bilan mavjud skriptlarni qo'llab-quvvatlashimiz kerak.
+2. Biz eski brauzerlarni qo'llab-quvvatlashimiz kerak va polifilllardan foydalanmasligimiz lozim (skriptlarni mayda saqlash maqsadida).
+3. Yuklash jarayonini kuzatish uchunBizga `fetch` hali qila olmaydigan narsa kerak.
 
-Does that sound familiar? If yes, then all right, go on with `XMLHttpRequest`. Otherwise, please head on to <info:fetch>.
+Bu tanish tuyuladimi? Ha bo'lsa, `XMLHttpRequest` bilan davom eting. Aks holda, <info:fetch> sahifasiga tashrif buyuring.
 
-## The basics
+## Asoslar
 
-XMLHttpRequest has two modes of operation: synchronous and asynchronous.
+XMLHttpRequest ikkita ish rejimiga ega: sinxron va asinxron.
 
-Let's see the asynchronous first, as it's used in the majority of cases.
+Keling, birinchi navbatda asinxronni ko'rib chiqaylik, chunki u ko'pchilik hollarda qo'llaniladi.
 
-To do the request, we need 3 steps:
+So'rovni bajarish uchun bizga 3 qadam kerak:
 
-1. Create `XMLHttpRequest`:
+1. `XMLHttpRequest` yarating:
     ```js
     let xhr = new XMLHttpRequest();
     ```
-    The constructor has no arguments.
+    Konstruktorning argumentlari yo'q.
 
-2. Initialize it, usually right after `new XMLHttpRequest`:
+2. Uni `new XMLHttpRequest`dan keyin ishga tushiring:
     ```js
     xhr.open(method, URL, [async, user, password])
     ```
 
-    This method specifies the main parameters of the request:
+    Ushbu usul so'rovning asosiy parametrlarini belgilaydi:
 
-    - `method` -- HTTP-method. Usually `"GET"` or `"POST"`.
-    - `URL` -- the URL to request, a string, can be [URL](info:url) object.
-    - `async` -- if explicitly set to `false`, then the request is synchronous, we'll cover that a bit later.
-    - `user`, `password` -- login and password for basic HTTP auth (if required).
+     - `method` -- HTTP usuli. Odatda `"GET"` yoki `"POST"`.
+     - `URL` -- so'rov uchun URL manzil, string, [URL](info:url) obyekti bo'lishi mumkin.
+     - `async` -- agar aniq `false` o'rnatilgan bo'lsa, so'rov sinxron bo'ladi, biz buni birozdan keyin ko'rib chiqamiz.
+     - `user`, `password` -- asosiy HTTP autentsiyasi uchun login va parol (agar kerak bo'lsa).
 
-    Please note that `open` call, contrary to its name, does not open the connection. It only configures the request, but the network activity only starts with the call of `send`.
+     E'tibor bering, `open` (ochiq) qo'ng'iroq, uning nomidan farqli o'laroq, ulanishni ochmaydi. U faqat so'rovni sozlaydi, lekin tarmoq faoliyati faqat `send` (yuborish) chaqiruvi bilan boshlanadi.
 
-3. Send it out.
+3. Uni yuboring.
 
     ```js
     xhr.send([body])
     ```
 
-    This method opens the connection and sends the request to server. The optional `body` parameter contains the request body.
+     Ushbu usul ulanishni ochadi va so'rovni serverga yuboradi. Ixtiyoriy `body` parametri so'rovning asosiy qismini o'z ichiga oladi.
 
-    Some request methods like `GET` do not have a body. And some of them like `POST` use `body` to send the data to the server. We'll see examples of that later.
+     `GET` kabi ba'zi so'rov usullarida tana yo'q. Va ulardan ba'zilari `POST` kabi ma'lumotlarni serverga yuborish uchun `body` dan foydalanadi. Buning misollarini keyinroq ko'rib chiqamiz.
 
-4. Listen to `xhr` events for response.
+4. Javob uchun `xhr` hodisalarini tinglang.
 
-    These three events are the most widely used:
-    - `load` -- when the request is complete (even if HTTP status is like 400 or 500), and the response is fully downloaded.
-    - `error` -- when the request couldn't be made, e.g. network down or invalid URL.
-    - `progress` -- triggers periodically while the response is being downloaded, reports how much has been downloaded.
+     Ushbu uchta hodisa eng ko'p qo'llaniladi:
+     - `load` -- so'rov tugallanganda (hatto HTTP holati 400 yoki 500 bo'lsa ham) va javob to'liq yuklab olinganda.
+     - `error` -- so'rovni amalga oshirib bo'lmaganda, masalan, tarmoq ishlamay qolganda yoki URL yaroqsiz bo'lsa.
+     - `progress` -- javob yuklanayotganda vaqti-vaqti bilan ishga tushadi, qancha yuklanganligi haqida xabar beradi.
 
     ```js
     xhr.onload = function() {
       alert(`Loaded: ${xhr.status} ${xhr.response}`);
     };
 
-    xhr.onerror = function() { // only triggers if the request couldn't be made at all
+    xhr.onerror = function() { // faqat so'rov umuman amalga oshirilmasa, ishga tushadi
       alert(`Network Error`);
     };
 
-    xhr.onprogress = function(event) { // triggers periodically
-      // event.loaded - how many bytes downloaded
-      // event.lengthComputable = true if the server sent Content-Length header
-      // event.total - total number of bytes (if lengthComputable)
+    xhr.onprogress = function(event) { // davriy ravishda ishlaydi
+      // event.loaded - qancha bayt yuklab olinganini ko'rsatadi
+      // event.lengthComputable = server Content-Length sarlavhasini yuborgan bo'lsa true
+      // event.total - baytlarning umumiy soni (agar uzunlik hisoblash mumkin bo'lsa)
       alert(`Received ${event.loaded} of ${event.total}`);
     };
     ```
 
-Here's a full example. The code below loads the URL at `/article/xmlhttprequest/example/load` from the server and prints the progress:
+Mana to'liq misol. Quyidagi kod URLni serverdan `/article/xmlhttprequest/example/load` manziliga yuklaydi va jarayonni chop etadi:
 
 ```js run
-// 1. Create a new XMLHttpRequest object
+// 1. Yangi XMLHttpRequest obyektini yarating.
 let xhr = new XMLHttpRequest();
 
-// 2. Configure it: GET-request for the URL /article/.../load
+// 2. Uni konfiguratsiyalang: /article/.../load uchun GET-so'rov
 xhr.open('GET', '/article/xmlhttprequest/example/load');
 
-// 3. Send the request over the network
+// 3. So'rovni tarmoq orqali yuboring
 xhr.send();
 
-// 4. This will be called after the response is received
+// 4. Bu javob olinganidan keyin chaqiriladi
 xhr.onload = function() {
-  if (xhr.status != 200) { // analyze HTTP status of the response
+  if (xhr.status != 200) { // javobning HTTP holatini tahlil qilish
     alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
-  } else { // show the result
-    alert(`Done, got ${xhr.response.length} bytes`); // response is the server response
+  } else { // natijani ko'rsating
+    alert(`Done, got ${xhr.response.length} bytes`); // javob server javobidir
   }
 };
 
@@ -101,7 +101,7 @@ xhr.onprogress = function(event) {
   if (event.lengthComputable) {
     alert(`Received ${event.loaded} of ${event.total} bytes`);
   } else {
-    alert(`Received ${event.loaded} bytes`); // no Content-Length
+    alert(`Received ${event.loaded} bytes`); // Kontent uzunligi yo'q
   }
 
 };
@@ -111,50 +111,50 @@ xhr.onerror = function() {
 };
 ```
 
-Once the server has responded, we can receive the result in the following `xhr` properties:
+Server javob bergandan so'ng, biz natijani quyidagi `xhr` xususiyatlarida olishimiz mumkin:
 
 `status`
-: HTTP status code (a number): `200`, `404`, `403` and so on, can be `0` in case of a non-HTTP failure.
+: HTTP status kodi (raqam): `200`, `404`, `403` and boshqalar, HTTP bo'lmagan xatolik holatida `0` bo'lishi mumkin.
 
 `statusText`
-: HTTP status message (a string): usually `OK` for `200`, `Not Found` for `404`, `Forbidden` for `403` and so on.
+: HTTP holat xabari (string): odatda `200` uchun `OK`, `404` uchun `Not Found`, `403` uchun `Forbidden` va hokazo.
 
-`response` (old scripts may use `responseText`)
-: The server response body.
+`response` (eski skriptlar `responseText` dan foydalanishi mumkin)
+: Server javob tanasi.
 
-We can also specify a timeout using the corresponding property:
+Tegishli xususiyatdan foydalanib, biz kutish vaqtini ham belgilashimiz mumkin:
 
 ```js
-xhr.timeout = 10000; // timeout in ms, 10 seconds
+xhr.timeout = 10000; // ms da kutish vaqti, 10 soniya
 ```
 
-If the request does not succeed within the given time, it gets canceled and `timeout` event triggers.
+Belgilangan vaqt ichida so'rov bajarilmasa, u bekor qilinadi va `timeout` hodisasi boshlanadi.
 
-````smart header="URL search parameters"
-To add parameters to URL, like `?name=value`, and ensure the proper encoding, we can use [URL](info:url) object:
+````smart header="URL qidiruv parametrlari"
+URL manziliga `?name=value` kabi parametrlarni qo'shish va to'g'ri kodlashni ta'minlash uchun biz [URL](info:url) obyektidan foydalanishimiz mumkin:
 
 ```js
 let url = new URL('https://google.com/search');
 url.searchParams.set('q', 'test me!');
 
-// the parameter 'q' is encoded
+// 'q' parametri kodlangan
 xhr.open('GET', url); // https://google.com/search?q=test+me%21
 ```
 
 ````
 
-## Response Type
+## Javob turi
 
-We can use `xhr.responseType` property to set the response format:
+Javob formatini sozlash uchun `xhr.responseType` xususiyatidan foydalanishimiz mumkin:
 
-- `""` (default) -- get as string,
-- `"text"` -- get as string,
-- `"arraybuffer"` -- get as `ArrayBuffer` (for binary data, see chapter <info:arraybuffer-binary-arrays>),
-- `"blob"` -- get as `Blob` (for binary data, see chapter <info:blob>),
-- `"document"` -- get as XML document (can use XPath and other XML methods) or HTML document (based on the MIME type of the received data),
-- `"json"` -- get as JSON (parsed automatically).
+- `""` (default) -- string sifatida oling,
+- `"text"` -- string sifatida oling,
+- `"arraybuffer"` -- `ArrayBuffer` sifatida oling (ikkilik ma'lumotlar uchun <info:arraybuffer-binary-arrays> bo'limiga qarang),
+- `"blob"` -- `Blob` sifatida oling (ikkilik ma'lumotlar uchun <info:blob> bo'limiga qarang),
+- `"document"` -- XML hujjati (XPath va boshqa XML usullaridan foydalanishi mumkin) yoki HTML hujjati (qabul qilingan ma'lumotlarning MIME turiga asoslangan) sifatida oling.
+- `"json"` -- JSON sifatida oling (avtomatik ravishda tahlil qilinadi).
 
-For example, let's get the response as JSON:
+Masalan, javobni JSON sifatida olamiz:
 
 ```js run
 let xhr = new XMLHttpRequest();
@@ -167,7 +167,7 @@ xhr.responseType = 'json';
 
 xhr.send();
 
-// the response is {"message": "Hello, world!"}
+// berilgan response {"message": "Hello, world!"}
 xhr.onload = function() {
   let responseObj = xhr.response;
   alert(responseObj.message); // Hello, world!
@@ -175,59 +175,59 @@ xhr.onload = function() {
 ```
 
 ```smart
-In the old scripts you may also find `xhr.responseText` and even `xhr.responseXML` properties.
+Eski skriptlarda siz `xhr.responseText` va hatto `xhr.responseXML` xususiyatlarini ham topishingiz mumkin.
 
-They exist for historical reasons, to get either a string or XML document. Nowadays, we should set the format in `xhr.responseType` and get `xhr.response` as demonstrated above.
+Ular string yoki XML hujjatini olish uchun tarixiy sabablarga ko'ra mavjud. Hozirgi kunda biz `xhr.responseType` formatini o'rnatishimiz va yuqorida ko'rsatilgandek `xhr.response` olishimiz kerak.
 ```
 
-## Ready states
+## Tayyor holatlar
 
-`XMLHttpRequest` changes between states as it progresses. The current state is accessible as  `xhr.readyState`.
+`XMLHttpRequest` davom etar ekan, holatlar o'rtasida o'zgaradi. Joriy holatga `xhr.readyState` sifatida kirish mumkin.
 
-All states, as in [the specification](https://xhr.spec.whatwg.org/#states):
+Barcha shtatlar, [spetsifikatsiyada](https://xhr.spec.whatwg.org/#states) berilgan:
 
 ```js
-UNSENT = 0; // initial state
-OPENED = 1; // open called
-HEADERS_RECEIVED = 2; // response headers received
-LOADING = 3; // response is loading (a data packet is received)
-DONE = 4; // request complete
+UNSENT = 0; // boshlang'ich holati
+OPENED = 1; // open chaqirildi
+HEADERS_RECEIVED = 2; // javob sarlavhalari qabul qilindi
+LOADING = 3; // javob yuklanmoqda (ma'lumotlar paketi qabul qilinadi)
+DONE = 4; // so'rov to'liq
 ```
 
-An `XMLHttpRequest` object travels them in the order `0` -> `1` -> `2` -> `3` -> ... -> `3` -> `4`. State `3` repeats every time a data packet is received over the network.
+`XMLHttpRequest` obyekti ularni `0` -> `1` -> `2` -> `3` -> ... -> `3` -> `4` tartibda sayohat qiladi. `3` holati har safar ma'lumotlar paketi tarmoq orqali qabul qilinganda takrorlanadi.
 
-We can track them using `readystatechange` event:
+Biz ularni `readstatechange` hodisasi yordamida kuzatishimiz mumkin:
 
 ```js
 xhr.onreadystatechange = function() {
   if (xhr.readyState == 3) {
-    // loading
+    // yuklanmoqda
   }
   if (xhr.readyState == 4) {
-    // request finished
+    // so'rov yakunlandi
   }
 };
 ```
 
-You can find `readystatechange` listeners in really old code, it's there for historical reasons, as there was a time when there were no `load` and other events. Nowadays, `load/error/progress` handlers deprecate it.
+Siz `readstatechange` tinglovchilarini haqiqatdan ham eski kodda topishingiz mumkin, bu tarixiy sabablarga ko'ra mavjud, chunki `load` va boshqa hodisalar bo'lmagan vaqtlar bo'lgan. Hozirgi vaqtda `load/error/progress` ishlov beruvchilari uning eskirishiga sabab bo'ladi.
 
-## Aborting request
+## Bekor qilish so'rovi
 
-We can terminate the request at any time. The call to `xhr.abort()` does that:
+Biz istalgan vaqtda so'rovni bekor qilishimiz mumkin. `xhr.abort()` ga qo'ng'iroq buni amalga oshiradi:
 
 ```js
-xhr.abort(); // terminate the request
+xhr.abort(); // so'rovni tugatish
 ```
 
-That triggers `abort` event, and `xhr.status` becomes `0`.
+Bu `abort` hodisasini ishga tushiradi va `xhr.status` `0` ga aylanadi.
 
-## Synchronous requests
+## Sinxron so'rovlar
 
-If in the `open` method the third parameter `async` is set to `false`, the request is made synchronously.
+Agar `open` usulidagi uchinchi parametr `async` `false` ga o'rnatilgan bo'lsa, so'rov sinxron tarzda amalga oshiriladi.
 
-In other words, JavaScript execution pauses at `send()` and resumes when the response is received. Somewhat like `alert` or `prompt` commands.
+Boshqacha qilib aytganda, JavaScriptni bajarish `send()` da pauza qilinadi va `alert` yoki `prompt` buyruqlari kabi javob olinganda davom etadi. 
 
-Here's the rewritten example, the 3rd parameter of `open` is `false`:
+Mana qayta yozilgan misol, `open` ning uchinchi parametri `false`:
 
 ```js
 let xhr = new XMLHttpRequest();
@@ -241,68 +241,69 @@ try {
   } else {
     alert(xhr.response);
   }
-} catch(err) { // instead of onerror
+} catch(err) { // onerror o'rniga
   alert("Request failed");
 }
 ```
 
-It might look good, but synchronous calls are used rarely, because they block in-page JavaScript till the loading is complete. In some browsers it becomes impossible to scroll. If a synchronous call takes too much time, the browser may suggest to close the "hanging" webpage.
+Bu yaxshi ko'rinishi mumkin, ammo sinxron qo'ng'iroqlar kamdan-kam qo'llaniladi, chunki ular yuklash tugaguniga qadar sahifa ichidagi JavaScriptni bloklaydi. Ba'zi brauzerlarda aylantirish imkonsiz bo'lib qoladi. Agar sinxron qo'ng'iroq juda ko'p vaqt talab qilsa, brauzer "osilgan" veb-sahifani yopishni taklif qilishi mumkin.
 
-Many advanced capabilities of `XMLHttpRequest`, like requesting from another domain or specifying a timeout, are unavailable for synchronous requests. Also, as you can see, no progress indication.
+`XMLHttpRequest` ning ko'plab ilg'or imkoniyatlari, masalan, boshqa domendan so'rov yuborish yoki vaqt tugashini belgilash, sinxron so'rovlar uchun mavjud emas. Bundan tashqari, siz ko'rib turganingizdek, rivojlanish ko'rsatkichi yo'q.
 
-Because of all that, synchronous requests are used very sparingly, almost never. We won't talk about them any more.
+Bularning barchasi tufayli sinxron so'rovlar juda kam ishlatiladi, deyarli hech qachon ishlatilmasligi ham mumkim. Biz ular haqida boshqa gapirmaymiz.
 
-## HTTP-headers
+## HTTP sarlavhalari
 
-`XMLHttpRequest` allows both to send custom headers and read headers from the response.
+`XMLHttpRequest` javobdan mos sarlavhalarni yuborish va sarlavhalarni o'qish imkonini beradi.
 
-There are 3 methods for HTTP-headers:
+HTTP sarlavhalari uchun 3 ta usul mavjud:
 
 `setRequestHeader(name, value)`
-: Sets the request header with the given `name` and `value`.
+: Berilgan `name` hamda `value` bilan so'rov sarlavhasini o'rnatadi.
 
-    For instance:
+    Masalan:
 
     ```js
     xhr.setRequestHeader('Content-Type', 'application/json');
     ```
 
-    ```warn header="Headers limitations"
-    Several headers are managed exclusively by the browser, e.g. `Referer` and `Host`.
-    The full list is [in the specification](https://xhr.spec.whatwg.org/#the-setrequestheader()-method).
+    ```warn header="Sarlavhalar cheklovlari"
+     Bir nechta sarlavhalar faqat brauzer tomonidan boshqariladi, masalan, `Referer` va `Host`.
+     To'liq ro'yxat [spetsifikatsiyada] (https://xhr.spec.whatwg.org/#the-setrequestheader()-method) berilgan.
 
-    `XMLHttpRequest` is not allowed to change them, for the sake of user safety and correctness of the request.
+     `XMLHttpRequest` foydalanuvchi xavfsizligi va so'rovning to'g'riligi uchun ularni o'zgartirishga ruxsat etilmaydi.
     ```
 
-    ````warn header="Can't remove a header"
-    Another peculiarity of `XMLHttpRequest` is that one can't undo `setRequestHeader`.
+    ````warn header="Sarlavhani olib tashlab bo‘lmadi"
+    
+     `XMLHttpRequest` ning yana bir o'ziga xos xususiyati shundaki, `setRequestHeader` ni bekor qilib bo'lmaydi.
 
-    Once the header is set, it's set. Additional calls add information to the header, don't overwrite it.
+     Sarlavha o'rnatilgandan so'ng, u o'rnatiladi. Qo'shimcha qo'ng'iroqlar sarlavhaga ma'lumot qo'shadi, uning ustiga yozilmaydi.
 
-    For instance:
+    Masalan:
 
     ```js
     xhr.setRequestHeader('X-Auth', '123');
     xhr.setRequestHeader('X-Auth', '456');
 
-    // the header will be:
+    // sarlavha quyidagicha bo'ladi:
     // X-Auth: 123, 456
     ```
     ````
 
 `getResponseHeader(name)`
-: Gets the response header with the given `name` (except `Set-Cookie` and `Set-Cookie2`).
+: Berilgan `name` bilan javob sarlavhasini oladi (`Set-Cookie` va `Set-Cookie2`dan tashqari).
 
-    For instance:
+    Masalan:
 
     ```js
     xhr.getResponseHeader('Content-Type')
     ```
 
 `getAllResponseHeaders()`
-: Returns all response headers, except `Set-Cookie` and `Set-Cookie2`.
+: `Set-Cookie` va `Set-Cookie2` dan tashqari barcha javob sarlavhalarini qaytaradi.
 
-    Headers are returned as a single line, e.g.:
+    Sarlavhalar bitta qator sifatida qaytariladi, masalan:
 
     ```http
     Cache-Control: max-age=31536000
@@ -311,11 +312,11 @@ There are 3 methods for HTTP-headers:
     Date: Sat, 08 Sep 2012 16:53:16 GMT
     ```
 
-    The line break between headers is always `"\r\n"` (doesn't depend on OS), so we can easily split it into individual headers. The separator between the name and the value is always a colon followed by a space `": "`. That's fixed in the specification.
+     Sarlavhalar orasidagi chiziq uzilishi har doim `"\r\n"` (OSga bog'liq emas), shuning uchun biz uni alohida sarlavhalarga osongina ajratishimiz mumkin. Nom va qiymat o'rtasidagi ajratuvchi har doim ikki nuqtadan keyin bo'sh joy qo'yiladi `": "`. Bu spetsifikatsiyada belgilangan.
 
-    So, if we want to get an object with name/value pairs, we need to throw in a bit JS.
+     Shunday qilib, agar biz nom/qiymat juftliklari bo'lgan obyektni olishni istasak, biz biroz JSni kiritishimiz kerak.
 
-    Like this (assuming that if two headers have the same name, then the latter one overwrites the former one):
+     Shunga o'xshash (agar ikkita sarlavha bir xil nomga ega bo'lsa, ikkinchisi avvalgisining ustiga yoziladi deb hisoblaymiz):
 
     ```js
     let headers = xhr
@@ -332,21 +333,21 @@ There are 3 methods for HTTP-headers:
 
 ## POST, FormData
 
-To make a POST request, we can use the built-in [FormData](mdn:api/FormData) object.
+POST so'rovini yuborish uchun biz o'rnatilgan [FormData](mdn:api/FormData) obyektidan foydalanishimiz mumkin.
 
-The syntax:
+Sintaksis:
 
 ```js
-let formData = new FormData([form]); // creates an object, optionally fill from <form>
-formData.append(name, value); // appends a field
+let formData = new FormData([form]); // obyektni yaratadi, ixtiyoriy ravishda <form> dan to'ldiring
+formData.append(name, value); // maydonni qo'shadi
 ```
 
-We create it, optionally fill from a form, `append` more fields if needed, and then:
+Biz uni yaratamiz, ixtiyoriy ravishda formadan to'ldiramiz, agar kerak bo'lsa, qo'shimcha maydonlarni `append` qilamiz, ya'ni "qo'shamiz" va keyin:
 
-1. `xhr.open('POST', ...)` – use `POST` method.
-2. `xhr.send(formData)` to submit the form to the server.
+1. `xhr.open('POST', ...)` – `POST` usulidan foydalaning.
+2. Shaklni serverga yuborish uchun `xhr.send(formData)`.
 
-For instance:
+Masalan:
 
 ```html run refresh
 <form name="person">
@@ -355,13 +356,13 @@ For instance:
 </form>
 
 <script>
-  // pre-fill FormData from the form
+  // formadan FormDatani oldindan to'ldiring
   let formData = new FormData(document.forms.person);
 
-  // add one more field
+  // yana bitta maydon qo'shing
   formData.append("middle", "Lee");
 
-  // send it out
+  // uni yuboring
   let xhr = new XMLHttpRequest();
   xhr.open("POST", "/article/xmlhttprequest/post/user");
   xhr.send(formData);
@@ -370,11 +371,11 @@ For instance:
 </script>
 ```
 
-The form is sent with `multipart/form-data` encoding.
+Shakl `multipart/form-data` kodlash bilan yuboriladi.
 
-Or, if we like JSON more, then `JSON.stringify` and send as a string.
+Agar bizga JSON ko'proq yoqsa, `JSON.stringify` va string sifatida yuboring.
 
-Just don't forget to set the header `Content-Type: application/json`, many server-side frameworks automatically decode JSON with it:
+Shunchaki `Content-Type: application/json` sarlavhasini o'rnatishni unutmang, server tomonidagi ko‘plab ramkalar u bilan JSONni avtomatik ravishda dekodlaydi:
 
 ```js
 let xhr = new XMLHttpRequest();
@@ -390,29 +391,29 @@ xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 xhr.send(json);
 ```
 
-The `.send(body)` method is pretty omnivore. It can send almost any `body`, including `Blob` and `BufferSource` objects.
+`.send(body)` usuli juda hamma narsaga mos keladi. U deyarli har qanday `body`ni, shu jumladan, `Blob` va `BufferSource` obyektlarini yuborishi mumkin.
 
-## Upload progress
+## Yuklash jarayoni
 
-The `progress` event triggers only on the downloading stage.
+`Progress` hodisasi faqat yuklab olish bosqichida ishga tushadi.
 
-That is: if we `POST` something, `XMLHttpRequest` first uploads our data (the request body), then downloads the response.
+Ya'ni: agar biz biror narsani `POST` qilsak, `XMLHttpRequest` avval ma'lumotlarimizni yuklaydi (so'rovning asosiy qismi), keyin javobni yuklab oladi.
 
-If we're uploading something big, then we're surely more interested in tracking the upload progress. But `xhr.onprogress` doesn't help here.
+Agar biz katta narsalarni yuklayotgan bo'lsak, biz yuklash jarayonini kuzatishdan ko'proq manfaatdormiz. Lekin `xhr.onprogress` bu yerda yordam bermaydi.
 
-There's another object, without methods, exclusively to track upload events: `xhr.upload`.
+Yuklash hodisalarini kuzatish uchun faqat usullarisiz boshqa obyekt mavjud: `xhr.upload`.
 
-It generates events, similar to `xhr`, but `xhr.upload` triggers them solely on uploading:
+U `xhr` ga o'xshash hodisalarni yaratadi, lekin `xhr.upload` ularni faqat yuklashda ishga tushiradi:
 
-- `loadstart` -- upload started.
-- `progress` -- triggers periodically during the upload.
-- `abort` -- upload aborted.
-- `error` -- non-HTTP error.
-- `load` -- upload finished successfully.
-- `timeout` -- upload timed out (if `timeout` property is set).
-- `loadend` -- upload finished with either success or error.
+- `loadstart` -- yuklashni boshladi.
+- `progress` -- yuklash paytida vaqti-vaqti bilan ishga tushadi.
+- `abort` -- yuklash to'xtatildi.
+- `error` -- HTTP bilan bog'liq bo'lmagan xato.
+- `load` -- yuklash muvaffaqiyatli yakunlandi.
+- `timeout` -- yuklash vaqti tugadi (agar `taymout` xususiyati o'rnatilgan bo'lsa).
+- `loadend` -- yuklash muvaffaqiyatli yoki xato bilan yakunlandi.
 
-Example of handlers:
+Handlerlar uchun namuna:
 
 ```js
 xhr.upload.onprogress = function(event) {
@@ -420,15 +421,15 @@ xhr.upload.onprogress = function(event) {
 };
 
 xhr.upload.onload = function() {
-  alert(`Upload finished successfully.`);
+  alert(`Yuklash muvaffaqiyatli yakunlandi.`);
 };
 
 xhr.upload.onerror = function() {
-  alert(`Error during the upload: ${xhr.status}`);
+  alert(`Yuklash paytida xatolik yuz berdi: ${xhr.status}`);
 };
 ```
 
-Here's a real-life example: file upload with progress indication:
+Mana haqiqiy hayot misoli: fayl yuklanishi ko'rsatilgan jarayon:
 
 ```html run
 <input type="file" onchange="upload(this.files[0])">
@@ -437,14 +438,14 @@ Here's a real-life example: file upload with progress indication:
 function upload(file) {
   let xhr = new XMLHttpRequest();
 
-  // track upload progress
+  // yuklash jarayonini kuzatish
 *!*
   xhr.upload.onprogress = function(event) {
     console.log(`Uploaded ${event.loaded} of ${event.total}`);
   };
 */!*
 
-  // track completion: both successful or not
+  // trekning tugallanishi: ham muvaffaqiyatli yoki yo'q
   xhr.onloadend = function() {
     if (xhr.status == 200) {
       console.log("success");
@@ -459,11 +460,11 @@ function upload(file) {
 </script>
 ```
 
-## Cross-origin requests
+## O'zaro kelib chiqish so'rovlari
 
-`XMLHttpRequest` can make cross-origin requests, using the same CORS policy as [fetch](info:fetch-crossorigin).
+`XMLHttpRequest` [fetch] (info:fetch-crossorigin) bilan bir xil CORS siyosatidan foydalanib, o'zaro kelib chiqish so'rovlarini amalga oshirishi mumkin.
 
-Just like `fetch`, it doesn't send cookies and HTTP-authorization to another origin by default. To enable them, set `xhr.withCredentials` to `true`:
+Xuddi `fetch` kabi, sukut bo'yicha u cookie fayllari va HTTP avtorizatsiyasini boshqa manbaga yubormaydi. Ularni yoqish uchun `xhr.withCredentials` ni `true` qilib belgilang:
 
 ```js
 let xhr = new XMLHttpRequest();
@@ -475,12 +476,12 @@ xhr.open('POST', 'http://anywhere.com/request');
 ...
 ```
 
-See the chapter <info:fetch-crossorigin> for details about cross-origin headers.
+O'zaro kelib chiqish sarlavhalari haqida batafsil ma'lumot olish uchun <info:fetch-crossorigin> bobini ko'zdan kechiring.
 
 
-## Summary
+## Xulosa
 
-Typical code of the GET-request with `XMLHttpRequest`:
+`XMLHttpRequest` bilan GET so'rovining odatiy kodi:
 
 ```js
 let xhr = new XMLHttpRequest();
@@ -496,33 +497,33 @@ xhr.onload = function() {
     return;
   }
 
-  // get the response from xhr.response
+  // javobni xhr.response dan oling
 };
 
 xhr.onprogress = function(event) {
-  // report progress
+  // taraqqiyot haqida hisobot
   alert(`Loaded ${event.loaded} of ${event.total}`);
 };
 
 xhr.onerror = function() {
-  // handle non-HTTP error (e.g. network down)
+  // HTTP bo'lmagan xatoni boshqarish (masalan, tarmoq uzilishi)
 };
 ```
 
-There are actually more events, the [modern specification](https://xhr.spec.whatwg.org/#events) lists them (in the lifecycle order):
+Haqiqatan ham ko'proq eventlar mavjud, [zamonaviy spetsifikatsiya](https://xhr.spec.whatwg.org/#events) ularni ro'yxatlaydi (hayot tsikli tartibida):
 
-- `loadstart` -- the request has started.
-- `progress` -- a data packet of the response has arrived, the whole response body at the moment is in `response`.
-- `abort` -- the request was canceled by the call `xhr.abort()`.
-- `error` -- connection error has occurred, e.g. wrong domain name. Doesn't happen for HTTP-errors like 404.
-- `load` -- the request has finished successfully.
-- `timeout` -- the request was canceled due to timeout (only happens if it was set).
-- `loadend` -- triggers after `load`, `error`, `timeout` or `abort`.
+- `loadstart` -- so'rov boshlandi.
+- `progress` -- javobning ma'lumotlar paketi keldi, hozirda butun javob tanasi `response` da berilgan.
+- `abort` -- so'rov `xhr.abort()` chaqiruvi bilan bekor qilindi.
+- `error` -- ulanishda xatolik yuz berdi, masalan, noto'g'ri domen nomi. 404 kabi HTTP-xatolar uchun bu sodir bo'lmaydi.
+- `load` -- so'rov muvaffaqiyatli yakunlandi.
+- `timeout` -- so'rov vaqt tugashi sababli bekor qilindi (faqat u o'rnatilgan bo'lsa sodir bo'ladi).
+- `loadend` -- `load`, `error`, `timeout` yoki `abort` dan keyin ishga tushadi.
 
-The `error`, `abort`, `timeout`, and `load` events are mutually exclusive. Only one of them may happen.
+`Error`, `abort`, `timeout` va `load` hodisalari bir-birini istisno qiladi. Ulardan faqat bittasi sodir bo'lishi mumkin.
 
-The most used events are load completion (`load`), load failure (`error`), or we can use a single `loadend` handler and check the properties of the request object `xhr` to see what happened.
+Eng ko'p ishlatiladigan hodisalar yukning tugallanishi (`load`), yuklanishning noto'g'riligi (`error`) yoki biz bitta `loadend` ishlov beruvchisidan foydalanishimiz va nima bo'lganini ko'rish uchun so'rov obyekti `xhr` xususiyatlarini tekshirishimiz mumkin.
 
-We've already seen another event: `readystatechange`. Historically, it appeared long ago, before the specification settled. Nowadays, there's no need to use it, we can replace it with newer events, but it can often be found in older scripts.
+Biz allaqachon boshqa `readstatechange` hodisani ko'rdik. Tarixiy jihatdan, u ancha avval, spetsifikatsiyalar hal bo'lishidan oldin paydo bo'lgan. Hozirgi vaqtda uni ishlatishning hojati yo'q, biz uni yangi hodisalar bilan almashtira olamiz, lekin uni ko'pincha eski skriptlarda topish mumkin.
 
-If we need to track uploading specifically, then we should listen to same events on `xhr.upload` object.
+Agar yuklashni maxsus kuzatishimiz kerak bo'lsa, `xhr.upload` obyektidagi xuddi shu voqealarni tinglashimiz kerak.

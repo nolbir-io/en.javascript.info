@@ -1,10 +1,10 @@
-# Find the full tag
+# To'liq tegni toping
 
-Write a regexp to find the tag `<style...>`. It should match the full tag: it may have no attributes  `<style>` or have several of them `<style type="..." id="...">`.
+`<style...>` tegini topish uchun regexp yozing. U to'liq tegga mos kelishi kerak: unda `<style>` atributlari bo'lmasligi yoki ularning bir nechtasi `<style type="..." id="...">` bo'lishi mumkin.
 
-...But the regexp should not match `<styler>`!
+...Lekin regexp `<styler>` bilan mos kelmasligi kerak!
 
-For instance:
+Masalan:
 
 ```js
 let regexp = /your regexp/g;

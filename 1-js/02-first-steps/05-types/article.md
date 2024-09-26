@@ -2,9 +2,9 @@
 
 JavaScriptdagi qiymat har doim aniq bir turda bo'ladi. Masalan, satr yoki raqam. 
 
-JavaScriptda 8 ta asosiy ma'lumot turi mavjud. Biz bu qismda ularni barchasini umumiy qamrab olamiz va keyingi bo'limlardan har biri haqida batafsil to'xtalib o'tamiz. 
+JavaScriptda 8 ta asosiy ma'lumot turi mavjud. Biz bu qismda ularnining barchasini umumiy qamrab olamiz va keyingi bo'limlarda ma'lumot turlarining har biri haqida batafsil to'xtalib o'tamiz. 
 
-Biz o'zgaruvchiga istalgan shaklni joylay olamiz. Masalan, o'zgaruvchi bir holatda satr bo'lib,  raqamni kiritishi mumkin:
+Biz o'zgaruvchiga istalgan shaklni joylay olamiz. Masalan, o'zgaruvchi bir holatda satr bo'lib, raqamni kiritishi mumkin:
 
 ```js
 // xato yo'q
@@ -12,7 +12,7 @@ let message = "hello";
 message = 123456;
 ```
 
-JavaScript kabi bunday narsalarga imkon beruvchi tillarni dasturlash "dinamik tarzda yozilgan" (dynamically typed) deb nomlanadi, va bu ma'lumot turlarini mavjudligini bildiradi, ammo o'zgaruvchilar bularning birortasiga ham tegishli emas. 
+JavaScript kabi bunday narsalarga imkon beruvchi tillarni dasturlash "dinamik tarzda yozilgan", ya'ni dynamically typed deb nomlanadi va bu ma'lumot turlari mavjudligini bildiradi, ammo o'zgaruvchilar bularning birortasiga ham tegishli emas. 
 
 ## Raqam
 
@@ -21,26 +21,26 @@ let n = 123;
 n = 12.345;
 ```
 
- Bu yerda *raqam* turi ham butun ham butun bo'lmagan raqamlarni ko'rsatadi
+ Bu yerda *raqam* turi ham butun, ham butun bo'lmagan raqamlarni ko'rsatadi.
 
-Raqamlar uchun ko'p amal (operatsiya)lar mavjud, jumladan, ko'paytirish `*`, bo'lish `/`, qo'shish `+`, ayrish `-`, vo boshqalar.
+Raqamlar uchun ko'plab amallar mavjud, jumladan, ko'paytirish `*`, bo'lish `/`, qo'shish `+`, ayrish `-` va boshqalar.
 
-Odatiy raqamlar bilan bir qatorda, ma'lumotning bu turiga tegishli bo'lgan yana "maxsus raqamli qiymatlar" (special numeric values) ham mavjud: `Infinity`, `-Infinity` va `NaN` 
+Odatiy raqamlar bilan bir qatorda, ma'lumotning bu turiga tegishli bo'lgan yana "maxsus raqamli qiymatlarham mavjud: `Infinity`, `-Infinity` va `NaN` 
 
 - `Infinity` - bu matematik cheksizlik [Infinity](https://en.wikipedia.org/wiki/Infinity) ∞ ni bildiradi. Bu maxsus qiymat bo'lib, u har qanday sondan katta.
 
-    Unga nolga bo'lish natijasida erishishimiz mumkin: 
+    Cheksiz qiymatga sonni nolga bo'lish natijasida erishishimiz mumkin: 
 
     ```js run
     alert( 1 / 0 ); // Infinity
     ```
 
-    Yoki uni to'g'ridan to'g'ri ta'kidlash:
+    Yoki unga to'g'ridan-to'g'ri murojaat qilish orqali:
 
     ```js run
     alert( Infinity ); // Infinity
     ```
-- `NaN` komputerga oid xatoni bildiradi. U noto'g'ri yoki ma'noga ega bo'lmagan matematik amal natijasidir , masalan:
+- `NaN` komputerga oid xatoni bildiradi. U noto'g'ri yoki ma'noga ega bo'lmagan matematik amal natijasidir, masalan:
 
     ```js run
     alert( "not a number" / 2 ); // NaN, bunday bo'lish asossiz
@@ -54,37 +54,32 @@ Odatiy raqamlar bilan bir qatorda, ma'lumotning bu turiga tegishli bo'lgan yana 
     alert( "not a number" / 2 - 1 ); // NaN
     ```
 
-    Shu tufayli, agar matemaik ifodaning biror joyida `NaN` bor bo'lsa, u butun natijaga tarqaladi (bunga faqatkina bitta istisno bor: `NaN ** 0` `1` ga teng).
+    Shu tufayli, agar matemaik ifodaning biror joyida `NaN` bor bo'lsa, u butun natijaga tarqaladi (bunday holda bitta istisno mavjud: `NaN ** 0` `1` ga teng).
 
 ```smart header="Matematik amallar xavfsizdir"
-JavaScriptda matematikani bajarish "xavfsiz". Biz istagan narsamizni qila olamiz: nolga bo'la olamiz, raqamli bo'lmagan qatorlarni raqam deb qaray olamiz, va hokazo.
+JavaScriptda matematik amallarni bajarish "xavfsiz". Biz istagan narsamizni qila olamiz: nolga bo'la olamiz, raqamli bo'lmagan qatorlarni raqam deb qaray olamiz va hokazo.
 
-Script hech qachon falokatli xato bilan to'xtab qolmaydi ("ishdan chiqmaydi"). eng yomon holatda, `NaN` ga duch kelishimiz mumkin.
+Skript hech qachon falokatli xato bilan to'xtab qolmaydi, ya'ni "ishdan chiqmaydi". Eng yomon holatda `NaN` ga duch kelishimiz mumkin.
 ```
 
-Maxsus raqamli qiymatlar rasmiy ravishda "raqam"(number) turiga tegishli. Albatta, ular bu so'zning umumiy ma'nosida raqamlar emas. 
+Maxsus raqamli qiymatlar rasmiy ravishda "raqam", ya'ni number ma'lumot turiga tegishli. Albatta, ular bu so'zning umumiy ma'nosida raqamlar emas. 
 
 Raqamlar bilan ishlashni <info:number> bo'limida ko'proq ko'rib chiqamiz.
 
 ## BigInt [#bigint-type]
 
-JavaScript da "raqam" turi <code>(2<sup>53</sup>-1)</code> (bu  `9007199254740991` ga teng) dan katta butun son qiymatini, yoki manfiylar uchun <code>-(2<sup>53</sup>-1)</code> dan kichigina son qiymatini ko'rsata olmaydi. Bu ularning ichki ifodasidan kelib chiqqan texnik cheklov. 
+JavaScript-da "raqam" turi `(253-1)` dan katta `(9007199254740991)` yoki manfiy sonlar uchun `-(253-1)` dan kichik butun sonlarni ishonchli tarzda ifodalay olmaydi.
 
- Shularning o'zi ham ko'p maqsadlarga yetarli bo'la oladi, lekin ba'zan bizga juda katta raqamlar kerak bo'ladi. Misol uchun, kriptografiya yoki mikrosoniyali aniqlikdagi vaqt belgilari uchun.
-In JavaScript, the "number" type cannot safely represent integer values larger than <code>(2<sup>53</sup>-1)</code> (that's `9007199254740991`), or less than <code>-(2<sup>53</sup>-1)</code> for negatives.
-
-To be really precise, the "number" type can store larger integers (up to <code>1.7976931348623157 * 10<sup>308</sup></code>), but outside of the safe integer range <code>±(2<sup>53</sup>-1)</code> there'll be a precision error, because not all digits fit into the fixed 64-bit storage. So an "approximate" value may be stored.
-
-For example, these two numbers (right above the safe range) are the same:
+ Haqiqatan ham, "raqam" turi kattaroq butun sonlarni saqlashi mumkin (1,7976931348623157 * 10308), lekin butun sonlarning xavfsiz diapazonidan tashqarida ±(253-1) aniqlik xatosi bo'ladi, chunki qattiq 64 bitli xotiraga hamma raqamlar ham mos kelmaydi. Shunday qilib, "taxminiy" qiymat saqlanishi mumkin.
 
 ```js
 console.log(9007199254740991 + 1); // 9007199254740992
 console.log(9007199254740991 + 2); // 9007199254740992
 ```
 
-So to say, all odd integers greater than <code>(2<sup>53</sup>-1)</code> can't be stored at all in the "number" type.
+Shunday qilib, (253-1) dan katta bo'lgan barcha toq sonlarni "raqam" turida saqlash mumkin emas.
 
-For most purposes <code>±(2<sup>53</sup>-1)</code> range is quite enough, but sometimes we need the entire range of really big integers, e.g. for cryptography or microsecond-precision timestamps.
+Ko'pgina maqsadlar uchun ± (253-1) diapazoni yetarli, lekin ba'zida bizga haqiqatan ham katta butun sonlarning butun diapazoni kerak bo'ladi, masalan, kriptografiya yoki mikrosoniyali aniqlikdagi vaqt belgilari uchun.
 
 `BigInt` ixtiyoriy uzunlikdagi butun sonlarni ifodalash uchun tilga yaqinda qo'shilgan. 
 
@@ -95,34 +90,34 @@ For most purposes <code>±(2<sup>53</sup>-1)</code> range is quite enough, but s
 const bigInt = 1234567890123456789012345678901234567890n;
 ```
 
-`BigInt` raqamlari kamdan kam hollarda kerak bo'lganligi tufayli biz ularni bu qismda ko'rib chiqmaymiz, lekin ularga alohida bo'lim <info:bigint> bag'ishladik. Sizga katta raqamlar kerak bo'lganda uni o'qib chiqing.
+`BigInt` raqamlari kamdan kam hollarda kerak bo'lganligi tufayli biz ularni bu qismda ko'rib chiqmaymiz, lekin ularga alohida bo'lim <info:bigint> ni bag'ishlaganmiz. Sizga katta raqamlar kerak bo'lganda uni o'qib chiqing.
 
 
 ```smart header="Compatibility issues"
-Xozirda `BigInt`  Firefox/Chrome/Edge/Safari lar tomonidan ishlatila oladi, lekin IE da emas.
+Hozirda `BigInt`  Firefox/Chrome/Edge/Safari lar tomonidan ishlatila oladi, lekin IE da emas.
 ```
 
 Siz brauzerning qaysi versiyalari ishlatila olishini bilish uchun [*MDN* BigInt compatibility table](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#Browser_compatibility)ni tekshirishingiz mumkin.
 
 ## Qator
 
-JavaScriptda satr qo'shtirnoqlar bilan o'rab olinishi kerak.
+JavaScriptda satr qo'shtirnoqlar bilan o'rab olinishi lozim.
 
 ```js
 let str = "Hello"; "salom" ;
-let str2 = 'Single quotes are ok too'; yakka qo'shtirnoqlar ham qabul qilinadi ; 
-let phrase = `boshqa bir  ${str} nio'rnata oladi`; 
+let str2 = yakka qo'shtirnoqlar ham qabul qilinadi ; 
+let phrase = `boshqa bir  ${str} ni o'rnata oladi`; 
 ```
 
 JavaScriptda 3 turdagi qo'shtirnoq bor.
 
 1. Ikkitalik qo'shtirnoq: `"Hello"`.
 2. Yakka qo'shtirnoq: `'Hello'`.
-3. Backticks: <code>&#96;Hello&#96;</code>.
+3. Backtick lar, ya'ni teskari belgilar: <code>&#96;Hello&#96;</code>.
 
 Ikkitali va yakka qo'shtirnoqlar "oddiy" qo'shtirnoqlar hisoblanadi. JavaScriptda ularda amaliy jihatdan hech qanaqa farq yo'q.
 
-Backtick lar "kengaytirilgan funksionallik" (extended functionality) qo'shtirnoqdir. Ular bizga o'zgaruvchilar va ifodalarni `${…}` belgilari ichiga o'rab olish orqali satrga kiritish imkoniyatini beradi, misol uchun:
+Backtick lar "kengaytirilgan funksionallik" qo'shtirnog'idir. Ular bizga o'zgaruvchilar va ifodalarni `${…}` belgilari ichiga o'rab olish orqali satrga kiritish imkoniyatini beradi, misol uchun:
 
 ```js run
 let name = "John";
@@ -138,20 +133,20 @@ alert( `natija *!*${1 + 2}*/!*` ); // natija 3
 
 Shuni yodda tutiki, bu faqat backticklardagina bo'ladi. Boshqa qo'shtirnoqnlarni bunday o'rnatish funksiyasi yo'q!
 ```js run
-alert( "natija ${1 + 2}" ); // natija ${1 + 2} (ikkitalik quote hech narsa qilmaydi)
+alert( "natija ${1 + 2}" ); // natija ${1 + 2} (ikkitalik qo'shtirnoq hech narsa qilmaydi)
 ```
 
 Biz satrlarni <info:string> bo'limida batafsiroq ko'rib chiqamiz.
 
-```smart header="*belgi* (character) turi mavjud emas."
-Ba'zi tillarda yakkalik belgiga maxsus "belgi" (character) turi bor. Masalan, C tilida va Java da bu "char" (character) dep nomlanadi. 
+```smart header="*belgi* turi mavjud emas."
+Ba'zi tillarda har bir belgi uchun maxsus "belgi" turi bor. Masalan, C tilida va Java da bu "char" (character) deb nomlanadi. 
 
-JavaScriptda bunday shakl yo'q, faqat bitta shakl mavjud: `satr`. Satr nol (bo'sh), bitta yoki bir nechata belgilaridan tashkil topgan bo'lishi mumkin,
+JavaScriptda bunday shakl yo'q, faqat bitta shakl mavjud: `string`, ya'ni satr. Satr nol (bo'sh), bitta yoki bir nechata belgilaridan tashkil topgan bo'lishi mumkin.
 ```
 
 ## Boolean (mantiqiy turi)
 
-The boolean turining faqat 2 dona qiymati bor:  `true` (to'g'ri)  va  `false` (noto'g'ri) .
+Boolean turining faqat 2 dona qiymati bor:  `true` (to'g'ri)  va  `false` (noto'g'ri) .
 
 Bu tur ko'pincha ha/yo'q qiymatlarini saqlab qo'yishda ishlatiladi: `true` "ha, to'g'ri" degani, va `false` "yo'q, noto'g'ri" degani.
 
@@ -172,7 +167,7 @@ alert( isGreater ); // true (to'g'ri) (qiyoslash natijasi "yes" (ha))
 
 Booleanlarga <info:logical-operators> bo'limida batafsilroq qarab chiqamiz.
 
-## The "null" value
+## "null" qiymati
 
 Maxsus `null` qiymati yuqorida ta'kidlab o'tilgan turlarning biortasiga ham tegishli emas.
 
@@ -182,17 +177,17 @@ U o'zining alohida turini shakllantiradi va u faqat `null` qiymatdan iborat:
 let age = null;
 ```
 
-JavaScriptda boshqa ba'zi tillarga o'xshab, `null` "mavjud bo'lmagan obyekt ma'nosini bildirmaydi" yoki a "null ko'rsatkich" emas.
+JavaScriptda boshqa dasturlash tillariga o'xshab, `null` "mavjud bo'lmagan obyekt ma'nosini bildirmaydi" yoki "null ko'rsatkich" emas.
 
-U faqatkina  "nothing" (hech narsa) , "empty" (bo'sh) yoki "value unknown" (noma'lum qiymat) larni bildiruvchi maxsus qiymat.
+U faqatgina  "nothing" (hech narsa) , "empty" (bo'sh) yoki "value unknown" (noma'lum qiymat) larni bildiruvchi maxsus qiymat hisoblanadi.
 
 Yuqoridagi kod `age` noma'lum ekanligini bildiradi. 
 
-## The "aniqlanmagan qiymat" (undefined value) 
+## "aniqlanmagan qiymat" (undefined value) 
 
-`undefined` maxsus qiymat ham boshqalardan ajralib turadi. U ham xuddi `null` singari o'zining turini shakllantiradi.
+`undefined` maxsus qiymat ham boshqalardan ajralib turadi. U ham huddi `null` singari o'zining turini shakllantiradi.
 
-`undefined` ning ma'nosi "qiymat belgilanmagan".
+`undefined` "qiymat belgilanmagan" degan ma'noni bildiradi.
 
 Agar o'zgaruvchi ma'lum qilinsa, ammo belgilanmasa, demak uning qiymati  `undefined` (aniqlanmagan) bo'ladi:
 
@@ -202,7 +197,7 @@ let age;
 alert(age); // belgi "undefined" ni ko'rsatadi
 ```
 
-Aslida, `undefined` ni o'zgaruvchiga ochig ravishda belgilashni iloji bor:
+Aslida, `undefined` ni o'zgaruvchiga ochig ravishda belgilashning iloji bor:
 
 ```js run
 let age = 100;
@@ -215,22 +210,22 @@ alert(age); // "undefined"
 
 ...Ammo bunday qilish tavsiya qilinmaydi. Ko'p holatlarda, foydalanuvchi `null`  "empty" (bo'sh) yoki "unknown" (noma'um) qiymatlarni o'zgaruvchiga belgilash uchun `null`dan foydalanadi, `undefined` esa belgilanmagan narsalarga birlamchi boshlang'ich qiymat sifatida saqlab qo'yiladi.
 
-## Jismlar va Ishoralar (Objects and Symbols)
+## Jismlar va Ishoralar
 
 `object` turi o'ziga xos hisoblanadi.
 
-Boshqa barcha turlar "primitive" (sodda) deb ataladi chunki ularning qiymati faqat bitta narsani o'z ichiga oladi (u qator yoki raqam yoki nimadir bo'lishidan qat'iy nazar). obyektlar bulardan farqli o'laroq, ma'lumotlar to'plami va mukammalroq bo'lgan birliklarni saqlashda foydalaniladi.
+Boshqa barcha turlar "primitive" (sodda) deb ataladi, chunki ularning qiymati qator yoki raqam bo'lishidan qat'iy nazar faqat bitta narsani o'z ichiga oladi. Bulardan farqli o'laroq, obyektlardan ma'lumotlar to'plami va mukammalroq bo'lgan birliklarni saqlashda foydalaniladi.
 
 
-Shu darajada muhim bo'lishi bilan bir qatorda, jismlar yana o'ziga xos yondashuvga ham arziydi. ular bilan keyinroq, primitive (sodda)lar haqida ko'proq o'rganib bo'lganimizdan kegin, <info:object> bo'limida ko'proq shug'ullanamiz. 
+Shu darajada muhim bo'lishi bilan bir qatorda, jismlar yana o'ziga xos yondashuvga ham arziydi. Ular bilan keyinroq, primitive (sodda)lar haqida ko'proq o'rganib bo'lganimizdan keyin <info:object> bo'limida ko'proq shug'ullanamiz. 
 
-`symbol` turi jismlar uchun yagona aniqlovchilar (identifiers) yaratishda foydalaniladi. To'liqlikni ta'minlash uchun, uni shu yerda ta'kidlab o'tdik, ammo tavsilotlarini jismlarni o'rganganimizgacha kechiktirb turamiz. 
+`symbol` turi jismlar uchun yagona aniqlovchilar, ya'ni identifiers ni yaratishda foydalaniladi. To'liqlikni ta'minlash uchun, uni shu yerda ta'kidlab o'tdik, ammo tafsilotlarni jismlarni o'rganganimizgacha kechiktirib turamiz. 
 
-## The typeof operator [#type-typeof]
+## typeof operatori [#type-typeof]
 
-`typeof` operatori argument (berilgan fikr) turini qaytaradi.Har xil turdagi qiymatlarni jarayondan o'tqazayotkanimizda yoki qisqa tekshiruv qilmoqchi bo'lganimizda ular foydali bo'ladi. 
+`typeof` operatori argument (berilgan fikr) turini qaytaradi. Har xil turdagi qiymatlarni jarayondan o'tqazayotganimizda yoki qisqa tekshiruv qilmoqchi bo'lganimizda ular foydali bo'ladi. 
 
-`typeof x` ni chaqirish satrni shakl nomi bilan qaytardai:
+`typeof x` ni chaqirish satrni shakl nomi bilan qaytaradi:
 
 ```js
 typeof undefined // "undefined" (aniqlanmagan)
@@ -258,50 +253,39 @@ typeof alert // "function" (funksiya) (3)
 */!*
 ```
 
-So'ngi uchta qatorga qo'shimcha tushuntirish(sharh) kerak bo'lishi mumkin:
+So'nggi uchta qatorga qo'shimcha tushuntirish kerak bo'lishi mumkin:
 
-1. `Math` bu matematik ammallar bilan ta'minlaydigan ichki(built-in) qurilma. biz uni <info:number> bo'limida o'rganamiz. Bu yerda esa u faqatkina jism (obyekt)ga misol xizmatini bajaradi. 
-2. `typeof null` ning natijasi `"object"` dir. Bu `typeof` da rasmiy tan olingan xato bo'lib, JavaScriptning dastlabki kunlaridan kelib chiqqan va mos kelish uchun saqlab qo'yilgan.`null` albatta obyekt emas. U o'zining alohida turiga ega bo'lgan maxsus qiymat. `typeof` ning buyerdagi xarakteristikasi xatodir.
-3. `typeof alert` ning natijasi`"function"` (funksiya)dir, chunki `alert` o'zi ham funksiya. Biz funksiyalarni keyingi qismlarda o'rganib chiqamiz, va unda JavaScriptda maxsus "function" (funksiy) turi yo'qligini ham ko'ramiz. Funksiyalar obyekt turiga tegishli. Ammo `typeof` ularga boshqacha qarab, `"function"` qaytaradi. Bu ham JavaScriptning dastlabki kunlaridan kelib chiqadi. Texnik jihatdan bunday xossalar to'g'ri emas, lekin amalda qulay bo'lishi mumkin.
+1. `Math` bu matematik ammallar bilan ta'minlaydigan ichki (built-in) qurilma. Biz uni <info:number> bo'limida o'rganamiz. Bu yerda esa u faqatgina jism (obyekt) uchun namuna xizmatini bajaradi. 
+2. `typeof null` ning natijasi `"object"` dir. Bu `typeof` da rasmiy tan olingan xato bo'lib, JavaScriptning dastlabki kunlaridan kelib chiqqan va mos kelish uchun saqlab qo'yilgan. `null` albatta obyekt emas. U o'zining alohida turiga ega bo'lgan maxsus qiymat. `typeof` ning bu yerdagi xarakteristikasi xatodir.
+3. `typeof alert` ning natijasi `"function"` (funksiya)dir, chunki `alert` ning o'zi ham funksiya. Biz funksiyalarni keyingi qismlarda o'rganib chiqamiz va unda JavaScriptda maxsus "function" (funksiy) turi yo'qligini ham ko'ramiz. Funksiyalar obyekt turiga tegishli. Ammo `typeof` ularga boshqacha munosabatda bo'lib, `"function"`ni qaytaradi. Bu ham JavaScriptning dastlabki kunlaridan kelib chiqadi. Texnik jihatdan bunday amallar to'g'ri emas, lekin amalda qulay bo'lishi mumkin.
 
 ```smart header="The `typeof(x)` sintaksis"
-boshqa sinkaksisga ham duch kelishingiz mumkin: `typeof(x)`. U `typeof x` bilan bir xil.
+boshqa `typeof(x)` sinkaksisiga ham duch kelishingiz mumkin. U `typeof x` bilan bir xil.
 
-Aniqroq qilib aytkanda: `typeof` bu operator hisoblanadi, funksiya emas. Bu yerdagi qavs `typeof`ning biror bo'lagi emas. U matematik gruppalashda ishlatiladigan qavs turi.
+Aniqroq qilib aytganda `typeof` funksiya emas, operator hisoblanadi. Bu yerdagi qavs `typeof`ning biror bo'lagi hisoblanmaydi, u matematik guruhlashda ishlatiladigan qavs turidir.
 
-Odatda, bunday qavslar matematik ifodani o'z ichiga oladi, masalan `(2 + 2)` kabi, lekin bu yerda ularda faqat bitta argument bor `(x)`. Sintaktik ravishda, Ular`typeof` operatori va uning argumenti o'rtasidagi bo'shliqdan qochish imkonini beradi, va bu ba'zilarga yoqadi>
+Odatda, bunday qavslar matematik ifodani o'z ichiga oladi, masalan `(2 + 2)` kabi, lekin bu yerda ularda faqat bitta `(x)` argumenti bor. Sintaktik ravishda, ular`typeof` operatori va uning argumenti o'rtasidagi bo'shliqdan qochish imkonini beradi va bu ba'zilarga ma'qul keladi>
 
-`typeof x` sintalsisi ancha keng tarqalgan bo'lishiga qaramay ba'zi odamlar `typeof(x)` ni afzal ko'radi, .
+`typeof x` sintalsisi ancha keng tarqalgan bo'lishiga qaramay ba'zi odamlar `typeof(x)` ni afzal ko'radi.
 ```
 
 ## Xulosa 
 
 JavaScriptda 8 ta ma'lumot turi mavjud.
 
-- `number` istalgan raqamalar turi uchun: butun yoki butun bo'lmagan sonlar, butun sonlar <code>±(2<sup>53</sup>-1)</code> kodi bilan chegaralanadi.
+- `number` har qanday turdagi raqamlar uchun: butun yoki suzuvchi nuqta, butun sonlar ±(253-1) bilan cheklangan.
 - `bigint` istalgan uzunlikdagi butun sonlar uchun.
 - `string` satrlar uchun. Satrda nol yoki ko'p belgilar bo'lishi mumkin, bularga alohida yakka shakl yo'q.
 - `boolean` `true`/`false` (to'g'ri/noto'g'ri) uchun.
-- `null` noma'lum qiymatlar uchun -- a standalone type that has a single value `null`.
-- `undefined` belgilanmagan qiymatlar uchun -- a standalone type that has a single value `undefined`.
+- `null` noma'lum qiymatlar uchun -- `null` yagona qiymatga ega bo'lgan mustaqil tur.
+- `undefined` belgilanmagan qiymatlar uchun -- yagona `aniqlanmagan` qiymatga ega bo'lgan mustaqil tur.
 - `object` mukammalroq ma'lumot tuzilmalari uchun.
 - `symbol` yagona aniqlovchilar uchun.
-- Seven primitive data types:
-    - `number` for numbers of any kind: integer or floating-point, integers are limited by <code>±(2<sup>53</sup>-1)</code>.
-    - `bigint` for integer numbers of arbitrary length.
-    - `string` for strings. A string may have zero or more characters, there's no separate single-character type.
-    - `boolean` for `true`/`false`.
-    - `null` for unknown values -- a standalone type that has a single value `null`.
-    - `undefined` for unassigned values -- a standalone type that has a single value `undefined`.
-    - `symbol` for unique identifiers.
-- And one non-primitive data type:
-    - `object` for more complex data structures.
 
 `typeof` operatori bizga o'zgaruvchida qaysi bir tur o'rnatilganini ko'rish imkonini beradi.
  
 - Odatda `typeof x`sifatida foydalaniladi, lekin `typeof(x)` ham ishlatilishi mumkin.
-- Satrni bir xil tur nomi bilan qaytaradi, xuddi `"string"` ga o'xshab.
-- `null` uchun `"object"` (obyekt)ni qaytaradi  -- bu tildagi xatodir, u aslida obyekt emas.
+- Satrni  huddi `"string"` ga o'xshab bir xil tur nomi bilan qaytaradi.
+- `null` uchun `"object"` (obyekt)ni qaytaradi  -- bu dasturlash tilidagi xatodir, u aslida obyekt emas.
 
-In the next chapters, we'll concentrate on primitive values and once we're familiar with them, we'll move on to objects.
-Keyingi bo'limlarda biz e'tiborimizni primitive (sodda) qiymatlarga qaratamiz va ular bilan tanishib chiqqanimizdan so'ng, obyektlarga o'tamiz. 
+Keyingi bo'limlarda biz primitive (sodda) qiymatlarga e'tibor qaratamiz va ular bilan tanishib chiqqanimizdan so'ng, obyektlarga o'tamiz. 

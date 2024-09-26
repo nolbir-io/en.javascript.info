@@ -1,43 +1,42 @@
-# Browser default actions
+# Brauzerning standart harakatlari
 
-Many events automatically lead to certain actions performed by the browser.
+Ko'pgina hodisalar avtomatik ravishda brauzer tomonidan amalga oshiriladigan muayyan harakatlarga olib keladi.
 
-For instance:
+Masalan:
 
-- A click on a link - initiates navigation to its URL.
-- A click on a form submit button - initiates its submission to the server.
-- Pressing a mouse button over a text and moving it - selects the text.
+- Havolani bosish - uning URL manziliga navigatsiyani boshlaydi.
+- Shaklni yuborish tugmasini bosish - uni serverga yuborishni boshlaydi.
+- Matn ustida sichqoncha tugmasini bosish va uni siljitish - matnni tanlaydi.
 
-If we handle an event in JavaScript, we may not want the corresponding browser action to happen, and want to implement another behavior instead.
+Agar biz JavaScriptda hodisani ko'rib chiqsak, brauzerning tegishli harakatini amalga oshirishni istamaymiz va uning o'rniga boshqa xatti-harakatni amalga oshirishni xohlaymiz.
 
-## Preventing browser actions
+## Brauzer harakatlarining oldini olish
 
-There are two ways to tell the browser we don't want it to act:
+Brauzerga uning harakat qilishini xohlamasligimizni aytishning ikki yo'li mavjud:
 
-- The main way is to use the `event` object. There's a method `event.preventDefault()`.
-- If the handler is assigned using `on<event>` (not by `addEventListener`), then returning `false` also works the same.
+- Asosiy usul - `event` obyektidan foydalanish. `event.preventDefault()` usuli mavjud.
+- Agar ishlov beruvchi `on<event>` (`addEventListener` tomonidan emas) yordamida tayinlangan bo'lsa, `false`ni qaytarish ham xuddi shunday ishlaydi.
 
-In this HTML, a click on a link doesn't lead to navigation; the browser doesn't do anything:
+Ushbu HTMLda havolani bosish navigatsiyaga olib kelmaydi, brauzer hech narsa qilmaydi:
 
 ```html autorun height=60 no-beautify
 <a href="/" onclick="return false">Click here</a>
 or
 <a href="/" onclick="event.preventDefault()">here</a>
 ```
+Keyingi misolda biz JavaScriptga asoslangan menyu yaratish uchun ushbu texnikadan foydalanamiz.
 
-In the next example we'll use this technique to create a JavaScript-powered menu.
+```warn header="Handler dan `false` ni qaytarish istisnodir"
+Hodisa ishlov beruvchisi tomonidan qaytarilgan qiymat odatda e'tiborga olinmaydi.
 
-```warn header="Returning `false` from a handler is an exception"
-The value returned by an event handler is usually ignored.
+Yagona istisno bu `on<event>` yordamida tayinlangan ishlov beruvchidan `return false` dir.
 
-The only exception is `return false` from a handler assigned using `on<event>`.
-
-In all other cases, `return` value is ignored. In particular, there's no sense in returning `true`.
+Boshqa barcha holatlarda `return` qiymati e'tiborga olinmaydi. Xususan, `true` ni qaytarishdan foyda yo'q.
 ```
 
-### Example: the menu
+### Namuna: menu
 
-Consider a site menu, like this:
+Quyidagi kabi sayt menyusini ko'rib chiqing:
 
 ```html
 <ul id="menu" class="menu">
@@ -47,79 +46,75 @@ Consider a site menu, like this:
 </ul>
 ```
 
-Here's how it looks with some CSS:
+U CSS yordamida quyidagicha ko'rinishga ega bo'ladi:
 
 [iframe height=70 src="menu" link edit]
 
-Menu items are implemented as HTML-links `<a>`, not buttons `<button>`. There are several reasons to do so, for instance:
+Menyu elementlari `<button>` tugmalari emas, balki HTML-havolalari `<a>` sifatida amalga oshiriladi. Buning bir qancha sabablari bor, masalan:
 
-- Many people like to use "right click" -- "open in a new window". If we use `<button>` or `<span>`, that doesn't work.
-- Search engines follow `<a href="...">` links while indexing.
+- Ko'pchilik "o'ng tugmasini bosing" -- "yangi oynada ochish" dan foydalanishni yaxshi ko'radi. Agar biz `<button>` yoki `<span>` ishlatsak, bu ishlamaydi.
+- Indekslashda qidiruv tizimlari `<a href="...">` havolalariga amal qiladi.
 
-So we use `<a>` in the markup. But normally we intend to handle clicks in JavaScript. So we should prevent the default browser action.
+Shunday qilib, biz belgilashda `<a>` dan foydalanamiz. Lekin odatda biz JavaScriptda clicklarni boshqarish niyatidamiz. Shunday qilib, biz standart brauzer harakatini oldini olishimiz kerak.
 
-Like here:
+Quyidagi kabi:
 
 ```js
 menu.onclick = function(event) {
   if (event.target.nodeName != 'A') return;
 
   let href = event.target.getAttribute('href');
-  alert( href ); // ...can be loading from the server, UI generation etc
+  alert( href ); // ...serverdan yuklanishi mumkin, UI yaratish va hokazo
 
 *!*
-  return false; // prevent browser action (don't go to the URL)
+  return false; // brauzer harakatini oldini olish (URLga kirmang)
 */!*
 };
 ```
+Agar `return false` ni o'tkazib yuborsak, kodimiz bajarilgandan so'ng brauzer o'zining "standart amalini" bajaradi -- `href` da URL manziliga o'tadi. Va bu harakat bizga kerak emas, chunki biz click bilan bog'liq muammoni o'zimiz hal qilamiz.
 
-If we omit `return false`, then after our code executes the browser will do its "default action" -- navigating to the URL in `href`. And we don't need that here, as we're handling the click by ourselves.
+Aytgancha, bu yerda event delegatsiyasidan foydalanish menyumizni juda moslashuvchan qiladi. Biz ichki ro'yxatlarni qo'shishimiz va ularni "pastga siljitish" uchun CSS dan foydalanib uslublashimiz mumkin.
 
-By the way, using event delegation here makes our menu very flexible. We can add nested lists and style them using CSS to "slide down".
+````smart header="Follow-up hodisalari"
+Muayyan hodisalar bir-biriga o'tadi. Agar birinchi hodisaning oldini olsak, ikkinchisi bo'lmaydi.
 
-````smart header="Follow-up events"
-Certain events flow one into another. If we prevent the first event, there will be no second.
+Masalan, `<input>` maydonidagi `mousedown` unda diqqatni jamlashga va `focus` hodisasiga olib keladi. Agar biz `mousedown` hodisasini oldini olsak, diqqat markazida bo'lmaydi.
 
-For instance, `mousedown` on an `<input>` field leads to focusing in it, and the `focus` event. If we prevent the `mousedown` event, there's no focus.
-
-Try to click on the first `<input>` below -- the `focus` event happens. But if you click the second one, there's no focus.
+Quyidagi birinchi `<input>` tugmasini bosishga harakat qiling -- `focus` hodisasi sodir bo'ladi. Ammo ikkinchisini bossangiz, diqqat markazida bo'lmaydi.
 
 ```html run autorun
 <input value="Focus works" onfocus="this.value=''">
 <input *!*onmousedown="return false"*/!* onfocus="this.value=''" value="Click me">
 ```
-
-That's because the browser action is canceled on `mousedown`. The focusing is still possible if we use another way to enter the input. For instance, the `key:Tab` key to switch from the 1st input into the 2nd. But not with the mouse click any more.
+Buning sababi, brauzer harakati `mousedown` da bekor qilinadi. Agar inputni kiritishning boshqa usulidan foydalansak, fokuslash hali ham mumkin. Masalan, birinchi kirishdan ikkinchisiga o'tish uchun `key: Tab` tugmasi, lekin endi sichqonchani bosish bilan bajarilmaydi.
 ````
+## "passiv" ishlov beruvchi varianti
 
-## The "passive" handler option
+`addEventListener` ning ixtiyoriy `passiv: true` opsiyasi brauzerga ishlov beruvchi `preventDefault()` ni chaqirmoqchi emasligini bildiradi.
 
-The optional `passive: true` option of `addEventListener` signals the browser that the handler is not going to call `preventDefault()`.
+Nima uchun bu kerak bo'lishi mumkin?
 
-Why might that be needed?
+Mobil qurilmalarda `touchmove` kabi ba'zi hodisalar mavjud (foydalanuvchi barmog'ini ekran bo'ylab harakatlantirganda), bu sukut bo'yicha aylantirishga olib keladi, lekin ishlov beruvchida `preventDefault()` yordamida aylantirishni oldini olish mumkin.
 
-There are some events like `touchmove` on mobile devices (when the user moves their finger across the screen), that cause scrolling by default, but that scrolling can be prevented using `preventDefault()` in the handler.
+Shunday qilib, brauzer bunday hodisani aniqlaganida, u avval barcha ishlov beruvchilarni qayta ishlashi kerak, keyin esa `preventDefault` hech qanday joyda chaqirilmasa, u aylantirishni davom ettirishi mumkin. Bu UIda keraksiz kechikishlar va "jitterlar" ga olib kelishi mumkin.
 
-So when the browser detects such event, it has first to process all handlers, and then if `preventDefault` is not called anywhere, it can proceed with scrolling. That may cause unnecessary delays and "jitters" in the UI.
+`Passiv: true` opsiyalari brauzerga ishlov beruvchi aylantirishni bekor qilmoqchi emasligini bildiradi. Keyin brauzer darhol harakat qiladi va maksimal darajada ravon tajribani taqdim etadi va event shu tarzda hal qilinadi.
 
-The `passive: true` options tells the browser that the handler is not going to cancel scrolling. Then browser scrolls immediately providing a maximally fluent experience, and the event is handled by the way.
-
-For some browsers (Firefox, Chrome), `passive` is `true` by default for `touchstart` and `touchmove` events.
-
+Ba'zi brauzerlar (Firefox, Chrome) uchun `passive` sukut bo'yicha `touchstart` va `touchmove` hodisalari uchun `true` hisoblanadi.
 
 ## event.defaultPrevented
 
-The property `event.defaultPrevented` is `true` if the default action was prevented, and `false` otherwise.
+`Event.defaultPrevented` xususiyati, agar birlamchi harakatning oldi olinsa, `true`, aks holda `false` bo'ladi.
 
-There's an interesting use case for it.
+Buning uchun qiziqarli foydalanish holati mavjud.
 
-You remember in the chapter <info:bubbling-and-capturing> we talked about `event.stopPropagation()` and why stopping bubbling is bad?
+Esingizdami, <info:bubbling-and-capturing> bobida biz `event.stopPropagation()` haqida gapirgan edik va nima uchun bubblingni to'xtatish yomon?
 
-Sometimes we can use `event.defaultPrevented` instead, to signal other event handlers that the event was handled.
+Ba'zan biz boshqa hodisa ishlovchilarga voqea o'tkazilganligini bildirish uchun o'rniga `event.defaultPrevented` dan foydalanishimiz mumkin.
 
-Let's see a practical example.
+Keling, amaliy misolni ko'rib chiqaylik.
 
-By default the browser on `contextmenu` event (right mouse click) shows a context menu with standard options. We can prevent it and show our own, like this:
+Odatiy bo'lib, `contextmenu` hodisasidagi brauzer (sichqonchaning o'ng tugmasi) standart variantlarga ega kontekst menyusini ko'rsatadi. Biz buni oldini olishimiz va o'zimiznikini ko'rsatishimiz mumkin, masalan:
 
 ```html autorun height=50 no-beautify run
 <button>Right-click shows browser context menu</button>
@@ -128,10 +123,9 @@ By default the browser on `contextmenu` event (right mouse click) shows a contex
   Right-click shows our context menu
 </button>
 ```
+Endi ushbu kontekst menyusiga qo'shimcha ravishda biz hujjat bo'ylab kontekst menyusini qo'llashni xohlaymiz.
 
-Now, in addition to that context menu we'd like to implement document-wide context menu.
-
-Upon right click, the closest context menu should show up.
+O'ng tugmasini bosgandan so'ng, eng yaqin kontekst menyusi paydo bo'ladi.
 
 ```html autorun height=80 no-beautify run
 <p>Right-click here for the document context menu</p>
@@ -149,10 +143,9 @@ Upon right click, the closest context menu should show up.
   };
 </script>
 ```
+Muammo shundaki, biz `elem` ni bosganimizda ikkita menyuga ega bo'lamiz: tugma darajasidagi va (event pufakchalari) hujjat darajasidagi menyu.
 
-The problem is that when we click on `elem`, we get two menus: the button-level and (the event bubbles up) the document-level menu.
-
-How to fix it? One of solutions is to think like: "When we handle right-click in the button handler, let's stop its bubbling" and use `event.stopPropagation()`:
+Uni qanday tuzatish kerak? Yechimlardan biri shunday deb o'ylashdir: "Tugmani ishlov beruvchida sichqonchaning o'ng tugmachasini bosganimizda, uning ko'piklanishini to'xtatamiz" va `event.stopPropagation()` dan foydalanamiz:
 
 ```html autorun height=80 no-beautify run
 <p>Right-click for the document menu</p>
@@ -173,10 +166,9 @@ How to fix it? One of solutions is to think like: "When we handle right-click in
   };
 </script>
 ```
+Endi tugma darajasidagi menyu mo'ljallanganidek ishlaydi, lekin narxi yuqori. Biz har qanday tashqi kod uchun sichqonchaning o'ng tugmalari haqidagi ma'lumotlarga kirishni abadiy rad etamiz, jumladan, statistikani to'playdigan hisoblagichlar va boshqalar. Bu anchagina ma'nosiz.
 
-Now the button-level menu works as intended. But the price is high. We forever deny access to information about right-clicks for any outer code, including counters that gather statistics and so on. That's quite unwise.
-
-An alternative solution would be to check in the `document` handler if the default action was prevented? If it is so, then the event was handled, and we don't need to react on it.
+Muqobil yechim, agar standart harakatning oldini olgan bo'lsa, `document` ishlov beruvchisida tekshirish bo'ladimi? Agar shunday bo'lsa, unda event ko'rib chiqildi va biz bunga munosabat bildirishimiz shart emas.
 
 
 ```html autorun height=80 no-beautify run
@@ -199,46 +191,45 @@ An alternative solution would be to check in the `document` handler if the defau
   };
 </script>
 ```
+Endi hamma narsa ham to'g'ri ishlaydi. Agar bizda ichki elementlar mavjud bo'lsa va ularning har birining o'ziga xos kontekst menyusi bo'lsa, bu ham ishlaydi. Har bir `contextmenu` ishlov beruvchisida `event.defaultPrevented` ni tekshiring.
 
-Now everything also works correctly. If we have nested elements, and each of them has a context menu of its own, that would also work. Just make sure to check for `event.defaultPrevented` in each `contextmenu` handler.
-
-```smart header="event.stopPropagation() and event.preventDefault()"
-As we can clearly see, `event.stopPropagation()` and `event.preventDefault()` (also known as `return false`) are two different things. They are not related to each other.
+```smart header="event.stopPropagation() va event.preventDefault()"
+Ko'rib turganimizdek, `event.stopPropagation()` va `event.preventDefault()` (shuningdek, `return false` deb ham ataladi) ikki xil narsadir. Ular bir-biriga bog'liq emas.
 ```
 
-```smart header="Nested context menus architecture"
-There are also alternative ways to implement nested context menus. One of them is to have a single global object with a handler for `document.oncontextmenu`, and also methods that allow us to store other handlers in it.
+```smart header="Ichki kontekst menyusi arxitekturasi"
+Ichki kontekst menyularini amalga oshirishning muqobil usullari ham mavjud. Ulardan biri `document.oncontextmenu` uchun ishlov beruvchiga ega bo'lgan yagona global obyektga ega bo'lish, shuningdek, unda boshqa ishlov beruvchilarni saqlashga imkon beruvchi usullardir.
 
-The object will catch any right-click, look through stored handlers and run the appropriate one.
+Obyekt sichqonchaning o'ng tugmachasini bosadi, saqlangan ishlov beruvchilarni ko'rib chiqadi va mos keladiganini ishga tushiradi.
 
-But then each piece of code that wants a context menu should know about that object and use its help instead of the own `contextmenu` handler.
+Ammo keyin kontekst menyusini xohlaydigan har bir kod qismi ushbu obyekt haqida bilishi va o'zining `contextmenu` ishlovchisi o'rniga uning yordamidan foydalanishi kerak.
 ```
 
-## Summary
+## Xulosa
 
-There are many default browser actions:
+Ko'pgina standart brauzer amallari mavjud:
 
-- `mousedown` -- starts the selection (move the mouse to select).
-- `click` on `<input type="checkbox">` -- checks/unchecks the `input`.
-- `submit` -- clicking an `<input type="submit">` or hitting `key:Enter` inside a form field causes this event to happen, and the browser submits the form after it.
-- `keydown` -- pressing a key may lead to adding a character into a field, or other actions.
-- `contextmenu` -- the event happens on a right-click, the action is to show the browser context menu.
-- ...there are more...
+- `mousedown` -- tanlashni boshlaydi (tanlash uchun sichqonchani harakatlantiring).
+- `<input type="checkbox">` ustiga `click` -- `input`ni tekshiradi/cheklaydi.
+- `yuborish` -- forma maydonidagi `<input type="submit">` tugmasini bosish yoki `key:Enter` tugmasini bosish event sodir bo'lishiga olib keladi va brauzer undan keyin shaklni yuboradi.
+- `keydown` -- tugmani bosish maydonga belgi qo'shishga yoki boshqa harakatlarga olib kelishi mumkin.
+- `contextmenu` -- hodisa sichqonchaning o'ng tugmasi bilan sodir bo'ladi, amal brauzer kontekst menyusini ko'rsatishdir.
+- ...va boshqalar...
 
-All the default actions can be prevented if we want to handle the event exclusively by JavaScript.
+Agar biz hodisani faqat JavaScript orqali boshqarishni istasak, barcha standart harakatlarni oldini olish mumkin.
 
-To prevent a default action -- use either `event.preventDefault()` or  `return false`. The second method works only for handlers assigned with `on<event>`.
+Standart harakatni oldini olish uchun -- `event.preventDefault()` yoki `return false` dan foydalaning. Ikkinchi usul faqat `on<event>` bilan tayinlangan ishlov beruvchilar uchun ishlaydi.
 
-The `passive: true` option of `addEventListener` tells the browser that the action is not going to be prevented. That's useful for some mobile events, like `touchstart` and `touchmove`, to tell the browser that it should not wait for all handlers to finish before scrolling.
+`addEventListener` ning `passiv: true` opsiyasi brauzerga harakatning oldini olinmasligini bildiradi. Bu `touchstart` va `touchmove` kabi ba'zi mobil hodisalar uchun brauzerga aylantirishdan oldin barcha ishlov beruvchilar tugashini kutmasligi kerakligini aytish uchun foydalidir.
 
-If the default action was prevented, the value of `event.defaultPrevented` becomes `true`, otherwise it's `false`.
+Agar sukut bo'yicha harakat oldini olgan bo'lsa, `event.defaultPrevented` qiymati `true`ga aylanadi, aks holda `false` bo'ladi.
 
-```warn header="Stay semantic, don't abuse"
-Technically, by preventing default actions and adding JavaScript we can customize the behavior of any elements. For instance, we can make a link `<a>` work like a button, and a button `<button>` behave as a link (redirect to another URL or so).
+```warn header="Semantik bo'ling, suiiste'mol qilmang"
+Texnik jihatdan, standart harakatlarni oldini olish va JavaScriptni qo'shish orqali biz har qanday elementlarning harakatini sozlashimiz mumkin. Masalan, biz `<a>` havolasini tugma kabi ishlashi mumkin va `<button>` tugmasi havola sifatida ishlaydi (boshqa URL manziliga yo'naltirish yoki shunga o'xshash).
 
-But we should generally keep the semantic meaning of HTML elements. For instance, `<a>` should perform navigation, not a button.
+Ammo biz odatda HTML elementlarining semantik ma'nosini saqlashimiz kerak. Masalan, `<a>` tugma emas, navigatsiyani amalga oshirishi kerak.
 
-Besides being "just a good thing", that makes your HTML better in terms of accessibility.
+"Yaxshi narsa" bo'lishdan tashqari, bu sizning HTML ingizni qulaylik nuqtayi nazaridan yaxshilaydi.
 
-Also if we consider the example with `<a>`, then please note: a browser allows us to open such links in a new window (by right-clicking them and other means). And people like that. But if we make a button behave as a link using JavaScript and even look like a link using CSS, then `<a>`-specific browser features still won't work for it.
+Shuningdek, `<a>` bilan misolni ko'rib chiqsak, diqqat qiling: brauzer bizga bunday havolalarni yangi oynada ochishga imkon beradi (ularni va boshqa vositalarni o'ng tugmasini bosib). Va bu odamlarga yoqadi. Agar biz tugmachani JavaScriptdan foydalanib havola sifatida ishlasak va hatto CSSdan foydalangan holda havolaga o'xshab qolsak, u holda `<a>` brauzeriga xos xususiyatlar baribir u uchun ishlamaydi.
 ```

@@ -1,13 +1,13 @@
 # Rejalashtirish: setTimeout and setInterval
 
-Biz funktsiyani hozir emas, balki ma'lum bir vaqtda bajarishga qaror qilishimiz mumkin. Bu "chaqiruvni rejalashtirish" deb ataladi.
+Biz funksiyani hozir emas, balki ma'lum bir vaqtda bajarishga qaror qilishimiz mumkin. Bu "chaqiruvni rejalashtirish" deb ataladi.
 
 Buning uchun ikkita metod mavjud:
 
-- `setTimeout` vaqt oralig'idan keyin funktsiyani bir marta ishga tushirishga imkon beradi.
+- `setTimeout` vaqt oralig'idan keyin funksiyani bir marta ishga tushirishga imkon beradi.
 - `setInterval` vaqt oralig'idan keyin boshlab, so'ngra shu oraliqda uzluksiz takrorlanadigan funksiyani qayta-qayta ishga tushirishga imkon beradi.
 
-Bu metodlar JavaScript spetsifikatsiyasining bir qismi emas. Ammo ko'pgina muhitlar ichki rejalashtiruvchiga ega va bu metodlarni ta'minlaydi. Xususan, ular barcha brauzerlarda va Node.js da qo'llab-quvvatlanadi.
+Bu metodlar JavaScript spesifikatsiyasining bir qismi emas. Ammo ko'pgina muhitlar ichki rejalashtiruvchiga ega va bu metodlarni ta'minlaydi. Xususan, ular barcha brauzerlarda va Node.js da qo'llab-quvvatlanadi.
 ## setTimeout
 
 Sintaksis:
@@ -19,14 +19,14 @@ let timerId = setTimeout(func|code, [delay], [arg1], [arg2], ...)
 Parametrlari:
 
 `func|code`
-: Funktsiya yoki bajariladigan kodlar stringi.
-Odatda, bu funktsiya. Tarixiy sabablarga ko'ra kodlar stringi uzatilishi mumkin, ammo bu tavsiya etilmaydi.
+: Funksiya yoki bajariladigan kodlar stringi.
+Odatda, bu funksiya hisoblanadi. Tarixiy sabablarga ko'ra kodlar stringi uzatilishi mumkin, ammo bu tavsiya etilmaydi.
 
 `delay`
 : Ishlashdan oldingi kechikish, millisekundlarda (1000 ms = 1 soniya), standard bo'yicha 0.
 
 `arg1`, `arg2`...
-: Funktsiya uchun argumentlar (IE9da qo'llab-quvvatlanmaydi)
+: Funksiya uchun argumentlar (IE9da qo'llab-quvvatlanmaydi)
 
 Masalan, bu kod bir soniyadan keyin `sayHi()` ni chaqiradi:
 
@@ -60,13 +60,13 @@ Shunday qilib, bu ham ishlaydi:
 setTimeout("alert('Hello')", 1000);
 ```
 
-Ammo stringlardan foydalanish tavsiya etilmaydi, ular o'rniga arrow funktsiyalaridan foydalaning, masalan:
+Ammo stringlardan foydalanish tavsiya etilmaydi, ularning o'rniga arrow (strelka) funksiyalaridan foydalaning, masalan:
 
 ```js run no-beautify
 setTimeout(() => alert('Hello'), 1000);
 ```
 ``
-``smart header="Funktsiyani topshiring, lekin uni ishga tushirmang"
+``smart header="Funksiyani topshiring, lekin uni ishga tushirmang"
 Yangi dasturchilar ba'zan funksiyadan keyin `()` qavs qo'yish orqali xato qilishadi:
 ``
 ```js
@@ -87,7 +87,7 @@ let timerId = setTimeout(...);
 clearTimeout(timerId);
 ```
 
-Quyidagi kodda biz funktsiyani rejalashtiramiz va keyin uni bekor qilamiz (fikrimizni o'zgartirdik). Natijada, hech narsa sodir bo'lmaydi:
+Quyidagi kodda biz funksiyani rejalashtiramiz va keyin uni bekor qilamiz (fikrimizni o'zgartirdik). Natijada, hech narsa sodir bo'lmaydi:
 
 ```js run no-beautify
 let timerId = setTimeout(() => alert("never happens"), 1000);
@@ -97,15 +97,15 @@ clearTimeout(timerId);
 alert(timerId); // bir xil identifikator (bekor qilingandan keyin null bo'lmaydi)
 ```
 
-`alert` chiqishidan ko'rib turganimizdek, brauzerda timer identifikatori raqamdir. Boshqa muhitlarda bu boshqa narsa bo'lishi mumkin. Masalan, Node.js qo'shimcha metodlar bilan timer ob'ektini qaytaradi.
+`alert` chiqishidan ko'rib turganimizdek, brauzerda timer identifikatori raqamdir. Boshqa muhitlarda bu boshqa narsa bo'lishi mumkin. Masalan, Node.js qo'shimcha metodlar bilan timer obyektini qaytaradi.
 
-Shunga qaramay, bu metodlar uchun universal spetsifikatsiya yo'q, shuning uchun bu yaxshi.
+Shunga qaramay, bu metodlar uchun universal spesifikatsiya yo'q, shuning uchun bu yomon holat emas.
 
 Brauzerlar uchun timerlar HTML Living Standardning [timerlar bo'limida](https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers) tasvirlangan.
 
 ## setInterval
 
-“setInterval” usuli “setTimeout” bilan bir xil sintaksisga ega:
+`setInterval` usuli `setTimeout` bilan bir xil sintaksisga ega:
 
 ```js
 let timerId = setInterval(func|code, [delay], [arg1], [arg2], ...)
@@ -118,10 +118,10 @@ Keyingi chaqiruvlarni to'xtatish uchun biz `clearInterval(timerId)` ni chaqirish
 Quyidagi misolda xabar har 2 soniyada ko'rsatiladi. 5 soniyadan so'ng chiqish to'xtatiladi:
 
 ```js run
-// repeat with the interval of 2 seconds
+// 2 soniya oralig'i bilan takrorlang
 let timerId = setInterval(() => alert('tick'), 2000);
 
-// after 5 seconds stop
+// 5 soniyadan keyin to'xtang
 setTimeout(() => { clearInterval(timerId); alert('stop'); }, 5000);
 ```
 
@@ -129,14 +129,14 @@ smart header="`Alert` ko'rsatilganda vaqt davom etadi"
 
 Ko'pgina brauzerlarda, jumladan, Chrome va Firefox brauzerlarida `alert/confirm/prompt` ko'rsatilayotganda ichki timer "belgilashda" davom etadi.
 
-Shunday qilib, agar siz yuqoridagi kodni ishga tushirsangiz va `alert` oynasini bir muncha vaqt o‘tkazib yubormasangiz, keyingi `alert` buni qilganingizda darhol ko‘rsatiladi. Alertlar orasidagi haqiqiy interval 2 soniyadan qisqaroq bo'ladi.
+Shunday qilib, agar siz yuqoridagi kodni ishga tushirsangiz va `alert` oynasini bir muncha vaqt o'tkazib yubormasangiz, keyingi `alert` buni qilganingizda darhol ko'rsatiladi. Alertlar orasidagi haqiqiy interval 2 soniyadan qisqaroq.
 ```
 ```
 ## Ichma-ich setTimeout
 
-Biror narsani muntazam ravishda ishlatishning ikki yo'li mavjud.
+Biror narsani muntazam ravishda ishlatishning ikkita yo'li mavjud.
 
-Ulardan biri `setInterval`. Ikkinchisi ichki o'rnatilgan `setTimeout` dir, quyidagicha:
+Ulardan biri `setInterval`. Ikkinchisi ichki o'rnatilgan `setTimeout` dir, quyida batafsil tushuntirilgan:
 
 ```js
 /** o'rniga:
@@ -153,11 +153,11 @@ let timerId = setTimeout(function tick() {
 
 Yuqoridagi `setTimeout` keyingi chaqiruvni joriy chaqiruvning `(*)` oxirida rejalashtiradi.
 
-Ichki `setTimeout` `setInterval` ga qaraganda ancha moslashuvchan usul. Shunday qilib, keyingi chaqiruv joriy chaqiruvning natijalariga qarab boshqacha rejalashtirilishi mumkin.
+Ichki `setTimeout` `setInterval` ga qaraganda ancha moslashuvchan usul. Shunday qilib, keyingi chaqiruv joriy chaqiruvning natijalariga qarab boshqacha rejalashtirilishi mumkin. 
 
 Misol uchun, biz serverga har 5 soniyada ma'lumot so'rab so'rov yuboradigan xizmatni yozishimiz kerak, ammo agar server haddan tashqari yuklangan bo'lsa, u intervalni 10, 20, 40 soniyagacha oshirishi kerak ...
 
-Quyida psevdokod:
+Quyida psevdokod berilgan:
 ```js
 let delay = 5000;
 
@@ -165,7 +165,7 @@ let timerId = setTimeout(function request() {
   ...send request...
 
   if (request failed due to server overload) {
-    // keyingi ishga tushirishgacha oralig'ini oshiring
+    // keyingi ishga tushirishgacha bo'lgan oraliqni oshiring
     delay *= 2;
   }
 
@@ -202,19 +202,19 @@ setTimeout(function run() {
 
 ![](setinterval-interval.svg)
 
-Siz sezdingizmi?
+Sezdingizmi?
 
-**`setInterval` uchun `func` chaqiruvlari orasidagi haqiqiy kechikish koddagidan kamroq!**
+**`setInterval` uchun `func` chaqiruvlari orasidagi haqiqiy kechikish koddagi kechikish vaqtidan kamroq!**
 
 Bu normal holat, chunki `func` ning bajarilishi uchun vaqt oralig'ining bir qismini "iste'mol qiladi".
 
 Balki `func` ning bajarilishi biz kutganimizdan uzoqroq va 100 ms dan ortiq vaqtni oladi.
 
-Bunday holda, vosita `func` tugashini kutadi, keyin rejalashtiruvchini tekshiradi va agar vaqt tugasa, uni yana *darhol* ishga tushiradi.
+Bunday holda, vosita `func` tugashini kutadi, keyin rejalashtiruvchini tekshiradi va agar vaqt tugasa, uni yana *darhol* ishga tushiradi. 
 
 Kengaytirilgan holatda, agar funktsiya har doim `delay` ms dan uzoqroq bajarilsa, chaqiruvlar umuman pauzasiz amalga oshiriladi.
 
-Va bu yerda ichki o'rnatilgan `setTimeout` uchun rasm:
+Va bu yerda ichki o'rnatilgan `setTimeout` uchun rasm ko'rsatilgan:
 
 ![](settimeout-interval.svg)
 
@@ -223,16 +223,16 @@ Va bu yerda ichki o'rnatilgan `setTimeout` uchun rasm:
 Buning sababi, avvalgi chaqiruvning oxirida yangi chaqiruv rejalashtirilgan.
 
 ``smart header="Axlat yig'ish va setInterval/setTimeout callback"
-Funktsiya `setInterval/setTimeout` da uzatilganda, unga ichki havola yaratiladi va rejalashtiruvchida saqlanadi. Bu funktsiyaga boshqa havolalar bo'lmasa ham, axlat yig'ilishining oldini oladi.
+Funksiya `setInterval/setTimeout` da uzatilganda, unga ichki havola yaratiladi va rejalashtiruvchida saqlanadi. Bu funksiyaga boshqa havolalar bo'lmasa ham, axlat yig'ilishining oldini oladi.
 
 ```js
-// funktsiya rejalashtiruvchi uni chaqirmaguncha xotirada qoladi
+// funksiya rejalashtiruvchi uni chaqirmaguncha xotirada qoladi
 setTimeout(function() {...}, 100);
 ```
 
 `setInterval` uchun funksiya `clearInterval` chaqirilguncha xotirada qoladi.
 
-Yon ta'siri bor. Funktsiya tashqi leksik muhitga ishora qiladi, shuning uchun u yashashi bilan birga, tashqi o'zgaruvchilar ham yashaydi. Ular funktsiyaning o'zidan ko'ra ko'proq xotirani egallashi mumkin. Shunday qilib, rejalashtirilgan funksiya endi kerak bo'lmaganda, uni juda kichik bo'lsa ham bekor qilish yaxshiroqdir.
+Bu vazifalarning salbiy ta'siri bor. Funksiya tashqi leksik muhitga ishora qiladi, shuning uchun u yashasa, tashqi o'zgaruvchilar ham yashaydi. Ular funksiyaning o'zidan ko'ra ko'proq xotirani egallashi mumkin. Shunday qilib, rejalashtirilgan funksiya endi kerak bo'lmaganda, uni juda kichik bo'lsa ham bekor qilish yaxshiroqdir.
 ``
 
 ## Zero delay setTimeout
@@ -241,7 +241,7 @@ Maxsus foydalanish holatlari mavjud: `setTimeout(func, 0)` yoki shunchaki `setTi
 
 Bu imkon qadar tezroq `func` ning bajarilishini rejalashtiradi. Ammo rejalashtiruvchi uni hozir bajarilayotgan skript tugallangandan keyingina ishga tushiradi.
 
-Shunday qilib, funktsiya joriy skriptdan "darhol" ishlashi uchun rejalashtirilgan.
+Shunday qilib, funksiya joriy skriptda "darhol" ishlashi uchun rejalashtirilgan.
 
 Masalan, quyida "Hello", keyin darhol "World" ni chiqaradi:
 
@@ -251,12 +251,12 @@ setTimeout(() => alert("World"));
 alert("Hello");
 ```
 
-Birinchi qator "chaqiruvni kalendarga 0ms dan keyin qo'yadi". Ammo rejalashtiruvchi joriy skript tugallangandan keyingina "kalendarni tekshiradi", shuning uchun `"Hello"` birinchi, `"World"` -- undan keyin.
+Birinchi qator "chaqiruvni kalendarga 0 ms dan keyin qo'yadi". Ammo rejalashtiruvchi joriy skript tugallangandan keyingina "kalendarni tekshiradi", shuning uchun `"Hello"` birinchi, `"World"` -- undan keyin keladi.
 
 Shuningdek, brauzer bilan bog'liq bo'lgan nol kechikish vaqti tugashi bilan bog'liq ilg'or foydalanish holatlari ham mavjud, biz ularni <info:event-loop> bobida muhokama qilamiz.
 
 ``smart header="Zero delay aslida nolga teng emas (brauzerda)"
-Brauzerda ichki o'rnatilgan taymerlarning qanchalik tez-tez ishlashiga cheklovlar mavjud. [HTML Living Standard](https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers) shunday deydi: "beshta ichki o'rnatilgan taymerdan keyin interval kamida 4 millisekund bo'lishi kerak. "
+Brauzerda ichki o'rnatilgan taymerlarning tez ishlashiga qarshiga cheklovlar mavjud. [HTML Living Standard](https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers) shunday deydi: "beshta ichki o'rnatilgan taymerdan keyin interval kamida 4 millisekund bo'lishi kerak. "
 
 Keling, bu nimani anglatishini quyidagi misol bilan ko'rsatamiz. Undagi `setTimeout` chaqiruvi nol kechikish bilan o'zini qayta rejalashtiradi. Har bir chaqiruv `times` massividagi oldingisidan real vaqtni eslab qoladi. Haqiqiy kechikishlar qanday ko'rinadi? Ko'raylikchi:
 
@@ -275,9 +275,9 @@ setTimeout(function run() {
 // 1,1,1,1,9,15,20,24,30,35,40,45,50,55,59,64,70,75,80,85,90,95,100
 ```
 
-Birinchi taymerlar zudlik bilan ishga tushadi (xuddi spetsifikatsiyada yozilganidek) va keyin biz `9, 15, 20, 24...` ni ko'ramiz. Chaqiruvlar orasidagi 4+ ms majburiy kechikish kuchga kiradi.
+Birinchi taymerlar zudlik bilan ishga tushadi (xuddi spesifikatsiyada yozilganidek) va keyin biz `9, 15, 20, 24...` ni ko'ramiz. Chaqiruvlar orasidagi 4+ ms majburiy kechikish kuchga kiradi.
 
-Agar biz `setTimeout` o‘rniga `setInterval` dan foydalansak, xuddi shunday holat yuz beradi: `setInterval(f)` `f`ni bir necha marta nol kechikish bilan, keyin esa 4+ ms kechikish bilan ishlaydi.
+Agar biz `setTimeout` o'rniga `setInterval` dan foydalansak, xuddi shunday holat yuz beradi: `setInterval(f)` `f` ni bir necha marta nol kechikish bilan, keyin esa 4+ ms kechikish bilan ishlaydi.
 
 Bu cheklash qadim zamonlardan kelib chiqqan va ko'plab skriptlar unga tayanadi, shuning uchun u tarixiy sabablarga ko'ra mavjud.
 
@@ -288,9 +288,9 @@ Server tomonidagi JavaScript uchun bunday cheklov mavjud emas va Node.js uchun [
 
 - `setTimeout(func, delay, ...args)` va `setInterval(fuc, delay, ...args)` usullari bizga `func` ni bir marta/muntazam ravishda `delay` millisekunddan keyin ishga tushirishga imkon beradi.
 - Amalga oshirishni bekor qilish uchun biz `setTimeout/setInterval` tomonidan qaytarilgan qiymat bilan `clearTimeout/clearInterval` ni chaqirishimiz kerak.
-- Ichma ich `setTimeout` chaqiruvlari `setInterval` ga yanada moslashuvchan muqobil bo'lib, bizga *ijrolar orasidagi* vaqtni aniqroq belgilash imkonini beradi.
+- Ichma-ich `setTimeout` chaqiruvlari `setInterval` ga yanada moslashuvchan muqobil bo'lib, bizga *ijrolar orasidagi* vaqtni aniqroq belgilash imkonini beradi.
 - `setTimeout(func, 0)` (`setTimeout(func)` bilan bir xil) bilan zero delay rejalashtirish chaqiruvni "imkon qadar tezroq, lekin joriy skript tugagandan keyin" rejalashtirish uchun ishlatiladi.
-- Brauzer `setTimeout` yoki `setInterval` uchun (5-chaqiruvdan keyin) besh yoki undan ortiq ichki chaqiruvlar uchun minimal kechikishni 4ms bilan cheklaydi. Bu tarixiy sabablarga ko'ra.
+- Brauzer `setTimeout` yoki `setInterval` uchun (5-chaqiruvdan keyin) besh yoki undan ortiq ichki chaqiruvlar uchun minimal kechikishni 4ms bilan cheklaydi. Bu tarixiy sabablarga ko'ra shunday qilinadi.
 
 Shuni esda tutingki, barcha rejalashtirish usullari aniq kechikishga *kafolat* bermaydi.
 

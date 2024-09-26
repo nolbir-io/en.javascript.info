@@ -1,12 +1,12 @@
-# Element size and scrolling
+# Element hajmi va aylantirish (scrolling)
 
-There are many JavaScript properties that allow us to read information about element width, height and other geometry features.
+Element kengligi, balandligi va boshqa geometrik xususiyatlari haqidagi ma'lumotlarni o'qish imkonini beruvchi ko'plab JavaScript xususiyatlari mavjud.
 
-We often need them when moving or positioning elements in JavaScript.
+Ular bizga ko'pincha JavaScriptda elementlarni ko'chirish yoki joylashtirishda kerak bo'ladi.
 
-## Sample element
+## Namunaviy element
 
-As a sample element to demonstrate properties we'll use the one given below:
+Xususiyatlarni namoyish qilish uchun namunaviy element sifatida biz quyida keltirilgan elementdan foydalanamiz:
 
 ```html no-beautify
 <div id="example">
@@ -22,50 +22,49 @@ As a sample element to demonstrate properties we'll use the one given below:
   }
 </style>
 ```
+Unda chegara, to'ldirish va aylantirish mavjud va u to'liq xususiyatlar to'plami. Hech qanday chekka, ya'ni margin mavjud emas, chunki ular elementning o'zi emas va ular uchun maxsus xususiyatlar yo'q.
 
-It has the border, padding and scrolling. The full set of features. There are no margins, as they are not the part of the element itself, and there are no special properties for them.
-
-The element looks like this:
+Element quyidagicha ko'rinishda bo'ladi:
 
 ![](metric-css.svg)
 
-You can [open the document in the sandbox](sandbox:metric).
+Hujjatni [berilgan havolada ochishingiz mumkin:](sandbox:metric). 
 
-```smart header="Mind the scrollbar"
-The picture above demonstrates the most complex case when the element has a scrollbar. Some browsers (not all) reserve the space for it by taking it from the content (labeled as "content width" above).
+```smart header="O'tkazish paneli, ya'ni scrollbarga e'tibor bering"
+Yuqoridagi rasmda elementda aylantirish paneli mavjud bo'lgan eng murakkab holat ko'rsatilgan. Ba'zi brauzerlar (barchasi emas) kontentdan (yuqorida "tarkib kengligi" deb belgilangan) olib, u uchun joy ajratadi.
 
-So, without scrollbar the content width would be `300px`, but if the scrollbar is `16px` wide (the width may vary between devices and browsers) then only `300 - 16 = 284px` remains, and we should take it into account. That's why examples from this chapter assume that there's a scrollbar. Without it, some calculations are simpler.
+Shunday qilib, aylantirish panelisiz kontent kengligi `300px` bo'lardi, agar aylantirish paneli kengligi `16px` bo'lsa (kengligi qurilmalar va brauzerlarda farq qilishi mumkin), u holda faqat `300 - 16 = 284px` qoladi va biz buni hisobga olishimiz kerak. Shuning uchun bu bobdagi misollarda aylantirish paneli bor deb taxmin qilinadi. Busiz, ba'zi hisob-kitoblar oddiyroq.
 ```
 
-```smart header="The `padding-bottom` area may be filled with text"
-Usually paddings are shown empty on our illustrations, but if there's a lot of text in the element and it overflows, then browsers show the "overflowing" text at `padding-bottom`, that's normal.
+```smart header="`padding-bottom` maydoni matn bilan to'ldirilishi mumkin"`
+Odatda illyustratsiyalarimizda to'ldirishlar bo'sh ko'rsatiladi, lekin elementda matn ko'p bo'lsa va u to'lib toshgan bo'lsa, brauzerlar `padding-bottom` qismida "overflowing" matnni ko'rsatadi, bu normal holat.
 ```
 
-## Geometry
+## Geometriya
 
-Here's the overall picture with geometry properties:
+Mana, geometriya xususiyatlariga ega umumiy rasm:
 
 ![](metric-all.svg)
 
-Values of these properties are technically numbers, but these numbers are "of pixels", so these are pixel measurements.
+Ushbu xususiyatlarning qiymatlari texnik jihatdan raqamlardir, ammo bu raqamlar "piksellar" dir, shuning uchun bu piksel o'lchovlari hisoblanadi.
 
-Let's start exploring the properties starting from the outside of the element.
+Keling, elementning tashqi qismidan boshlab xususiyatlarni o'rganishni boshlaylik.
 
 ## offsetParent, offsetLeft/Top
 
-These properties are rarely needed, but still they are the "most outer" geometry properties, so we'll start with them.
+Bu xususiyatlar kamdan-kam hollarda kerak, ammo baribir ular "eng tashqi" geometrik xususiyatlar, shuning uchun biz ulardan boshlaymiz.
 
-The `offsetParent` is the nearest ancestor that the browser uses for calculating coordinates during rendering.
+`offsetParent` brauzer ko'rsatish paytida koordinatalarni hisoblash uchun foydalanadigan eng yaqin ajdoddir.
 
-That's the nearest ancestor that is one of the following:
+Bu eng yaqin ajdod, u quyidagilardan biri:
 
-1. CSS-positioned (`position` is `absolute`, `relative`, `fixed` or `sticky`),  or
-2. `<td>`, `<th>`, or `<table>`,  or
+1. CSS-pozitsiyali (`position` esa `absolute`, `relative`, `fixed` yoki `sticky`), yoki
+2. `<td>`, `<th>`, or `<table>`,  yoki
 3. `<body>`.
 
-Properties `offsetLeft/offsetTop` provide x/y coordinates relative to `offsetParent` upper-left corner.
+`offsetLeft/offsetTop` xususiyatlari `offsetParent` yuqori chap burchagiga nisbatan x/y koordinatalarini beradi.
 
-In the example below the inner `<div>` has `<main>` as `offsetParent` and `offsetLeft/offsetTop` shifts from its upper-left corner (`180`):
+Quyidagi misolda ichki `<div>` `<main>` `offsetParent` va `offsetLeft/offsetTop` o`zining yuqori chap burchagidan (`180`) siljiydi:
 
 ```html run height=10
 <main style="position: relative" id="main">
@@ -82,110 +81,108 @@ In the example below the inner `<div>` has `<main>` as `offsetParent` and `offse
 
 ![](metric-offset-parent.svg)
 
-There are several occasions when `offsetParent` is `null`:
+ `offsetParent` `null` bo'lsa, bir nechta holatlar mavjud:
 
-1. For not shown elements (`display:none` or not in the document).
-2. For `<body>` and `<html>`.
-3. For elements with `position:fixed`.
+1. Ko'rsatilmagan elementlar uchun (`display:none` yoki hujjatda yo'q).
+2. `<body>` va `<html>` uchun.
+3. `position:fixed` bo'lgan elementlar uchun.
 
 ## offsetWidth/Height
 
-Now let's move on to the element itself.
+Endi elementning o'ziga o'tamiz.
 
-These two properties are the simplest ones. They provide the "outer" width/height of the element. Or, in other words, its full size including borders.
+Bu ikki xususiyat eng oddiy hisoblanadi. Ular elementning "tashqi" kengligi/balandligini ta'minlaydi. Boshqacha qilib aytganda, uning to'liq o'lchami chegaralardir.
 
 ![](metric-offset-width-height.svg)
 
-For our sample element:
+Bizning namunaviy elementimiz uchun:
 
-- `offsetWidth = 390` -- the outer width, can be calculated as inner CSS-width (`300px`) plus paddings (`2 * 20px`) and borders (`2 * 25px`).
-- `offsetHeight = 290` -- the outer height.
+- `offsetWidth = 390` -- tashqi kenglik ichki CSS-kengligi (`300px`) va to'ldirishlar (`2 * 20px`) va chegaralar (`2 * 25px`) sifatida hisoblanishi mumkin.
+- `offsetHeight = 290` -- tashqi balandlik.
 
-````smart header="Geometry properties are zero/null for elements that are not displayed"
-Geometry properties are calculated only for displayed elements.
+````smart header="Geometrik xususiyatlari ko'rsatilmagan elementlar uchun zero/null"
+Faqatgina geometrik xususiyatlari ko'rsatilgan elementlar uchun hisoblanadi.
 
-If an element (or any of its ancestors) has `display:none` or is not in the document, then all geometry properties are zero (or `null` for `offsetParent`).
+Agar elementda (yoki uning ajdodlaridan birida) `display:none` bo'lsa yoki hujjatda bo'lmasa, barcha geometriya xususiyatlari nolga teng (yoki `offsetParent` uchun `null`).
 
-For example, `offsetParent` is `null`, and `offsetWidth`, `offsetHeight` are `0` when we created an element, but haven't inserted it into the document yet, or it (or its ancestor) has `display:none`.
+Masalan, biz element yaratganimizda `offsetParent` `null`, `offsetWidth`, `offsetHeight` esa `0` bo'ladi, lekin uni hali hujjatga kiritmaganmiz yoki u (yoki uning ajdodi) `display:none`.
 
-We can use this to check if an element is hidden, like this:
+Biz bundan element yashirin yoki yo'qligini tekshirish uchun foydalanishimiz mumkin, masalan:
 
 ```js
 function isHidden(elem) {
   return !elem.offsetWidth && !elem.offsetHeight;
 }
 ```
-
-Please note that such `isHidden` returns `true` for elements that are on-screen, but have zero sizes.
+Esda tutingki, bunday `isHidden` ekrandagi, lekin nol o'lchamga ega bo'lgan elementlar uchun `true` qiymatini qaytaradi.
 ````
 
 ## clientTop/Left
 
-Inside the element we have the borders.
+Elementning ichida bizda chegaralar mavjud.
 
-To measure them, there are properties `clientTop` and `clientLeft`.
+Ularni o'lchash uchun `clientTop` va `clientLeft` xususiyatlari mavjud.
 
-In our example:
+Masalan:
 
-- `clientLeft = 25` -- left border width
-- `clientTop = 25` -- top border width
+- `clientLeft = 25` -- chap chegara kengligi
+- `clientTop = 25` -- yuqori chegara kengligi
 
 ![](metric-client-left-top.svg)
 
-...But to be precise -- these properties are not border width/height, but rather relative coordinates of the inner side from the outer side.
+...Ammo aniqrog'i, bu xususiyatlar chegara kengligi/balandligi emas, balki tashqi tomondan ichki tomonning nisbiy koordinatalaridir.
 
-What's the difference?
+Farqi nima?
 
-It becomes visible when the document is right-to-left (the operating system is in Arabic or Hebrew languages). The scrollbar is then not on the right, but on the left, and then `clientLeft` also includes the scrollbar width.
+Hujjat o'ngdan chapga (operatsion tizim arab yoki ibroniy tillarida) bo'lganda ko'rinadi. O'tkazish paneli o'ngda emas, balki chap tomonda joylashadi, so'ngra `clientLeft` o'tish paneli kengligini ham o'z ichiga oladi. 
 
-In that case, `clientLeft` would be not `25`, but with the scrollbar width `25 + 16 = 41`.
+Bunday holda, `clientLeft` `25` emas, balki aylantirish paneli kengligi `25 + 16 = 41` bo'ladi.
 
-Here's the example in hebrew:
+Mana ibroniy tilida misol:
 
 ![](metric-client-left-top-rtl.svg)
 
 ## clientWidth/Height
 
-These properties provide the size of the area inside the element borders.
+Bu xususiyatlar element chegaralari ichidagi maydon hajmini ta'minlaydi.
 
-They include the content width together with paddings, but without the scrollbar:
+Ular tarkib kengligini to'ldirish bilan birga o'z ichiga oladi, lekin aylantirish panelisiz ishlaydi:
 
 ![](metric-client-width-height.svg)
 
-On the picture above let's first consider `clientHeight`.
+Yuqoridagi rasmda birinchi navbatda `clientHeight` ni ko'rib chiqamiz.
 
-There's no horizontal scrollbar, so it's exactly the sum of what's inside the borders: CSS-height `200px` plus top and bottom paddings (`2 * 20px`) total `240px`.
+Gorizontal aylantirish paneli yo'q, shuning uchun bu chegaralar ichidagi narsalarning yig'indisi: CSS balandligi `200px` va yuqori va pastki to'ldirishlar (`2 * 20px`) jami `240px` bo'ladi.
 
-Now `clientWidth` -- here the content width is not `300px`, but `284px`, because `16px` are occupied by the scrollbar. So the sum is `284px` plus left and right paddings, total `324px`.
+Endi `clientWidth` -- bu yerda kontent kengligi `300px` emas, `284px`, chunki `16px` aylantirish panelida joylashgan. Shunday qilib, yig'indi `284px` va chap va o'ng to'ldirishlar, jami `324px`.
 
-**If there are no paddings, then `clientWidth/Height` is exactly the content area, inside the borders and the scrollbar (if any).**
-
+**Agar to'ldirishlar bo'lmasa, `clientWidth/Height` tarkib maydoni hisoblanadi, ichki qismida chegaralar va aylantirish paneli (agar mavjud bo'lsa) bo'ladi.**
 ![](metric-client-width-nopadding.svg)
 
-So when there's no padding we can use `clientWidth/clientHeight` to get the content area size.
+Shunday qilib, to'ldirish bo'lmasa, kontent maydoni hajmini olish uchun `clientWidth/clientHeight` dan foydalanishimiz mumkin.
 
 ## scrollWidth/Height
 
-These properties are like `clientWidth/clientHeight`, but they also include the scrolled out (hidden) parts:
+Bu xususiyatlar `clientWidth/clientHeight` kabi, lekin ular tashqariga aylantirilgan (yashirin) qismlarni ham o'z ichiga oladi:
 
 ![](metric-scroll-width-height.svg)
 
-On the picture above:
+Yuqoridagi rasmga diqqat qiling:
 
-- `scrollHeight = 723` -- is the full inner height of the content area including the scrolled out parts.
-- `scrollWidth = 324` -- is the full inner width, here we have no horizontal scroll, so it equals `clientWidth`.
+- `scrollHeight = 723` -- aylantirilgan qismlarni o'z ichiga olgan kontent maydonining to'liq ichki balandligi.
+- `scrollWidth = 324` -- to'liq ichki kenglik, bu yerda bizda gorizontal aylantirish yo'q, shuning uchun u `clientWidth` ga teng.
 
-We can use these properties to expand the element wide to its full width/height.
+Biz ushbu xususiyatlardan elementni to'liq kengligi/balandligigacha kengaytirish uchun foydalanishimiz mumkin.
 
-Like this:
+Shunga o'xshash:
 
 ```js
-// expand the element to the full content height
+// elementni to'liq kontent balandligiga kengaytiring
 element.style.height = `${element.scrollHeight}px`;
 ```
 
 ```online
-Click the button to expand the element:
+Elementni kengaytirish uchun tugmani bosing:
 
 <div id="element" style="width:300px;height:200px; padding: 0;overflow: auto; border:1px solid black;">text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</div>
 
@@ -194,44 +191,44 @@ Click the button to expand the element:
 
 ## scrollLeft/scrollTop
 
-Properties `scrollLeft/scrollTop` are the width/height of the hidden, scrolled out part of the element.
+`scrollLeft/scrollTop` xossalari elementning yashirin, aylantirilgan qismining kengligi/balandligidir.
 
-On the picture below we can see `scrollHeight` and `scrollTop` for a block with a vertical scroll.
+Quyidagi rasmda vertikal aylantirishli blok uchun `scrollHeight` va `scrollTop` ni ko'rishimiz mumkin.
 
 ![](metric-scroll-top.svg)
 
-In other words, `scrollTop` is "how much is scrolled up".
+Boshqacha qilib aytganda, `scrollTop` - "qancha yuqoriga aylantirilganini" bildiradi.
 
-````smart header="`scrollLeft/scrollTop` can be modified"
-Most of the geometry properties here are read-only, but `scrollLeft/scrollTop` can be changed, and the browser will scroll the element.
+````smart header="`scrollLeft/scrollTop` o'zgartirilishi mumkin"
+Bu yerda geometriya xususiyatlarining aksariyati faqat o'qish uchun mo'ljallangan, lekin `scrollLeft/scrollTop` o'zgartirilishi mumkin va brauzer elementni aylantiradi.
 
 ```online
-If you click the element below, the code `elem.scrollTop += 10` executes. That makes the element content scroll `10px` down.
+Agar siz quyidagi elementni bossangiz, `elem.scrollTop += 10` kodi bajariladi. Bu element tarkibini "10px" pastga aylantiradi.
 
 <div onclick="this.scrollTop+=10" style="cursor:pointer;border:1px solid black;width:100px;height:80px;overflow:auto">Click<br>Me<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</div>
 ```
 
-Setting `scrollTop` to `0` or a big value, such as `1e9` will make the element scroll to the very top/bottom respectively.
+`scrollTop` ni `0` yoki `1e9` kabi katta qiymatga o'rnatish elementni mos ravishda eng yuqori/pastki tomonga aylantiradi.
 ````
 
-## Don't take width/height from CSS
+## CSSdan kenglik/balandlikni olmang
 
-We've just covered geometry properties of DOM elements, that can be used to get widths, heights and calculate distances.
+Biz hozirgina kenglik, balandlik va masofalarni hisoblash uchun ishlatilishi mumkin bo'lgan DOM elementlarining geometriya xususiyatlarini ko'rib chiqdik.
 
-But as we know from the chapter <info:styles-and-classes>, we can read CSS-height and width using `getComputedStyle`.
+Ammo <info:styles-and-classes> bobidan bilganimizdek, biz `getComputedStyle` yordamida CSS balandligi va kengligini o'qishimiz mumkin.
 
-So why not to read the width of an element with `getComputedStyle`, like this?
+Xo'sh, nega `getComputedStyle` bilan elementning kengligini o'qimaslik kerak?
 
 ```js run
 let elem = document.body;
 
-alert( getComputedStyle(elem).width ); // show CSS width for elem
+alert( getComputedStyle(elem).width ); // element uchun CSS kengligini ko'rsatish
 ```
 
-Why should we use geometry properties instead? There are two reasons:
+Buning o'rniga nima uchun geometriya xususiyatlarini ishlatishimiz kerak? Buning ikkita sababi bor:
 
-1. First, CSS `width/height` depend on another property: `box-sizing` that defines "what is" CSS width and height. A change in `box-sizing` for CSS purposes may break such JavaScript.
-2. Second, CSS `width/height` may be `auto`, for instance for an inline element:
+1. Birinchidan, CSS `width/height` boshqa xususiyatga bog'liq: `box-sizing` bu CSS kengligi va balandligi "nima ekanligini" belgilaydi. CSS maqsadlari uchun `box-sizing` ni o'zgartirish bunday JavaScriptni buzishi mumkin.
+2. Ikkinchidan, CSS `width/height` `auto` bo'lishi mumkin, masalan, inline element uchun:
 
     ```html run
     <span id="elem">Hello!</span>
@@ -243,34 +240,33 @@ Why should we use geometry properties instead? There are two reasons:
     </script>
     ```
 
-    From the CSS standpoint, `width:auto` is perfectly normal, but in JavaScript we need an exact size in `px` that we can use in calculations. So here CSS width is useless.
+    CSS nuqtai nazaridan, `width:auto` mutlaqo normaldir, ammo JavaScriptda biz hisob-kitoblarda foydalanishimiz mumkin bo'lgan `px`dagi aniq o'lchamga muhtojmiz. Shunday qilib, bu erda CSS kengligi foydasiz.
 
-And there's one more reason: a scrollbar. Sometimes the code that works fine without a scrollbar becomes buggy with it, because a scrollbar takes the space from the content in some browsers. So the real width available for the content is *less* than CSS width. And `clientWidth/clientHeight` take that into account.
+Va yana bir sabab bor: aylantirish paneli. Ba'zan aylantirish panelisiz yaxshi ishlaydigan kod u bilan xato qiladi, chunki aylantirish paneli ba'zi brauzerlarda kontentdan bo'sh joy oladi. Shunday qilib, kontent uchun mavjud bo'lgan haqiqiy kenglik CSS kengligidan *kamroq*. Va `clientWidth/clientHeight` buni hisobga oladi.
 
-...But with `getComputedStyle(elem).width` the situation is different. Some browsers (e.g. Chrome) return the real inner width, minus the scrollbar, and some of them (e.g. Firefox) -- CSS width (ignore the scrollbar). Such cross-browser differences is the reason not to use `getComputedStyle`, but rather rely on geometry properties.
+...Lekin `getComputedStyle(elem).width` bilan vaziyat boshqacha. Ba'zi brauzerlar (masalan, Chrome) haqiqiy ichki kenglikni qaytaradi, minus aylantirish paneli va ulardan ba'zilari (masalan, Firefox) -- CSS kengligi (aylantirish paneliga e'tibor bermang). Brauzerlar o'rtasidagi bunday farqlar `getComputedStyle` dan foydalanmaslik, aksincha geometriya xususiyatlariga tayanish uchun sababdir.
 
 ```online
-If your browser reserves the space for a scrollbar (most browsers for Windows do), then you can test it below.
+Agar sizning brauzeringiz aylantirish paneli uchun bo'sh joy ajratsa (ko'pchilik Windows brauzerlari shunday qiladi), uni quyida sinab ko'rishingiz mumkin.
 
 [iframe src="cssWidthScroll" link border=1]
 
-The element with text has CSS `width:300px`.
+Matnli elementda CSS `width:300px` mavjud.
 
-On a Desktop Windows OS, Firefox, Chrome, Edge all reserve the space for the scrollbar. But  Firefox shows `300px`, while Chrome and Edge show less. That's because Firefox returns the CSS width and other browsers return the "real" width.
+Ish stolida Windows OS, Firefox, Chrome, Edge hammasi aylantirish paneli uchun joy ajratadi, ammo Firefox `300px` ko'rsatadi, Chrome va Edge esa kamroq. Buning sababi, Firefox CSS kengligini qaytaradi va boshqa brauzerlar "haqiqiy" kenglikni qaytaradi.
 ```
+Shuni esda tutingki, ta'riflangan farq faqat JavaScriptdan `getComputedStyle(...).width` ni o'qish bilan bog'liq, vizual ravishda hamma narsa to'g'ri.
 
-Please note that the described difference is only about reading `getComputedStyle(...).width` from JavaScript, visually everything is correct.
+## Xulosa
 
-## Summary
+Elementlar quyidagi geometrik xususiyatlarga ega:
 
-Elements have the following geometry properties:
+- `offsetParent` -- eng yaqin joylashgan ajdoddir yoki `td`, `th`, `table`, `body`.
+- `offsetLeft/offsetTop` -- `offsetParent`ning yuqori chap chetiga nisbatan koordinatalar.
+- `offsetWidth/offsetHeight` -- Chegaralarni o'z ichiga olgan elementning "tashqi" kengligi/balandligi.
+- `clientLeft/clientTop` -- yuqori chap tashqi burchakdan yuqori chap ichki (tarkib + to'ldirish) burchagigacha bo'lgan masofalar. Chapdan o'ngga OS uchun ular har doim chap/yuqori chegaralarning kengligidir. O'ngdan chapga OS uchun vertikal aylantirish paneli chapda, shuning uchun `clientLeft` uning kengligini ham o'z ichiga oladi.
+- `clientWidth/clientHeight` -- tarkibning kengligi/balandligi, shu jumladan to'ldirishlar, lekin aylantirish panelisiz.
+- `scrollWidth/scrollHeight` -- kontentning kengligi/balandligi, xuddi `clientWidth/clientHeight` kabi, balki elementning aylanib o'tilgan, ko'rinmas qismini ham o'z ichiga oladi.
+- `scrollLeft/scrollTop` -- elementning yuqori chap burchagidan boshlab aylantirilgan yuqori qismining kengligi/balandligi.
 
-- `offsetParent` -- is the nearest positioned ancestor or `td`, `th`, `table`, `body`.
-- `offsetLeft/offsetTop` -- coordinates relative to the upper-left edge of `offsetParent`.
-- `offsetWidth/offsetHeight` -- "outer" width/height of an element including borders.
-- `clientLeft/clientTop` -- the distances from the upper-left outer corner to the upper-left inner (content + padding) corner. For left-to-right OS they are always the widths of left/top borders. For right-to-left OS the vertical scrollbar is on the left so `clientLeft` includes its width too.
-- `clientWidth/clientHeight` -- the width/height of the content including paddings, but without the scrollbar.
-- `scrollWidth/scrollHeight` -- the width/height of the content, just like `clientWidth/clientHeight`, but also include scrolled-out, invisible part of the element.
-- `scrollLeft/scrollTop` -- width/height of the scrolled out upper part of the element, starting from its upper-left corner.
-
-All properties are read-only except `scrollLeft/scrollTop` that make the browser scroll the element if changed.
+Barcha xususiyatlar faqat o'qish uchun mo'ljallangan, `scrollLeft/scrollTop`dan tashqari, brauzer o'zgartirilsa, elementni aylantiradi.

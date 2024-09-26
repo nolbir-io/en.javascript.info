@@ -1,71 +1,70 @@
 
-# Private and protected properties and methods
+# Xususiy va himoyalangan xususiyatlar va usullar
+Obyektga yo'naltirilgan dasturlashning eng muhim tamoyillaridan biri bu -- ichki interfeysni tashqi interfeysdan ajratishdir.
 
-One of the most important principles of object oriented programming -- delimiting internal interface from the external one.
+Bu "salom dunyo" ilovasidan ko'ra murakkabroq narsalarni ishlab chiqishda "kerakli" amaliyotdir.
 
-That is "a must" practice in developing anything more complex than a "hello world" app.
+Buni tushunish uchun rivojlanishdan uzilib, ko'zimizni real dunyoga qarataylik.
 
-To understand this, let's break away from development and turn our eyes into the real world.
+Odatda, biz foydalanadigan qurilmalar juda murakkab, ammo ichki interfeysni tashqi interfeysdan ajratish ularni muammosiz ishlatishga imkon beradi.
 
-Usually, devices that we're using are quite complex. But delimiting the internal interface from the external one allows to use them without problems.
+## Hayotiy misol
 
-## A real-life example
-
-For instance, a coffee machine. Simple from outside: a button, a display, a few holes...And, surely, the result -- great coffee! :)
+Masalan, qahva mashinasi. Tashqi tomondan qaraganda oddiy ko'rinadi: tugma, displey, bir nechta teshik... Va, albatta, natijasi esa - ajoyib qahva! :)
 
 ![](coffee.jpg)
 
-But inside... (a picture from the repair manual)
+Lekin ichkarida... (ta'mirlash qo'llanmasidan rasm keltirilgan)
 
 ![](coffee-inside.jpg)
 
-A lot of details. But we can use it without knowing anything.
+Tafsilotlar juda ko'p, lekin biz ushbu qurilmadan hech narsani bilmasdan foydalanaveramiz.
 
-Coffee machines are quite reliable, aren't they? We can use one for years, and only if something goes wrong -- bring it for repairs.
+Qahva mashinalari juda ishonchli, shunday emasmi? Biz uni yillar davomida ishlatishimiz mumkin va agar biror narsa noto'g'ri bo'lsa, uni ta'mirlash uchun olib kelamiz.
 
-The secret of reliability and simplicity of a coffee machine -- all details are well-tuned and *hidden* inside.
+Kofe mashinasining ishonchliligi va soddaligining siri -- barcha detallar yaxshi sozlangan va ichida *yashirin* ekanligidadir.
 
-If we remove the protective cover from the coffee machine, then using it will be much more complex (where to press?), and dangerous (it can electrocute).
+Agar qahva mashinasidan himoya qopqog'ini olib tashlasak, uni ishlatish ancha murakkab (keyin qayerga bosish kerak?) va xavfli (elektr toki urishi mumkin) bo'ladi.
 
-As we'll see, in programming objects are like coffee machines.
+Ko'rib turganimizdek, dasturlashda obyektlar qahva mashinalariga o'xshaydi.
 
-But in order to hide inner details, we'll use not a protective cover, but rather special syntax of the language and conventions.
+Ammo ichki tafsilotlarni yashirish uchun biz himoya qoplamasidan emas, balki til va konvensiyalarning maxsus sintaksisidan foydalanamiz.
 
-## Internal and external interface
+## Ichki va tashqi interfeys
 
-In object-oriented programming, properties and methods are split into two groups:
+Obyektga yo'naltirilgan dasturlashda xususiyatlar va usullar ikki guruhga bo'linadi:
 
-- *Internal interface* -- methods and properties, accessible from other methods of the class, but not from the outside.
-- *External interface* -- methods and properties, accessible also from outside the class.
+- *Ichki interfeys* -- usullar va xususiyatlar, sinfning boshqa usullaridan foydalanish mumkin, lekin tashqaridan emas.
+- *Tashqi interfeys* -- Sinfdan tashqarida ham foydalanish mumkin bo'lgan usullar va xususiyatlar.
 
-If we continue the analogy with the coffee machine -- what's hidden inside: a boiler tube, heating element, and so on -- is its internal interface.
+Agar qahva mashinasi bilan o'xshatishni davom ettiradigan bo'lsak - ichkarida nima yashiringanini ko'rishimiz mumkin: qozon trubkasi, isitish elementi va boshqalar - uning ichki interfeysi hisoblanadi.
 
-An internal interface is used for the object to work, its details use each other. For instance, a boiler tube is attached to the heating element.
+Obyektning ishlashi uchun ichki interfeys ishlatiladi, uning detallari bir-biridan foydalanadi. Masalan, isitish elementiga qozon trubkasi biriktirilgan.
 
-But from the outside a coffee machine is closed by the protective cover, so that no one can reach those. Details are hidden and inaccessible. We can use its features via the external interface.
+Ammo tashqaridan qahva mashinasi himoya qopqog'i bilan yopilgan, shuning uchun hech kim ularga yetib bormaydi. Tafsilotlar yashirin va kirish imkonsiz. Biz uning xususiyatlaridan tashqi interfeys orqali foydalanishimiz mumkin.
 
-So, all we need to use an object is to know its external interface. We may be completely unaware how it works inside, and that's great.
+Shunday qilib, obyektdan foydalanish uchun faqat uning tashqi interfeysini bilish kerak. Biz uning ichida qanday ishlashini umuman bilmasligimiz mumkin va bu yomon holat emas.
 
-That was a general introduction.
+Bu umumiy kirish edi.
 
-In JavaScript, there are two types of object fields (properties and methods):
+JavaScriptda obyekt maydonlarining ikki turi mavjud (xususiyatlar va usullar):
 
-- Public: accessible from anywhere. They comprise the external interface. Until now we were only using public properties and methods.
-- Private: accessible only from inside the class. These are for the internal interface.
+- Ommaviy: istalgan joydan foydalanish mumkin. Ular tashqi interfeysni o'z ichiga oladi. Shu paytgacha biz faqat davlat mulki va usullaridan foydalanardik.
+- Shaxsiy: faqat sinf ichidan foydalanish mumkin. Bu ichki interfeys uchun.
 
-In many other languages there also exist "protected" fields: accessible only from inside the class and those extending it (like private, but plus access from inheriting classes). They are also useful for the internal interface. They are in a sense more widespread than private ones, because we usually want inheriting classes to gain access to them.
+Ko'pgina boshqa tillarda ham "himoyalangan" maydonlar mavjud: faqat sinf ichidan va uni kengaytiradiganlardan foydalanish mumkin (masalan, shaxsiy, lekin meros qilib olgan sinflardan kirish). Ular ichki interfeys uchun ham foydalidir. Ular ma'lum ma'noda xususiylardan ko'ra kengroqdir, chunki biz odatda ularga kirish uchun merosxo'r sinflarni xohlaymiz.
 
-Protected fields are not implemented in JavaScript on the language level, but in practice they are very convenient, so they are emulated.
+Himoyalangan maydonlar JavaScriptda til darajasida amalga oshirilmaydi, lekin amalda ular juda qulay, shuning uchun ularga taqlid qilinadi.
 
-Now we'll make a coffee machine in JavaScript with all these types of properties. A coffee machine has a lot of details, we won't model them to stay simple (though we could).
+Endi biz JavaScriptda ushbu turdagi barcha xususiyatlarga ega qahva mashinasini yaratamiz. Qahva mashinasi juda ko'p tafsilotlarga ega, biz ularni oddiy bo'lishi uchun modellamaymiz (garchi bunday qilish mumkin bo'lsa ham).
 
-## Protecting "waterAmount"
+## "Suv miqdori" ni himoya qilish
 
-Let's make a simple coffee machine class first:
+Keling, oddiy qahva mashinasi sinfini yarataylik:
 
 ```js run
 class CoffeeMachine {
-  waterAmount = 0; // the amount of water inside
+  waterAmount = 0; // tarkibidagi suv miqdori
 
   constructor(power) {
     this.power = power;
@@ -74,22 +73,22 @@ class CoffeeMachine {
 
 }
 
-// create the coffee machine
+// kofe mashinasini yaratish
 let coffeeMachine = new CoffeeMachine(100);
 
 // add water
 coffeeMachine.waterAmount = 200;
 ```
 
-Right now the properties `waterAmount` and `power` are public. We can easily get/set them from the outside to any value.
+Hozirda `waterAmount` va `power` xususiyatlari ochiq. Biz ularni tashqaridan istalgan qiymatga osongina olishimiz/o'rnatishimiz mumkin.
 
-Let's change `waterAmount` property to protected to have more control over it. For instance, we don't want anyone to set it below zero.
+Uni ko'proq nazorat qilish uchun `waterAmount` xususiyatini himoyalanganga o'zgartiramiz. Misol uchun, biz hech kim uni noldan pastga qo'yishini xohlamaymiz.
 
-**Protected properties are usually prefixed with an underscore `_`.**
+**Himoyalangan xususiyatlar odatda pastki chiziq bilan prefikslanadi `_`.**
 
-That is not enforced on the language level, but there's a well-known convention between programmers that such properties and methods should not be accessed from the outside.
+Bu til darajasida qo'llanilmaydi, lekin dasturchilar o'rtasida bunday xususiyatlar va usullarga tashqaridan kirish mumkin emasligi haqida taniqli konvensiya mavjud.
 
-So our property will be called `_waterAmount`:
+Demak, bizning xususiyatimiz `_waterAmount`, suv miqdori deb nomlanadi.
 
 ```js run
 class CoffeeMachine {
@@ -112,22 +111,22 @@ class CoffeeMachine {
 
 }
 
-// create the coffee machine
+// kofe mashinasini yaratish
 let coffeeMachine = new CoffeeMachine(100);
 
-// add water
-coffeeMachine.waterAmount = -10; // _waterAmount will become 0, not -10
+// suv qo'shish
+coffeeMachine.waterAmount = -10; // _waterAmount, ya'ni suv miqdori 0 bo'ladi, -10 emas
 ```
 
-Now the access is under control, so setting the water amount below zero becomes impossible.
+Endi kirish nazorat ostida, shuning uchun suv miqdorini noldan pastga o'rnatish imkonsiz bo'ladi.
 
-## Read-only "power"
+## Faqat o'qish uchun "quvvat" (power)
 
-For `power` property, let's make it read-only. It sometimes happens that a property must be set at creation time only, and then never modified.
+`Power` xususiyatini faqat o'qiladigan qilaylik. Ba'zan shunday bo'ladiki, xususiyat faqat yaratilish vaqtida o'rnatilishi va keyin hech qachon o'zgartirilmasligi kerak.
 
-That's exactly the case for a coffee machine: power never changes.
+ Kofe mashinasi uchun aynan shunday: quvvat hech qachon o'zgarmaydi.
 
-To do so, we only need to make getter, but not the setter:
+Buning uchun biz faqat qabul qiluvchini yaratishimiz kerak, sozlagichni emas:
 
 ```js run
 class CoffeeMachine {
@@ -143,18 +142,18 @@ class CoffeeMachine {
 
 }
 
-// create the coffee machine
+// kofe mashinasini yaratish
 let coffeeMachine = new CoffeeMachine(100);
 
-alert(`Power is: ${coffeeMachine.power}W`); // Power is: 100W
+alert(`Power is: ${coffeeMachine.power}W`); // Quvvat: 100W
 
-coffeeMachine.power = 25; // Error (no setter)
+coffeeMachine.power = 25; // Xato (o'rnatuvchi yo'q)
 ```
 
-````smart header="Getter/setter functions"
-Here we used getter/setter syntax.
+````smart header="Oluvchi/o'rnatuvchi funksiyalar"
+ Bu yerda biz  oluvchi/ o'rnatuvchi sintaksisidan foydalandik.
 
-But most of the time `get.../set...` functions are preferred, like this:
+Lekin ko'pincha `get.../set...` funksiyalariga afzallik beriladi, masalan:
 
 ```js
 class CoffeeMachine {
@@ -173,26 +172,26 @@ class CoffeeMachine {
 new CoffeeMachine().setWaterAmount(100);
 ```
 
-That looks a bit longer, but functions are more flexible. They can accept multiple arguments (even if we don't need them right now).
+Bu biroz uzunroq ko'rinadi, lekin funksiyalar yanada moslashuvchan. Ular bir nechta dalillarni qabul qilishlari mumkin (hatto hozir ularga kerak bo'lmasa ham).
 
-On the other hand, get/set syntax is shorter, so ultimately there's no strict rule, it's up to you to decide.
+Boshqa tomondan, get/set sintaksisi qisqaroq, shuning uchun qat'iy qoida yo'q, bu sizning qaroringizga bog'liq.
 ````
 
-```smart header="Protected fields are inherited"
-If we inherit `class MegaMachine extends CoffeeMachine`, then nothing prevents us from accessing `this._waterAmount` or `this._power` from the methods of the new class.
+```smart header="Himoyalangan maydonlar meros qilib olinadi"
+Agar biz "MegaMachine extensions CoffeeMachine" sinfini meros qilib olsak, yangi sinf usullaridan "this._waterAmount" yoki "this._power" ga kirishimizga hech narsa to'sqinlik qilmaydi.
 
-So protected fields are naturally inheritable. Unlike private ones that we'll see below.
+Shunday qilib, muhofaza qilinadigan maydonlar tabiiy ravishda meros qilib olinadi. Shaxsiylardan farqli o'laroq, biz quyida ko'rib chiqamiz.
 ```
 
 ## Private "#waterLimit"
 
-[recent browser=none]
+[so'nggi brauzer=yo'q] 
 
-There's a finished JavaScript proposal, almost in the standard, that provides language-level support for private properties and methods.
+Deyarli standartda tayyor JavaScript taklifi mavjud bo'lib, u xususiy xususiyatlar va usullarni til darajasida qo'llab-quvvatlaydi.
 
-Privates should start with `#`. They are only accessible from inside the class.
+Xususiylar `#` bilan boshlanishi kerak. Ularga faqat sinf ichidan kirish mumkin.
 
-For instance, here's a private `#waterLimit` property and the water-checking private method `#fixWaterAmount`:
+Masalan, bu yerda shaxsiy `#waterLimit` xususiyati va suvni tekshirishning shaxsiy usuli `#fixWaterAmount` ni ko'rib chiqamiz:
 
 ```js run
 class CoffeeMachine {
@@ -216,17 +215,17 @@ class CoffeeMachine {
 let coffeeMachine = new CoffeeMachine();
 
 *!*
-// can't access privates from outside of the class
-coffeeMachine.#fixWaterAmount(123); // Error
-coffeeMachine.#waterLimit = 1000; // Error
+// sinfdan tashqaridagi shaxsiy ma'lumotlarga kira olmaydi
+coffeeMachine.#fixWaterAmount(123); // Xato
+coffeeMachine.#waterLimit = 1000; // Xato
 */!*
 ```
 
-On the language level, `#` is a special sign that the field is private. We can't access it from outside or from inheriting classes.
+Til darajasida `#` maydon shaxsiy ekanligini bildiruvchi maxsus belgidir. Biz unga tashqaridan yoki irsiy sinflar orqali kira olmaymiz.
 
-Private fields do not conflict with public ones. We can have both private `#waterAmount` and public `waterAmount` fields at the same time.
+Xususiy maydonlar ijtimoiy maydonlar bilan zid emas. Bizda bir vaqtning o'zida shaxsiy `#waterAmount` va umumiy `waterAmount` maydonlari bo'lishi mumkin.
 
-For instance, let's make `waterAmount` an accessor for `#waterAmount`:
+Masalan, `waterAmount` ni `#waterAmount` uchun yordamchi qilib olaylik:
 
 ```js run
 class CoffeeMachine {
@@ -249,26 +248,26 @@ machine.waterAmount = 100;
 alert(machine.#waterAmount); // Error
 ```
 
-Unlike protected ones, private fields are enforced by the language itself. That's a good thing.
+Himoyalanganlardan farqli o'laroq, xususiy maydonlar tilning o'zi tomonidan amalga oshiriladi. Bu yaxshi narsa.
 
-But if we inherit from `CoffeeMachine`, then we'll have no direct access to `#waterAmount`. We'll need to rely on `waterAmount` getter/setter:
+Agar biz `CoffeeMachine` dan meros oladigan bo'lsak, `#waterAmount` ga to'g'ridan-to'g'ri kira olmaymiz. Biz `waterAmount` getter/setterga tayanishimiz kerak:
 
 ```js
 class MegaCoffeeMachine extends CoffeeMachine {
   method() {
 *!*
-    alert( this.#waterAmount ); // Error: can only access from CoffeeMachine
+    alert( this.#waterAmount ); // Xato: faqat qahva mashinasidan kirish mumkin
 */!*
   }
 }
 ```
 
-In many scenarios such limitation is too severe. If we extend a `CoffeeMachine`, we may have legitimate reasons to access its internals. That's why protected fields are used more often, even though they are not supported by the language syntax.
+Ko'pgina ssenariylarda bunday cheklash juda jiddiy. Agar biz `CoffeeMachine` ni kengaytirsak, uning ichki qismlariga kirish uchun qonuniy sabablarimiz bo'lishi mumkin. Shuning uchun himoyalangan maydonlar til sintaksisi tomonidan qo'llab-quvvatlanmasa ham, ko'proq ishlatiladi.
 
-````warn header="Private fields are not available as this[name]"
-Private fields are special.
+````warn header=""Shaxsiy maydonlar this [name], bu nom sifatida mavjud emas"
+Xususiy maydonlar alohida joylashgan.  
 
-As we know, usually we can access fields using `this[name]`:
+Ma'lumki, biz odatda `this[name]` yordamida maydonlarga kira olamiz:
 
 ```js
 class User {
@@ -280,43 +279,44 @@ class User {
 }
 ```
 
-With private fields that's impossible: `this['#name']` doesn't work. That's a syntax limitation to ensure privacy.
+Shaxsiy maydonlarda bu mumkin emas: `this['#name']` ishlamaydi. Bu maxfiylikni ta'minlash uchun sintaktik cheklovdir.
 ````
 
-## Summary
+## Xulosa
 
-In terms of OOP, delimiting of the internal interface from the external one is called [encapsulation](https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)).
+OOP nuqtayi nazaridan, ichki interfeysning tashqi interfeysdan chegaralanishi [encapsulation] (https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)) deb ataladi.
 
-It gives the following benefits:
+U quyidagi foydalarni beradi:
 
-Protection for users, so that they don't shoot themselves in the foot
-: Imagine, there's a team of developers using a coffee machine. It was made by the "Best CoffeeMachine" company, and works fine, but a protective cover was removed. So the internal interface is exposed.
+Foydalanuvchilar o'zlarini oyog'iga otib yubormasliklari uchun himoya
 
-    All developers are civilized -- they use the coffee machine as intended. But one of them, John, decided that he's the smartest one, and made some tweaks in the coffee machine internals. So the coffee machine failed two days later.
+   : Tasavvur qiling, kofe mashinasidan foydalanadigan dasturchilar jamoasi bor. U "Best CoffeeMachine" kompaniyasi tomonidan ishlab chiqarilgan va yaxshi ishlaydi, ammo himoya qopqog'i olib tashlangan. Shunday qilib, ichki interfeys ochiladi.
 
-    That's surely not John's fault, but rather the person who removed the protective cover and let John do his manipulations.
+    Barcha ishlab chiquvchilar madaniyatli -- ular qahva mashinasidan maqsadli foydalanishadi. Ammo ulardan biri, Jon, o'zini eng aqlli deb qaror qildi va qahva mashinasining ichki qismlarini biroz o'zgartirdi. Shunday qilib, qahva mashinasi ikki kundan keyin ishdan chiqdi.
 
-    The same in programming. If a user of a class will change things not intended to be changed from the outside -- the consequences are unpredictable.
+    Bu, albatta, Jonning aybi emas, balki ayb himoya qopqog'ini olib tashlagan va Jonga o'z manipulyatsiyasiga ruxsat bergan odamdadir.
 
-Supportable
-: The situation in programming is more complex than with a real-life coffee machine, because we don't just buy it once. The code constantly undergoes development and improvement.
+    Dasturlashda ham xuddi shunday. Agar sinf foydalanuvchisi tashqaridan o'zgartirish uchun mo'ljallanmagan narsalarni o'zgartirsa - oqibatlari oldindan aytib bo'lmaydi.
 
-    **If we strictly delimit the internal interface, then the developer of the class can freely change its internal properties and methods, even without informing the users.**
+    Qo'llab-quvvatlanadigan holat
+   : Dasturlashdagi vaziyat haqiqiy qahva mashinasiga qaraganda ancha murakkab, chunki biz uni bir marta sotib olmaymiz. Kod doimiy ravishda ishlab chiqiladi va takomillashtiriladi.
 
-    If you're a developer of such class, it's great to know that private methods can be safely renamed, their parameters can be changed, and even removed, because no external code depends on them.
+    **Agar biz ichki interfeysni qat'iy chegaralasak, u holda sinfni ishlab chiquvchisi foydalanuvchilarni xabardor qilmasdan ham o'zining ichki xususiyatlari va usullarini erkin o'zgartirishi mumkin.**
 
-    For users, when a new version comes out, it may be a total overhaul internally, but still simple to upgrade if the external interface is the same.
+    Agar siz bunday sinfni ishlab chiquvchi bo'lsangiz, shaxsiy usullarni xavfsiz tarzda qayta nomlash, parametrlarini o'zgartirish va hatto olib tashlash mumkinligini bilish juda yaxshi, chunki hech qanday tashqi kod ularga bog'liq emas.
 
-Hiding complexity
-: People adore using things that are simple. At least from outside. What's inside is a different thing.
+    Foydalanuvchilar uchun yangi versiya chiqqanda, u ichki jihatdan to'liq ta'mirlanishi mumkin, ammo tashqi interfeys bir xil bo'lsa, uni yangilash oson.
 
-    Programmers are not an exception.
+   Murakkablikni yashirish
+  : Odamlar hech bo'lmaganda tashqi tarafdan oddiy narsalardan foydalanishni yaxshi ko'radilar. Ichidagi narsa boshqa mavzu.
 
-    **It's always convenient when implementation details are hidden, and a simple, well-documented external interface is available.**
+    Dasturchilar bundan mustasno emas.
 
-To hide an internal interface we use either protected or private properties:
+    **Amalga kiritish tafsilotlari yashirin va oddiy bo'lsa, yaxshi hujjatlashtirilgan tashqi interfeys mavjud bo'lsa, bu har doim qulay.**
 
-- Protected fields start with `_`. That's a well-known convention, not enforced at the language level. Programmers should only access a field starting with `_` from its class and classes inheriting from it.
-- Private fields start with `#`. JavaScript makes sure we can only access those from inside the class.
+   Ichki interfeysni yashirish uchun biz himoyalangan yoki shaxsiy xususiyatlardan foydalanamiz:
 
-Right now, private fields are not well-supported among browsers, but can be polyfilled.
+   - Himoyalangan maydonlar `_` bilan boshlanadi. Bu til darajasida qo'llanilmagan taniqli konvensiya. Dasturchilar faqat `_` bilan boshlangan maydonga uning sinfi va undan meros bo'lgan sinflarga kirishlari kerak.
+   - Shaxsiy maydonlar `#` bilan boshlanadi. JavaScript bizga faqat sinf ichidagilarga kirishimiz mumkinligiga ishonch hosil qiladi.
+
+   Hozirda shaxsiy maydonlar brauzerlar orasida yaxshi qo'llab-quvvatlanmaydi, lekin ularni to'ldirish mumkin.

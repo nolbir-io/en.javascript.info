@@ -1,20 +1,20 @@
-# '??' Nullish coalescing operatori
+# '??' Nullish birlashtiruvchi operator '??'
 
 [recent browser="new"]
 
-Nullish coalescing operatori ikkita `??` so'roq belgisi kabi yoziladi.
+Nullish birlashtiruvchi operatori ikkita `??` so'roq belgisi bilan yoziladi.
 
-Uning `null` va `undefined` ga bir xil munosabatda bo'lgani sababli, biz bu maoqlada maxsus atamadan foydalanamiz. Ifoda na `null` va na `undefined` bo'lganida uni "defined" (aniqlangan) deb ataymiz.
+Uning `null` va `undefined` ga nisbatan bir xil munosabatda bo'lgani sababli biz bu maoqlada maxsus atamadan foydalanamiz. Ifoda na `null` va na `undefined` bo'lganida, uni "defined" (aniqlangan) deb ataymiz.
 
 `a ?? b` ning natijasi:
-- agar `a` is aniqlangan bo'lsa, u holda `a`,
+- agar `a` aniqlangan bo'lsa, u holda `a`,
 - agar `a` aniqlanmagan bo'lsa, u holda `b`.
 
-Boshqacha qilib aytganda, `??` agar `null/undefined` bo'lmasa birinchi argument-ni, aks holda ikkinchisini qaytaradi.
+Boshqacha qilib aytganda, `??` agar `null/undefined` bo'lmasa birinchi argumentni, aks holda ikkinchisini qaytaradi.
 
-Nullish coalescing operatori butunlay yangi narsa emas. Bu ikki qiymatning birinchi "aniqlangan"ini topishning uchun juda yaxshi usuli.
+Nullish birlashtiruvchi operatori butunlay yangi narsa emas. Bu ikki qiymatning birinchi "aniqlangan" qiymatini topishning juda yaxshi usuli.
 
-Biz `result = a ?? b` ni o'zimiz bilgan operatorlardan foydalanib boshqatdan quyidagi kabi yozishimiz mumkin:
+Biz `result = a ?? b` ni o'zimiz bilgan operatorlardan foydalanib boshidan quyidagi kabi yozishimiz mumkin:
 
 ```js
 result = (a !== null && a !== undefined) ? a : b;
@@ -25,33 +25,26 @@ Endi `??` nima vazifa bajarishi butunlay tushunarli bo'ladi. Keling u qayerda yo
 `??` ning eng keng tarqalgan ishlatilish holati bu aniqlanmagan o'zgaruvchini doimiy qiymat bilan ta'minlashdir.
 
 Misol uchun, quyida agar aniqlangan bo'lsa `user`ni, aks holda `Anonymous`ni ko'rsatamiz:
-The common use case for `??` is to provide a default value.
-
-For example, here we show `user` if its value isn't `null/undefined`, otherwise `Anonymous`:
 
 ```js run
 let user;
 
-alert(user ?? "Anonymous"); // Anonymous (user is undefined)
+alert(user ?? "Anonymous"); // Anonymous (user aniqlangan)
 ```
 
-Quyida `user`ning name-ga tayinlanganidagi misoli:
+Quyida `user`ning namega tayinlanganidagi misoli:
 
 ```js run
 let user = "John";
 
-alert(user ?? "Anonymous"); // John (user is not null/udefined)
+alert(user ?? "Anonymous"); // John (user null emas/aniqlanmagan)
 ```
 
-Biz `??` ketma-ketligidan ro'yhatdagi birinchi `null/undefined` bo'lmagan qiymatni olish uchun ham foydalanishimiz mumkin.
+Biz `??` ketma-ketligidan ro'yxatdagi birinchi `null/undefined` bo'lmagan qiymatni olish uchun ham foydalanishimiz mumkin.
 
-Let's say we have a user's data in variables `firstName`, `lastName` or `nickName`. All of them may be not defined, if the user decided not to enter a value.
-Keling, bizda `firstName`, `lastName` yoki `nickName` o'zgaruvchilarida foydalanuvchi ma'lumotlari bor deymiz. Agar foydalanuchi qiymat kiritishni xohlamasa, ularning barchasi aniqlangan bo'lmasligi ham mumkin.
+Keling, bizda `firstName`, `lastName` yoki `nickName` o'zgaruvchilarida foydalanuvchi ma'lumotlari bor deylik. Agar foydalanuchi qiymat kiritishni xohlamasa, ularning barchasi aniqlangan bo'lmasligi ham mumkin.
 
-Biz ushbu o'zgaruvchilardan biri yordamida foydalanuvchi ismini yoki agar ularning barchasi aniqlangan bo'lmasa "Anonymous"ni ko'rsatmoqchimiz.
-Let's say we have a user's data in variables `firstName`, `lastName` or `nickName`. All of them may be not defined, if the user decided not to fill in the corresponding values.
-
-We'd like to display the user name using one of these variables, or show "Anonymous" if all of them are `null/undefined`.
+Biz ushbu o'zgaruvchilardan biri yordamida foydalanuvchi ismini, agar ularning barchasi `null/undefined` bo'lsa, "Anonymous"ni ko'rsatmoqchimiz.
 
 Keling, buning uchun `??` operatoridan foydalanamiz:
 
@@ -60,7 +53,7 @@ let firstName = null;
 let lastName = null;
 let nickName = "Supercoder";
 
-// shows the first defined value:
+// birinchi belgilangan qiymatni ko'rsatadi:
 *!*
 alert(firstName ?? lastName ?? nickName ?? "Anonymous"); // Supercoder
 */!*
@@ -68,7 +61,7 @@ alert(firstName ?? lastName ?? nickName ?? "Anonymous"); // Supercoder
 
 ## || bilan taqqoslash
 
-[O'tgan bobda](info:logical-operators#or-finds-the-first-truthy-value) aytilgani kabi `||` OR operatori  `??` bilan bir xil ishlatilinishi mumkin. 
+[O'tgan bobda](info:logical-operators#or-finds-the-first-truthy-value) aytilgani kabi `||` OR operatori  `??` bilan bir xil ishlatilishi mumkin. 
 
 Misol uchun, yuqoridagi kodda `??` bilan `||` o'rnini almashtishimiz va shunga qaramay bir xil natijani olishimiz mumkin:
 
@@ -77,27 +70,25 @@ let firstName = null;
 let lastName = null;
 let nickName = "Supercoder";
 
-// shows the first truthy value:
+// birinchi haqiqat qiymatini ko'rsatadi:
 *!*
 alert(firstName || lastName || nickName || "Anonymous"); // Supercoder
 */!*
 ```
 
-Tarixiy jihatdan, birinchi bo'lib faqat OR `||` operatori bo'lgan. U JavaScript boshidan beri mavjud, shuning uchun dasturchilar undan uzoq vaqt davomida shunday maqsadlarda foydalanishgan.
+Tarixiy jihatdan, birinchi bo'lib faqat OR `||` operatori mavjud bo'lgan. U JavaScript boshidan beri mavjud, shuning uchun dasturchilar undan uzoq vaqt davomida shunday maqsadlarda foydalanishgan.
 
-On the other hand, the nullish coalescing operator `??` was added to JavaScript only recently, and the reason for that was that people weren't quite happy with `||`.
-Boshqa tomondan, nullish coalescing operatori `??` JavaScript-ga yaqinda qo'shilgan va buning sababi odamlar `||` bilan unchalik mamnun emasdi.
+Boshqa tomondan, nullish birlashtiruvchi operatori `??` JavaScriptga yaqinda qo'shilgan va buning sababi odamlar `||` dan unchalik mamnun emasdi.
 
-Ularning o'ratasidagi muhim farqi:
+Ularning o'rtasidagi muhim farqlar:
 - `||` birinchi *rost* qiymatni qaytaradi.
 - `??` birinchi *aniqlangan* qiymatni qaytaradi.
 
 Boshqacha qilib aytganda, `||` `false`, `0`, bo'sh string `""` va `null/aniqlanmagan` qatorlarini ajratmaydi. Ularning barchasi bir xil -- yolg'on qiymatlar. Agar ulardan birortasi `||` ning birinchi argumenti bo'lsa, natija sifatida biz ikkinchi argumentni olamiz.
 
-In practice though, we may want to use default value only when the variable is `null/undefined`. That is, when the value is really unknown/not set.
-Amalda biz standart qiymatdan faqat o'zgaruvchi `null/undefined` bo'lganda foydalanishni xohlashimiz mumkin. Ya'ni, qiymat haqiqatan ham noma'lum/o'rnatilmagan bo'lsa.
+Amalda biz standart qiymatdan faqat o'zgaruvchi `null/undefined`, ya'ni qiymat haqiqatan ham noma'lum/o'rnatilmagan bo'lsa, undan foydalanishni mumkin. 
 
-Misol uchun, buni ko'raylik:
+Misol uchun, quyidagi misolni ko'rib chiqaylik:
 
 ```js run
 let height = 0;
@@ -111,41 +102,40 @@ alert(height ?? 100); // 0
 - `height ?? 100` ifoda `height` `null/undefined` ekanligini tekshiradi, va bunday emas,
     - shunday qilib `height` ning natijasi "uning o'zi", ya'ni `0`.
 
-Amalda, nol balandlik ko'pincha haqiqiy qiymat bo'lib, uni standart bilan almashtirmaslik kerak. Demak, `??` to'g'ri ish qiladi.
+Amalda, nol balandligi ko'pincha haqiqiy qiymat bo'lib, uni standart bilan almashtirmaslik kerak. Demak, `??` to'g'ri ish qiladi.
 
 ## Ustunlik
 
-`??` operatorining ustunligi `||` niki bilan bir xil. Ular ikkalasi ham [MDN jadval](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#Table)ida `4` ga teng.
-The precedence of the `??` operator is the same as `||`. They both equal `3` in the [MDN table](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#Table).
+`??` operatorining ustunligi `||` niki bilan bir xil. Ular ikkalasi ham [MDN jadval](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#Table)ida `3` ga teng.
 
-Bu shuni anglatadiki, nullish coalescing operatori ham xuddi `||` kabi `=` va `?` dan avval, lekin `+`, `*` va boshqa ko'plab operatorlardan keyin hisoblanadi
+Bu shuni anglatadiki, nullish birlashtiruvchi operatori ham xuddi `||` kabi `=` va `?` dan avval, lekin `+`, `*` va boshqa ko'plab operatorlardan keyin hisoblanadi.
 
 Agar biz ifodada `??` bilan qiymatni boshqa operatorlar bilan ishlatishni istasak, qavslar qo'shishni ko'ramiz:
-So we may need to add parentheses in expressions like this:
+Shunday qilib, biz quyidagi iboralarga qavs qo'shishimiz kerak bo'lishi mumkin:
 
 ```js run
 let height = null;
 let width = null;
 
-// important: use parentheses
+// important: qavslardan foydalaning
 let area = (height ?? 100) * (width ?? 50);
 
 alert(area); // 5000
 ```
 
-Aks holda, agar qavslarni tushirib qoldirsak, `??` dan yuqoriroq ustunlikka ega bo'lgani sababli `*` birinchi bajariladi va noto'g'ri natijalar keltirib chiqaradi.
+Agar qavslarni tushirib qoldirsak, `??` dan yuqoriroq ustunlikka ega bo'lgani sababli `*` birinchi bajariladi va noto'g'ri natijalar keltirib chiqaradi.
 
 ```js
-// without parentheses
+// qavslar ishlatilmaganda
 let area = height ?? 100 * width ?? 50;
 
-// ...works this way (not what we want):
+// ... shunday ishlaydi (biz xohlagandek emas):
 let area = height ?? (100 * width) ?? 50;
 ```
 
 ### ?? ni  && yoki || bilan qo'llash
 
-Xavfsizlik nuqtai nazaridan, ustunlik qavslar ichida aniq ko'rsatilmaguncha JavaScript `??` dan `&&` va `||` operatorlari bilan birgalikda foydalanishni taqiqlaydi.
+Xavfsizlik nuqtayi nazaridan, ustunlik qavslar ichida aniq ko'rsatilmaguncha JavaScript `??` dan `&&` va `||` operatorlari bilan birgalikda foydalanishni ta'qiqlaydi.
 
 Quyidagi kod sintaksis xatolik keltirib chiqaradi:
 
@@ -153,13 +143,13 @@ Quyidagi kod sintaksis xatolik keltirib chiqaradi:
 let x = 1 && 2 ?? 3; // Syntax error
 ```
 
-Bu cheklov shubhasiz munozarali,u odamlar `||` dan `??` ga o'tishni boshlaganlarida dasturlashdagi xatolarni oldini olish maqsadida til spetsifikatsiyasiga qo'shilgan edi.
+Bu cheklov shubhasiz munozarali, u odamlar `||` dan `??` ga o'tishni boshlaganlarida dasturlashdagi xatolarning oldini olish maqsadida til spetsifikatsiyasiga qo'shilgan edi.
 
 Uning atrofida ishlash uchun tashqi qavslardan foydalaning:
 
 ```js run
 *!*
-let x = (1 && 2) ?? 3; // Works
+let x = (1 && 2) ?? 3; // Ishlaydi
 */!*
 
 alert(x); // 2
@@ -167,14 +157,14 @@ alert(x); // 2
 
 ## Xulosa
 
-- `??` nullish coalescing operatori ro'yhatdan birinchi "aniqlangan" qiymatni qisqa yo'l bilan tanlashning imkonini beradi.
+- `??` nullish birlashtiruvchi operatori ro'yxatdan birinchi "aniqlangan" qiymatni qisqa yo'l bilan tanlashning imkonini beradi.
 
-    U o'zgaruchilarga doimiy qiymatni tayinlash uchun ishlatilinadi:
+    Undan o'zgaruchilarga doimiy qiymatni tayinlash uchun foydalanish mumkin:
 
     ```js
-    // set height=100, if height is null or undefined
+    // balandligi null yoki aniqlanmagan bo'lsa, balandligi = 100 o'rnating
     height = height ?? 100;
     ```
 
 - `??` operatori juda past, `?` va `=` dan biroz balandroq ustunlikka ega, shuning uchun undan ifodada foydalanayotganda qavslarni qo'shishni hisobga oling.
-- Undan `||` yoki `&&` bilan qavslarsiz foydalanish taqiqlanadi.
+- Undan `||` yoki `&&` bilan qavslarsiz foydalanish ta'qiqlanadi.

@@ -5,63 +5,63 @@ libs:
 
 # IndexedDB
 
-IndexedDB is a database that is built into a browser, much more powerful than `localStorage`.
+IndexedDB brauzerga o'rnatilgan ma'lumotlar bazasi bo'lib, `localStorage` dan ancha kuchliroqdir.
 
-- Stores almost any kind of values by keys, multiple key types.
-- Supports transactions for reliability.
-- Supports key range queries, indexes.
-- Can store much bigger volumes of data than `localStorage`.
+- Deyarli har qanday qiymatlarni kalitlar, bir nechta kalit turlari bo'yicha saqlaydi.
+- Ishonchliligi uchun tranzaktsiyalarni qo'llab-quvvatlaydi.
+- Asosiy diapazon so'rovlarini, indekslarni qo'llab-quvvatlaydi.
+- `localStorage`ga qaraganda ancha katta hajmdagi ma'lumotlarni saqlashi mumkin.
 
-That power is usually excessive for traditional client-server apps. IndexedDB is intended for offline apps, to be combined with ServiceWorkers and other technologies.
+An'anaviy mijoz-server ilovalari uchun bu quvvat odatda haddan tashqari ko'p. IndexedDB ServiceWorkers va boshqa texnologiyalar bilan birlashtirilgan oflayn ilovalar uchun mo'ljallangan.
 
-The native interface to IndexedDB, described in the specification <https://www.w3.org/TR/IndexedDB>, is event-based.
+<https://www.w3.org/TR/IndexedDB> spetsifikatsiyasida tasvirlangan IndexedDB ning mahalliy interfeysi voqealarga asoslangan.
 
-We can also use `async/await` with the help of a promise-based wrapper, like <https://github.com/jakearchibald/idb>. That's pretty convenient, but the wrapper is not perfect, it can't replace events for all cases. So we'll start with events, and then, after we gain an understanding of IndexedDb, we'll use the wrapper.
+Shuningdek, <https://github.com/jakearchibald/idb> kabi promisega asoslangan o'ram yordamida `async/await` dan foydalanishimiz mumkin. Bu juda qulay, lekin o'ram mukammal emas, u barcha holatlar uchun voqealar o'rnini bosa olmaydi. Shunday qilib, biz voqealardan boshlaymiz va keyin IndexedDb haqida tushunchaga ega bo'lganimizdan so'ng, biz o'ramdan foydalanamiz.
 
-```smart header="Where's the data?"
-Technically, the data is usually stored in the visitor's home directory, along with browser settings, extensions, etc.
+```smart header="Ma'lumotlar qayerda?"
+Texnik jihatdan ma'lumotlar odatda tashrif buyuruvchining uy katalogida brauzer sozlamalari, kengaytmalar va boshqalar bilan birga saqlanadi.
 
-Different browsers and OS-level users have each their own independant storage.
+Turli xil brauzerlar va OS darajasidagi foydalanuvchilarning har biri o'zining mustaqil xotirasiga ega.
 ```
 
-## Open database
+## Ma'lumotlar bazasini ochish
 
-To start working with IndexedDB, we first need to `open` (connect to) a database.
+IndexedDB bilan ishlashni boshlash uchun biz avval ma'lumotlar bazasini `open` ochishimiz va ularga ulanishimiz kerak.
 
-The syntax:
+Sintaksis:
 
 ```js
 let openRequest = indexedDB.open(name, version);
 ```
 
-- `name` -- a string, the database name.
-- `version` -- a positive integer version, by default `1` (explained below).
+- `name` -- satr, ma`lumotlar bazasi nomi.
+- `version` -- musbat butun son versiyasi, sukut bo'yicha `1` (quyida tushuntirilgan).
 
-We can have many databases with different names, but all of them exist within the current origin (domain/protocol/port). Different websites can't access each other's databases.
+Bizda turli nomlarga ega ko'plab ma'lumotlar bazalari bo'lishi mumkin, ammo ularning barchasi joriy kelib chiqishi (domen/protokol/port) ichida mavjud. Turli veb-saytlar bir-birining ma'lumotlar bazalariga kira olmaydi.
 
-The call returns `openRequest` object, we should listen to events on it:
-- `success`: database is ready, there's the "database object" in `openRequest.result`, we should use it for further calls.
-- `error`: opening failed.
-- `upgradeneeded`: database is ready, but its version is outdated (see below).
+Qo'ng'iroq `openRequest` obyektini qaytaradi, biz undagi voqealarni tinglashimiz kerak:
+- `success`: ma'lumotlar bazasi tayyor, `openRequest.result` da "ma'lumotlar bazasi obyekti" mavjud, biz undan keyingi qo'ng'iroqlar uchun foydalanishimiz kerak.
+- `error`: ochilmadi.
+- `upgradeneeded`: ma'lumotlar bazasi tayyor, lekin uning versiyasi eskirgan (pastga qarang).
 
-**IndexedDB has a built-in mechanism of "schema versioning", absent in server-side databases.**
+**IndexedDB server tomonidagi ma'lumotlar bazalarida mavjud bo'lmagan "sxema versiyalarini yaratish" o'rnatilgan mexanizmiga ega.**
 
-Unlike server-side databases, IndexedDB is client-side, the data is stored in the browser, so we, developers, don't have full-time access to it. So, when we have published a new version of our app, and the user visits our webpage, we may need to update the database.
+Server tomonidagi ma'lumotlar bazalaridan farqli o'laroq, IndexedDB mijoz tomoni bo'lib, ma'lumotlar brauzerda saqlanadi, shuning uchun biz, dasturchilar, unga to'liq vaqtli kirish imkoniga ega emasmiz. Shunday qilib, biz ilovamizning yangi versiyasini nashr qilganimizda va foydalanuvchi bizning veb-sahifamizga tashrif buyurganida, ma'lumotlar bazasini yangilashimiz kerak bo'lishi mumkin.
 
-If the local database version is less than specified in `open`, then a special event `upgradeneeded` is triggered, and we can compare versions and upgrade data structures as needed.
+Agar mahalliy ma'lumotlar bazasi versiyasi `open` da ko'rsatilganidan kamroq bo'lsa, `upgradeneeded` maxsus hodisasi ishga tushiriladi va biz versiyalarni solishtirishimiz va kerak bo'lganda ma'lumotlar tuzilmalarini yangilashimiz mumkin.
 
-The `upgradeneeded` event also triggers when the database doesn't yet exist (technically, its version is `0`), so we can perform the initialization.
+`Upgradeneeded` hodisasi ma'lumotlar bazasi hali mavjud bo'lmaganda ham ishga tushadi (texnik jihatdan uning versiyasi `0`), shuning uchun biz ishga tushirishni amalga oshirishimiz mumkin.
 
-Let's say we published the first version of our app.
+Aytaylik, biz ilovamizning birinchi versiyasini nashr qildik.
 
-Then we can open the database with version `1` and perform the initialization in an `upgradeneeded` handler like this:
+Keyin biz ma'lumotlar bazasini `1` versiyasi bilan ochishimiz va ishga tushirishni `upgradeneeded` ishlov beruvchida quyidagicha bajarishimiz mumkin:
 
 ```js
 let openRequest = indexedDB.open("store", *!*1*/!*);
 
 openRequest.onupgradeneeded = function() {
-  // triggers if the client had no database
-  // ...perform initialization...
+  // agar mijozda ma'lumotlar bazasi bo'lmasa, ishga tushiriladi
+   // ... ishga tushirishni amalga oshiring...
 };
 
 openRequest.onerror = function() {
@@ -70,68 +70,68 @@ openRequest.onerror = function() {
 
 openRequest.onsuccess = function() {
   let db = openRequest.result;
-  // continue working with database using db object
+  // db obyekti yordamida ma'lumotlar bazasi bilan ishlashni davom ettiring
 };
 ```
 
-Then, later, we publish the 2nd version.
+Keyin, keyinroq, biz 2-versiyasini nashr etamiz.
 
-We can open it with version `2` and perform the upgrade like this:
+Biz uni `2` versiyasi bilan ochishimiz va yangilashni quyidagicha amalga oshirishimiz mumkin:
 
 ```js
 let openRequest = indexedDB.open("store", *!*2*/!*);
 
 openRequest.onupgradeneeded = function(event) {
-  // the existing database version is less than 2 (or it doesn't exist)
+  // mavjud ma'lumotlar bazasi versiyasi 2 dan kam (yoki u mavjud emas)
   let db = openRequest.result;
-  switch(event.oldVersion) { // existing db version
+  switch(event.oldVersion) { // mavjud db versiyasi
     case 0:
-      // version 0 means that the client had no database
-      // perform initialization
+     // 0 versiyasi mijozda ma'lumotlar bazasi yo'qligini anglatadi
+    // ishga tushirishni amalga oshiring
     case 1:
-      // client had version 1
-      // update
+      // mijozning 1-versiyasi bor edi
+       // yangilash
   }
 };
 ```
 
-Please note: as our current version is `2`, the `onupgradeneeded` handler has a code branch for version `0`, suitable for users that are accessing for the first time and have no database, and also for version `1`, for upgrades.
+Iltimos, diqqat qiling: joriy versiyamiz `2` bo'lgani uchun `onupgradeneeded` ishlov beruvchisi `0` versiyasi uchun kod bo'limiga ega bo'lib, u birinchi marta kirayotgan va ma'lumotlar bazasiga ega bo'lmagan foydalanuvchilar uchun, shuningdek `1` versiyasi uchun yangilash maqsadida mos keladi.
 
-And then, only if `onupgradeneeded` handler finishes without errors, `openRequest.onsuccess` triggers, and the database is considered successfully opened.
+Shundan so'ng, agar `onupgradeneeded` ishlov beruvchisi xatosiz tugasa, `openRequest.onsuccess` ishga tushadi va ma'lumotlar bazasi muvaffaqiyatli ochilgan hisoblanadi.
 
-To delete a database:
+Ma'lumotlar bazasini o'chirish uchun:
 
 ```js
 let deleteRequest = indexedDB.deleteDatabase(name)
-// deleteRequest.onsuccess/onerror tracks the result
+// deleteRequest.onsuccess/onerror natijani kuzatib boradi
 ```
 
-```warn header="We can't open a database using an older open call version"
-If the current user database has a higher version than in the `open` call, e.g. the existing DB version is `3`, and we try to `open(...2)`, then that's an error, `openRequest.onerror` triggers.
+```warn header="Biz eski ochiq qo'ng'iroq versiyasidan foydalanib ma'lumotlar bazasini ocha olmaymiz"
+Agar joriy foydalanuvchi ma'lumotlar bazasi `open` qo'ng'iroqqa qaraganda yuqoriroq versiyaga ega bo'lsa, masalan, mavjud ma'lumotlar bazasi versiyasi `3` bo'lib, biz ochishga `open (...2)` harakat qilamiz, keyin bu xato `openRequest.onerror` ishga tushiriladi.
 
-That's rare, but such a thing may happen when a visitor loads outdated JavaScript code, e.g. from a proxy cache. So the code is old, but his database is new.
+Bu kamdan-kam uchraydi, lekin tashrif buyuruvchi eskirgan JavaScript kodini yuklaganida sodir bo'lishi mumkin, masalan, proksi keshdan. Shunday qilib, kod eski, lekin uning ma'lumotlar bazasi yangi.
 
-To protect from errors, we should check `db.version` and suggest a page reload. Use proper HTTP caching headers to avoid loading the old code, so that you'll never have such problems.
+Xatolardan himoyalanish uchun `db.version` ni tekshirib, sahifani qayta yuklashni taklif qilishimiz kerak. Hech qachon bunday muammolarga duch kelmaslik uchun eski kodni yuklamaslik uchun to'g'ri HTTP keshlash sarlavhalaridan foydalaning.
 ```
 
-### Parallel update problem
+### Parallel yangilash muammosi
 
-As we're talking about versioning, let's tackle a small related problem.
+Versiyalash haqida gapirar ekanmiz, keling, kichik bir muammoni hal qilaylik.
 
-Let's say:
-1. A visitor opened our site in a browser tab, with database version `1`.
-2. Then we rolled out an update, so our code is newer.
-3. And then the same visitor opens our site in another tab.
+Aytaylik:
+1. Mehmon saytimizni brauzer yorlig'ida ochdi, ma'lumotlar bazasi versiyasi `1`.
+2. Keyin biz yangilanishni chiqardik, shuning uchun bizning kodimiz yangiroq.
+3. Va keyin o'sha mehmon bizning saytimizni boshqa yorliqda ochadi.
 
-So there's a tab with an open connection to DB version `1`, while the second one attempts to update it to version `2` in its `upgradeneeded` handler.
+Shunday qilib, ma'lumotlar bazasining `1` versiyasiga ochiq ulanishga ega bo'lgan yorliq mavjud, ikkinchisi esa `upgradeneeded` ishlov beruvchisida uni `2` versiyasiga yangilashga harakat qiladi.
 
-The problem is that a database is shared between two tabs, as it's the same site, same origin. And it can't be both version `1` and `2`. To perform the update to version `2`, all connections to version 1 must be closed, including the one in the first tab.
+Muammo shundaki, ma'lumotlar bazasi ikkita yorliq o'rtasida taqsimlanadi, chunki u bir xil sayt, bir xil kelib chiqishga ega. Va bu ikkala versiya `1` va `2` bo'lishi mumkin emas. `2` versiyasiga yangilashni amalga oshirish uchun 1-versiyaga barcha ulanishlar, shu jumladan, birinchi yorliqdagi ulanishlar yopilishi kerak.
 
-In order to organize that, the `versionchange` event triggers on the "outdated" database object. We should listen for it and close the old database connection (and probably suggest a page reload, to load the updated code).
+Buni tashkil qilish uchun `versionchange` hodisasi "eskirgan" ma'lumotlar bazasi obyektida ishga tushadi. Biz buni tinglashimiz va eski ma'lumotlar bazasi ulanishini yopishimiz kerak (va ehtimol yangilangan kodni yuklash uchun sahifani qayta yuklashni taklif qilamiz).
 
-If we don't listen for the `versionchange` event and don't close the old connection, then the second, new connection won't be made. The `openRequest` object will emit the `blocked` event instead of `success`. So the second tab won't work.
+Agar biz `versionchange` hodisasini tinglamasak va eski ulanishni yopmasak, ikkinchi, yangi ulanish amalga oshirilmaydi. `OpenRequest` obyekti `success` o'rniga `blocked` hodisasini chiqaradi. Shunday qilib, ikkinchi yorliq ishlamaydi.
 
-Here's the code to correctly handle the parallel upgrade. It installs the `onversionchange` handler, that triggers if the current database connection becomes outdated (db version is updated elsewhere) and closes the connection.
+Quyida parallel yangilashni to'g'ri boshqarish uchun kod berilgan. U `onversionchange` ishlov beruvchisini o'rnatadi, agar joriy ma'lumotlar bazasi ulanishi eskirgan bo'lsa (db versiyasi boshqa joyda yangilangan) ishga tushadi va ulanishni yopadi.
 
 ```js
 let openRequest = indexedDB.open("store", 2);
@@ -145,152 +145,152 @@ openRequest.onsuccess = function() {
   *!*
   db.onversionchange = function() {
     db.close();
-    alert("Database is outdated, please reload the page.")
+    alert("Ma'lumotlar bazasi eskirgan, sahifani qayta yuklang.")
   };
   */!*
 
-  // ...the db is ready, use it...
+  // ...db tayyor, undan foydalanishingiz mumkin...
 };
 
 *!*
 openRequest.onblocked = function() {
-  // this event shouldn't trigger if we handle onversionchange correctly
+  // Agar biz onversionchange ni to'g'ri bajarsak, bu hodisa ishga tushmasligi kerak
 
-  // it means that there's another open connection to the same database
-  // and it wasn't closed after db.onversionchange triggered for it
+  // bu xuddi shu ma'lumotlar bazasiga boshqa ochiq ulanish mavjudligini bildiradi
+   // va db.onversionchange ishga tushirilgandan keyin u yopilmadi
 };
 */!*
 ```
 
-...In other words, here we do two things:
+...Boshqacha qilib aytganda, bu yerda biz ikkita narsani qilamiz:
 
-1. The `db.onversionchange` listener informs us about a parallel update attempt, if the current database version becomes outdated.
-2. The `openRequest.onblocked` listener informs us about the opposite situation: there's a connection to an outdated version elsewhere, and it doesn't close, so the newer connection can't be made.
+1. `db.onversionchange` tinglovchisi ma'lumotlar bazasining joriy versiyasi eskirgan bo'lsa, parallel yangilash urinishi haqida bizga xabar beradi.
+2. `openRequest.onblocked` tinglovchisi bizga qarama-qarshi vaziyat haqida xabar beradi: boshqa joyda eskirgan versiyaga ulanish mavjud va u yopilmaydi, shuning uchun yangi ulanishni amalga oshirib bo'lmaydi.
 
-We can handle things more gracefully in `db.onversionchange`, prompt the visitor to save the data before the connection is closed and so on. 
+Biz `db.onversionchange` da ishlarni yanada chiroyliroq hal qilishimiz va ulanish yopilishidan oldin tashrif buyuruvchidan ma'lumotlarni saqlashni taklif qilishimiz mumkin.
 
-Or, an alternative approach would be to not close the database in `db.onversionchange`, but instead use the `onblocked` handler (in the new tab) to alert the visitor, tell him that the newer version can't be loaded until they close other tabs.
+Yoki `db.onversionchange` da ma'lumotlar bazasini yopmaslik, balki tashrif buyuruvchini ogohlantirish uchun `onblocked` ishlov beruvchisidan (yangi tabda) foydalanish, unga yangiroq versiyani yuklash mumkin emasligini ayting, ular boshqa yorliqlarni yopadilar.
 
-These update collisions happen rarely, but we should at least have some handling for them, at least an `onblocked` handler, to prevent our script from dying silently.
+Ushbu yangilanishlar to'qnashuvi kamdan-kam hollarda sodir bo'ladi, lekin bizning skriptimiz jim bo'lib ketishining oldini olish uchun hech bo'lmaganda `onblocked` ishlov beruvchisiga ega bo'lishimiz kerak.
 
-## Object store
+## Obyektlar do'koni
 
-To store something in IndexedDB, we need an *object store*.
+IndexedDBda biror narsani saqlash uchun bizga *obyektlar do'koni* kerak.
 
-An object store is a core concept of IndexedDB. Counterparts in other databases are called "tables" or "collections". It's where the data is stored. A database may have multiple stores: one for users, another one for goods, etc.
+Obyektlar do'koni IndexedDB ning asosiy tushunchasidir. Boshqa ma'lumotlar bazalaridagi o'xshashlar "jadvallar" yoki "to'plamlar" deb ataladi. Bu ma'lumotlar saqlanadigan joy. Ma'lumotlar bazasida bir nechta do'kon bo'lishi mumkin: biri foydalanuvchilar uchun, ikkinchisi tovarlar uchun va hokazo.
 
-Despite being named an "object store", primitives can be stored too.
+"Obyekt do'koni" deb nomlanishiga qaramay, primitivlar ham saqlanishi mumkin.
 
-**We can store almost any value, including complex objects.**
+**Biz deyarli har qanday qiymatni, shu jumladan murakkab obyektlarni saqlashimiz mumkin.**
 
-IndexedDB uses the [standard serialization algorithm](https://www.w3.org/TR/html53/infrastructure.html#section-structuredserializeforstorage) to clone-and-store an object. It's like `JSON.stringify`, but more powerful, capable of storing much more datatypes.
+IndexedDB obyektni klonlash va saqlash uchun [standart serializatsiya algoritmidan](https://www.w3.org/TR/html53/infrastructure.html#section-structuredserializeforstorage) foydalanadi. Bu `JSON.stringify`ga o'xshaydi, lekin kuchliroq, ko'proq ma'lumotlar turlarini saqlashga qodir.
 
-An example of an object that can't be stored: an object with circular references. Such objects are not serializable. `JSON.stringify` also fails for such objects.
+Saqlab bo'lmaydigan obyektga misol: dumaloq havolalarga ega obyektdir. Bunday obyektlarni ketma-ket qilib bo'lmaydi. `JSON.stringify` ham bunday obyektlar uchun bajarilmaydi.
 
-**There must be a unique `key` for every value in the store.**     
+**Do'kondagi har bir qiymat uchun noyob `key` bo'lishi kerak.**
 
-A key must be one of these types - number, date, string, binary, or array. It's a unique identifier, so we can search/remove/update values by the key.
+Kalit shu turlardan biri bo'lishi kerak - raqam, sana, qator, ikkilik yoki massiv. Bu noyob identifikator hisoblanib, biz kalit orqali qiymatlarni qidirishimiz/o'chirishimiz/yangilashimiz mumkin.
 
 ![](indexeddb-structure.svg)
 
-As we'll see very soon, we can provide a key when we add a value to the store, similar to `localStorage`. But when we store objects, IndexedDB allows setting up an object property as the key, which is much more convenient. Or we can auto-generate keys.
+Tez orada ko'rib turganimizdek, biz do'konga `localStorage` ga o'xshash qiymat qo'shganda kalitni taqdim qilishimiz mumkin. Ammo biz obyektlarni saqlaganimizda, IndexedDB obyekt xususiyatini kalit sifatida sozlash imkonini beradi, bu esa ancha qulayroqdir. Yoki biz kalitlarni avtomatik yaratishimiz mumkin.
 
-But we need to create an object store first.
+Lekin birinchi navbatda obyektlar do'konini yaratishimiz kerak.
 
-The syntax to create an object store:
+Obyektlar do'konini yaratish sintaksisi:
 
 ```js
 db.createObjectStore(name[, keyOptions]);
 ```
 
-Please note, the operation is synchronous, no `await` needed.
+E'tibor bering, operatsiya sinxron, `await` shart emas.
 
-- `name` is the store name, e.g. `"books"` for books,
-- `keyOptions` is an optional object with one of two properties:
-  - `keyPath` -- a path to an object property that IndexedDB will use as the key, e.g. `id`.
-  - `autoIncrement` -- if `true`, then the key for a newly stored object is generated automatically, as an ever-incrementing number.
+- `name` do'kon nomi, masalan, kitoblar uchun `"books"`,
+- `keyOptions` ikki xususiyatdan biriga ega ixtiyoriy obyekt:
+   - `keyPath` -- IndexedDB kalit sifatida foydalanadigan obyekt xususiyatiga yo'l, masalan, `id`.
+   - `autoIncrement` -- agar `true` bo'lsa, yangi saqlangan obyekt uchun kalit avtomatik ravishda doimiy ravishda oshib boruvchi raqam sifatida yaratiladi.
 
-If we don't supply `keyOptions`, then we'll need to provide a key explicitly later, when storing an object.
+Agar biz `keyOptions` ni bermasak, keyinroq obyektni saqlashda kalitni aniq ko'rsatishimiz kerak bo'ladi.
 
-For instance, this object store uses `id` property as the key:
+Masalan, ushbu obyektlar do'koni kalit sifatida `id` xususiyatidan foydalanadi:
 
 ```js
 db.createObjectStore('books', {keyPath: 'id'});
 ```
 
-**An object store can only be created/modified while updating the DB version, in `upgradeneeded` handler.**
+**Obyektlar do'konini faqat DB versiyasini yangilash vaqtida `upgradeneeded` ishlov beruvchida yaratish/o'zgartirish mumkin.**
 
-That's a technical limitation. Outside of the handler we'll be able to add/remove/update the data, but object stores can only be created/removed/altered during a version update.
+Bu texnik cheklov. Ishlovchidan tashqarida biz ma'lumotlarni qo'shish/o'chirish/yangilash imkoniyatiga ega bo'lamiz, lekin obyektlar do'konlarini faqat versiyani yangilash vaqtida yaratish/o'chirish/o'zgartirishi mumkin.
 
-To perform a database version upgrade, there are two main approaches:
+Ma'lumotlar bazasi versiyasini yangilash uchun ikkita asosiy yondashuv mavjud:
 
-1. We can implement per-version upgrade functions: from 1 to 2, from 2 to 3, from 3 to 4 etc. Then, in `upgradeneeded` we can compare versions (e.g. old 2, now 4) and run per-version upgrades step by step, for every intermediate version (2 to 3, then 3 to 4).
-2. Or we can just examine the database: get a list of existing object stores as `db.objectStoreNames`. That object is a [DOMStringList](https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#domstringlist) that provides `contains(name)` method to check for existance. And then we can do updates depending on what exists and what doesn't.
+1. Biz har bir versiyani yangilash funksiyalarini amalga oshirishimiz mumkin: 1 dan 2 gacha, 2 dan 3 gacha, 3 dan 4 gacha va hokazo. Keyin `upgradeneeded` da biz versiyalarni (masalan, eski 2, hozir 4) solishtirishimiz va har bir versiyani ishga tushirishimiz mumkin. Har bir oraliq versiya uchun bosqichma-bosqich yangilanishlar mavjud (2 dan 3 gacha, keyin 3 dan 4 gacha).
+2. Yoki biz shunchaki ma'lumotlar bazasini tekshirishimiz mumkin: `db.objectStoreNames` sifatida mavjud obyektlar do'konlari ro'yxatini oling. Bu obyekt [DOMStringList](https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#domstringlist) bo'lib, mavjudligini tekshirish uchun `contains(name)` usulini taqdim etadi. Va keyin nima bor va nima yo'qligiga qarab yangilanishlarni amalga oshirishimiz mumkin.
 
-For small databases the second variant may be simpler.
+Kichik ma'lumotlar bazalari uchun ikkinchi variant oddiyroq bo'lishi mumkin.
 
-Here's the demo of the second approach:
+Mana ikkinchi yondashuvning namunasi:
 
 ```js
 let openRequest = indexedDB.open("db", 2);
 
-// create/upgrade the database without version checks
+// versiya tekshiruvisiz ma'lumotlar bazasini yaratish/yangilash
 openRequest.onupgradeneeded = function() {
   let db = openRequest.result;
-  if (!db.objectStoreNames.contains('books')) { // if there's no "books" store
-    db.createObjectStore('books', {keyPath: 'id'}); // create it
+  if (!db.objectStoreNames.contains('books')) { // "books" kitob do'koni mavjud bo'lmasa
+    db.createObjectStore('books', {keyPath: 'id'}); // uni yarating
   }
 };
 ```
 
-To delete an object store:
+Obyekt do'konini o'chirish:
 
 ```js
 db.deleteObjectStore('books')
 ```
 
-## Transactions
+## Tranzaktsiyalar
 
-The term "transaction" is generic, used in many kinds of databases.
+"Tranzaksiya" atamasi umumiy bo'lib, ko'plab ma'lumotlar bazalarida qo'llaniladi.
 
-A transaction is a group of operations, that should either all succeed or all fail.
+Tranzaktsiya - bu hammasi muvaffaqiyatli yoki barchasi muvaffaqiyatsiz bo'lishi kerak bo'lgan operatsiyalar guruhi.
 
-For instance, when a person buys something, we need to:
+Misol uchun, biror kishi biror narsa sotib olayotganda, bizga quyidagilar kerak:
 
-1. Subtract the money from their account.
-2. Add the item to their inventory.
+1. Ularning hisobidan pulni olib tashlang.
+2. Buyumni ularning inventariga qo'shing.
 
-It would be pretty bad if we complete the 1st operation, and then something goes wrong, e.g. lights out, and we fail to do the 2nd. Both should either succeed (purchase complete, good!) or both fail (at least the person kept their money, so they can retry).
+Agar biz 1-operatsiyani yakunlasak, juda yomon bo'lardi, keyin esa biror narsa noto'g'ri bo'ladi, masalan, chiroq o'chadi va biz 2-ni bajara olmaymiz. Ikkalasi ham muvaffaqiyatli bo'lishi kerak (sotib olish to'liq, yaxshi!) yoki ikkalasi ham muvaffaqiyatsiz bo'lishi kerak (hech bo'lmaganda odam pulini saqlab qolgan, shuning uchun ular qayta urinib ko'rishlari mumkin).
 
-Transactions can guarantee that.
+Tranzaktsiyalar buni kafolatlaydi.
 
-**All data operations must be made within a transaction in IndexedDB.**
+**Barcha ma'lumotlar operatsiyalari IndexedDBdagi tranzaksiya doirasida amalga oshirilishi kerak.**
 
-To start a transaction:
+Tranzaksiyani boshlash uchun:
 
 ```js
 db.transaction(store[, type]);
 ```
 
-- `store` is a store name that the transaction is going to access, e.g. `"books"`. Can be an array of store names if we're going to access multiple stores.
-- `type` – a transaction type, one of:
-  - `readonly` -- can only read, the default.
-  - `readwrite` -- can only read and write the data, but not create/remove/alter object stores.
+- `store` tranzaksiya kirishi uchun mo'ljallangan do'kon nomi, masalan, `"books"`. Agar biz bir nechta do'konlarga kirmoqchi bo'lsak, do'kon nomlari qatori bo'lishi mumkin.
+- `type` - tranzaksiya turi, quyidagilardan biri:
+   -`readonly` -- faqat o'qish mumkin, sukut bo'yicha.
+   - `readwrite` -- faqat ma'lumotlarni o'qish va yozish mumkin, lekin obyektlar do'konlarini yaratish/o'chirish/o'zgartirish mumkin emas.
 
-There's also `versionchange` transaction type: such transactions can do everything, but we can't create them manually. IndexedDB automatically creates a `versionchange` transaction when opening the database, for `upgradeneeded` handler. That's why it's a single place where we can update the database structure, create/remove object stores.
+Bundan tashqari, `versionchange` tranzaksiya turi mavjud: bunday tranzaktsiyalar hamma narsani amalga oshirishi mumkin, lekin biz ularni qo'lda yarata olmaymiz. IndexedDB ma'lumotlar bazasini ochishda `upgradeneeded` ishlov beruvchisi uchun avtomatik ravishda `versionchange` tranzaktsiyasini yaratadi. Shuning uchun bu biz ma'lumotlar bazasi strukturasini yangilashimiz, obyektlar do'konlarini yaratish/o'chirishimiz mumkin bo'lgan yagona joy.
 
-```smart header="Why are there different types of transactions?"
-Performance is the reason why transactions need to be labeled either `readonly` and `readwrite`.
+```smart header="Nima uchun har xil turdagi operatsiyalar mavjud?"
+Ishlash tranzaktsiyalarni `readonly` va `readwrite` deb belgilashga sabab bo'ladi.
 
-Many `readonly` transactions are able to access the same store concurrently, but `readwrite` transactions can't. A `readwrite` transaction "locks" the store for writing. The next transaction must wait before the previous one finishes before accessing the same store.
+Ko'plab `readonly` tranzaksiyalari bir vaqtning o'zida bir do'konga kirishi mumkin, ammo `readwrite` tranzaksiyalari kirishi mumkin emas. `Readwrite` tranzaksiyasi do'konni yozish uchun "qulflaydi". Xuddi shu do'konga kirishdan oldin keyingi tranzaksiya avvalgisi tugashini kutishi kerak.
 ```
 
-After the transaction is created, we can add an item to the store, like this:
+Tranzaktsiya tuzilgandan so'ng, biz do'konga quyidagi kabi element qo'shishimiz mumkin:
 
 ```js
 let transaction = db.transaction("books", "readwrite"); // (1)
 
-// get an object store to operate on it
+// uni ishlatish uchun obyekt do'konini oling
 *!*
 let books = transaction.objectStore("books"); // (2)
 */!*
@@ -306,7 +306,7 @@ let request = books.add(book); // (3)
 */!*
 
 request.onsuccess = function() { // (4)
-  console.log("Book added to the store", request.result);
+  console.log("Do'konga kitob qo'shildi", request.result);
 };
 
 request.onerror = function() {
@@ -314,43 +314,43 @@ request.onerror = function() {
 };
 ```
 
-There were basically four steps:
+Asosan to'rtta qadam mavjud:
 
-1. Create a transaction, mentioning all the stores it's going to access, at `(1)`.
-2. Get the store object using `transaction.objectStore(name)`, at `(2)`.
-3. Perform the request to the object store `books.add(book)`, at `(3)`.
-4. ...Handle request success/error `(4)`, then we can make other requests if needed, etc.
+1. `(1)` da u kirishi kerak bo'lgan barcha do'konlarni eslatib, tranzaksiya yarating.
+2. `(2)` da `transaction.objectStore(name)` yordamida do'kon obyektini oling.
+3. `(3)` da `books.add(book)` obyektlar do'konida so'rovni bajaring.
+4. ...So'rovning muvaffaqiyati/xatosi `(4)` bilan ishlang, agar kerak bo'lsa, boshqa so'rovlarni ham qilishimiz mumkin va hokazo.
 
-Object stores support two methods to store a value:
+Obyektlar do'konlari qiymatni saqlashning ikkita usulini qo'llab-quvvatlaydi:
 
 - **put(value, [key])**
-    Add the `value` to the store. The `key` is supplied only if the object store did not have `keyPath` or `autoIncrement` option. If there's already a value with the same key, it will be replaced.
+    Do'konga `value` qo'shing. `key` faqat obyektlar do'konida `keyPath` yoki `autoIncrement` opsiyasi bo'lmasa taqdim etiladi. Agar bir xil kalitga ega qiymat allaqachon mavjud bo'lsa, u almashtiriladi.
 
 - **add(value, [key])**
-    Same as `put`, but if there's already a value with the same key, then the request fails, and an error with the name `"ConstraintError"` is generated.
+    `put` bilan bir xil, lekin bir xil kalitga ega qiymat allaqachon mavjud bo'lsa, so'rov bajarilmaydi va `"ConstraintError"` nomi bilan xatolik hosil bo'ladi.
 
-Similar to opening a database, we can send a request: `books.add(book)`, and then wait for `success/error` events.
+Ma'lumotlar bazasini ochishga o'xshab, biz so'rov yuborishimiz mumkin: `books.add(book)` va keyin `success/error` hodisalarini kutishimiz mumkin.
 
-- The `request.result` for `add` is the key of the new object.
-- The error is in `request.error` (if any).
+- `add` qo'shish uchun `request.result` yangi obyektning kalitidir.
+- Xato `request.error` da (mavjud bo'lsa).
 
-## Transactions' autocommit
+## Tranzaktsiyalarning avtomatik bajarilishi
 
-In the example above we started the transaction and made `add` request. But as we stated previously, a transaction may have multiple associated requests, that must either all succeed or all fail. How do we mark the transaction as finished, with no more requests to come?
+Yuqoridagi misolda biz tranzaksiyani boshladik va `add` so'rovini qildik. Ammo yuqorida aytib o'tganimizdek, tranzaktsiyada bir nechta bog'langan so'rovlar bo'lishi mumkin, ularning barchasi muvaffaqiyatli yoki barchasi muvaffaqiyatsiz bo'lishi kerak. Boshqa so'rovlarsiz tranzaksiyani tugallangan deb qanday belgilaymiz?
 
-The short answer is: we don't.
+Qisqa javob: biz buni qilmaymiz.
 
-In the next version 3.0 of the specification, there will probably be a manual way to finish the transaction, but right now in 2.0 there isn't.
+Spetsifikatsiyaning keyingi 3.0 versiyasida tranzaksiyani yakunlashning amaliy usuli bo'lishi mumkin, ammo u hozir 2.0 da yo'q.
 
-**When all transaction requests are finished, and the [microtasks queue](info:microtask-queue) is empty, it is committed automatically.**
+**Barcha tranzaksiya so'rovlari tugagach va [microtasks queue](info:microtask-queue) bo'sh bo'lsa, u avtomatik ravishda amalga oshiriladi.**
 
-Usually, we can assume that a transaction commits when all its requests are complete, and the current code finishes.
+Odatda, tranzaksiya uning barcha so'rovlari bajarilganda va joriy kod tugallanganda amalga oshiriladi deb tahmin qilishimiz mumkin.
 
-So, in the example above no special call is needed to finish the transaction.
+Shunday qilib, yuqoridagi misolda tranzaktsiyani tugatish uchun maxsus qo'ng'iroq kerak emas.
 
-Transactions auto-commit principle has an important side effect. We can't insert an async operation like `fetch`, `setTimeout` in the middle of a transaction. IndexedDB will not keep the transaction waiting till these are done.
+Tranzaktsiyalarni avtomatik bajarish printsipi muhim salbiy ta'sirga ega. Biz tranzaksiya o'rtasida `fetch`, `setTimeout` kabi asinxron operatsiyani kirita olmaymiz. IndexedDB tranzaktsiyani bular bajarilguncha kutmaydi.
 
-In the code below, `request2` in the line `(*)` fails, because the transaction is already committed, and can't make any request in it:
+Quyidagi kodda `(*)` qatoridagi `request2` bajarilmaydi, chunki tranzaksiya allaqachon amalga oshirilgan va unda hech qanday so'rov amalga oshirilmaydi:
 
 ```js
 let request1 = books.add(book);
@@ -367,54 +367,53 @@ request1.onsuccess = function() {
 };
 ```
 
-That's because `fetch` is an asynchronous operation, a macrotask. Transactions are closed before the browser starts doing macrotasks.
+Buning sababi, `fetch` asinxron operatsiya, makrotopshiriqdir. Brauzer makrotopshiriqlarni bajarishni boshlashdan oldin tranzaksiyalar yopiladi.
 
-Authors of IndexedDB spec believe that transactions should be short-lived. Mostly for performance reasons.
+IndexedDB spetsifikatsiyasi mualliflari tranzaktsiyalar qisqa muddatli bo'lishi kerak deb hisoblashadi. Ko'pincha ishlash sabablari uchun shunday.
 
-Notably, `readwrite` transactions "lock" the stores for writing. So if one part of the application initiated `readwrite` on `books` object store, then another part that wants to do the same has to wait: the new transaction "hangs" till the first one is done. That can lead to strange delays if transactions take a long time.
+Ta'kidlash joizki, `readwrite` tranzaksiyalari yozish uchun do'konlarni "qulflaydi". Shunday qilib, agar ilovaning bir qismi `books` obyektlari do'konida `readwrite` ni boshlagan bo'lsa, xuddi shunday qilishni xohlaydigan boshqa qismi kutishi kerak: yangi tranzaksiya birinchisi tugaguniga qadar kutib turadi. Agar tranzaktsiyalar uzoq davom etsa, bu g'alati kechikishlarga olib kelishi mumkin.
 
-So, what to do?
+Xo'sh, nima qilish kerak?
 
-In the example above we could make a new `db.transaction` right before the new request `(*)`.
+Yuqoridagi misolda biz yangi so'rov `(*)` oldidan yangi `db.transaction` qilishimiz mumkin.
 
-But it will be even better, if we'd like to keep the operations together, in one transaction, to split apart IndexedDB transactions and "other" async stuff.
+Agar biz operatsiyalarni bitta tranzaksiyada birlashtirmoqchi bo'lsak, IndexedDB tranzaksiyalari va "boshqa" asinxron narsalarni ajratib qo'yish yaxshiroq bo'ladi.
 
-First, make `fetch`, prepare the data if needed, afterwards create a transaction and perform all the database requests, it'll work then.
+Birinchidan, `fetch` ni amalga oshiring, agar kerak bo'lsa, ma'lumotlarni tayyorlang, keyin tranzaksiya yarating va barcha ma'lumotlar bazasi so'rovlarini bajaring, shundan so'ng u ishlaydi.
 
-To detect the moment of successful completion, we can listen to `transaction.oncomplete` event:
+Muvaffaqiyatli yakunlanish momentini aniqlash uchun biz `transaction.oncomplete` hodisasini tinglashimiz mumkin:
 
 ```js
 let transaction = db.transaction("books", "readwrite");
 
-// ...perform operations...
+// ...operatsiyalarni amalga oshiring...
 
 transaction.oncomplete = function() {
-  console.log("Transaction is complete");
+  console.log("Tranzaktsiya tugallangan");
 };
 ```
 
-Only `complete` guarantees that the transaction is saved as a whole. Individual requests may succeed, but the final write operation may go wrong (e.g. I/O error or something).
+Faqat `complete` tranzaksiyaning butunligicha saqlanishini kafolatlaydi. Shaxsiy so'rovlar muvaffaqiyatli bo'lishi mumkin, lekin oxirgi yozish operatsiyasi noto'g'ri ketishi mumkin (masalan, I/O xatosi yoki biror narsa).
 
-To manually abort the transaction, call:
+Tranzaktsiyani qo'lda bekor qilish uchun qo'ng'iroq qiling:
 
 ```js
 transaction.abort();
 ```
 
-That cancels all modification made by the requests in it and triggers `transaction.onabort` event.
+Bu undagi so'rovlar tomonidan qilingan barcha o'zgarishlarni bekor qiladi va `transaction.onabort` hodisasini ishga tushiradi.
 
+## Qayta ishlash xatosi
 
-## Error handling
+Yozish so'rovlari muvaffaqiyatsiz bo'lishi mumkin.
 
-Write requests may fail.
+Buni nafaqat biz tomonda yuzaga kelishi mumkin bo'lgan xatolar, balki tranzaksiyaning o'zi bilan bog'liq bo'lmagan sabablarga ko'ra ham kutish kerak. Masalan, saqlash kvotasi oshib ketishi mumkin. Shuning uchun biz bunday vaziyatni hal qilishga tayyor bo'lishimiz kerak.
 
-That's to be expected, not only because of possible errors at our side, but also for reasons not related to the transaction itself. For instance, the storage quota may be exceeded. So we must be ready to handle such case.
+**Muvaffaqiyatsiz so'rov avtomatik ravishda tranzaksiyani va uning barcha o'zgarishlarini bekor qiladi.**
 
-**A failed request automatically aborts the transaction, canceling all its changes.**
+Ba'zi hollarda, mavjud o'zgarishlarni bekor qilmasdan, muvaffaqiyatsizlikni hal qilishni (masalan, boshqa so'rovni sinab ko'rish) va tranzaksiyani davom ettirishni xohlashimiz mumkin. `request.onerror` ishlov beruvchisi `event.preventDefault()` ga qo'ng'iroq qilish orqali tranzaksiyani bekor qilishning oldini oladi.
 
-In some situations, we may want to handle the failure (e.g. try another request), without canceling existing changes, and continue the transaction. That's possible. The `request.onerror` handler is able to prevent the transaction abort by calling `event.preventDefault()`.
-
-In the example below a new book is added with the same key (`id`) as the existing one. The `store.add` method generates a `"ConstraintError"` in that case. We handle it without canceling the transaction:
+Quyidagi misolda yangi kitob mavjud bo'lgan bir xil kalit (`id`) bilan qo'shilgan. `store.add` usuli bu holda ``ConstraintError`` hosil qiladi. Biz buni tranzaksiyani bekor qilmasdan hal qilamiz:
 
 ```js
 let transaction = db.transaction("books", "readwrite");
@@ -424,14 +423,14 @@ let book = { id: 'js', price: 10 };
 let request = transaction.objectStore("books").add(book);
 
 request.onerror = function(event) {
-  // ConstraintError occurs when an object with the same id already exists
+  // ConstraintError bir xil identifikatorga ega obyekt allaqachon mavjud bo'lganda yuzaga keladi
   if (request.error.name == "ConstraintError") {
-    console.log("Book with such id already exists"); // handle the error
-    event.preventDefault(); // don't abort the transaction
-    // use another key for the book?
+    console.log("Book with such id already exists"); // xatoni hal qiling
+    event.preventDefault(); // tranzaktsiyani bekor qilmang
+    // kitob uchun boshqa kalitdan foydalanasizmi?
   } else {
-    // unexpected error, can't handle it
-    // the transaction will abort
+    // kutilmagan xatolik, uni hal qila olmaysiz
+     // tranzaksiya to'xtatiladi
   }
 };
 
@@ -440,126 +439,126 @@ transaction.onabort = function() {
 };
 ```
 
-### Event delegation
+### Event delegatsiyasi
 
-Do we need onerror/onsuccess for every request? Not every time. We can use event delegation instead.
+Har bir so'rov uchun bizga onerror/onsuccess kerakmi? Har safar emas. Buning o'rniga biz event delegatsiyasidan foydalanishimiz mumkin.
 
-**IndexedDB events bubble: `request` -> `transaction` -> `database`.**
+**Indekslangan DB hodisalardagi bubble: `request` -> `transaction` -> `database`.**
 
-All events are DOM events, with capturing and bubbling, but usually only bubbling stage is used.
+Barcha voqealar qo'lga olish va ko'pikli DOM hodisalaridir, lekin odatda faqat ko'pikli bosqich ishlatiladi.
 
-So we can catch all errors using `db.onerror` handler, for reporting or other purposes:
+Shunday qilib, biz hisobot berish yoki boshqa maqsadlarda `db.onerror` ishlov beruvchisi yordamida barcha xatolarni aniqlashimiz mumkin:
 
 ```js
 db.onerror = function(event) {
-  let request = event.target; // the request that caused the error
+  let request = event.target; // xatoga sabab bo'lgan so'rov
 
   console.log("Error", request.error);
 };
 ```
 
-...But what if an error is fully handled? We don't want to report it in that case.
+...Agar xatolik to'liq hal qilinsa nima bo'ladi? Biz bu haqda xabar bermoqchi emasmiz.
 
-We can stop the bubbling and hence `db.onerror` by using `event.stopPropagation()` in `request.onerror`.
+Biz `request.onerror` da `event.stopPropagation()` dan foydalanib, `db.onerror` ni to'xtatishimiz mumkin.
 
 ```js
 request.onerror = function(event) {
   if (request.error.name == "ConstraintError") {
-    console.log("Book with such id already exists"); // handle the error
-    event.preventDefault(); // don't abort the transaction
-    event.stopPropagation(); // don't bubble error up, "chew" it
+    console.log("Bunday identifikatorli kitob allaqachon mavjud"); // xatoni hal qiling
+    event.preventDefault(); // tranzaksiyani bekor qilmang
+    event.stopPropagation(); // xatolikka yo'l qo'ymang, uni "chaynang"
   } else {
-    // do nothing
-    // transaction will be aborted
-    // we can take care of error in transaction.onabort
+     // hech narsa qilmang
+     // tranzaksiya bekor qilinadi
+     // biz transaction.onabort dagi xatoni bartaraf etishimiz mumkin 
   }
 };
 ```
 
-## Searching
+## Qidiruv
 
-There are two main types of search in an object store:
+Obyektlar do'konida qidiruvning ikkita asosiy turi mavjud:
 
-1. By a key value or a key range. In our "books" storage that would be a value or range of values of `book.id`.
-2. By another object field, e.g. `book.price`. This required an additional data structure, named "index".
+1. Asosiy qiymat yoki asosiy diapazon bo'yicha. Bizning "books" xotiramizda `book.id` qiymati yoki qiymatlar diapazoni bo'lishi mumkin.
+2. Boshqa obyekt maydoni bo'yicha, masalan, `book.price`. Bu "index" deb nomlangan qo'shimcha ma'lumotlar tuzilmasini talab qildi.
 
-### By key
+### Kalit orqali
 
-First let's deal with the first type of search: by key.
+Avval qidiruvning birinchi turi bilan shug'ullanamiz: kalit bo'yicha.
 
-Searching methods support both exact key values and so-called "ranges of values" -- [IDBKeyRange](https://www.w3.org/TR/IndexedDB/#keyrange) objects that specify an acceptable "key range".
+Qidiruv usullari ham aniq kalit qiymatlarini, ham "qiymatlar diapazoni" deb ataladigan obyektlarni qo'llab-quvvatlaydi -- [IDBKeyRange](https://www.w3.org/TR/IndexedDB/#keyrange) ular qabul qilinadigan "key range" ni belgilaydi.
 
-`IDBKeyRange` objects are created using following calls:
+`IDBKeyRange` obyektlari quyidagi chaqiruvlar yordamida yaratiladi:
 
-- `IDBKeyRange.lowerBound(lower, [open])` means: `≥lower` (or `>lower` if `open` is true)
-- `IDBKeyRange.upperBound(upper, [open])` means: `≤upper` (or `<upper` if `open` is true)
-- `IDBKeyRange.bound(lower, upper, [lowerOpen], [upperOpen])` means: between `lower` and `upper`. If the open flags is true, the corresponding key is not included in the range.
-- `IDBKeyRange.only(key)` -- a range that consists of only one `key`, rarely used.
+- `IDBKeyRange.lowerBound(pastki, [ochiq])` ma'nosi: `≥lower` (yoki `open` rost bo'lsa `>lower`)
+- `IDBKeyRange.upperBound(yuqori, [ochiq])` ma'nosi: `≤upper` (yoki `ochiq` rost bo'lsa `<upper`)
+- `IDBKeyRange.bound(pastki, yuqori, [lowerOpen], [upperOpen])` degani: `lower` va `upper` orasida. Agar ochiq bayroqlar rost bo'lsa, tegishli kalit diapazonga kiritilmaydi.
+- `IDBKeyRange.only(key)` -- faqat bitta `key` dan iborat diapazon, kamdan-kam ishlatiladi.
 
-We'll see practical examples of using them very soon.
+Tez orada ulardan foydalanishning amaliy misollarini ko'rib chiqamiz.
 
-To perform the actual search, there are following methods. They accept a `query` argument that can be either an exact key or a key range:
+Haqiqiy qidiruvni amalga oshirish uchun quyidagi usullar mavjud. Ular aniq kalit yoki asosiy diapazon bo'lishi mumkin bo'lgan `query` argumentini qabul qiladilar:
 
-- `store.get(query)` -- search for the first value by a key or a range.
-- `store.getAll([query], [count])` -- search for all values, limit by `count` if given.
-- `store.getKey(query)` -- search for the first key that satisfies the query, usually a range.
-- `store.getAllKeys([query], [count])` -- search for all keys that satisfy the query, usually a range, up to `count` if given.
-- `store.count([query])` -- get the total count of keys that satisfy the query, usually a range.
+- `store.get(query)` -- kalit yoki diapazon bo'yicha birinchi qiymatni qidiring.
+- `store.getAll([query], [count])` -- barcha qiymatlarni qidiring, agar berilgan bo'lsa, `count` bilan cheklang.
+- `store.getKey(query)` -- so'rovni qanoatlantiradigan birinchi kalitni, odatda diapazonni qidiring.
+- `store.getAllKeys([query], [count])` -- so'rovni qondiradigan barcha kalitlarni qidiring, odatda diapazon, agar berilgan bo'lsa, `count` gacha.
+- `store.count([query])` -- so'rovni qondiradigan kalitlarning umumiy sonini, odatda diapazonni oling.
 
-For instance, we have a lot of books in our store. Remember, the `id` field is the key, so all these methods can search by `id`.
+Masalan, do'konimizda juda ko'p kitoblar bor. Esda tutingki, `id` maydoni kalit hisoblanadi, shuning uchun bu usullarning barchasi `id` bo'yicha qidirishi mumkin.
 
-Request examples:
+So'rov namunalari:
 
 ```js
-// get one book
+// bitta kitobni oling
 books.get('js')
 
-// get books with 'css' <= id <= 'html'
+// 'css' <= id <= 'html' mavjud kitobni oling
 books.getAll(IDBKeyRange.bound('css', 'html'))
 
-// get books with id < 'html'
+// id < 'html' mavjud kitobni oling
 books.getAll(IDBKeyRange.upperBound('html', true))
 
-// get all books
+// hamma kitoblarni oling
 books.getAll()
 
-// get all keys, where id > 'js'
+// id > 'js' bo'lgan hamma kalitlarni oling
 books.getAllKeys(IDBKeyRange.lowerBound('js', true))
 ```
 
-```smart header="Object store is always sorted"
-An object store sorts values by key internally.
+```smart header="Obyektlar do'koni har doim tartiblangan"
+Obyektlar do'koni qiymatlarni ichki kalit bo'yicha tartiblaydi.
 
-So requests that return many values always return them in sorted by key order.
+Shunday qilib, ko'p qiymatlarni qaytaradigan so'rovlar ularni har doim kalit tartibi bo'yicha tartiblangan holda qaytaradi.
 ```
 
-### By a field using an index
+### Indeks yordamida maydon bo'yicha
 
-To search by other object fields, we need to create an additional data structure named "index".
+Boshqa obyekt maydonlari bo'yicha qidirish uchun biz "index" deb nomlangan qo'shimcha ma'lumotlar strukturasini yaratishimiz kerak.
 
-An index is an "add-on" to the store that tracks a given object field. For each value of that field, it stores a list of keys for objects that have that value. There will be a more detailed picture below.
+Indeks - ma'lum bir obyekt maydonini kuzatib boradigan do'konga "qo'shimcha". Ushbu maydonning har bir qiymati uchun u ushbu qiymatga ega bo'lgan obyektlar uchun kalitlar ro'yxatini saqlaydi. Quyida batafsilroq rasm bo'ladi.
 
-The syntax:
+Sintaksis:
 
 ```js
 objectStore.createIndex(name, keyPath, [options]);
 ```
 
-- **`name`** -- index name,
-- **`keyPath`** -- path to the object field that the index should track (we're going to search by that field),
-- **`option`** -- an optional object with properties:
-  - **`unique`** -- if true, then there may be only one object in the store with the given value at the `keyPath`. The index will enforce that by generating an error if we try to add a duplicate.
-  - **`multiEntry`** -- only used if the value on `keyPath` is an array. In that case, by default, the index will treat the whole array as the key. But if `multiEntry` is true, then the index will keep a list of store objects for each value in that array. So array members become index keys.
+- **`name`** -- indeks nomi,
+- **`keyPath`** -- indeks kuzatishi kerak bo'lgan obyekt maydoniga yo'l (biz shu maydon bo'yicha qidiramiz),
+- **`option`** -- xususiyatlariga ega ixtiyoriy obyekt:
+  - **`unique`** -- agar rost bo'lsa, do'konda `keyPath` da berilgan qiymatga ega faqat bitta obyekt bo'lishi mumkin. Agar biz dublikat qo'shmoqchi bo'lsak, indeks xato hosil qilish orqali buni amalga oshiradi.
+  - **`multiEntry`** -- faqat `keyPath` dagi qiymat massiv bo'lsa ishlatiladi. Bunday holda, sukut bo'yicha indeks butun massivni kalit sifatida ko'rib chiqadi. Ammo agar `multiEntry` rost bo'lsa, indeks ushbu massivdagi har bir qiymat uchun do'kon obyektlari ro'yxatini saqlaydi. Shunday qilib, massiv a'zolari indeks kalitlariga aylanadi.
 
-In our example, we store books keyed by `id`.
+Bizning misolimizda biz `id` tugmasi bo'lgan kitoblarni saqlaymiz.
 
-Let's say we want to search by `price`.
+Aytaylik, biz `price` bo'yicha qidirmoqchimiz.
 
-First, we need to create an index. It must be done in `upgradeneeded`, just like an object store:
+Birinchidan, biz indeks yaratishimiz kerak. Bu xuddi obyektlar do'koni kabi `upgradeneeded` da bajarilishi kerak:
 
 ```js
 openRequest.onupgradeneeded = function() {
-  // we must create the index here, in versionchange transaction
+  // biz bu yerda, versionchange tranzaksiyasida indeks yaratishimiz kerak
   let books = db.createObjectStore('books', {keyPath: 'id'});
 *!*
   let index = books.createIndex('price_idx', 'price');
@@ -567,19 +566,19 @@ openRequest.onupgradeneeded = function() {
 };
 ```
 
-- The index will track `price` field.
-- The price is not unique, there may be multiple books with the same price, so we don't set `unique` option.
-- The price is not an array, so `multiEntry` flag is not applicable.
+- Indeks `price` maydonini kuzatib boradi.
+- Narx noyob emas, bir xil narxdagi bir nechta kitoblar bo'lishi mumkin, shuning uchun biz `unique` variantni belgilamaymiz.
+- Narx massiv emas, shuning uchun `multiEntry` belgisi qo'llanilmaydi.
 
-Imagine that our `inventory` has 4 books. Here's the picture that shows exactly what the `index` is:
+Tasavvur qiling, bizdagi `inventory` da 4 ta kitob bor. Mana `index` nima ekanligini ko'rsatadigan rasm:
 
 ![](indexeddb-index.svg)
 
-As said, the index for each value of `price` (second argument) keeps the list of keys that have that price.
+Aytganimizdek, `price` ning har bir qiymati uchun indeks (ikkinchi argument) ushbu narxga ega bo'lgan kalitlar ro'yxatini saqlaydi.
 
-The index keeps itself up to date automatically, we don't have to care about it.
+Indeks avtomatik ravishda yangilanib turadi, biz bu haqida qayg'urishimiz shart emas.
 
-Now, when we want to search for a given price, we simply apply the same search methods to the index:
+Endi, biz ma'lum bir narxni qidirmoqchi bo'lganimizda, indeksga xuddi shu qidiruv usullarini qo'llaymiz:
 
 ```js
 let transaction = db.transaction("books"); // readonly
@@ -592,39 +591,39 @@ let request = priceIndex.getAll(10);
 
 request.onsuccess = function() {
   if (request.result !== undefined) {
-    console.log("Books", request.result); // array of books with price=10
+    console.log("Books", request.result); // price = 10 bo'lgan kitoblar to'plami
   } else {
     console.log("No such books");
   }
 };
 ```
 
-We can also use `IDBKeyRange` to create ranges and looks for cheap/expensive books:
+Biz diapazonlarni yaratish va arzon/qimmat kitoblarni qidirish uchun `IDBKeyRange` dan ham foydalanishimiz mumkin:
 
 ```js
-// find books where price <= 5
+// price <= 5 bo'lgan kitoblarni toping
 let request = priceIndex.getAll(IDBKeyRange.upperBound(5));
 ```
 
-Indexes are internally sorted by the tracked object field, `price` in our case. So when we do the search, the results are also sorted by `price`.
+Indekslar kuzatilayotgan obyekt maydoni bo'yicha ichki tartiblangan, bizning holatlarimizda `price` hisoblanadi. Shunday qilib, biz qidiruvni amalga oshirganimizda, natijalar `price` bo'yicha ham tartiblanadi.
 
-## Deleting from store
+## Do'kondan o'chirish
 
-The `delete` method looks up values to delete by a query, the call format is similar to `getAll`:
+`delete` usuli so'rov orqali o'chirish uchun qiymatlarni qidiradi, qo'ng'iroq formati `getAll` ga o'xshaydi:
 
-- **`delete(query)`** -- delete matching values by query.
+- **`delete(query)`** -- so'rov orqali mos qiymatlarni o'chirish.
 
-For instance:
+Masalan:
 
 ```js
-// delete the book with id='js'
+// kitobni id = 'js' bilan o'chirib tashlang
 books.delete('js');
 ```
 
-If we'd like to delete books based on a price or another object field, then we should first find the key in the index, and then call `delete`:
+Agar biz kitoblarni narx yoki boshqa obyekt maydoniga asoslangan holda o'chirmoqchi bo'lsak, avval indeksdagi kalitni topib, keyin `delete` ni chaqirishimiz kerak:
 
 ```js
-// find the key where price = 5
+// price = 5 bo'lgan kalitni toping
 let request = priceIndex.getKey(5);
 
 request.onsuccess = function() {
@@ -636,41 +635,41 @@ request.onsuccess = function() {
 To delete everything:
 
 ```js
-books.clear(); // clear the storage.
+books.clear(); // saqlash joyini tozalang.
 ```
 
-## Cursors
+## Kursorlar
 
-Methods like `getAll/getAllKeys` return an array of keys/values.
+`getAll/getAllKeys` kabi usullar kalitlar/qiymatlar qatorini qaytaradi.
 
-But an object storage can be huge, bigger than the available memory. Then `getAll` will fail to get all records as an array.
+Ammo obyekt xotirasi mavjud xotiradan kattaroq bo'lishi mumkin. Keyin `getAll` barcha yozuvlarni massiv sifatida ololmaydi.
 
-What to do?
+Nima qilsa bo'ladi?
 
-Cursors provide the means to work around that.
+Kursorlar bu muammoni hal qilish uchun vositalarni taqdim etadi.
 
-**A *cursor* is a special object that traverses the object storage, given a query, and returns one key/value at a time, thus saving memory.**
+**Cursor* - bu so'rov berilgan obyekt xotirasini aylanib o'tuvchi va bir vaqtning o'zida bitta kalit/qiymatni qaytaruvchi, shu bilan xotirani tejaydigan maxsus obyekt.**
 
-As an object store is sorted internally by key, a cursor walks the store in key order (ascending by default).
+Obyektlar do'koni kalit bo'yicha ichki tartiblanganligi sababli, kursor do'kon bo'ylab kalitlar tartibida yuradi (sukut bo'yicha o'sish).
 
-The syntax:
+Sintaksis:
 
 ```js
-// like getAll, but with a cursor:
+// getAll kabi, lekin kursor bilan:
 let request = store.openCursor(query, [direction]);
 
-// to get keys, not values (like getAllKeys): store.openKeyCursor
+// qiymatlarni emas, balki kalitlarni olish uchun (masalan, getAllKeys): store.openKeyCursor
 ```
 
-- **`query`** is a key or a key range, same as for `getAll`.
-- **`direction`** is an optional argument, which order to use:
-  - `"next"` -- the default, the cursor walks up from the record with the lowest key.
-  - `"prev"` -- the reverse order: down from the record with the biggest key.
-  - `"nextunique"`, `"prevunique"` -- same as above, but skip records with the same key (only for cursors over indexes, e.g. for multiple books with price=5 only the first one will be returned).
+- **`query`** bu `getAll` kabi kalit yoki kalit diapazonidir.
+- **`direction`** ixtiyoriy argument bo'lib, undan foydalanish tartibi:
+   - `"next"` -- sukut bo'yicha, kursor eng past tugma bilan yozuvdan yuqoriga chiqadi.
+   - `"prev"` -- teskari tartib: eng katta kalitli yozuvdan pastga.
+   - `"nextunique"`, `"prevunique"` -- yuqoridagi kabi, lekin bir xil kalit bilan yozuvlarni o'tkazib yuboring (faqat indekslar ustidagi kursorlar uchun, masalan, narxi=5 bo'lgan bir nechta kitoblar uchun faqat birinchisi qaytariladi).
 
-**The main difference of the cursor is that `request.onsuccess` triggers multiple times: once for each result.**
+**Kursorning asosiy farqi shundaki, `request.onsuccess` bir necha marta ishga tushadi: har bir natija uchun bir marta.**
 
-Here's an example of how to use a cursor:
+Kursordan qanday foydalanishga misol:
 
 ```js
 let transaction = db.transaction("books");
@@ -678,63 +677,63 @@ let books = transaction.objectStore("books");
 
 let request = books.openCursor();
 
-// called for each book found by the cursor
+// kursor tomonidan topilgan har bir kitob uchun chaqirilgan
 request.onsuccess = function() {
   let cursor = request.result;
   if (cursor) {
     let key = cursor.key; // book key (id field)
-    let value = cursor.value; // book object
+    let value = cursor.value; // book obyekti
     console.log(key, value);
     cursor.continue();
   } else {
-    console.log("No more books");
+    console.log("Boshqa kitoblar yo'q");
   }
 };
 ```
 
-The main cursor methods are:
+Kursorning asosiy usullari quyidagilardir:
 
-- `advance(count)` -- advance the cursor `count` times, skipping values.
-- `continue([key])` -- advance the cursor to the next value in range matching (or immediately after `key` if given).
+- `advance(count)` -- kursorni `count` marta oldinga siljiting, qiymatlarni o'tkazib yuboring.
+- `continue([key])` -- kursorni diapazonga mos keladigan keyingi qiymatga o'tkazing (yoki agar berilgan bo'lsa, darhol `key` dan so'ng).
 
-Whether there are more values matching the cursor or not -- `onsuccess` gets called, and then in `result` we can get the cursor pointing to the next record, or `undefined`.
+Kursorga mos keladigan qiymatlar ko'proq bo'ladimi yoki yo'qmi -- `onsuccess` deb chaqiriladi va `result` biz kursorni keyingi yozuvga yoki `undefined` ga ko'rsatishimiz mumkin.
 
-In the example above the cursor was made for the object store.
+Yuqoridagi misolda kursor obyektlarni saqlash uchun yaratilgan.
 
-But we also can make a cursor over an index. As we remember, indexes allow to search by an object field. Cursors over indexes do precisely the same as over object stores -- they save memory by returning one value at a time.
+Ammo biz indeks ustiga kursor yasashimiz ham mumkin. Esda tutganimizdek, indekslar obyekt maydoni bo'yicha qidirish imkonini beradi. Indekslar ustidagi kursorlar obyektlarni saqlash joylari bilan bir xil ishlaydi - ular bir vaqtning o'zida bitta qiymatni qaytarish orqali xotirani tejashadi.
 
-For cursors over indexes, `cursor.key` is the index key (e.g. price), and we should use `cursor.primaryKey` property for the object key:
+Indekslar ustidagi kursorlar uchun `cursor.key` indeks kaliti (masalan, narx) va biz obyekt kaliti uchun `cursor.primaryKey` xususiyatidan foydalanishimiz kerak:
 
 ```js
 let request = priceIdx.openCursor(IDBKeyRange.upperBound(5));
 
-// called for each record
+// har bir yozuv uchun chaqirilgan
 request.onsuccess = function() {
   let cursor = request.result;
   if (cursor) {
-    let primaryKey = cursor.primaryKey; // next object store key (id field)
-    let value = cursor.value; // next object store object (book object)
-    let key = cursor.key; // next index key (price)
+    let primaryKey = cursor.primaryKey; // keyingi obyekt do'kon kaliti (id maydoni)
+    let value = cursor.value; // keyingi obyektni saqlash obyekti (kitob obyekti)
+    let key = cursor.key; // keyingi indeks kaliti (narx)
     console.log(key, value);
     cursor.continue();
   } else {
-    console.log("No more books");
+    console.log("Boshqa kitoblar yo'q");
   }
 };
 ```
 
-## Promise wrapper
+## Promise o'rami
 
-Adding `onsuccess/onerror` to every request is quite a cumbersome task. Sometimes we can make our life easier by using event delegation, e.g. set handlers on the whole transactions, but `async/await` is much more convenient.
+Har bir so'rovga `onsuccess/onerror` qo'shish juda mashaqqatli vazifadir. Ba'zan biz voqea delegatsiyasidan foydalanib, hayotimizni osonlashtira olamiz, masalan, butun tranzaktsiyalar bo'yicha ishlov beruvchilarni o'rnating, lekin `async/await` ancha qulayroq.
 
-Let's use a thin promise wrapper <https://github.com/jakearchibald/idb> further in this chapter. It creates a global `idb` object with [promisified](info:promisify) IndexedDB methods.
+Keling, ushbu bobda <https://github.com/jakearchibald/idb> nozik va'dali qog'ozdan foydalanamiz. U [promisified](info:promisify) IndexedDB usullari bilan global `idb` obyektini yaratadi.
 
-Then, instead of `onsuccess/onerror` we can write like this:
+Keyin, `onsuccess/onerror` o'rniga biz shunday yozishimiz mumkin:
 
 ```js
 let db = await idb.openDB('store', 1, db => {
   if (db.oldVersion == 0) {
-    // perform the initialization
+    // ishga tushirishni amalga oshiring
     db.createObjectStore('books', {keyPath: 'id'});
   }
 });
@@ -754,31 +753,31 @@ try {
 }
 ```
 
-So we have all the sweet "plain async code" and "try..catch" stuff.
+Shunday qilib, bizda barcha shirin "oddiy async kod" va "try..catch" narsalar mavjud.
 
-### Error handling
+### Xatolikni tuzating
 
-If we don't catch an error, then it falls through, till the closest outer `try..catch`.
+Agar biz xatoni sezmasak, u eng yaqin tashqi `try..catch` tugmasigacha tushib ketadi.
 
-An uncaught error becomes an "unhandled promise rejection" event on `window` object.
+Tugallanmagan xato `window` obyektida "ishlab chiqilmagan va'dani rad etish" hodisasiga aylanadi.
 
-We can handle such errors like this:
+Biz bunday xatolar bilan shug'ullanishimiz mumkin:
 
 ```js
 window.addEventListener('unhandledrejection', event => {
-  let request = event.target; // IndexedDB native request object
-  let error = event.reason; //  Unhandled error object, same as request.error
+  let request = event.target; // IndexedDB mahalliy so'rov obyekti
+  let error = event.reason; //  Ishlanmagan xato obyekti, xuddi request.error
   ...report about the error...
 });
 ```
 
-### "Inactive transaction" pitfall
+### "Faol bo'lmagan tranzaksiya" tuzog'i
 
-As we already know, a transaction auto-commits as soon as the browser is done with the current code and microtasks. So if we put a *macrotask* like `fetch` in the middle of a transaction, then the transaction won't wait for it to finish. It just auto-commits. So the next request in it would fail.
+Biz allaqachon bilganimizdek, tranzaksiya brauzer joriy kod va mikrovazifalar bilan bajarilishi bilanoq avtomatik ravishda amalga oshiriladi. Shunday qilib, agar biz tranzaksiya o'rtasiga `fetch` kabi *makrotask* qo'ysak, tranzaksiya uning tugashini kutmaydi. Bu faqat avtomatik ravishda amalga oshiriladi. Shunday qilib, undagi keyingi so'rov muvaffaqiyatsiz bo'ladi.
 
-For a promise wrapper and `async/await` the situation is the same.
+Promise paketi va `async/wait` uchun vaziyat bir xil.
 
-Here's an example of `fetch` in the middle of the transaction:
+Tranzaktsiyaning o'rtasida `fetch` misoli:
 
 ```js
 let transaction = db.transaction("inventory", "readwrite");
@@ -791,50 +790,49 @@ await fetch(...); // (*)
 await inventory.add({ id: 'js', price: 10, created: new Date() }); // Error
 ```
 
-The next `inventory.add` after `fetch` `(*)` fails with an "inactive transaction" error, because the transaction is already committed and closed at that time.
+`Fetch` `(*)` dan keyingi `inventory.add` bajarilmaydi, chunki tranzaksiya allaqachon amalga oshirilgan va o'sha vaqtda yopilgan.
 
-The workaround is the same as when working with native IndexedDB: either make a new transaction or just split things apart.
+Vaqtinchalik yechim mahalliy IndexedDB bilan ishlashda bo'lgani kabi: yangi tranzaktsiyani amalga oshiring yoki shunchaki narsalarni ajratib oling.
 
-1. Prepare the data and fetch all that's needed first.
-2. Then save in the database.
+1. Ma'lumotlarni tayyorlang va avvalo barcha kerakli narsalarni oling.
+2. Keyin ma'lumotlar bazasida saqlang.
 
-### Getting native objects
+### Mahalliy obyektlarni olish
 
-Internally, the wrapper performs a native IndexedDB request, adding `onerror/onsuccess` to it, and returns a promise that rejects/resolves with the result.
+O'ram ichki IndexedDB so'rovini bajaradi, unga `onerror/onsuccess` qo'shadi va natijani rad etuvchi/hal qiladigan va'dani qaytaradi.
 
-That works fine most of the time. The examples are at the lib page <https://github.com/jakearchibald/idb>.
+Bu ko'pincha yaxshi ishlaydi. Misollar <https://github.com/jakearchibald/idb> lib sahifasida berilgan.
 
-In few rare cases, when we need the original `request` object, we can access it as `promise.request` property of the promise:
+Kamdan kam hollarda, bizga asl `request` obyekti kerak bo'lganda, biz unga promisening `promise.request` xususiyati sifatida kirishimiz mumkin:
 
 ```js
-let promise = books.add(book); // get a promise (don't await for its result)
+let promise = books.add(book); // promise ni oling (uning natijasini kutmang)
+let request = promise.request; // mahalliy so'rov obyekti
+let transaction = request.transaction; // mahalliy tranzaksiya obyekti
 
-let request = promise.request; // native request object
-let transaction = request.transaction; // native transaction object
+// ... bir nechta mahalliy IndexedDB voodoo qiling ...
 
-// ...do some native IndexedDB voodoo...
-
-let result = await promise; // if still needed
+let result = await promise; // agar kerak bo'lsa
 ```
 
-## Summary
+## Xulosa
 
-IndexedDB can be thought of as a "localStorage on steroids". It's a simple key-value database, powerful enough for offline apps, yet simple to use.
+IndexedDB ni "steroidlardagi mahalliy saqlash" deb hisoblash mumkin. Bu oddiy kalit-qiymatli ma'lumotlar bazasi, oflayn ilovalar uchun yetarlicha kuchli, ammo ulardan foydalanish oson.
 
-The best manual is the specification, [the current one](https://www.w3.org/TR/IndexedDB-2/) is 2.0, but few methods from [3.0](https://w3c.github.io/IndexedDB/) (it's not much different) are partially supported.
+Eng yaxshi qo'llanma bu spetsifikatsiyadir, [hozirgi](https://www.w3.org/TR/IndexedDB-2/) 2.0, lekin [3.0](https://w3c.github.io/IndexedDB/) da ham bir nechta usullar mavjud, (bu unchalik farq qilmaydi) qisman qo'llab-quvvatlanadi. 
 
-The basic usage can be described with a few phrases:
+Asosiy foydalanishni bir necha iboralar bilan tavsiflash mumkin:
 
-1. Get a promise wrapper like [idb](https://github.com/jakearchibald/idb).
-2. Open a database: `idb.openDb(name, version, onupgradeneeded)`
-    - Create object storages and indexes in `onupgradeneeded` handler or perform version update if needed.
-3. For requests:
-    - Create transaction `db.transaction('books')` (readwrite if needed).
-    - Get the object store `transaction.objectStore('books')`.
-4. Then, to search by a key, call methods on the object store directly.
-    - To search by an object field, create an index.
-5. If the data does not fit in memory, use a cursor.
+1. [idb](https://github.com/jakearchibald/idb) kabi promise o'ramini oling.
+2. Ma'lumotlar bazasini oching: `idb.openDb(name, version, onupgradeneeded)`
+     - `onupgradeneeded` ishlov beruvchisida obyekt xotiralari va indekslarini yarating yoki kerak bo'lsa versiyani yangilang.
+3. Murojaatlar uchun:
+     - `db.transaction('books')` tranzaksiyasini yarating (agar kerak bo'lsa o'qing).
+     - `transaction.objectStore('books')` obyektlar do'konini oling.
+4. Keyin kalit orqali qidirish uchun to'g'ridan-to'g'ri obyekt do'konidagi usullarni chaqiring.
+     - Obyekt maydoni bo'yicha qidirish uchun indeks yarating.
+5. Agar ma'lumotlar xotiraga sig'masa, kursordan foydalaning.
 
-Here's a small demo app:
+Mana kichik demo ilova:
 
 [codetabs src="books" current="index.html"]

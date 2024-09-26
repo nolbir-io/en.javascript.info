@@ -4,35 +4,35 @@ libs:
 
 ---
 
-# DOM tree
+# DOM daraxti
 
-The backbone of an HTML document is tags.
+HTML hujjatining asosi teglar hisoblanadi.
 
-According to the Document Object Model (DOM), every HTML tag is an object. Nested tags are  "children" of the enclosing one. The text inside a tag is an object as well.
+Document Object Model (DOM) ga ko'ra, har bir HTML tegi obyekt hisoblanadi. O'rnatilgan teglar qo'shilgan tegning "bolalari" dir. Teg ichidagi matn ham obyekt hisoblanadi. 
 
-All these objects are accessible using JavaScript, and we can use them to modify the page.
+Ushbu obyektlarning barchasiga JavaScript yordamida kirish va biz ulardan sahifani o'zgartirish uchun foydalanishimiz mumkin.
 
-For example, `document.body` is the object representing the `<body>` tag.
+Masalan, `document.body` `<body>` tegini ifodalovchi obyektdir.
 
-Running this code will make the `<body>` red for 3 seconds:
+Ushbu kodni ishga tushirish `<body>`ni 3 soniya davomida qizil rangga aylantiradi:
 
 ```js run
-document.body.style.background = 'red'; // make the background red
+document.body.style.background = 'red'; // orqa fonni qizil qiling
 
-setTimeout(() => document.body.style.background = '', 3000); // return back
+setTimeout(() => document.body.style.background = '', 3000); // ortga qaytaring
 ```
 
-Here we used `style.background` to change the background color of `document.body`, but there are many other properties, such as:
+Bu yerda biz `document.body` fon rangini o'zgartirish uchun `style.background` dan foydalandik, ammo boshqa ko'plab xususiyatlar mavjud, masalan:
 
-- `innerHTML` -- HTML contents of the node.
-- `offsetWidth` -- the node width (in pixels)
-- ...and so on.
+- `innerHTML` -- Node ning HTML tarkibi.
+- `offsetWidth` -- node kengligi(piksel o'lchamda)
+- ...va boshqalar.
 
-Soon we'll learn more ways to manipulate the DOM, but first we need to know about its structure.
+Tez orada biz DOMni manipulyatsiya qilishning ko'proq usullarini bilib olamiz, lekin birinchi navbatda uning tuzilishi haqida ma'lumotga ega bo'lishimiz kerak.
 
-## An example of the DOM
+## DOM bilan bog'liq misol
 
-Let's start with the following simple document:
+Keling, quyidagi oddiy hujjatdan boshlaymiz:
 
 ```html run no-beautify
 <!DOCTYPE HTML>
@@ -46,7 +46,7 @@ Let's start with the following simple document:
 </html>
 ```
 
-The DOM represents HTML as a tree structure of tags. Here's how it looks:
+DOM HTMLni teglarning daraxt tuzilishi sifatida ifodalaydi. U quyidagicha ko'rinishda bo'ladi:
 
 <div class="domtree"></div>
 
@@ -57,31 +57,31 @@ drawHtmlTree(node1, 'div.domtree', 690, 320);
 </script>
 
 ```online
-On the picture above, you can click on element nodes and their children will open/collapse.
+Yuqoridagi rasmda siz element tugunlarini bosishingiz mumkin va ularning bolalari ochiladi/yiqiladi.
 ```
 
-Every tree node is an object.
+Har bir daraxt nodelari obyektdir.
 
-Tags are *element nodes* (or just elements) and form the tree structure: `<html>` is at the root, then `<head>` and `<body>` are its children, etc.
+Teglar *element nodelari* (yoki shunchaki elementlar) bo‘lib, daraxt strukturasini tashkil qiladi: `<html>` ildizda, keyin `<head>` va `<body>` uning bolalari va hokazo.
 
-The text inside elements forms *text nodes*, labelled as `#text`. A text node contains only a string. It may not have children and is always a leaf of the tree.
+Elementlar ichidagi matn `#text` deb belgilangan *text node* larini hosil qiladi. Text node ida faqat satr mavjud. Uning bolalari bo'lmasligi mumkin va har doim daraxtning bargi hisoblanadi. 
 
-For instance, the `<title>` tag has the text `"About elk"`.
+Masalan, `<title>` tegida `` About elk`` matni mavjud.
 
-Please note the special characters in text nodes:
+Matn nodelaridagi maxsus belgilarga e'tibor bering:
 
-- a newline: `↵` (in JavaScript known as `\n`)
-- a space: `␣`
+- yangi qator: `↵` (JavaScriptda `\n` sifatida ma'lum)
+- bo'sh joy: `␣`
 
-Spaces and newlines are totally valid characters, like letters and digits. They form text nodes and become a part of the DOM. So, for instance, in the example above the `<head>` tag contains some spaces before `<title>`, and that text becomes a `#text` node (it contains a newline and some spaces only).
+Bo'shliqlar va yangi qatorlar harflar va raqamlar kabi to'liq haqiqiy belgilardir. Ular matn tugunlarini hosil qiladi va DOMning bir qismiga aylanadi. Masalan, yuqoridagi misolda `<head>` tegi `<title>` oldidan ba'zi bo'shliqlarni o'z ichiga oladi va bu matn `#text` node ga aylanadi (u yangi qator va faqat ayrim bo'shliqlarni o'z ichiga oladi).
 
-There are only two top-level exclusions:
-1. Spaces and newlines before `<head>` are ignored for historical reasons.
-2. If we put something after `</body>`, then that is automatically moved inside the `body`, at the end, as the HTML spec requires that all content must be inside `<body>`. So there can't be any spaces after `</body>`.
+Faqat ikkita yuqori darajadagi istisnolar mavjud:
+1. `<head>` oldidagi bo'shliqlar va yangi qatorlar tarixiy sabablarga ko'ra e'tiborga olinmaydi.
+2. Agar biz `</body>` dan keyin biror narsa qo'ysak, u avtomatik ravishda oxirida `body` ichiga ko'chiriladi, chunki HTML spetsifikatsiyasi barcha kontent `<body>` ichida bo'lishini talab qiladi. Demak, `</body>` dan keyin bo'sh joy bo'lishi mumkin emas.
 
-In other cases everything's straightforward -- if there are spaces (just like any character) in the document, then they become text nodes in the DOM, and if we remove them, then there won't be any.
+Boshqa hollarda hamma narsa oddiy -- agar hujjatda bo'shliqlar bo'lsa (xuddi har qanday belgilar kabi), ular DOMda matn node lariga aylanadi va agar biz ularni olib tashlasak, u holda bo'lmaydi.
 
-Here are no space-only text nodes:
+Bu yerda faqat bo'sh joy uchun matn tugunlari yo'q:
 
 ```html no-beautify
 <!DOCTYPE HTML>
@@ -96,21 +96,21 @@ let node2 = {"name":"HTML","nodeType":1,"children":[{"name":"HEAD","nodeType":1,
 drawHtmlTree(node2, 'div.domtree', 690, 210);
 </script>
 
-```smart header="Spaces at string start/end and space-only text nodes are usually hidden in tools"
-Browser tools (to be covered soon) that work with DOM usually do not show spaces at the start/end of the text and empty text nodes (line-breaks) between tags.
+```smart header="Satrning boshlanishi/tugashidagi bo'shliqlar va faqat bo'sh joyli matn tugunlari odatda asboblarda yashirinadi"
+DOM bilan ishlaydigan brauzer asboblari (tez orada yoritiladi) odatda matn boshida/oxirida bo'sh joy va teglar orasidagi bo'sh matn nodelarini (satr uzilishlari) ko'rsatmaydi.
 
-Developer tools save screen space this way.
+Dasturchilar vositalari shu tarzda ekran maydonini tejaydi.
 
-On further DOM pictures we'll sometimes omit them when they are irrelevant. Such spaces usually do not affect how the document is displayed.
+Boshqa DOM rasmlarida, ba'zida ular ahamiyatsiz bo'lsa, ularni o'tkazib yuboramiz. Bunday bo'shliqlar odatda hujjatning qanday ko'rsatilishiga ta'sir qilmaydi. 
 ```
 
-## Autocorrection
+## Avtomatik tuzatish
 
-If the browser encounters malformed HTML, it automatically corrects it when making the DOM.
+Agar brauzer noto'g'ri tuzilgan HTMLga duch kelsa, DOMni yaratishda uni avtomatik ravishda tuzatadi.
 
-For instance, the top tag is always `<html>`. Even if it doesn't exist in the document, it will exist in the DOM, because the browser will create it. The same goes for `<body>`.
+Masalan, yuqori teg har doim `<html>` bo'ladi. Hujjatda mavjud bo'lmasa ham, u DOMda mavjud bo'ladi, chunki brauzer uni yaratadi. Aynan shu narsa `<body>` uchun ham amal qiladi.
 
-As an example, if the HTML file is the single word `"Hello"`, the browser will wrap it into `<html>` and `<body>`, and add the required `<head>`, and the DOM will be:
+Misol tariqasida, agar HTML fayli bitta `"Hello"` so'zi bo'lsa, brauzer uni `<html>` va `<body>` ichiga o'rab oladi va kerakli `<head>`ni qo'shadi va DOM fayli quyidagidek bo'ladi:
 
 
 <div class="domtree"></div>
@@ -121,9 +121,9 @@ let node3 = {"name":"HTML","nodeType":1,"children":[{"name":"HEAD","nodeType":1,
 drawHtmlTree(node3, 'div.domtree', 690, 150);
 </script>
 
-While generating the DOM, browsers automatically process errors in the document, close tags and so on.
+DOMni yaratishda brauzerlar hujjatdagi xatolarni avtomatik ravishda qayta ishlaydi, teglarni yopadi va hokazo.
 
-A document with unclosed tags:
+Yopilmagan teglar bilan hujjat:
 
 ```html no-beautify
 <p>Hello
@@ -132,7 +132,7 @@ A document with unclosed tags:
 <li>Dad
 ```
 
-...will become a normal DOM as the browser reads tags and restores the missing parts:
+...Brauzer teglarni o'qiyotganda va yetishmayotgan qismlarni tiklaganda oddiy DOMga aylanadi:
 
 <div class="domtree"></div>
 
@@ -142,16 +142,16 @@ let node4 = {"name":"HTML","nodeType":1,"children":[{"name":"HEAD","nodeType":1,
 drawHtmlTree(node4, 'div.domtree', 690, 360);
 </script>
 
-````warn header="Tables always have `<tbody>`"
-An interesting "special case" is tables. By DOM specification they must have `<tbody>` tag, but HTML text may omit it. Then the browser creates `<tbody>` in the DOM automatically.
+````warn header="Jadvallarda har doim `<tbody>` mavjud"
+Qiziqarli "maxsus holat" - bu jadvallar. DOM spetsifikatsiyasiga ko'ra ular `<tbody>` tegiga ega bo'lishi kerak, ammo HTML matni uni o'tkazib yuborishi mumkin. Keyin brauzer avtomatik ravishda DOM da `<tbody>` ni yaratadi.
 
-For the HTML:
+HTML uchun:
 
 ```html no-beautify
 <table id="table"><tr><td>1</td></tr></table>
 ```
 
-DOM-structure will be:
+DOM strukturasi quyidagicha bo'ladi:
 <div class="domtree"></div>
 
 <script>
@@ -160,14 +160,14 @@ let node5 = {"name":"TABLE","nodeType":1,"children":[{"name":"TBODY","nodeType":
 drawHtmlTree(node5,  'div.domtree', 600, 200);
 </script>
 
-You see? The `<tbody>` appeared out of nowhere. We should keep this in mind while working with tables to avoid surprises.
+Ko'ryapsizmi? `<tbody>` kutilmaganda paydo bo'ldi. Ajablanmaslik uchun jadvallar bilan ishlayotganda buni yodda tutishimiz kerak.
 ````
 
-## Other node types
+## Boshqa node turlari
 
-There are some other node types besides elements and text nodes.
+Elementlar va text node laridan tashqari yana bir qancha node turlari mavjud.
 
-For example, comments:
+Masalan,izohlar:
 
 ```html
 <!DOCTYPE HTML>
@@ -193,90 +193,90 @@ let node6 = {"name":"HTML","nodeType":1,"children":[{"name":"HEAD","nodeType":1,
 drawHtmlTree(node6, 'div.domtree', 690, 500);
 </script>
 
-We can see here a new tree node type -- *comment node*, labeled as `#comment`, between two text nodes.
+Biz bu yerda ikkita matn tugunlari orasida `#comment` deb belgilangan yangi daraxt node turi, *comment node* ni ko'rishimiz mumkin.
 
-We may think -- why is a comment added to the DOM? It doesn't affect the visual representation in any way. But there's a rule -- if something's in HTML, then it also must be in the DOM tree.
+Nima uchun izoh DOMga qo'shilgan deb o'ylashimiz mumkin. Bu vizual tasvirga hech qanday ta'sir qilmaydi, ammo bir qoida bor -- agar biror narsa HTMLda bo'lsa, u ham DOM daraxtida bo'lishi kerak.
 
-**Everything in HTML, even comments, becomes a part of the DOM.**
+**HTMLdagi hamma narsa, hatto sharhlar ham DOMning bir qismiga aylanadi.**
 
-Even the `<!DOCTYPE...>` directive at the very beginning of HTML is also a DOM node. It's in the DOM tree right before `<html>`. Few people know about that. We are not going to touch that node, we even don't draw it on diagrams, but it's there.
+Hatto HTMLning eng boshida joylashgan `<!DOCTYPE...>` direktivasi ham DOM node' dir. U DOM daraxtida `<html>` dan oldin joylashgan. Bu haqda kam odam biladi. Biz bu nodega tegmoqchi emasmiz, hatto uni diagrammalarga ham chizmaymiz, lekin u bu yerda mavjud.
 
-The `document` object that represents the whole document is, formally, a DOM node as well.
+Butun hujjatni ifodalovchi `document` obyekti rasmiy ravishda DOM tugunidir.
 
-There are [12 node types](https://dom.spec.whatwg.org/#node). In practice we usually work with 4 of them:
+[12 ta node turi] mavjud (https://dom.spec.whatwg.org/#node). Amalda biz odatda ulardan 4 tasi bilan ishlaymiz:
 
-1. `document` -- the "entry point" into DOM.
-2. element nodes -- HTML-tags, the tree building blocks.
-3. text nodes -- contain text.
-4. comments -- sometimes we can put information there, it won't be shown, but JS can read it from the DOM.
+1. `document` -- DOM-ga "kirish nuqtasi".
+2. element nodes -- HTML teglar, daraxt qurilish bloklari.
+3. text nodes -- matnlarni o'z tarkibiga oladi.
+4. comments -- ba'zan biz ma'lumotni u yerga qo'yishimiz mumkin, u ko'rsatilmaydi, lekin JS uni DOMdan o'qiy oladi.
 
-## See it for yourself
+## O'zingiz uchun ko'rib chiqing
 
-To see the DOM structure in real-time, try [Live DOM Viewer](https://software.hixie.ch/utilities/js/live-dom-viewer/). Just type in the document, and it will show up as a DOM at an instant.
+DOM tuzilishini real vaqtda ko'rish uchun [Live DOM Viewer] (https://software.hixie.ch/utilities/js/live-dom-viewer/) ni sinab ko'ring. Hujjatni kiriting va u bir zumda DOM sifatida paydo bo'ladi.
 
-Another way to explore the DOM is to use the browser developer tools. Actually, that's what we use when developing.
+DOM ni o'rganishning yana bir usuli - bu brauzer developer vositalaridan foydalanish. Aslida, biz ulardan ishlab chiqishda foydalanamiz.
 
-To do so, open the web page [elk.html](elk.html), turn on the browser developer tools and switch to the Elements tab.
+Buning uchun [elk.html](elk.html) veb-sahifasini oching, brauzer ishlab chiquvchi vositalarini yoqing va Elementlar yorlig'iga o'ting.
 
-It should look like this:
+Bu shunday ko'rinishi kerak:
 
 ![](elk.svg)
 
-You can see the DOM, click on elements, see their details and so on.
+Siz DOMni ko'rishingiz, elementlarni bosishingiz, ularning tafsilotlarini ko'rishingiz mumkin va hokazo.
 
-Please note that the DOM structure in developer tools is simplified. Text nodes are shown just as text. And there are no "blank" (space only) text nodes at all. That's fine, because most of the time we are interested in element nodes.
+Iltimos, ishlab chiquvchi vositalaridagi DOM tuzilishi soddalashtirilganligini unutmang. Matn nodelari xuddi matn sifatida ko'rsatiladi va umuman "bo'sh" (faqat bo'sh joy) matn nodelari yo'q. Bu yaxshi, chunki biz ko'pincha element nodelariga qiziqamiz.
 
-Clicking the <span class="devtools" style="background-position:-328px -124px"></span> button in the left-upper corner allows us to choose a node from the webpage using a mouse (or other pointer devices) and "inspect" it (scroll to it in the Elements tab). This works great when we have a huge HTML page (and corresponding huge DOM) and would like to see the place of a particular element in it.
+Yuqori chap burchakdagi <span class="devtools" style="background-position:-328px -124px"></span> tugmasini bosish sichqoncha (yoki boshqa ko'rsatgich qurilmalari) yordamida veb-sahifadan tugunni tanlash va uni "teskhirish" imkonini beradi (Elementlar yorlig'ida unga o'ting). Bu bizda ulkan HTML sahifaga (va tegishli katta DOM) ega bo'lganda va undagi ma'lum bir elementning o'rnini ko'rishni xohlayotganda juda yaxshi ishlaydi. 
 
-Another way to do it would be just right-clicking on a webpage and selecting "Inspect" in the context menu.
+Buni amalga oshirishning yana bir usuli mavjud: veb-sahifani o'ng tugmasini bosib, kontekst menyusida "Inspect" ni tanlash.
 
 ![](inspect.svg)
 
-At the right part of the tools there are the following subtabs:
-- **Styles** -- we can see CSS applied to the current element rule by rule, including built-in rules (gray). Almost everything can be edited in-place, including the dimensions/margins/paddings of the box below.
-- **Computed** -- to see CSS applied to the element by property: for each property we can see a rule that gives it (including CSS inheritance and such).
-- **Event Listeners** -- to see event listeners attached to DOM elements (we'll cover them in the next part of the tutorial).
-- ...and so on.
+Asboblarning o'ng qismida quyidagi kichik yorliqlar mavjud:
+- **Uslublar** (Styles)  -- biz CSS joriy element qoidasiga qoida bo'yicha qo'llanilishini ko'rishimiz mumkin, jumladan o'rnatilgan qoidalar (kulrang). Deyarli hamma narsani o'z o'rnida tahrirlash mumkin, masalan, quyidagi qutining o'lchamlari / chekkalari / to'ldirishlari.
+- **Computed** -- xususiyat bo'yicha elementga qo'llaniladigan CSS-ni ko'rish uchun: har bir xususiyat uchun biz uni beradigan qoidani ko'rishimiz mumkin (jumladan, CSS merosi va boshqalar).
+- **Event Listeners** -- DOM elementlariga biriktirilgan voqea tinglovchilarini ko'rish uchun (biz ularni o'quv qo'llanmaning keyingi qismida ko'rib chiqamiz).
+- ...va hokazo.
 
-The best way to study them is to click around. Most values are editable in-place.
+Ularni o'rganishning eng yaxshi usuli - bu atrofni bosish. Aksariyat qiymatlarni joyida tahrirlash mumkin.
 
-## Interaction with console
+## Konsol bilan o'zaro aloqa
 
-As we work the DOM, we also may want to apply JavaScript to it. Like: get a node and run some code to modify it, to see the result. Here are few tips to travel between the Elements tab and the console.
+Biz DOM bilan ishlaganimizda, unga JavaScriptni ham qo'llashni xohlashimiz mumkin. Masalan: tugunni oling va natijani ko'rish maqsadida uni o'zgartirish uchun kodni ishga tushiring. Elementlar yorlig'i va konsol o'rtasida sayohat qilish uchun bir nechta maslahatlar berilgan.
 
-For the start:
+Boshlash uchun:
 
-1. Select the first `<li>` in the Elements tab.
-2. Press `key:Esc` -- it will open console right below the Elements tab.
+1. Elementlar ilovasida birinchi `<li>` ni tanlang.
+2. `Klaviatura: Esc` tugmasini bosing -- u Elementlar yorlig'i ostidagi konsolni ochadi.
 
-Now the last selected element is available as `$0`, the previously selected is `$1` etc.
+Endi oxirgi tanlangan element `$0` sifatida mavjud, avval tanlangan `$1` va hokazo.
 
-We can run commands on them. For instance, `$0.style.background = 'red'` makes the selected list item red, like this:
+Biz ularga buyruqlar berishimiz mumkin. Masalan, `$0.style.background = 'red'' tanlangan ro'yxat elementini qizil rangga aylantiradi:
 
 ![](domconsole0.svg)
 
-That's how to get a node from Elements in Console.
+Konsoldagi Elements dan node ni shunday olish mumkin.
 
-There's also a road back. If there's a variable referencing a DOM node, then we can use the command `inspect(node)` in Console to see it in the Elements pane.
+Orqaga yo'l ham bor. Agar DOM tuguniga havola qiluvchi o'zgaruvchi mavjud boʻlsa, uni Elementlar panelida ko'rish uchun Konsolda `inspect(node)` buyrug'idan foydalanishimiz mumkin.
 
-Or we can just output the DOM node in the console and explore "in-place", like `document.body` below:
+Yoki biz faqat konsolda DOM tugunini chiqarishimiz va quyida `document.body` kabi "in-place" ni o'rganishimiz mumkin:
 
 ![](domconsole1.svg)
 
-That's for debugging purposes of course. From the next chapter on we'll access and modify DOM using JavaScript.
+Bundan, albatta, debugging maqsadlari uchun foydalaniladi. Keyingi bobdan boshlab biz JavaScriptdan foydalanib DOMga kiramiz va uni o'zgartiramiz.
 
-The browser developer tools are a great help in development: we can explore the DOM, try things and see what goes wrong.
+Brauzer ishlab chiquvchi vositalari ishlab chiqishda katta yordam beradi: biz DOMni o'rganishimiz, narsalarni sinab ko'rishimiz va nima noto'g'ri ekanligini ko'rishimiz mumkin.
 
-## Summary
+## Xulosa
 
-An HTML/XML document is represented inside the browser as the DOM tree.
+HTML/XML hujjati brauzer ichida DOM daraxti sifatida taqdim etiladi.
 
-- Tags become element nodes and form the structure.
-- Text becomes text nodes.
-- ...etc, everything in HTML has its place in DOM, even comments.
+- Teglar element nodelariga aylanadi va strukturani tashkil qiladi.
+- Matn matn nodelariga aylanadi.
+- ...va hokazo, HTMLdagi hamma narsa DOMda o'z o'rniga ega, hatto sharhlar ham.
 
-We can use developer tools to inspect DOM and modify it manually.
+DOMni tekshirish va uni qo'lda o'zgartirish uchun ishlab chiquvchi vositalaridan foydalanishimiz mumkin.
 
-Here we covered the basics, the most used and important actions to start with. There's an extensive documentation about Chrome Developer Tools at <https://developers.google.com/web/tools/chrome-devtools>. The best way to learn the tools is to click here and there, read menus: most options are obvious. Later, when you know them in general, read the docs and pick up the rest.
+Bu yerda biz asoslarni, eng ko'p ishlatiladigan va boshlash uchun muhim harakatlarni ko'rib chiqdik. <https://developers.google.com/web/tools/chrome-devtools> sahifasida Chrome Developer Tools haqida keng qamrovli hujjatlar mavjud. Asboblarni o'rganishning eng yaxshi usuli - bu yerga va u yerga bosish, menyularni o'qish: ko'pchilik variantlar aniq. Keyinchalik, ular haqida umumiy ma'lumotga ega bo'lganingizda, hujjatlarni o'qing va qolganlarini oling. 
 
-DOM nodes have properties and methods that allow us to travel between them, modify them, move around the page, and more. We'll get down to them in the next chapters.
+DOM nodelarida ular orasida sayohat qilish, ularni o'zgartirish, sahifa bo'ylab harakatlanish va boshqalarni ta'minlaydigan xususiyatlar va usullar mavjud. Keyingi boblarda ular haqida ham to'xtalamiz.

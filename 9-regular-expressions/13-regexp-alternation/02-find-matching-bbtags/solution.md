@@ -1,11 +1,11 @@
 
-Opening tag is `pattern:\[(b|url|quote)]`.
+Ochilish tegi `pattern:\[(b|url|quote)]`.
 
-Then to find everything till the closing tag -- let's use the pattern `pattern:.*?` with flag `pattern:s` to match any character including the newline and then add a backreference to the closing tag.
+Keyin yopilish yorlig'igacha hamma narsani topish uchun keling, `pattern:s` bayrog'i bilan `pattern:.*?` patternni ishlatib, har qanday belgiga, shu jumladan yangi qatorga moslashamiz va keyin yopilish tegiga orqa havola qo'shamiz.
 
-The full pattern: `pattern:\[(b|url|quote)\].*?\[/\1]`.
+To'liq pattern: `pattern:\[(b|url|quote)\].*?\[/\1]`.
 
-In action:
+Amalda:
 
 ```js run
 let regexp = /\[(b|url|quote)].*?\[\/\1]/gs;
@@ -20,4 +20,4 @@ let str = `
 alert( str.match(regexp) ); // [b]hello![/b],[quote][url]http://google.com[/url][/quote]
 ```
 
-Please note that besides escaping `pattern:[`, we had to escape a slash for the closing tag `pattern:[\/\1]`, because normally the slash closes the pattern.
+Please note that besides escaping `pattern:[`, we had to escape a slash for the closing tag `pattern:[\/\1]`, because normally the slash closes the pattern. Esda tutingki, `pattern:[` dan qochish bilan bir qatorda `pattern:[\/\1]` yopish tegi uchun slash'dan qochishimiz kerak edi, chunki odatda slash patternni yopadi.

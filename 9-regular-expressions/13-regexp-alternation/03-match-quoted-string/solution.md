@@ -1,13 +1,13 @@
-The solution: `pattern:/"(\\.|[^"\\])*"/g`.
+Yechim: `pattern:/"(\\.|[^"\\])*"/g`.
 
-Step by step:
+Navbatma-navbat
 
-- First we look for an opening quote `pattern:"`
-- Then if we have a backslash `pattern:\\` (we have to double it in the pattern because it is a special character), then any character is fine after it (a dot).
-- Otherwise we take any character except a quote (that would mean the end of the string) and a backslash (to prevent lonely backslashes, the backslash is only used with some other symbol after it): `pattern:[^"\\]`
-- ...And so on till the closing quote.
+- Avval biz `pattern:"` ochilish qo'shtirnog'ini qidiramiz
+- Agar bizda teskari qiyshiq chiziq `pattern:\\` bo'lsa (bu maxsus belgi bo'lgani uchun uni pattern'da ikki barobarga oshirishimiz kerak), undan keyin har qanday belgi yaxshi bo'ladi (nuqta).
+- Aks holda, biz qo'shtirnoq (bu qatorning oxirini bildiradi) va backslash dan tashqari har qanday belgini olamiz (yolg'iz bacslash ga yo'l qo'ymaslik uchun, backslash faqat undan keyin boshqa belgi bilan ishlatiladi): `pattern:[^"\\]`
+- ...Yakunlovchi qo'shtirnoqqacha shunday davom etadi.
 
-In action:
+Amaliy mashg'ulot:
 
 ```js run
 let regexp = /"(\\.|[^"\\])*"/g;
