@@ -1,6 +1,6 @@
 # Miqdor ko'rsatkichlari +, *, ? va {n}
 
-Faraz, bizda `+7(903)-123-45-67` kabi qator bor va undagi barcha raqamlarni topmoqchimiz. Ammo avvalgidan farqli o'laroq, bizni yakka raqamlar emas, balki to'liq raqamlar qiziqtiradi: `7, 903, 123, 45, 67`.
+Aytaylik, bizda `+7(903)-123-45-67` kabi qator bor va undagi barcha raqamlarni topmoqchimiz. Ammo avvalgidan farqli o'laroq, bizni yakka raqamlar emas, balki to'liq raqamlar qiziqtiradi: `7, 903, 123, 45, 67`.
 
 Raqam 1 yoki undan ortiq raqamlar ketma-ketligi `pattern:\d`. Bizga qancha kerakligini belgilash uchun biz *miqdoriy belgini* qo'shishimiz mumkin.
 
