@@ -15,12 +15,12 @@ Skriptlar oddiy matn ko'rinishida beriladi va ko'rinadi. Ular ishlashi uchun max
 Ushbu jihati bilan JavaScript [Java](https://en.wikipedia.org/wiki/Java_(programming_language)) deb ataluvchi boshqa dasturlash tilidan keskin farq qiladi.
 
 ```smart header="Nima uchun JavaScript deb nomlanadi?"
-JavaScript yaratilganda uning dastlabki nomi "LiveScript" edi. Lekin, o'sha paytda Java juda mashxurligi sababli yangi dasturlash tilini Javaning yosh ukasi sifatida tanishtirish uni ommalashtirishga yordam beradi deya qaror qilishgan.
+JavaScript yaratilganda uning dastlabki nomi "LiveScript" edi. Lekin o'sha paytda Java juda mashxurligi sababli yangi dasturlash tilini Javaning yosh ukasi sifatida tanishtirish uni ommalashtirishga yordam beradi deya qaror qilishgan.
 
-Lekin, JavaScript rivojlangani sari [ECMAScript](http://en.wikipedia.org/wiki/ECMAScript) deb atalgan o'ziga xos to'liq mustaqil dasturlash tiliga aylandi va hozir Java bilan umuman bog'liqlik jihati yo'q. 
+Biroq JavaScript rivojlangani sari [ECMAScript](http://en.wikipedia.org/wiki/ECMAScript) deb atalgan o'ziga xos to'liq mustaqil dasturlash tiliga aylandi va hozir Java bilan hech qanday bog'liqlik jihati yo'q. 
 ```
 
-Bugun, JavaScript nafaqat brauzerda balki serverda ham yoki [JavaScript engine](https://en.wikipedia.org/wiki/JavaScript_engine) deb atalgan maxsus dasturga ega har qanday qurilmada ishlay oladi. 
+Bugun JavaScript nafaqat brauzerda, balki serverda yoki [JavaScript engine](https://en.wikipedia.org/wiki/JavaScript_engine) deb atalgan maxsus dasturga ega har qanday qurilmada ishlay oladi. 
 
 Brauzerning o'zida o'rnatilgan engine, ya'ni qurilma mavjud. Ba'zida u "JavaScript virtual mashinasi" deb ham ataladi.
 
@@ -49,11 +49,11 @@ asoslangan mashina kodini yanada optimallashtiradi.
 
 ## Ichki-brauzer JavaScript nimalar qila oladi?
 
-Zamonaviy JacaScript "xavfsiz" dasturlash tilidir. U xotira yoki CPU (Central Processing Unit) ga past daraja bilan kirishni ta'minlamaydi, chunki u dastlab uni talab qilmaydigan brauzerlar uchun yaratilgandi. 
+Zamonaviy JacaScript "xavfsiz" dasturlash tilidir. U xotira yoki CPU (Central Processing Unit) ga past daraja bilan kirishni ta'minlamaydi, chunki u dastlab uni talab qilmaydigan brauzerlar uchun yaratilgan. 
 
 JavaScriptning qobiliyatlari u ishlab turgan muhit bilan bevosita bog'liq. Misol uchun, [Node.js](https://wikipedia.org/wiki/Node.js) JavaScriptga katta hajmdagi fayllarni o'qish/yozish ga yordam beradigan funksiyalarni qo'llab quvvatlaydi, tizim so'rovlarini amalga oshiradi va hokazo.
 
-Ichki-brauzerdagi JavaScript web sahifalarni boshqarish, foydalanuvchi bilan aloqa qilish va web 
+Ichki-brauzerdagi JavaScript veb sahifalarni boshqarish, foydalanuvchi bilan aloqa o'rnatish va veb 
 server bilan bog'liq hamma narsani qila oladi.
 
 Misol uchun, ichki-brauzerdagi JavaScript quyidagilarga qodir:
@@ -70,16 +70,16 @@ Foydalanuvchining xavfsizligini himoya qilish maqsadida JavaScriptning brauzer d
 
 Bunday cheklovlarga misollar:
 
-- Web sahifada JavaScript qattiq diskdagi katta hajmli fayllarni o'qishi, ularni nusxalashi 
- yoki dasturlarni ishlatishi mumkin emas. U OS (Operatsion Tizim) funksiyalariga to'g'ridan to'gri 
+- Veb sahifada JavaScript qattiq diskdagi katta hajmli fayllarni o'qishi, ularni nusxalashi 
+ yoki dasturlarni ishlatishi mumkin emas. U OS (Operation System, ya'ni Operatsion Tizim) funksiyalariga to'g'ridan to'gri 
  kira olmaydi.
 
      Zamonaviy brauzerlar fayllar bilan birga ishlash imkonini beradi, lekin kirish cheklangan va faqat agar foydalanuvchi brauzer oynasiga faylni joylashtirish yoki `<input>` tegi orqali tanlash kabi ma'lum harakatlarni bajarganda ruxsat beriladi.
 
-     Kamera/mikrofon va boshqa qurilmalar bilan bog'lanishning turli yo'llari mavjud, lekin ular foydalanuvchidan ruxsat talab qiladi. Shuning uchun JavaScript yoqilgan sahifa web-kamerani yashirincha yoqishi, atrofni kuzatishi va [NSA](https://en.wikipedia.org/wiki/National_Security_Agency) (Milliy Xavfsizlik Agentligi)ga ma'ulomot jo'natishi mumkin emas.
+     Kamera/mikrofon va boshqa qurilmalar bilan bog'lanishning turli yo'llari mavjud, lekin ular foydalanuvchidan ruxsat talab qiladi. Shuning uchun JavaScript yoqilgan sahifa veb-kamerani yashirincha yoqishi, atrofni kuzatishi va [NSA](https://en.wikipedia.org/wiki/National_Security_Agency) (Milliy Xavfsizlik Agentligi)ga ma'ulomot jo'natishi mumkin emas.
 
 
-     - Turli yorliq yoki oynalar umumiy jihatdan bir-biri haqida hech narsa bilishmaydi. Ba'zida biroz ma'lumotga ega bo'lishlari mumkin, misol uchun bir oyna JavaScriptdan boshqa birini ochish uchun foydalansa. Hatto bu holatda ham, agar turli sayt(domen, protokol yoki port)lardan bir sahifadagi JavaScript boshqasiga kira olmaydi.
+     - Turli yorliq yoki oynalar umumiy jihatdan bir-biri haqida hech narsa bilishmaydi. Ba'zida biroz ma'lumotga ega bo'lishlari mumkin, misol uchun bir oyna JavaScriptdan boshqa birini ochish uchun foydalanganda. Hatto bu holatda ham, agar turli sayt(domen, protokol yoki port)lardan bir sahifadagi JavaScript boshqasiga kira olmaydi.
 
      Bu "Same Origin Policy" ("Bir xil kelib chiqish siyosati") deb nomlanadi. Buni hal qilish uchun *ikkala sahifa ham* ma'lumotlar almashinuviga rozi bo'lishi va uni boshqaradigan maxsus JavaScript kodini o'z ichiga olishi kerak. Buni qo'llanmada ko'rib chiqamiz.
 
@@ -97,7 +97,7 @@ JavaScriptning kamida 3 ta kuchli jihati mavjud.
 
 + HTML/CSS bilan to'liq birlashuv.
 + Oddiy narsalar osongina bajariladi.
-+ Barcha asosiy brauzerlar tomonidan qo'llab-quvvatlanadi va sukut bo'yicha yoqilgan bo'ladi.
++ Barcha asosiy brauzerlar tomonidan qo'llab-quvvatlanadi va standart sozlamalarda yoqilgan bo'ladi.
 ```
 JavaScript bu uch narsani birlashtirgan yagona brauzer texnologiyasidir.
 
@@ -107,24 +107,24 @@ Shuningdek, JavaScript serverlar, mobil ilovalar va boshqalarni yaratishga ham i
 
 ## JavaScript "orqali" tillar
 
-JavaScript sintaksisi hammaning ham ehtiyojlariga mos kelavermaydi. Turli odamlar turli xil xususiyatlarni xohlashadi.
+JavaScript sintaksisi hammaning ham ehtiyojlariga mos kelavermaydi. Turli odamlar turli xil xususiyatlarni xohlaydi.
 
 Yaqin vaqt oralig'ida ko'plab yangi tillar paydo bo'ldi, ular brauzerda ishga tushishdan oldin JavaScriptga *ko'chiriladi* (aylantiriladi).
 
-Zamonaviy vositalar ko'chirilishni juda tez va shaffof tarzda bajaradi, va bu dasturchilarga boshqa tilda kodlash va uni avtomatik ravishda aylantirish imkonini beradi.
+Zamonaviy vositalar ko'chirilishni juda tez va shaffof tarzda bajaradi, bu dasturchilarga boshqa tilda kodlash va uni avtomatik ravishda aylantirish imkonini beradi.
 
 Bunday tillarga misollar:
 
 - [CoffeeScript](http://coffeescript.org/) JavaScript uchun "syntactic sugar"(ya'ni uni oson o'qish va ifodalash xususiyatini qo'shadi). U qisqaroq sintaksisni ham taqdim etadi va bu bizga aniqroq kod yozish imkonini beradi. Odatda, bu Ruby dasturchilariga yoqadi.
 - [TypeScript](http://www.typescriptlang.org/) murakkab tizimlarni ishlab chiqish va qo'llab-quvvatlashni soddalashtirish uchun "ma'lumotlarni qat'iy tartibda yozish" xusuiyatini qo'shishga qaratilgan. U Microsoft tomonidan ishlab chiqilgan.
 - [Flow](http://flow.org/) ham ma'lumotlarni yozish xususiyatini qo'shadi, lekin bu vazifani boshqacha tarzda bajaradi. U Facebook tomonidan ishlab chiqilgan.
-- [Dart](https://www.dartlang.org/) mustaqil dasturlash tili boʻlib, brauzerdan tashqari muhitlarda (masalan, mobil ilovalar) ishlaydigan, lekin JavaScriptga ham ko'chirilishi mumkin bo'lgan o'z engine ga ega. U Google tomonidan ishlab chiqilgan.
+- [Dart](https://www.dartlang.org/) mustaqil dasturlash tili boʻlib, brauzerdan tashqari muhitlarda (masalan, mobil ilovalar) ishlaydigan, lekin JavaScriptga ham ko'chirilishi mumkin bo'lgan o'z qurilmasiga ega. U Google tomonidan ishlab chiqilgan.
 - [Brython](https://brython.info/) JavaScriptga uchun Python-transpiler bo'lib, JavaScriptni ishlatmasdan sof Pythonda ilovalar yozish imkonini beradi.
-- [Kotlin](https://kotlinlang.org/docs/reference/js-overview.html) zamonaviy, ixcham va xavfsiz dasturlash tili bo'lib, u brauzer yoki Node-ni nishonga olishi mumkin.
+- [Kotlin](https://kotlinlang.org/docs/reference/js-overview.html) zamonaviy, ixcham va xavfsiz dasturlash tili bo'lib, u brauzer yoki Nodeni nishonga olishi mumkin.
 
 Yana boshqalar ham bor. Albatta, biz ko'chirilgan tillardan birini ishlatsak ham, nima qilayotganimizni tushunishimiz uchun JavaScriptni ham bilishimiz kerak.
 
 ## Xulosa
 - JavaScript dastlab faqat brauzer tili sifatida yaratilgan edi, ammo hozir u ko'plab boshqa muhitlarda ham qo'llaniladi.
 - Bugungi kunda JavaScript HTML/CSS bilan to'liq birlashgan eng keng tarqalgan brauzer tili sifatida oʻziga xos mavqe'ga ega.
-- JavaScriptga "transpiled" qilingan va ma'lum xususiyatlarni ta'minlaydigan ko'plab tillar mavjud. JavaScriptni o'zlashtirgandan so'ng, ularni hech bo'lmaganda qisqacha ko'rib chiqish tavsiya etiladi.
+- JavaScriptga "transpiled" qilinadigan va ma'lum xususiyatlarni ta'minlaydigan ko'plab tillar mavjud. JavaScriptni o'zlashtirgandan so'ng, ularni hech bo'lmaganda qisqacha ko'rib chiqish tavsiya etiladi.
