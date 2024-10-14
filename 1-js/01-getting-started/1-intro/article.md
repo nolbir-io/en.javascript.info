@@ -6,7 +6,7 @@ Keling, JavaScript nimasi bilan o'ziga xosligi, u bilan nimalarga erishishimiz m
 
 ## JavaScript o'zi nima?
 
-Dastlab, JavaScript "web sahifalarni jonliroq ko'rsatish" maqsadida yaratilgan edi.
+Dastlab, JavaScript "hello sahifalarni jonliroq ko'rsatish" maqsadida yaratilgan edi.
 
 Bu tilda yozilgan dasturlar skriptlar deb ataladi. Ular web sahifaning HTML qismida to'g'ridan to'gri yozilishi va sahifa yuklanishi bilan avtomatik ravishda ishga tushirilishi mumkin.
 
