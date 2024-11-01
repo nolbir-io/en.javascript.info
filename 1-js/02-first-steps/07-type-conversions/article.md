@@ -7,9 +7,9 @@ Misol uchun, `alert` har qanday qiymatni ko'rsatish uchun uni stringga aylantira
 Qiymatni kutilgan turga aniq tarzda aylantirishimiz kerak bo'lgan holatlar ham mavjud. 
 
 ```smart header="Hozircha obyektlar haqida gaplashmaymiz"
-Bu bob obyektlarni o'z ichiga olmaydi. Hozircha faqat primitive-lar haqida gaplashamiz.
+Bu bob obyektlarni o'z ichiga olmaydi. Hozircha faqat primitivelar haqida gaplashamiz.
 
-Keyinchalik, obyektlar bilan tanishganimizdan so'ng, <info:object-toprimitive> bobida biz obyektlar qanday tuzilishini ko'rib chiqamiz. 
+Keyinchalik, obyektlar bilan tanishganimizdan so'ng, <info:object-toprimitive> bobida obyektlar qanday tuzilishini ko'rib chiqamiz. 
 ```
 
 ## String o'zgarishi
@@ -53,7 +53,7 @@ let num = Number(str); // 123 raqamiga aylanadi
 alert(typeof num); // raqam
 ```
 
-Bizga matnga o'xshash shakldagi string-ga asoslangann manbadan qiymat kerak bo'lganda va raqam kiritilishi kutilganda, odatda aniq konvertatsiya talab qilinadi.
+Bizga matnga o'xshash shakldagi stringga asoslangan manbadan qiymat kerak bo'lganda va raqam kiritilishi kutilganda, odatda aniq konvertatsiya talab qilinadi.
 
 Agar string number bo'lamasa, bunday konvertatsiya natijasi `Nan` bo'ladi. Misol uchun:
 
@@ -70,7 +70,7 @@ Raqamli konvertatsiya qoidalari:
 |`undefined`|`NaN`|
 |`null`|`0`|
 |<code>true&nbsp;va&nbsp;false</code> | `1` va `0` |
-| `string` | Bosh va oxirdagi bo'sh joylar olib tashlanadi. Agar mavjud string bo'sh bo'lsa, natija `0` bo'ladi. Aks holda, number string-dan "o'qiladi". Xatolik `NaN`ni ko'rsatadi. |
+| `string` | Bosh va oxirdagi bo'sh joylar olib tashlanadi. Agar mavjud string bo'sh bo'lsa, natija `0` bo'ladi. Aks holda, number stringdan "o'qiladi". Xatolik `NaN`ni ko'rsatadi. |
 
 Namunalar:
 
@@ -119,9 +119,9 @@ alert( Boolean(" ") ); // bo'shliqlar ham true (har qanday bo'sh bo'lmagan satr 
 
 ## Xulosa
 
-Eng ko'p ishlatiladigan uchta turdagi konvertatsiyalar qator, raqamga va mantiqiy konvertatsiyadir.
+Eng ko'p ishlatiladigan uchta turdagi konvertatsiyalar qator, raqam va mantiqiy konvertatsiyadir.
 
-**`String Conversion`** -- Biror narsani chiqarganimizda sodir bo'ladi. `String(value)` orqali amalga oshirish mumkin. String-ga aylantirish oadatda primitive qiymatlar uchun aniqdir.
+**`String Conversion`** -- Biror narsani chiqarganimizda sodir bo'ladi. `String(value)` orqali amalga oshirish mumkin. Stringga aylantirish oadatda primitive qiymatlar uchun aniqdir.
 
 **`Numeric Conversion`** -- Matematik ammalda sodir bo'ladi. `Number(value)` orqali amalga oshirish mumkin.
 
