@@ -102,7 +102,7 @@ Masalan, "message" o'zgaruvchisini qiymati "Hello!" bo'lgan "message" yorlig'iga
 
 ![](variable.svg)
 
-Qutiga istalgan qiymatni kiritishimiz mumkin:
+Qutiga istalgan qiymatni kiritamiz:
 
 Yana uni xohlagancha o'zgartirishimiz ham mumkin:
 
@@ -174,7 +174,7 @@ let test123;
 
 Nom ko'p so'zdan iborat bo'lganda, [camelCase](https://en.wikipedia.org/wiki/CamelCase) usulidan keng foydalaniladi. Unda so'zlar bir-biridan so'ng, birinchisidan tashqari qolganlarining barchasi katta bosh harf bilan yoziladi: `myVeryLongName`.
 
-Qizig'i shundaki -- dollar `'$'` va pastgi chiziqcha `'_'` belgilari ham nomlarda ishlatilinishi mumkin. Ular ham huddi harflar kabi hech qanday ma'noga ega bo'lmagan doimiy belgilar hisoblanadi.
+Qizig'i shundaki -- dollar `'$'` va pastki chiziqcha `'_'` belgilari ham nomlarda ishlatilinishi mumkin. Ular ham huddi harflar kabi hech qanday ma'noga ega bo'lmagan doimiy belgilar hisoblanadi.
 
 Quyidagi nomlar to'g'ri:
 
@@ -198,14 +198,14 @@ let my-name; // chiziqlar '-' ishlatish mumkin emas
 ```
 
 ````smart header="Lotin bo'lmagan harflardan foydalanish mumkin, lekin tavsiya etilmaydi"
-Har qanday tildan, jumladan kirill harflari yoki hatto ierogliflardan foydalanish mumkin:
+Har qanday tildan, jumladan kirill harflari yoki hatto iyerogliflardan foydalanish mumkin:
 
 ```js
 let имя = '...';
 let 我 = '...';
 ```
 
-Texnik jihatdan, bu yerda hech qanday xatolik yo'q. Bunday nomlash mumkin, ammo o'zgaruvchi nomlarida ingliz tilidan foydalanish bo'yicha xalqaro kelishuv mavjud. Hatto kichik skript yozayotgan bo'lsak ham, u shu orqali uzoq umr ko'rishi mumkin. Boshqa mamlakatlardagi odamlar ham uni o'qishi kerak bo'lib qolishi ehtimoli mavjud.
+Texnik jihatdan, bu yerda hech qanday xatolik yo'q. Bunday nomlash mumkin, ammo o'zgaruvchi nomlarida ingliz tilidan foydalanish bo'yicha xalqaro kelishuv mavjud. Hatto kichik skript yozayotgan bo'lsak ham, u shu orqali uzoq umr ko'rishi mumkin. Boshqa mamlakatlardagi odamlar ham uni o'qishi kerak bo'lib qolishi ehtimoli bor.
 ````
 
 ````warn header="Band qilingan nomlar"
@@ -223,7 +223,7 @@ let return = 5; // "return" deb ham nomlab bo'lmaydi, xatolik!
 
 ````warn header="`use strict`siz tayinlash"
 
-Odatda, biz uni ishlatishdan oldin o'zgaruvchini e'lon qilishimiz kerak. Ammo qadimgi davrlarda `let`dan foydalanmasdan turib ham, shunchaki qiymatni tayinlash orqali o'zgaruvchini yaratish texnik jihatdan mumkin bo'lgan. Eski skriptlar bilan mosligini saqlab qolish uchun skriptlarimizda `use strict`ni ishlatmasak, bu hozir ham ishlaydi. 
+Odatda, biz uni ishlatishdan oldin o'zgaruvchini e'lon qilishimiz kerak. Ammo avval `let`dan foydalanmasdan turib ham, shunchaki qiymatni tayinlash orqali o'zgaruvchini yaratish texnik jihatdan mumkin bo'lgan. Eski skriptlar bilan mosligini saqlab qolish uchun skriptlarimizda `use strict`ni ishlatmasak, bu hozir ham ishlaydi. 
 
 ```js run no-strict
 // diqqat: bu misolda "use strict" mavjud emas
@@ -246,7 +246,7 @@ num = 5; // xatolik: num e'lon qilinmagan
 
 ## Konstantalar
 
-O'zgarmas o'zgaruvchi e'lon qilish uchun, `let`ning o'rniga `const`dan foydalaning:
+O'zgarmas o'zgaruvchini e'lon qilish uchun `let`ning o'rniga `const`dan foydalaning:
 
 ```js
 const myBirthday = '18.04.1982';
@@ -284,8 +284,8 @@ alert(color); // #FF7F00
 
 Foydali jihatlari:
 
-- `#FF7F00`dan ko'ra `COLOR_ORANGE` eslab qolishga ancha oson .
-- `COLOR_ORANGE`dan ko'ra `#FF7F00`ni xato yozish ehtimolligi yuqori .
+- `#FF7F00`dan ko'ra `COLOR_ORANGE` eslab qolishga ancha oson.
+- `COLOR_ORANGE`dan ko'ra `#FF7F00`ni xato yozish ehtimolligi yuqori.
 - Kodni o'qish paytida, `#FF7F00`dan ko'ra `COLOR_ORANGE` ancha mazmunliroq.
 
 Qachon konstanta uchun bosh harflardan foydalanishimiz kerak va qachon uni odatdagidek nomlashimiz kerak? Keling, buni aniqlab olamiz.
@@ -298,7 +298,7 @@ Misol uchun:
 const pageLoadTime = /* veb-sahifani yuklash uchun ketadigan vaqt */;
 ```
 
-`pageLoadTime` qiymati sahifa yuklanishidan oldin noma`lum, shuning uchun u odatdagidek nomlanadi. Ammo bu hali ham kontanta, chunki u tayinlashdan keyin o'zgarmaydi.
+`pageLoadTime` qiymati sahifa yuklanishidan oldin noma`lum, shuning uchun u odatdagidek nomlanadi. Ammo bu hali ham konstanta, chunki u tayinlashdan keyin o'zgarmaydi.
 
 Boshqacha qilib aytganda, katta harflarda nomlangan konstantalar yozilishi qiyin bo'lgan qiymatlarni saqlash uchun ishlatiladi.
 
