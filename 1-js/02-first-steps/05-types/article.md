@@ -2,7 +2,7 @@
 
 JavaScriptdagi qiymat har doim aniq bir turda bo'ladi. Masalan, satr yoki raqam. 
 
-JavaScriptda 8 ta asosiy ma'lumot turi mavjud. Biz bu qismda ularnining barchasini umumiy qamrab olamiz va keyingi bo'limlarda ma'lumot turlarining har biri haqida batafsil to'xtalib o'tamiz. 
+JavaScriptda 8 ta asosiy ma'lumot turi mavjud. Biz bu qismda ularnining barchasini umumiy ravishda qamrab olamiz va keyingi bo'limlarda ma'lumot turlarining har biri haqida batafsil to'xtalib o'tamiz. 
 
 Biz o'zgaruvchiga istalgan shaklni joylay olamiz. Masalan, o'zgaruvchi bir holatda satr bo'lib, raqamni kiritishi mumkin:
 
@@ -25,7 +25,7 @@ n = 12.345;
 
 Raqamlar uchun ko'plab amallar mavjud, jumladan, ko'paytirish `*`, bo'lish `/`, qo'shish `+`, ayrish `-` va boshqalar.
 
-Odatiy raqamlar bilan bir qatorda, ma'lumotning bu turiga tegishli bo'lgan yana "maxsus raqamli qiymatlarham mavjud: `Infinity`, `-Infinity` va `NaN` 
+Odatiy raqamlar bilan bir qatorda, ma'lumotning bu turiga tegishli bo'lgan yana "maxsus raqamli qiymatlar ham mavjud: `Infinity`, `-Infinity` va `NaN` 
 
 - `Infinity` - bu matematik cheksizlik [Infinity](https://en.wikipedia.org/wiki/Infinity) ∞ ni bildiradi. Bu maxsus qiymat bo'lib, u har qanday sondan katta.
 
@@ -68,7 +68,7 @@ Raqamlar bilan ishlashni <info:number> bo'limida ko'proq ko'rib chiqamiz.
 
 ## BigInt [#bigint-type]
 
-JavaScript-da "raqam" turi `(253-1)` dan katta `(9007199254740991)` yoki manfiy sonlar uchun `-(253-1)` dan kichik butun sonlarni ishonchli tarzda ifodalay olmaydi.
+JavaScriptda "raqam" turi `(253-1)` dan katta `(9007199254740991)` yoki manfiy sonlar uchun `-(253-1)` dan kichik butun sonlarni ishonchli tarzda ifodalay olmaydi.
 
  Haqiqatan ham, "raqam" turi kattaroq butun sonlarni saqlashi mumkin (1,7976931348623157 * 10308), lekin butun sonlarning xavfsiz diapazonidan tashqarida ±(253-1) aniqlik xatosi bo'ladi, chunki qattiq 64 bitli xotiraga hamma raqamlar ham mos kelmaydi. Shunday qilib, "taxminiy" qiymat saqlanishi mumkin.
 
@@ -117,7 +117,7 @@ JavaScriptda 3 turdagi qo'shtirnoq bor.
 
 Ikkitali va yakka qo'shtirnoqlar "oddiy" qo'shtirnoqlar hisoblanadi. JavaScriptda ularda amaliy jihatdan hech qanaqa farq yo'q.
 
-Backtick lar "kengaytirilgan funksionallik" qo'shtirnog'idir. Ular bizga o'zgaruvchilar va ifodalarni `${…}` belgilari ichiga o'rab olish orqali satrga kiritish imkoniyatini beradi, misol uchun:
+Backtick-lar "kengaytirilgan funksionallik" qo'shtirnog'idir. Ular bizga o'zgaruvchilar va ifodalarni `${…}` belgilari ichiga o'rab olish orqali satrga kiritish imkoniyatini beradi, misol uchun:
 
 ```js run
 let name = "John";
@@ -136,7 +136,7 @@ Shuni yodda tutiki, bu faqat backticklardagina bo'ladi. Boshqa qo'shtirnoqnlarni
 alert( "natija ${1 + 2}" ); // natija ${1 + 2} (ikkitalik qo'shtirnoq hech narsa qilmaydi)
 ```
 
-Biz satrlarni <info:string> bo'limida batafsiroq ko'rib chiqamiz.
+Biz satrlarni <info:string> bo'limida batafsilroq ko'rib chiqamiz.
 
 ```smart header="*belgi* turi mavjud emas."
 Ba'zi tillarda har bir belgi uchun maxsus "belgi" turi bor. Masalan, C tilida va Java da bu "char" (character) deb nomlanadi. 
@@ -197,7 +197,7 @@ let age;
 alert(age); // belgi "undefined" ni ko'rsatadi
 ```
 
-Aslida, `undefined` ni o'zgaruvchiga ochig ravishda belgilashning iloji bor:
+Aslida, `undefined` ni o'zgaruvchiga ochiq ravishda belgilashning iloji bor:
 
 ```js run
 let age = 100;
@@ -257,7 +257,7 @@ So'nggi uchta qatorga qo'shimcha tushuntirish kerak bo'lishi mumkin:
 
 1. `Math` bu matematik ammallar bilan ta'minlaydigan ichki (built-in) qurilma. Biz uni <info:number> bo'limida o'rganamiz. Bu yerda esa u faqatgina jism (obyekt) uchun namuna xizmatini bajaradi. 
 2. `typeof null` ning natijasi `"object"` dir. Bu `typeof` da rasmiy tan olingan xato bo'lib, JavaScriptning dastlabki kunlaridan kelib chiqqan va mos kelish uchun saqlab qo'yilgan. `null` albatta obyekt emas. U o'zining alohida turiga ega bo'lgan maxsus qiymat. `typeof` ning bu yerdagi xarakteristikasi xatodir.
-3. `typeof alert` ning natijasi `"function"` (funksiya)dir, chunki `alert` ning o'zi ham funksiya. Biz funksiyalarni keyingi qismlarda o'rganib chiqamiz va unda JavaScriptda maxsus "function" (funksiy) turi yo'qligini ham ko'ramiz. Funksiyalar obyekt turiga tegishli. Ammo `typeof` ularga boshqacha munosabatda bo'lib, `"function"`ni qaytaradi. Bu ham JavaScriptning dastlabki kunlaridan kelib chiqadi. Texnik jihatdan bunday amallar to'g'ri emas, lekin amalda qulay bo'lishi mumkin.
+3. `typeof alert` ning natijasi `"function"` (funksiya)dir, chunki `alert` ning o'zi ham funksiya. Biz funksiyalarni keyingi qismlarda o'rganib chiqamiz va unda JavaScriptda maxsus "function" (funksiya) turi yo'qligini ham ko'ramiz. Funksiyalar obyekt turiga tegishli. Ammo `typeof` ularga boshqacha munosabatda bo'lib, `"function"`ni qaytaradi. Bu ham JavaScriptning dastlabki kunlaridan kelib chiqadi. Texnik jihatdan bunday amallar to'g'ri emas, lekin amalda qulay bo'lishi mumkin.
 
 ```smart header="The `typeof(x)` sintaksis"
 boshqa `typeof(x)` sinkaksisiga ham duch kelishingiz mumkin. U `typeof x` bilan bir xil.
