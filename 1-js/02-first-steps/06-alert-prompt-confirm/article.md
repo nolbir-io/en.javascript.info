@@ -1,6 +1,6 @@
 # O'zaro ta'sir: alert, prompt, confirm
 
-Biz brauzerdan namoyish muhiti (demo versiya) sifatida foydalanayotkanimiz bois, keling foydalanuvchi bilan o'zaro muloqot qilish uchun bir-ikkita funksiyalarni ko'rib chiqamiz: `alert`, `prompt` and `confirm`
+Biz brauzerdan namoyish muhiti (demo versiya) sifatida foydalanayotganimiz bois, keling foydalanuvchi bilan o'zaro muloqot qilish uchun bir-ikkita funksiyalarni ko'rib chiqamiz: `alert`, `prompt` and `confirm`
 
 ## alert
 
@@ -12,7 +12,7 @@ Masalan:
 alert("Hello");
 ```
 
-Xabar ko'rsatilgan kichik-oyna (mini-window) *modal oyna* (modal window) deb ataladi. Bu yerda *modal* so'zi tashrif buyuruvchi shu oyna bilan shug'ullanmasdan turib, sahifaning qolgan qismlari bilan o'zaro aloqa qila olmaydi, boshqa tugmalarni bosa olmaydi va shunga o'xshash narsalarni amalga oshirolmasligini bildiradi. Bu vaziyatda esa --- ular "OK" tugmasini bosmagangacha davom etadi. 
+Xabar ko'rsatilgan kichik-oyna (mini-window) *modal oyna* (modal window) deb ataladi. Bu yerda *modal* so'zi tashrif buyuruvchi shu oyna bilan shug'ullanmasdan turib, sahifaning qolgan qismlari bilan o'zaro aloqa qila olmaydi, boshqa tugmalarni bosa olmaydi va shunga o'xshash narsalarni amalga oshirolmasligini bildiradi. Bu vaziyatda esa --- ular "OK" tugmasini bosmagungacha davom etadi. 
 
 ## prompt
 
@@ -22,7 +22,7 @@ Xabar ko'rsatilgan kichik-oyna (mini-window) *modal oyna* (modal window) deb ata
 result = prompt(title, [default]);
 ```
 
-U xabar mantniga ega bo'lgan oynani, kiritish maydonini va OK/Cancel tugmalarini tashrif buyuruvchiga ko'rsatadi.
+U xabar matniga ega bo'lgan oynani, kiritish maydonini va OK/Cancel tugmalarini tashrif buyuruvchiga ko'rsatadi.
 
 `title` (sarlavha)
 : Tashrif buyuruvchiga ko'rsatish uchun matn.
@@ -89,16 +89,16 @@ Biz tashrif buyuruvchilar bilan o'zaro muloqotga kirishish uchun uchta brauzerga
 : xabarni ko'rsatadi.
 
 `prompt`
-: foydalanuvchidan matn kiritishni so'ragan xabarni ko'rsatadi. U xabarni qaytaradi yoki agar Cancel yo `key:Esc` tugmalari bosilsa, `null` ni taqdim etadi.  
+: foydalanuvchidan matn kiritishni so'ragan xabarni ko'rsatadi. U xabarni qaytaradi yoki Cancel yo `key:Esc` tugmalari bosilsa, `null` ni taqdim etadi.  
 
 `confirm`
-: xabarni ko'rsatadi, va foydalanuvchini "OK" yo "Cancel" tugmalarini bosishini kutib turadi. OK da `true`(to'g'ri) ni  va Cancel/`key:Esc` da `false`(xato) ni qaytaradi.
+: xabarni ko'rsatadi va foydalanuvchini "OK" yo "Cancel" tugmalarini bosishini kutib turadi. OK da `true`(to'g'ri) ni  va Cancel/`key:Esc` da `false`(xato) ni qaytaradi.
 
 Bu usullarning barchasi modal hisoblanadi: Ular script bajarilishini to'xtatishadi va oyna o'chirilmaguncha foydalanuvchiga sahifaning boshqa qismi bilan muloqot qilish imkonini bermaydi. 
 
 Yuqorida ta'kidlab o'tilgan modallarga xos ikkita cheklov mavjud:
 
 1. Modal oynaning aniq joylashuvi brauzer tomonidan aniqlanadi. Odatda, u markazda joylashgan bo'ladi. 
-2. Oynanig aniq ko'rinishi ham brauzerga bog'liq. Biz uni o'zgartira olmaymiz. 
+2. Oynaning aniq ko'rinishi ham brauzerga bog'liq. Biz uni o'zgartira olmaymiz. 
 
 Bular soddalik hisobiga keldi. Yaxshiroq oynani hamda tashrif buyuruvchi bilan kuchliroq aloqani ta'minlaydigan boshqa yo'llar ham mavjud, lekin agar sizning qo'shimcha jihatlarga ehtiyojingiz bo'lmasa, bu usullarning o'zi ham ancha yaxshi ishlaydi.  
