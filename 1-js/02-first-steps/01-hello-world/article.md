@@ -2,7 +2,7 @@
 
 Qo'llanmaning bu qismi asosan JavaScript, ya'ni dasturlash tilining o'zi haqida.
 
-Ammo skriptlarimizni ishga tushirish uchun bizga ish muhiti kerak va bu kitob onlayn bo'lgani uchun brauzer eng yaxshi tanlovdir. Agar diqqatingizni boshqa muhitga (masalan, Node.js) qaratmoqchi bo'lsangiz, ularga vaqt sarflamaslik uchun brauzerga oid buyruqlar miqdorini (masalan, "alert" ni) minimal darajada ushlab turamiz. Biz qo'llanmaning [keyingi qismi](/ui) da e'tiborimizni brauzer ichidagi JavaScriptga qaratamiz.
+Ammo skriptlarimizni ishga tushirish uchun bizga ish muhiti kerak va bu elektron kitob bo'lgani uchun brauzer eng yaxshi tanlovdir. Agar diqqatingizni boshqa muhitga, masalan, Node.js ga qaratmoqchi bo'lsangiz, ularga vaqt sarflamaslik uchun brauzerga oid buyruqlar miqdorini (masalan, "alert" ni) minimal darajada ushlab turamiz. Biz qo'llanmaning [keyingi qismi](/ui) da e'tiborimizni brauzer ichidagi JavaScriptga qaratamiz.
 
 Shunday qilib, avval veb-sahifaga skriptni qanday biriktirishimizni ko'rib chiqamiz. Server tomonidagi muhitlar uchun (masalan, Node.js) skriptni `"node my.js"` kabi buyruq bilan bajarishingiz mumkin.
 
@@ -19,15 +19,13 @@ Misol uchun:
 
 <body>
 
-  <p>Skriptdan avval...</p>
+<p>Before the script...</p>
 
-*!*
-  <script>
-    alert( 'Salom, dunyo!' );
-  </script>
-*/!*
+<script>
+  alert( 'Hello, world!' );
+</script>
 
-  <p>...Skriptdan keyin.</p>
+<p>...After the script.</p>
 
 </body>
 
@@ -44,13 +42,13 @@ Yuqoridagi oynaning o'ng yuqori burchagidagi "Play" tugmasini bosish orqali miso
 
 `type` atribyuti: <code>&lt;script <u>type</u>=...&gt;</code>
 
-Eski standart HTML va HTML4 skriptlarda `type` bo'lishini talab qilgan. Odatda u `type="text/javascript"` shaklida bo'lgan. Lekin u hozir talab qilinmaydi. Hamda, yangi HTML standarti bu atributning mazmunini butunlay o'zgartirib yubordi. Hozir, u JavaScript modullari uchun ishlatilinishi mumkin. Ammo, bu ancha murakkab mavzu, modullar haqida darslikning boshqa qismida gaplashamiz.
+Eski standart HTML va HTML4 skriptlarda `type` bo'lishini talab qilgan. Odatda u `type="text/javascript"` shaklida bo'lgan. Lekin u hozir talab qilinmaydi. Yangi HTML standarti bu atributning mazmunini butunlay o'zgartirib yubordi. Hozir u JavaScript modullari uchun ishlatilinishi mumkin, ammo, bu ancha murakkab mavzu, modullar haqida darslikning boshqa qismida gaplashamiz.
 
 `language` atributi: <code>&lt;script <u>language</u>=...&gt;</code>
 
 Bu atribyutdan skriptning tilini ko'rsatish uchun foydalaniladi. Bu atribyut ortiq hech qanday ma'no anglatmaydi, chunki JavaScript doimiy tildir. Uni ishlatishga endi ehtiyoj yo'q.
 
-Skriptlardan oldin va keyingi izohlar.
+Skriptlardan oldingi va keyingi izohlar.
 
 Eski kitob va qo'llanmalarda, `<script>` teglarining ichida mana bunday izohlarni topishingiz mumkin:
 
