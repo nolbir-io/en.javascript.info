@@ -11,7 +11,7 @@ Ular JavaScriptda quyidagicha yoziladi:
 
 Ushbu maqolada biz turli xil taqqoslash turlari, JavaScript ularni qanday yaratishi, shu jumladan, muhim xususiyatlar haqida ko'proq bilib olamiz.
 
-Oxirida siz "JavaScriptdagi g'alatiliklari" bilan bog'liq muammolarning oldini olish uchun yaxshi qo'llanmani topasiz.
+Oxirida siz "JavaScriptdagi g'alatiliklar" bilan bog'liq muammolarning oldini olish uchun yaxshi qo'llanmani topasiz.
 
 ## Boolean bu natija
 
@@ -49,11 +49,11 @@ alert( 'Glow' > 'Glee' ); // true
 alert( 'Bee' > 'Be' ); // true
 ```
 
-Ikki string-ni solishtirish algoritmi oddiy:
+Ikki stringni solishtirish algoritmi oddiy:
 
-1. Ikkala string-ning birinchi belgisini solishtiring.
-2. Agar birinchi string-ning birinchi belgisi boshqa string-dan katta (yoki kichik) bo'lsa, birinchi string ikkinchisidan katta (yoki kichik) bo'ladi.
-3. Aks holda, agar ikkala string-ning birinchi belgilari bir xil bo'lsa, ikkinchi belgilarni shu tarzda solishtiring.
+1. Ikkala stringning birinchi belgisini solishtiring.
+2. Agar birinchi stringning birinchi belgisi boshqa stringdan katta (yoki kichik) bo'lsa, birinchi string ikkinchisidan katta (yoki kichik) bo'ladi.
+3. Aks holda, agar ikkala stringdagi birinchi belgilar bir xil bo'lsa, ikkinchi belgilarni shu tarzda solishtiring.
 4. Ikkala stringni oxirigacha takrorlang.
 5. Agar ikkala string bir xil uzunlikda tugasa, ular tengdir. Aks holda, uzunroq satr katta bo'ladi.
 
@@ -127,7 +127,7 @@ Bo'sh string bilan ham xuddi shu holat takrorlanadi:
 alert( '' == false ); // true
 ```
 
-Buning sababi, har xil turdagi operandlarni tenglik operatori `==` raqamlarga aylantiradi. Bo'sh string, xuddi `false` kabi nolga aylanadi.
+Buning sababi, har xil turdagi operandlarni tenglik operatori `==` raqamlarga aylantiradi. Bo'sh string xuddi `false` kabi nolga aylanadi.
 
 Agar `0` ni `false` dan farqlamoqchi bo‘lsak, nima qilishimiz kerak?
 
@@ -178,7 +178,7 @@ alert( null == 0 ); // (2) false
 alert( null >= 0 ); // (3) *!*true*/!*
 ```
 
-Matematik jihatdan bu g'alati tuyuladi. Oxirgi natija "`null` noldan katta yoki tengligini" ko'rsatadi, demak yuqoridagi taqqoslashlardan biri `true` bo'lishi kerak, lekin ularning ikkisi ham false.
+Matematik jihatdan bu g'alati tuyuladi. Oxirgi natija "`null` noldan katta yoki tengligini" ko'rsatadi, demak, yuqoridagi taqqoslashlardan biri `true` bo'lishi kerak, lekin ularning ikkisi ham false.
 
 Sababi shundaki, tenglik tekshiruvi `==` va taqqoslashlar `> < >= <=` turlicha ishlaydi. Taqqoslashlar `null`ni songa o'zgartiradi, unga `0` sifatida qaraydi. Shuning uchun (3) `null >= 0` true va (1) `null > 0` false.
 
@@ -196,10 +196,10 @@ alert( undefined == 0 ); // false (3)
 
 Nega u nolni buncha yomon ko'radi? Doim false!
 
-Biz ushbu natijalarni olamiz chunki:
+Biz ushbu natijalarni olamiz, chunki:
 
 - `(1)` va `(2)` taqqoslashlar `false` ni qaytaradi, chunki `undefined` `NaN` ga o'zgaradi va `NaN` hamma taqqoslashlar uchun `false` qaytaruvchi maxsus son qiymatdir. 
-- `(3)` tenglik tekshiruvi `false` ni qaytaradi, chunki `undefined` faqat `null` va `undefined` dan boshqa hech qayday qiymatga teng emas.
+- `(3)` tenglik tekshiruvi `false` ni qaytaradi, chunki `undefined` faqat `null` va `undefined` dan boshqa hech qanday qiymatga teng emas.
 
 ### Muammolardan qochamiz
 
