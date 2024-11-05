@@ -9,7 +9,7 @@ Ushbu bobda oddiy operatorlardan boshlaymiz, so'ngra maktab arifmetikasi qamrab 
 Davom etishdan oldin, keling, ba'zi umumiy atamalarni tushunib olamiz.
 
 - *operand* -- operatorlar tomonidan qo'llaniladigan narsadir. Misol uchun, `5 * 2` ko'paytmasida ikkita operand mavjud: chap operand `5` va o'ng operand `2`. Odamlar ba'zida bularni "operand" o'rniga "argument" deb atashadi.
-- Agar operator yakka operandga ega bo'lsa u *unary* deb ataladi. Misol uchun, "unary" inkor `-` raqam belgisini teskarisiga aylantiradi:
+- Agar operator yakka operandga ega bo'lsa, u *unary* deb ataladi. Misol uchun, "unary" inkor `-` raqam belgisini teskarisiga aylantiradi:
 
     ```js run
     let x = 1;
@@ -116,9 +116,9 @@ alert('1' + 2 + 2); // "122" va "14" emas
 
 Bu yerda birinchi operand string bo'lib, compiler qolgan ikkita operandga ham string sifatida qaraydi. `2` `'1'` ga birlashtiriladi, shuning uchun u `'1' + 2 = "12"` va `"12" + 2 = "122"` kabi bo'ladi.
 
-Binary `+` stringlarni shu tarzda qo'llab-quvvatlaydigan yagona operatordir. Boshqa arifmetik operatorlar faqat raqamlar bilan ishlaydi va har doim o'z operandlarini raqamlarga aylantiradi.
+Binary `+` stringlarni shu tarzda qo'llab-quvvatlaydigan yagona operator. Boshqa arifmetik operatorlar faqat raqamlar bilan ishlaydi va har doim o'z operandlarini raqamga aylantiradi.
 
-Quyida ko'paytirish va bo'lish uchun demo:
+Quyida ko'paytirish va bo'lish uchun namuna:
 
 ```js run
 alert( 6 - '2' ); // 4, '2' ni songa aylantiradi
@@ -150,7 +150,7 @@ alert( +"" );   // 0
 
 Aslida u `Number(...)` bilan bir xil vazifa bajaradi, lekin biroz qisqaroq.
 
-Stringlarni numberga aylantirish zarurati tez-tez tug'iladi. Misol uchun, agar biz HTML forma maydonlaridan qiymatlarni olayotgan bo'lsak, ular odatda stringlar hisoblanadi. Agar ularning yig'indisini hisoblamoqchi bo'lsak-chi?
+Stringlarni numberga aylantirish zarurati tug'iladi. Misol uchun, agar biz HTML forma maydonlaridan qiymatlarni olayotgan bo'lsak, ular odatda stringlar hisoblanadi. Agar ularning yig'indisini hisoblamoqchi bo'lsak-chi?
 
 Binary plus ularni string kabi qo'shadi:
 
@@ -178,7 +178,7 @@ alert( +apples + +oranges ); // 5
 
 Matematik nuqtayi nazardan, ortiqcha plyuslarning ko'pligi g'alati tuyulishi mumkin. Ammo dasturchi nuqtayi nazaridan, g'alati narsa yo'q: birinchi navbatda unary plyuslar qo'llaniladi, ular stringlarni numberlarga aylantiradi va so'ngra binary plyus ularni jamlaydi.
 
-Nima uchun unary plyuslar binarydan oldingi qiymatlarga qo'llaniladi? Ko'rib turganimizdek, bu ularning *yuqori ustunligi* bilan bog'liq.
+Nima uchun unary plyuslar binarydan oldingi qiymatlar bilan qo'llaniladi? Ko'rib turganimizdek, bu ularning *yuqori ustunligi* bilan bog'liq.
 
 ## Operator ustuvorligi
 
@@ -186,7 +186,7 @@ Agar ifoda bir nechta operatorga ega bo'lsa, bajarilish tartibi ularning *ustuvo
 
 Maktab davridanoq hammamiz bilamizki, `1 + 2 * 2` ifodasidagi ko'paytirish qo'shishdan oldin hisoblanishi kerak. Bu aynan birinchi bo'lib e'tibor berilishi kerak bo'lgan narsa. Ko'paytirish qo'shishga qaraganda *yuqori ustunlikka* ega deyiladi.
 
-Qavslar har qanday ustunlikni inkor qiladi, shuning uchun standart tartib bizni qoniqtirmasa, uni o'zgartirish uchun ulardan foydalanishimiz mumkin. Masalan, `(1 + 2) * 2` deb yozishimiz mumkin.
+Qavslar har qanday ustunlikni inkor qiladi, shuning uchun standart tartib bizni qoniqtirmasa, uni o'zgartirish uchun ulardan foydalanamiz. Masalan, `(1 + 2) * 2` deb yozishimiz mumkin.
 
 JavaScriptda ko'plab operatorlar mavjud. Har bir operator tegishli ustunlik raqamiga ega. Ko'proq raqamga ega bo'lgani birinchi bajariladi. Agar ustunlik bir xil bo'lsa, bajarish tartibi chapdan o'ngga qarab bo'ladi.
 
@@ -195,20 +195,13 @@ Quyida [ustunlik jadvali](https://developer.mozilla.org/en-US/docs/Web/JavaScrip
 | Ustuvorlik | Nomi | Belgisi |
 |------------|------|------|
 | ... | ... | ... |
-| 15 | unary plyus | `+` |
-| 15 | unary inkor | `-` |
-| 14 | darajaga ko'ratish | `**` |
-| 13 | ko'paytiruv | `*` |
-| 13 | bo'luv | `/` |
-| 12 | qo'shuv | `+` |
-| 12 | ayiruv | `-` |
-| 14 | unary plus | `+` |
-| 14 | unary negation | `-` |
-| 13 | exponentiation | `**` |
-| 12 | multiplication | `*` |
-| 12 | division | `/` |
-| 11 | addition | `+` |
-| 11 | subtraction | `-` |
+| 14 | unary plyus | `+` |
+| 14 | unary inkor | `-` |
+| 13 | darajaga ko'ratish | `**` |
+| 12 | ko'paytiruv | `*` |
+| 12 | bo'luv | `/` |
+| 11 | qo'shuv | `+` |
+| 11 | ayiruv | `-` |
 | ... | ... | ... |
 | 2 | tayinlash | `=` |
 | ... | ... | ... |
@@ -249,7 +242,7 @@ alert( a ); // 3
 alert( c ); // 0
 ```
 
-Yuqoridagi misolda, `(a = b + 1)` ifonading natijasi `a`ga tayinlangan qiymat (`3`)ga teng. Va u keyingi hisoblashlarda ishlatilinadi.
+Yuqoridagi misolda, `(a = b + 1)` ifodaning natijasi `a`ga tayinlangan qiymat (`3`)ga teng. Va u keyingi hisoblashlarda ishlatiladi.
 
 Kulgili kod, shunday emasmi? Uni qanday ishlashini tushunishimiz kerak, chunki ba'zida uni JavaScript kutubxonalarida uchratamiz.
 
@@ -298,8 +291,8 @@ Ushbu kodni `+=` va `*=` operatorlari yordamida qisqartirish mumkin:
 
 ```js run
 let n = 2;
-n += 5; // now n = 7 (same as n = n + 5)
-n *= 2; // now n = 14 (same as n = n * 2)
+n += 5; // now n = 7 (n = n + 5 bilan bir xil)
+n *= 2; // now n = 14 (n = n * 2 bilan bir xil)
 
 alert( n ); // 14
 ```
@@ -318,7 +311,7 @@ alert( n ); // 16
 
 ## Oshirish/kamaytirish 
 
-<!-- Sarlavhada -- ishlatib boʻlmaydi, chunki oʻrnatilgan tahlilchi uni long dash", ya'ni uzun chiziqchaga aylantiradi – -->
+<!-- Sarlavhada -- ishlatib bo'lmaydi, chunki o'rnatilgan tahlilchi uni "long dash", ya'ni uzun chiziqchaga aylantiradi – -->
 
 Raqamni bittaga oshirish yoki kamaytirish eng keng tarqalgan raqamli operatsiyalardan biridir.
 
@@ -352,7 +345,7 @@ Ushbu bayonotlarning ikkalasi ham bir xil vazifani bajaradi, ya'ni `counter`ni b
 
 Biror farq mavjudmi? Ha, lekin biz uni `++/--`dan qaytgan qiymatdan foydalanganimizdagina ko'rishimiz mumkin.
 
-Keling, aniqlik kiritamiz. Ma'lumki, barcha operatorlar qiymat qaytaradi. Oshirish/kamaytirish ham bundan mustasno emas. Prefiks shakli yangi qiymatni qaytaradi, postfiks shakli esa eski (oshirish/kamaytirishdan oldingi) qiymatni qaytaradi.
+Keling, aniqlik kiritamiz. Ma'lumki, barcha operatorlar qiymat qaytaradi. Oshirish/kamaytirish ham bundan mustasno emas. Prefiks shakli yangi qiymatni, postfiks shakli esa eski (oshirish/kamaytirishdan oldingi) qiymatni qaytaradi.
 
 Farqni ko'rish uchun, quyida bir misolga e'tibor qaratamiz:
 
@@ -365,7 +358,7 @@ alert(a); // *!*2*/!*
 
 `(*)` qatorida *prefiks* shakl `++counter` `counter`ni oshiradi va yangi qiymat, `2`ni qaytaradi. Shunday qilib, `alert` `2`ni ko'rsatadi.
 
-Endi postfiks shakldan foydalanib ko'ramiz:
+Endi postfiks shaklidan foydalanib ko'ramiz:
 
 ```js run
 let counter = 1;
@@ -378,7 +371,7 @@ alert(a); // *!*1*/!*
 
 Xulosa qilganda:
 
-- Agar ko'paytirish/kamaytirishning natijasi ishlatilmasa, qaysi shakldan foydalanishning farqi yo'q:
+- Agar ko'paytirish/kamaytirishning natijasi ishlatilmasa, qaysi shakldan foydalanishning ahamiyati yo'q:
 
     ```js run
     let counter = 0;
@@ -446,11 +439,11 @@ Operatorlar ro'yhati:
 - RIGHT SHIFT ( `>>` )
 - ZERO-FILL RIGHT SHIFT ( `>>>` )
 
-Ushbu operatorlar juda kamdan-kam hollarda, eng past (bit bo'yicha) darajadagi raqamlar bilan ishlashimiz kerak bo'lganda qo'llaniladi. Yaqin orada bizga bu operatorlar kerak bo'lmaydi, chunki veb ishlab chiqishda ulardan kam foydalaniladi, lekin kriptografiya kabi ba'zi maxsus sohalarda ular foydalidir. Zarurat tug'ilganda MDN da [Bitwise Operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#Bitwise) bo'limini o'qishingiz mumkin.
+Ushbu operatorlar juda kamdan-kam hollarda, eng past (bit bo'yicha) darajadagi raqamlar bilan ishlashimiz kerak bo'lganda qo'llaniladi. Yaqin orada bizga bu operatorlar kerak bo'lmaydi, chunki veb dasturlashda ulardan kam foydalaniladi, lekin kriptografiya kabi ba'zi maxsus sohalarda ular foydalidir. Zarurat tug'ilganda MDN da [Bitwise Operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#Bitwise) bo'limini o'qishingiz mumkin.
 
 ## Comma (vergul)
 
-Vergul `,` operatori eng kam uchraydigan va noodatiy operatorlardan biridir. Ba'zan, undan qisqaroq kod yozganda foydalaniladi, shuning uchun kodni tushunish uchun uni bilishimiz kerak.
+Vergul `,` operatori eng kam uchraydigan va noodatiy operatorlardan biridir. Ba'zan undan qisqaroq kod yozganda foydalaniladi, shuning uchun kodni tushunish uchun uni bilishimiz kerak.
 
 Vergul operatori bizga bir nechta iboralarni vergul `,` bilan bo'lish orqali hisoblash imkonini beradi. Ularning har biri baholanadi, lekin faqat oxirgisining natijasi qaytariladi.
 
@@ -464,9 +457,9 @@ let a = (1 + 2, 3 + 4);
 alert( a ); // 7 (3 + 4 ning natijasi)
 ```
 
-Bu yerda, birinchi `1 + 2` ifodasi hisoblanadi va natijasi tashlab yuboriladi. Keyin, `3 + 4` hisoblanadi va natija sifatida qaytariladi
+Bu yerda, birinchi `1 + 2` ifodasi hisoblanadi va natijasi tashlab yuboriladi. Keyin, `3 + 4` hisoblanadi va natija sifatida qaytariladi.
 
-```smart header="Vergul juda past ustunlikga ega"
+```smart header="Vergul juda past ustunlikka ega"
 Vergul operatori juda past, `=` dan ham past ustunlikka egaligini yodda tuting, shuning uchun yuqoridagi misolda qavslar muhim ahamiyat kasb etadi.
 
 Ularsiz: `a = 1 + 2, 3 + 4` birinchi `+`ni hisoblaydi, sonlarni `a = 3, 7`ga jamlaydi, keyin tayinlash operatori `=` `a = 3`ni tayinlaydi, qolganlari esa e'tiborga olinmaydi. Bu xuddi `( a = 1 + 2), 3 + 4` kabidir.
@@ -474,7 +467,7 @@ Ularsiz: `a = 1 + 2, 3 + 4` birinchi `+`ni hisoblaydi, sonlarni `a = 3, 7`ga jam
 
 Nega bizga oxirgi ifodadan tashqari hamma narsani tashlab yuboradigan operator kerak?
 
-Ba'zan, odamlar bir qatorga bir nechta harakatlarni qo'yish uchun undan murakkab tuzilmalarda foydalanadilar.
+Ba'zan odamlar bir qatorga bir nechta harakatlarni qo'yish uchun undan murakkab tuzilmalarda foydalanadilar.
  
 Misol uchun:
 
