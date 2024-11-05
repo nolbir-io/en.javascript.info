@@ -214,4 +214,4 @@ Nega biz bu misollarni ko'rib chiqdik? Bu o'ziga xos xususiyatlarni doimo eslab 
 - Stringlar "lug'at" tartibida harfma-harf taqqoslanadi.
 - Har xil turdagi qiymatlarni taqqoslaganda, ular raqamlarga aylanadi (qat'iy tenglik tekshiruvi bundan mustasno).
 - `Null` va `undefined` bir biriga `==` teng, boshqa hech qaysi qiymatga teng emas.
-- `>` yoki `<` taqqoslashlarini o'zgaruvchilar bilan ishlatayotganda ehtiyot bo'ling, chunki ular vaqti vaqti bilan `null/undefined` bo'lishi mumkin. `Null/undefined` ni alohida tekshirish yaxshiroq. 
+- `>` yoki `<` taqqoslashlarini o'zgaruvchilar bilan ishlatayotganda ehtiyot bo'ling, chunki ular vaqti-vaqti bilan `null/undefined` bo'lishi mumkin. `Null/undefined` ni alohida tekshirish yaxshiroq. 
