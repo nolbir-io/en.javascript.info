@@ -1,12 +1,12 @@
 # Shartli zanjirlanish: if, '?'
 
-Ba'zan biz turli shartlar asosida har xil harakatlarni amalga oshirishimiz kerak.
+Ba'zan turli shartlar asosida har xil harakatlarni amalga oshirishimiz kerak.
 
-Buning uchun biz `if` ifodasidan va shartli operator`?`dan foydalanishimiz mumkin, bu ham "question mark" (so'roq belgisi) operatori deb ataladi.
+Buning uchun biz `if` ifodasidan va shartli operator`?`dan foydalanishimiz mumkin, bu "question mark" (so'roq belgisi) operatori deb ataladi.
 
 ## "if" ifodasi
 
-`if(...)` ifoda qavs ichidagi shartni hisoblaydi va agar natija `rost` bo`lsa kod bajariladi.
+`if(...)` ifoda qavs ichidagi shartni hisoblaydi va agar natija `true` bo`lsa kod bajariladi.
 
 Misol uchun:
 
@@ -20,7 +20,7 @@ if (year == 2015) alert( 'Siz haqsiz!' );
 
 Yuqoridagi misolda oddiy tenglikni tekshirish sharti berilgan (`yil == 2015`), lekin u ancha murakkabroq bo'lishi ham mumkin.
 
-Agar biz bir nechta ifodani bajarmoqchi bo'lsak, kod blokini figurali qavslar ichiga yozishimiz kerak:
+Agar biz bir nechta ifodani bajarmoqchi bo'lsak, kod blokini figurali qavslar ichiga yozamiz:
 
 ```js
 if (year == 2015) {
@@ -28,7 +28,7 @@ if (year == 2015) {
   alert( "Siz judayam aqllisiz!" );
 }
 ```
-Har safar `if` iborasidan foydalanganda, hatto bajariladigan bitta buyruq bo'lsa ham, kod blokingizni figurali qavslar `{}` bilan o'rashingizni tavsiya qilamiz. Bu o'qish imkoniyatini yaxshilaydi.
+Har safar `if` iborasidan foydalanganda, hatto bittagina bajariladigan buyruq bo'lsa ham, kod blokingizni figurali qavslar `{}` bilan o'rashingizni tavsiya qilamiz. Bu o'qish imkoniyatini yaxshilaydi.
 
 ## Boolean konversiyasi
 
@@ -36,7 +36,7 @@ Har safar `if` iborasidan foydalanganda, hatto bajariladigan bitta buyruq bo'lsa
 
 Keling <info:type-conversions> bobidan konvertatsiya qilish qoidalarini eslaylik:
 
-- `0` soni, `""` bo'sh string, `null`, `undefined` va `NaN` hammasi `false` ga alanadi. Shu tufayli ular "falsy" (yolg'on) qiymatlar deb ataladi.
+- `0` soni, `""` bo'sh string, `null`, `undefined` va `NaN` hammasi `false` ga aylanadi. Shu tufayli ular "falsy" (yolg'on) qiymatlar deb ataladi.
 - Boshqa qiymatlar `true` ga aylanadi, shuning uchun ular "truthy" (rost) deb ataladi.
 
 Shunday qilib, ushbu shart ostidagi kod hech qachon bajarilmaydi:
@@ -176,14 +176,14 @@ let message = (age < 3) ? 'Hi, baby!' :
 alert( message );
 ```
 
-Avvaliga nima bo'layotganini tushunish qiyin bo'lishi mumkin. Ammo diqqat bilan o'rganib chiqqach, bu oddiy sinovlar ketma-ketligi ekanligini ko'rishimiz mumkin:
+Avvaliga nima bo'layotganini tushunish qiyin tuyuladi, ammo diqqat bilan o'rganib chiqqach, bu oddiy sinovlar ketma-ketligi ekanligini ko'rishimiz mumkin:
 
 1. Birinchi so'roq belgisi `age < 3` yoki yo'qligini tekshiradi.
-2. Agar rost boʻlsa -- u `'Hi, baby!'` ni qaytaradi. Aks holda, u '":"' ikki nuqtadan keyingi `age < 18` tekshiruv ifodasi bilan davom etadi.
-3. Agar u rost bo'lsa -- u `'Hello!'` ni qaytaradi. Aks holda, u '":"' ikki nuqtadan keyingi `age < 100` tekshiruv ifodasi bilan davom etadi.
-4. Agar u rost bo'lsa -- u `'Greetings!` ni qaytaradi. Aks holda, u oxirgi '":"' ikki nuqtadan keyingi `'What an unusual age!'`ni qaytaruvchi ifoda bilan davom etadi.
+2. Agar rost boʻlsa -- u `'Hi, baby!'` ni qaytaradi. Aks holda, '":"' ikki nuqtadan keyingi `age < 18` tekshiruv ifodasi bilan davom etadi.
+3. Agar u rost bo'lsa -- u `'Hello!'` ni qaytaradi. Aks holda, '":"' ikki nuqtadan keyingi `age < 100` tekshiruv ifodasi bilan davom etadi.
+4. Agar u rost bo'lsa -- u `'Greetings!` ni qaytaradi. Aks holda, oxirgi '":"' ikki nuqtadan keyingi `'What an unusual age!'`ni qaytaruvchi ifoda bilan davom etadi.
 
-Quyida uning `if..else` yordamida qanday ko'rinishi:
+Quyida uning `if..else` yordamida qanday ko'rinishi berilgan:
 
 ```js
 if (age < 3) {
@@ -234,4 +234,4 @@ if (company == 'Netscape') {
 
 Ko'zlarimiz kodni vertikal ravishda tekshiradi. Bir nechta satrlarni o'z ichiga olgan kod bloklarini uzun, gorizontal ko'rsatmalar to'plamiga qaraganda tushunish osonroqdir.
 
-`?` savol belgisi operatorining maqsadi uning shartiga qarab u yoki bu qiymatni qaytarish. Uni faqat shu maqsaddagina ishlating. Kodning turli bo'limlarini bajarish kerak bo'lganda `if` dan foydalaning.
+`?` so'roq belgisi operatorining maqsadi uning shartiga qarab u yoki bu qiymatni qaytarishdir. Uni faqat shu maqsaddagina ishlating. Kodning turli bo'limlarini bajarish kerak bo'lganda `if` dan foydalaning.
