@@ -4,7 +4,7 @@
 
 Nullish birlashtiruvchi operatori ikkita `??` so'roq belgisi bilan yoziladi.
 
-Uning `null` va `undefined` ga nisbatan bir xil munosabatda bo'lgani sababli biz bu maoqlada maxsus atamadan foydalanamiz. Ifoda na `null` va na `undefined` bo'lganida, uni "defined" (aniqlangan) deb ataymiz.
+Uning `null` va `undefined` ga nisbatan bir xil munosabatda bo'lgani sababli biz bu maqolada maxsus atamadan foydalanamiz. Ifoda na `null` va na `undefined` bo'lganida, uni "defined" (aniqlangan) deb ataymiz.
 
 `a ?? b` ning natijasi:
 - agar `a` aniqlangan bo'lsa, u holda `a`,
@@ -20,7 +20,7 @@ Biz `result = a ?? b` ni o'zimiz bilgan operatorlardan foydalanib boshidan quyid
 result = (a !== null && a !== undefined) ? a : b;
 ```
 
-Endi `??` nima vazifa bajarishi butunlay tushunarli bo'ladi. Keling u qayerda yordam berishini ko'rib chiqaylik.
+Endi `??` nima vazifa bajarishi butunlay tushunarli bo'ladi. Keling, u qayerda yordam berishini ko'rib chiqaylik.
 
 `??` ning eng keng tarqalgan ishlatilish holati bu aniqlanmagan o'zgaruvchini doimiy qiymat bilan ta'minlashdir.
 
@@ -86,7 +86,7 @@ Ularning o'rtasidagi muhim farqlar:
 
 Boshqacha qilib aytganda, `||` `false`, `0`, bo'sh string `""` va `null/aniqlanmagan` qatorlarini ajratmaydi. Ularning barchasi bir xil -- yolg'on qiymatlar. Agar ulardan birortasi `||` ning birinchi argumenti bo'lsa, natija sifatida biz ikkinchi argumentni olamiz.
 
-Amalda biz standart qiymatdan faqat o'zgaruvchi `null/undefined`, ya'ni qiymat haqiqatan ham noma'lum/o'rnatilmagan bo'lsa, undan foydalanishni mumkin. 
+Amalda biz standart qiymatdan faqat o'zgaruvchi `null/undefined`, ya'ni qiymat haqiqatan ham noma'lum/o'rnatilmagan bo'lsa, undan foydalanish mumkin. 
 
 Misol uchun, quyidagi misolni ko'rib chiqaylik:
 
