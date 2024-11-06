@@ -2,7 +2,7 @@
 
 JavaScriptda to'rtta mantiqiy operator mavjud: `||` (OR), `&&` (AND), `!` (NOT), `??` (Nullish Coalescing). Hozir  birinchi uchtasini ko'rib chiqamiz, `??` operatori haqida esa keyingi maqolada bilib olamiz.
 
-Ular "mantiqiy" deb atalsa ham, ular nafaqat mantiqiy, balki har qanday turdagi qiymatlar bilan ham qo'llaniladi. Ularning natijasi ham har qanday turda bo'lishi mumkin.
+Ular "mantiqiy" deb atalsada, ular nafaqat mantiqiy, balki har qanday turdagi qiymatlar bilan ham qo'llaniladi. Ularning natijasi har qanday turda bo'lishi mumkin.
 
 Keling, tafsilotlarni ko'rib chiqaylik.
 
@@ -39,7 +39,7 @@ if (1 || 0) { // if kabi ishlaydi( true || false )
 }
 ```
 
-Ko'pincha, `||` OR `if` ifodasida berilgan shartlardan birortasi `true` mavjud yoki yo'qligini tekshirish uchun ishlatilingan.
+Ko'pincha, `||` OR `if` ifodasida berilgan shartlardan birortasi `true` mavjud yoki yo'qligini tekshirish uchun ishlatilgan.
 
 Misol uchun:
 
@@ -258,7 +258,7 @@ Sintaksis juda oddiy:
 result = !value;
 ```
 
-Operator yagona argument qabul qiladi va quyidagilarni bakaradi:
+Operator yagona argument qabul qiladi va quyidagilarni bajaradi:
 
 1. Operandni boolean turga aylantiradi: `true/false`.
 2. Teskari qiymatni qaytaradi.
