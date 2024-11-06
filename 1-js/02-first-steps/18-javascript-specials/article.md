@@ -25,7 +25,7 @@ alert("There will be an error after this message")
 [1, 2].forEach(alert)
 ```
 
-Ko'pgina kod uslubi qo'llanmalari har bir ifodadan keyin nuqtali vergul qo'yish kerak degan fikrni ma'qullaydi.
+Ko'pgina kod uslubi qo'llanmalari har bir ifodadan keyin nuqtali vergul qo'yish kerak, degan fikrni ma'qullaydi.
 
 `{...}` kod bloklari va ular bilan loop kabi sintaksis tuzilmalaridan keyin nuqtali vergul qo'yish shart emas:
 
@@ -39,7 +39,7 @@ for(;;) {
 }
 ```
 
-...Lekin agar biror joyga "ortiqcha" nuqtali vergul qo'ysak, bu xatolik emas. Bu hisobga olinmaydi.
+...Lekin agar biror joyga "ortiqcha" nuqtali vergul qo'ysak, bu xatolik hisoblanmaydi.
 
 Bu haqda <info:structure> dan ko'proq ma'lumot olishingiz mumkin.
 
@@ -72,7 +72,7 @@ Quyidagilar yordamida e'lon qilinadi:
 O'zgaruvchi nomi o'z ichiga quyidagilarni olishi mumkin:
 - Harflar va raqamlar, lekin birinchi belgi raqam bo'la olmaydi.
 - `$` va `_` belgilar odatda harflar bilan teng.
-- Lotin bo'lmagan alifbo va ierogliflarga ham ruxsat berilgan, lekin ular keng qo'llanilmaydi.
+- Lotin bo'lmagan alifbo va iyerogliflarga ham ruxsat berilgan, lekin ular keng qo'llanilmaydi.
 
 O'zgaruvchilar dinamik ravishda yoziladi. Ular istalgan qiymatni saqlay oladi:
 
@@ -157,7 +157,7 @@ Nullish coalescing operator
 : `??` operatori o'zgaruvchilar ro'yxatidan e'lon qilingan qiymatni tanlash imkonini beradi. `a ?? b` ning natijasi u `null/undefined` bo'lmaguncha `a` ga, keyin `b` ga teng.
 
  Taqqoslashlar
-: Tenglik tekshiruvi `==` har xil turdagi qiymatlarni (`null` va `undefined` dan tashqari, chunki ular bir-biridan boshqa hechn narsaga teng emas) songa aylantiradi, shunday qilib, ular teng bo'ladi:
+: Tenglik tekshiruvi `==` har xil turdagi qiymatlarni (`null` va `undefined` dan tashqari, chunki ular bir-biridan boshqa hech narsaga teng emas) songa aylantiradi, shunday qilib, ular teng bo'ladi:
 
     ```js run
     alert( 0 == false ); // true
@@ -275,11 +275,11 @@ Biz JavaScriptda funksiya yaratishning uchta usulini ko'rib chiqdik:
 
 
 - Funksiyalar mahalliy, ya'ni uning tanasida yoki parametrlar ro'yxatida e'lon qilingan o'zgaruvchilarga ega bo'lishi mumkin. Bunday o'zgaruvchilar faqat funksiya ichida ko'rinadi.
-- Parameterlar doimiy qiymatga ega bo'lishi mumkin: `function sum(a = 1, b = 2) {...}`.
+- Parameterlar doimiy qiymatga ega bo'ladi: `function sum(a = 1, b = 2) {...}`.
 - Funksiyalar har doim nimanidir qaytaradi. Agar `return` ifodasi bo'lmasa, u holda natija `undefined` bo'ladi.
 
 Ma'lumot uchun <info:function-basics>, <info:arrow-functions-basics> bobini ko'rib chiqing.
 
 ## Hali davom etadi
 
-Bu JavaScript xususiyatlarining qisqacha ro'yxati edi. Hozircha biz faqat asosiy narsalarni o'rgandik. Kelgusi darsliklarda siz JavaScriptning boshqa maxsus va ilg'or xususiyatlari haqida bilib olasiz.
+Bu JavaScript xususiyatlarining qisqacha ro'yxati edi. Hozircha biz faqat asosiy narsalarni o'rgandik. Kelgusi darsliklarda JavaScriptning boshqa maxsus va ilg'or xususiyatlari haqida bilib olasiz.
