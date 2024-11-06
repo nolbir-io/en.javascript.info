@@ -10,7 +10,7 @@ Masalan, ro'yxatdagi mahsulotlarni ketma-ket chiqarish yoki 1 dan 10 gacha bo'lg
 ```smart header="The for..of va for..in looplari"
 Ilg'or o'quvchilar uchun kichik e'lon.
 
-Ushbu maqola faqat asosiy sikllarni qamrab oladi: `while`, `do..while` va `for(..;..;..)`.
+Ushbu maqola faqat asosiy sikllar: `while`, `do..while` va `for(..;..;..)` ni qamrab oladi.
 
 Agar siz ushbu maqolaga boshqa turdagi halqalarni qidirib kelgan bo'lsangiz, quyidagi ko'rsatkichlarga e'tibor qarating:
 
@@ -45,7 +45,7 @@ while (i < 3) { // 0, keyin 1, keyin 2 ni ko'rsatadi
 
 Loop tanasining bitta bajarilishi *iteratsiya* deb ataladi. Yuqoridagi misoldagi loop uchta iteratsiyani amalga oshiradi.
 
-Agar yuqoridagi misolda `i++` bo'lmasa, loop (nazariy jihatdan) abadiy takrorlanadi. Amalda, brauzer bunday looplarni to'xtatish imkonini beradi va biz server tomonidagi JavaScriptda jarayonni to'xtatishimiz mumkin.
+Agar yuqoridagi misolda `i++` bo'lmasa, loop (nazariy jihatdan) abadiy takrorlanadi. Amalda brauzer bunday looplarni to'xtatish imkonini beradi va biz server tomonidagi JavaScriptda jarayonni to'xtatamiz.
 
 Har qanday ifoda yoki o'zgaruvchi shunchaki taqqoslash emas, balki loop sharti bo'lishi mumkin: shart hisoblanadi va `while` orqali boolean qiymatga aylantiriladi.
 
@@ -136,7 +136,7 @@ Run begin
 
 Ya'ni, `begin` bir marta bajariladi va keyin takrorlanadi: har bir `condition` tekshiruvidan keyin, `body` va `step*` lar bajariladi.
 
-Agar siz looplarda yangi bo'lsangiz, misolga qaytish va u qanday ishlashini qog'ozga bosqichma-bosqich qaytadan yozishlik yordam berishi mumkin.
+Agar siz looplarda yangi bo'lsangiz, misolga qaytish va u qanday ishlashini qog'ozga bosqichma-bosqich qaytadan yozish yordam berishi mumkin.
 
 Mana, bizning holatimizda aynan nima sodir bo'ladi:
 
@@ -207,7 +207,7 @@ for (; i < 3;) {
 
 Bu loopni `while (i < 3)` bilan bir xil qiladi.
 
-Biz barcha narsani olib tashlashimiz va cheksiz loop yaratishimiz mumkin:
+Biz barcha narsani olib tashlashimiz va cheksiz loop yaratamiz:
 
 ```js
 for (;;) {
@@ -215,7 +215,7 @@ for (;;) {
 }
 ```
 
-Ikkita `for` nuqtali vergul mavjud bo'lishi kerakligini yodda tuting. Aks holda, sintaksisda xatolik kelib chiqishi mumkin.
+Ikkita `for` nuqtali vergul mavjud bo'lishi kerakligini yodda tuting. Aks holda, sintaksisda xatolik kelib chiqadi.
 
 ## Loopni buzish
 
@@ -373,7 +373,7 @@ outer:
 for (let i = 0; i < 3; i++) { ... }
 ```
 
-`continue` direktividan ham label bilan birga foydalansa bo'ladi. Bu holatda, kod bajarilishi labellangan loop-ning keyingi iteratsiyasiga sakraydi.
+`continue` direktividan ham label bilan birga foydalansa bo'ladi. Bu holatda, kod bajarilishi labellangan loopning keyingi iteratsiyasiga sakraydi.
 
 ````warn header="Yorliqlar hech qanday joyga \"sakrash"ga ruxsat bermaydi"
 Labellar koddagi katta o'lchamli joyga sakrashga imkon qoldirmaydi.
@@ -402,14 +402,13 @@ Shunga qaramay, yuqoridagi misollarda ko'rganimizdek, 99,9% breaklardan looplarn
 
 ## Xulosa
 
-Biz looplarning 3 ta turini ko'rib chiqdik:
+Biz looplarning uch turini ko'rib chiqdik:
 
 - `while` -- Shart iteratsiyadan avval tekshiriladi.
 - `do..while` -- Shart iteratsiyadan keyin tekshiriladi.
 - `for (;;)` -- Shart har bir iteratsiyadan avval tekshiriladi, qo'shimcha sozlamalar mavjud.
 
-To make an "infinite" loop, usually the `while(true)` construct is used. Such a loop, just like any other, can be stopped with the `break` directive.
-"Cheksiz" looplar yaratish uchun odatda `while(true)` kontruktsiyasidan foydalaniladi. Bunday loop, xuddi qolganlari singari `break` direktivi yordamida to'xtatilishi mumkin.
+"Cheksiz" looplar yaratish uchun odatda `while(true)` kontruktsiyasidan foydalaniladi. Bunday loop xuddi qolganlari singari `break` direktivi yordamida to'xtatilishi mumkin.
 
 Agar biz joriy iteratsiyada hech narsa qilishni xohlamasak va keyingisiga o'tishni istasak, `continue` direktividan foydalanishimiz mumkin.
 
