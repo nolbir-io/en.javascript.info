@@ -1,6 +1,6 @@
 # Arrow funksiyalarning asoslari
 
-Funksiyalarni yaratish uchun yana bir juda sodda va ixcham sintaksis mavjud bo'lib, u ko'plab function expressionlardan yaxshiroq.
+Funksiyalarni yaratish uchun yana bir juda sodda va ixcham sintaksis mavjud bo'lib, u ko'plab funksiya ifodalaridan yaxshiroq.
 
 Ular "arrow functions" deb ataladi, chunki ular quyidagicha ko'rinishga ega:
 
@@ -55,9 +55,9 @@ Ko'rib turganingizdek, `(a, b) => a + b` `a` va `b` nomli ikkita argumentni qabu
     sayHi();
     ```
 
-Arrow funktsiyalardan Function Expressions kabi foydalanish mumkin.
+Arrow funksiyalardan Function Expressions kabi foydalanish mumkin.
 
-Masalan, funktsiyani dinamik tarzda yaratish maqsadida:
+Masalan, funksiyani dinamik tarzda yaratish maqsadida:
 
 ```js run
 let age = prompt("What is your age?", 18);
@@ -69,7 +69,7 @@ let welcome = (age < 18) ?
 welcome();
 ```
 
-Arrow funktsiyalar notanish va boshida unchalik o'qishga noqulay ko'rinishi mumkin, lekin ko'zlar tuzilishga o'rganishi bilan bu darhol o'zgaradi.
+Arrow funksiyalar notanish va boshida o'qishga ancha noqulay ko'rinishi mumkin, lekin ko'zlar tuzilishga o'rganishi bilan bu darhol o'zgaradi.
 
 Ko'p so'zlarni yozishga eringanimizda, ular oddiy bir qatorli harakatlar uchun judayam qulaydir.
 
@@ -85,7 +85,7 @@ Mana bunga o'xshash:
 let sum = (a, b) => {  // figurali qavs ko'p qatorli funksiyani ochadi
   let result = a + b;
 *!*
-  return result; // agar biz figurali qavslardan foydalansak, unda aniq "retur" kerak bo'ladi
+  return result; // agar biz figurali qavslardan foydalansak, unda aniq "return" kerak bo'ladi
 */!*
 };
 
@@ -104,7 +104,7 @@ Hozircha, biz allaqachon arrow funksiyalardan bir qatorli harakatlar va callback
 
 ## Xulos
 
-Arrow funktsiyalar oddiy harakatlar, ayniqsa, bir qatorli arakatlar uchun judayam qulay. Ular ikki xil ko'rinishda bo'ladi:
+Arrow funktsiyalar oddiy harakatlar, ayniqsa, bir qatorli harakatlar uchun judayam qulay. Ular ikki xil ko'rinishda bo'ladi:
 
-1. Figurali qavslarsiz: `(...args) => expression` -- o'ng tomon ifoda: funksiya uni hosblaydi va qaytaradi.
-2. Figurali qavslar bilan: `(...args) => { body }` -- qavslar bizga funksiya ichida bir nechta ifodalarni yozish imkonini beradi, ammo biz biror narsani qaytarish uchun `return` dan foydalanishimiz kereak.
+1. Figurali qavslarsiz: `(...args) => expression` -- o'ng tomon ifoda: funksiya uni hisoblaydi va qaytaradi.
+2. Figurali qavslar bilan: `(...args) => { body }` -- qavslar bizga funksiya ichida bir nechta ifodalarni yozish imkonini beradi, ammo biz biror narsani qaytarish uchun `return` dan foydalanishimiz kerak.
