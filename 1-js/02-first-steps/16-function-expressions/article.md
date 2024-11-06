@@ -1,8 +1,8 @@
 # Funksiya ifodalari
 
-JavaScriptda funktsiya "sehrli til tuzilishi" emas, balki maxsus turdagi qiymatdir.
+JavaScriptda funksiya "sehrli til tuzilishi" emas, balki maxsus turdagi qiymatdir.
 
-Biz ilgari ishlatgan sintaksis *Funktsiya deklaratsiyasi* deb ataladi:
+Biz ilgari ishlatgan sintaksis *Funksiya deklaratsiyasi* deb ataladi:
 
 ```js
 function sayHi() {
@@ -10,7 +10,7 @@ function sayHi() {
 }
 ```
 
-Funksiyani yaratish uchun yana bir sintaksis mavjud bo'lib, u *Funktsiya ifodasi* deb ataladi.
+Funksiyani yaratish uchun yana bir sintaksis mavjud bo'lib, u *Funksiya ifodasi* deb ataladi.
 
 Bu bizga har qanday ifoda o'rtasida yangi funksiya yaratish imkonini beradi.
 
@@ -24,7 +24,7 @@ let sayHi = function() {
 
 Bu yerda biz `sayHi` o'zgaruvchisi qiymat olganini ko'rishimiz mumkin, yangi funksiya `function() { alert("Salom"); }`sifatida yozilgan.
 
-Funksiyani yaratish topshiriq ifodasi kontekstida (`=` ning o'ng tomonida) sodir bo'lganligi sababli, bu *Funktsiya ifodasi* deb ataladi.
+Funksiyani yaratish topshiriq ifodasi kontekstida (`=` ning o'ng tomonida) sodir bo'lganligi sababli, bu *Funksiya ifodasi* deb ataladi.
 
 E'tibor bering, `function` kalit so'zidan keyin hech qanday nom yo'q. Funksiya ifodalari uchun nom qoldirilishi mumkin.
 
@@ -32,7 +32,7 @@ Bu yerda biz uni darhol o'zgaruvchiga tayinlaymiz, shuning uchun ushbu kod namun
 
 Keyinchalik rivojlangan holatlarda, biz keyinroq duch keladigan funksiya yaratilishi va darhol chaqirilishi yoki keyinchalik bajarilishi uchun rejalashtirilgan bo'lishi mumkin, u hech qanday joyda saqlanmaydi, shuning uchun anonim qoladi.
 
-## Funktsiya - bu qiymat
+## Funksiya - bu qiymat
 
 Yana takrorlaymiz: funksiya qanday yaratilganidan qat'iy nazar, funksiya qiymatdir. Yuqoridagi ikkala misol ham funksiyani `sayHi` o'zgaruvchisida saqlaydi.
 
@@ -54,9 +54,9 @@ JavaScriptda funksiya qiymatdir, shuning uchun biz uni qiymat sifatida ko'rib ch
 
 Albatta, funksiya maxsus qiymatdir, ya'ni biz uni `sayHi()`deb atashimiz mumkin.
 
-Ammo bu hali ham qiymat. Shunday qilib, biz u bilan boshqa qadriyatlar orqali ishlashimiz mumkin.
+Ammo bu hali ham qiymat. Shunday qilib, biz u bilan boshqa qadriyatlar orqali ishlasak bo'ladi.
 
-Biz funksiyani boshqa o'zgaruvchiga nusxalashimiz mumkin:
+Biz funksiyani boshqa o'zgaruvchiga nusxalaymiz:
 
 ```js run no-beautify
 function sayHi() {   // (1) yaratish
@@ -71,7 +71,7 @@ sayHi(); // Hello    //     bu hali ham ishlaydi (nega bunday emas)
  
 Yuqorida batafsil nima sodir bo'ldi:
 
-1. Funktsiya deklaratsiyasi `(1)` funksiyani yaratadi va uni `sayHi` nomli o'zgaruvchiga qo'yadi.
+1. Funksiya deklaratsiyasi `(1)` funksiyani yaratadi va uni `sayHi` nomli o'zgaruvchiga qo'yadi.
 2. `(2)` qatori uni `func` o'zgaruvchisiga ko'chiradi. Yana bir bor e'tibor bering: `sayHi` dan keyin hech qanday qavs yo'q. Agar mavjud bo'lsa, u holda `func = sayHi()` *qo'ng'iroq natijasini* `sayHi()`ni `func`ga yozadi, *funksiyaning* o'zi `sayHi` emas.
 3. Endi funksiya `sayHi()` va `func()` deb nomlanishi mumkin.
 
@@ -90,7 +90,7 @@ Hammasi xuddi shunday ishlaydi.
 
 
 ````smart header="Nega oxirida nuqtali vergul bor?"
-Siz nima uchun Funktsiya ifodalari oxirida nuqta-vergul `;` qo'yiladi, lekin Funktsiya deklaratsiyasida bunday emas, deb hayron bo'lishingiz mumkin:
+Siz nima uchun Funksiya ifodalari oxirida nuqta-vergul `;` qo'yiladi, lekin Funksiya deklaratsiyasida bunday emas, deb hayron bo'lishingiz mumkin:
 
 ```js
 function sayHi() {
@@ -144,7 +144,7 @@ function showCancel() {
 ask("Do you agree?", showOk, showCancel);
 ```
 
-Amalda, bunday funksiyalar juda foydali. Haqiqiy hayotdagi `ask` va yuqoridagi misol o'rtasidagi asosiy farq shundaki, real hayot funktsiyalari oddiy `confirm` dan ko'ra foydalanuvchi bilan muloqot qilishning murakkab usullaridan foydalanadi. Brauzerda bunday funktsiyalar odatda chiroyli ko'rinadigan savol oynasini chizadi. Lekin bu boshqa hikoya.
+Amalda bunday funksiyalar juda foydali. Haqiqiy hayotdagi `ask` va yuqoridagi misol o'rtasidagi asosiy farq shundaki, real hayot funksiyalari oddiy `confirm` dan ko'ra foydalanuvchi bilan muloqot qilishning murakkab usullaridan foydalanadi. Brauzerda bunday funktsiyalar odatda chiroyli ko'rinadigan savol oynasini chizadi. Lekin bu boshqa hikoya.
 
 **`ask` ning `showOk` va `showCancel` argumentlari *callback funksiyalari* yoki shunchaki *callbacklar* (qayta qo'ng'iroqlar) deb ataladi.**
 
@@ -176,17 +176,17 @@ Satrlar yoki raqamlar kabi oddiy qiymatlar *ma'lumotlarni* ifodalaydi.
 
 Funksiyani *action* sifatida qabul qilish mumkin.
 
-Biz uni o'zgaruvchilar orasida o'tkazishimiz va xohlaganimizda ishga tushirishimiz mumkin.
+Biz uni o'zgaruvchilar orasida o'tkazishimiz va xohlaganimizda ishga tushiramiz.
 ``` 
 
 
-## Funktsiya ifodasi va funksiya deklaratsiyasi
+## Funksiya ifodasi va funksiya deklaratsiyasi
 
 Funksiya deklaratsiyasi va ifodalar o'rtasidagi asosiy farqlarni shakllantiramiz.
 
 Birinchidan, sintaksis: kodda ularni qanday ajratish mumkin.
 
-- *Funktsiya deklaratsiyasi:* asosiy kod oqimida alohida bayonot sifatida e'lon qilingan funksiya:
+- *Funksiya deklaratsiyasi:* asosiy kod oqimida alohida bayonot sifatida e'lon qilingan funksiya:
 
     ```js
     // Function Declaration
@@ -203,19 +203,19 @@ Birinchidan, sintaksis: kodda ularni qanday ajratish mumkin.
     };
     ```
 
-Funktsiya JavaScript dvigateli tomonidan yaratilganda yanada nozik farq bo'ladi.
+Funksiya JavaScript dvigateli tomonidan yaratilganda yanada nozik farq bo'ladi.
 
 **Funksiya ifodasi bajarilish unga erishilganda yaratiladi va faqat shu paytdan boshlab foydalanish mumkin bo'ladi.**
 
-Amalga oshirish oqimi topshiriqning o'ng tomoniga o'tgandan so'ng, `let sum = function…` -- mana biz boramiz, funksiya yaratiladi va bundan buyon foydalanish mumkin (assigned, called va hokazo).
+Amalga oshirish oqimi topshiriqning o'ng tomoniga o'tgandan so'ng, `let sum = function…` -- funksiya yaratiladi va bundan buyon foydalanish mumkin (assigned, called va hokazo).
 
-Funktsiya deklaratsiyasi boshqacha.
+Funksiya deklaratsiyasi boshqacha.
 
-**Funktsiya deklaratsiyasi belgilanganidan oldinroq chaqirilishi mumkin.**
+**Funksiya deklaratsiyasi belgilanganidan oldinroq chaqirilishi mumkin.**
 
 Masalan, global funksiya deklaratsiyasi qayerda bo'lishidan qat'iy nazar, butun skriptda ko'rinadi.
 
-Bu ichki algoritmlarga bog'liq. JavaScript skriptni ishga tushirishga tayyorlanayotganda, u birinchi navbatda undagi global Funktsiya deklaratsiyasini qidiradi va funksiyalarni yaratadi. Biz buni "boshlash bosqichi" deb hisoblashimiz mumkin.
+Bu ichki algoritmlarga bog'liq. JavaScript skriptni ishga tushirishga tayyorlanayotganda, u birinchi navbatda undagi global funksiya deklaratsiyasini qidiradi va funksiyalarni yaratadi. Biz buni "boshlash bosqichi" deb hisoblashimiz mumkin.
 
 Va barcha funksiya deklaratsiyasi qayta ishlanganidan so'ng, kod bajariladi. Shunday qilib, u ushbu funksiyalarga kirish huquqiga ega.
 
@@ -249,11 +249,11 @@ Funksiya ifodalari bajarilish ularga yetib kelganda yaratiladi. Bu faqat `(*)` q
 
 Funksiya deklaratsiyasining yana bir o'ziga xos xususiyati ularning blok doirasi.
 
-**Qattiq rejimda funksiya deklaratsiyasi kod blokida bo‘lsa, u blokning hamma joyida ko‘rinadi. Lekin undan tashqarida emas.**
+**Qattiq rejimda funksiya deklaratsiyasi kod blokida bo‘lsa, u blokning hamma joyida ko'rinadi. Lekin undan tashqarida emas.**
 
  Misol uchun, biz ishlash vaqtida oladigan `age` o'zgaruvchisiga qarab `welcome()` funksiyasini e'lon qilishimiz kerakligini tasavvur qilaylik. Va keyin biz undan biroz vaqt o'tgach foydalanishni rejalashtirmoqdamiz.
 
-Funktsiya deklaratsiyasidan foydalansak, u mo'ljallangandek ishlamaydi:
+Funksiya deklaratsiyasidan foydalansak, u mo'ljallangandek ishlamaydi:
 
 ```js run
 let age = prompt("What is your age?", 18);
@@ -279,7 +279,7 @@ welcome(); // Error: welcome aniqlanmagan
 */!*
 ```
 
-Buning sababi, Funktsiya deklaratsiyasi faqat u joylashgan kod blokida ko'rinadi.
+Buning sababi, Funksiya deklaratsiyasi faqat u joylashgan kod blokida ko'rinadi.
 
 Quyida boshqa misol berilgan:
 
@@ -292,7 +292,7 @@ if (age < 18) {
 */!*
                            //  |
   function welcome() {     //  |
-    alert("Hello!");       //  |  Funktsiya deklaratsiyasi mavjud
+    alert("Hello!");       //  |  Funksiya deklaratsiyasi mavjud
   }                        //  |  u blokning hamma joyida e'lon qilingan
                            //  |
 *!*
@@ -307,7 +307,7 @@ if (age < 18) {
 }
 
 // Mana, figurali qavslar tugadi,
-// shuning uchun biz ularning ichida tuzilgan Funktsiya deklaratsiyasini ko'ra olmaymiz.
+// shuning uchun biz ularning ichida tuzilgan Funksiya deklaratsiyasini ko'ra olmaymiz.
 
 *!*
 welcome(); // Error: welcome aniqlanmagan
@@ -359,20 +359,20 @@ welcome(); // ok now
 ```
 
 
-```smart header="Funktsiya deklaratsiyasini va funksiya ifodasini qachon tanlash kerak?"
+```smart header="Funksiya deklaratsiyasini va funksiya ifodasini qachon tanlash kerak?"
 
 Qoida tariqasida, biz funksiyani e'lon qilishimiz kerak bo'lganda, birinchi navbatda Funksiya deklaratsiyasi sintaksisini hisobga olish kerak. Bu bizning kodimizni qanday tashkil qilishda ko'proq erkinlik beradi, chunki biz bunday funksiyalarni e'lon qilinishidan oldin chaqirishimiz mumkin.
 
 Bu o'qish uchun ham yaxshi, chunki kodda `f(…) {…}` funksiyasini izlash `let f = function(…) {…};` ga qaraganda osonroq. Funksiya deklaratsiyasi ko'proq "ko'zni tortadi".
 
-...Agar biron sababga ko'ra funksiya deklaratsiyasi bizga mos kelmasa yoki shartli deklaratsiya kerak bo'lsa (biz hozirgina misolni ko'rdik), u holda Funktsiya ifodasidan foydalanish kerak.
+...Agar biron sababga ko'ra funksiya deklaratsiyasi bizga mos kelmasa yoki shartli deklaratsiya kerak bo'lsa (biz hozirgina misolni ko'rdik), u holda Funksiya ifodasidan foydalanish kerak.
 ```
 
 ## Xulosa
 
 - Funksiyalar qiymatdir. Ular kodning istalgan joyida tayinlanishi, nusxalanishi yoki e'lon qilinishi mumkin.
-- Agar funksiya asosiy kod oqimida alohida bayonot sifatida e'lon qilingan bo'lsa, bu "Funktsiya deklaratsiyasi" deb ataladi.
-- Agar funksiya ifodaning bir qismi sifatida yaratilgan bo'lsa, u "Funktsiya ifodasi" deb ataladi.
+- Agar funksiya asosiy kod oqimida alohida bayonot sifatida e'lon qilingan bo'lsa, bu "Funksiya deklaratsiyasi" deb ataladi.
+- Agar funksiya ifodaning bir qismi sifatida yaratilgan bo'lsa, u "Funksiya ifodasi" deb ataladi.
 - Funksiya deklaratsiyasi kod bloki bajarilishidan oldin qayta ishlanadi. Ular blokning hamma joyida ko'rinadi.
 - Funksiya ifodalari bajarilish oqimi ularga yetganda yaratiladi.
 
