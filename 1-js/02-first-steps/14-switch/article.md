@@ -2,7 +2,7 @@
 
 `switch` bayonoti ko'plab `if` tekshiruvlarining o'rnini bosishi mumkin.
 
-Bu qiymatni bir nechta variant bilan solishtirishning yanada tavsifli usulini beradi
+Bu qiymatni bir nechta variant bilan solishtirishning yanada tavsifli usulini beradi.
 
 ## Sintaksis
 
@@ -28,7 +28,7 @@ switch(x) {
 
 - `x`ning qiymati birinchi `case` (ya'ni `value1`) dan ikkinchisiga (`value2`) va hokazo qiymatlarga qat'iy tenglik uchun tekshiriladi.
 - Agar tenglik topilsa, `switch` mos kelgan `case`dan boshlab eng yaqin `break`ga (yoki `switch` yakuniga) qadar ishlashni boshlaydi.
-- Agar bironta `case` mos kelmasa u holda `default` kod ishga tushadi, (agar mavjud bo'lsa).
+- Agar bironta `case` mos kelmasa, u holda `default` kod ishga tushadi, (agar mavjud bo'lsa).
 
 ## Namuna
 
@@ -88,7 +88,7 @@ alert( "I don't know such values" );
 ```
 
 ````smart header="Har qanday ibora `switch/case` argumenti bo'lishi mumkin.
-`switch` ham `case` ham katta hajmli ifodalar bilan ham ishlaydi.
+`switch` ham, `case` ham katta hajmli ifodalar bilan ham ishlaydi.
 
 Misol uchun:
 
