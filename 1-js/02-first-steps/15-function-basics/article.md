@@ -4,13 +4,13 @@ Ko'pincha biz skriptning ayrim joylarida o'xshash harakatni bajarishimiz kerak.
 
 Misol uchun, tashrif buyuruvchi tizimga kirganda, tizimdan chiqqanda va ehtimol boshqa joyda yaxshi ko'rinadigan xabarni ko'rsatishimiz lozim.
 
-Funktsiyalar dasturning asosiy "qurilish bloklari" dir. Ular kodni takrorlanmasdan ko'p marta chaqirish imkonini bera
+Funksiyalar dasturning asosiy "qurilish bloklari" dir. Ular kodni takrorlanmasdan ko'p marta chaqirish imkonini beradi.
 
  Biz allaqachon `ogohlantirish (xabar)`,(alert message) `proompt(message, default)` (so'rov (xabar, standart))" va `confirm (question)`, ya'ni tasdiqlash (savol) kabi o'rnatilgan funksiyalarning misollarini ko'rganmiz. Ammo biz o'zimizning funksiyalarimizni ham yaratishimiz mumkin.
 
 ## Funksiya deklaratsiyasi
 
-Funksiya yaratish uchun biz *funksiya deklaratsiyasi* dan foydalanishimiz mumkin.
+Funksiya yaratish uchun biz *funksiya deklaratsiyasi* dan foydalanamiz.
 
 U quyidagi ko'rinishda bo'ladi:
 
@@ -46,7 +46,7 @@ showMessage();
 
 Ushbu misol funksiyalarning asosiy maqsadlaridan biri - kodni takrorlashdan qochishni aniq ko'rsatib beradi.
 
-Agar xabarni yoki xabar ko'rinishini o'zgartirishimiz kerak bo'lsa, kodni bitta joyda uni chiqaradigan funktsiyada o'zgartirish kifoya qiladi.
+Agar xabarni yoki xabar ko'rinishini o'zgartirishimiz kerak bo'lsa, kodni bitta joyda uni chiqaradigan funksiyada o'zgartirish kifoya qiladi.
 
 ## Local variables (Mahalliy o'zgaruvchilar)
 
@@ -65,7 +65,7 @@ function showMessage() {
 
 showMessage(); // Hello, I'm JavaScript!
 
-alert( message ); // <-- Error! O'zgaruvchi funktsiya uchun mahalliydir.
+alert( message ); // <-- Error! O'zgaruvchi funksiya uchun mahalliydir.
 ```
 
 ## Tashqi o'zgaruvchilar
@@ -101,7 +101,7 @@ alert( userName ); // *!*John*/!* funksiya chaqiruvidan oldin
 
 showMessage();
 
-alert( userName ); // *!*Bob*/!*, qiymat funktsiya tomonidan o'zgartirildi
+alert( userName ); // *!*Bob*/!*, qiymat funksiya tomonidan o'zgartirildi
 ```
 
 Tashqi o'zgaruvchi faqat mahalliy bo'lmasa ishlatiladi.
@@ -123,7 +123,7 @@ function showMessage() {
 // funksiya o'z foydalanuvchi nomini yaratadi va ishlatadi
 showMessage();
 
-alert( userName ); // *!*John*/!*, o'zgarishsiz, funktsiya tashqi o'zgaruvchiga kira olmadi
+alert( userName ); // *!*John*/!*, o'zgarishsiz, funksiya tashqi o'zgaruvchiga kira olmadi
 ```
 
 ```smart header="Global variables" (Global o'zgaruvchilar)
@@ -131,14 +131,14 @@ Har qanday funksiyadan tashqarida e'lon qilingan o'zgaruvchilar, masalan, yuqori
 
 Global o'zgaruvchilar har qanday funksiyadan ko'rinadi (agar mahalliy o'zgaruvchi tomonidan soya qilinmasa).
 
-Global o'zgaruvchilardan foydalanishni minimallashtirish yaxshi amaliyotdir. Zamonaviy kodda globallar kam yoki umuman yo'q. Aksariyat o'zgaruvchilar ularning funktsiyalarida joylashgan. Ba'zan ular loyiha darajasidagi ma'lumotlarni saqlash uchun foydali bo'lishi mumkin.
+Global o'zgaruvchilardan foydalanishni minimallashtirish yaxshi amaliyotdir. Zamonaviy kodda globallar kam yoki umuman yo'q. Aksariyat o'zgaruvchilar ularning funksiyalarida joylashgan. Ba'zan ular loyiha darajasidagi ma'lumotlarni saqlash uchun foydali bo'lishi mumkin.
 ```
 
 ## Parametrlar
 
 Parametrlar yordamida funksiyalarga asossiz ma'lumotlarni o'tkazishimiz mumkin.
 
-Quyidagi misolda funksiya ikkita parametrga ega: `from` and `text`.
+Quyidagi misolda funksiya ikkita parametrga ega: `from` va `text`.
 
 ```js run
 function showMessage(*!*from, text*/!*) { // parameterlar: from, text
@@ -213,7 +213,7 @@ Agar parametr mavjud bo'lsa, standart qiymat ham o'tadi, lekin qat'iy ravishda `
 showMessage("Ann", undefined); // Ann: matn berilmagan
 ```
 
-Bu yerda `"no text given"` satr mavjud, lekin u murakkabroq ifoda bo'lishi mumkin, u faqat parametr yetishmayotgan bo'lsa baholanadi va tayinlanadi. Shunday qilib, bu vazifani bajarish ham mumkin:
+Bu yerda `"no text given"` satr mavjud, lekin u murakkabroq ifoda, u faqat parametr yetishmayotgan bo'lsa baholanadi va tayinlanadi. Shunday qilib, bu vazifani bajarish ham mumkin:
 
 ```js run
 function showMessage(from, text = anotherFunction()) {
@@ -323,7 +323,7 @@ let result = sum(1, 2);
 alert( result ); // 3
 ```
 
-`Return` direktivasi funktsiyaning istalgan joyida bo'lishi mumkin. Bajarish unga yetganda, funktsiya to'xtaydi va qiymat chaqiruvchi kodga qaytariladi (yuqoridagi `result` tayinlangan).
+`Return` direktivasi funktsiyaning istalgan joyida bo'ladi. Bajarish unga yetganda, funksiya to'xtaydi va qiymat chaqiruvchi kodga qaytariladi (yuqoridagi `result` tayinlangan).
 
 Bitta funktsiyada `return` ko'p bo'lishi mumkin. Masalan:
 
@@ -365,9 +365,6 @@ function showMovie(age) {
   // ...
 }
 ```
-
-In the code above, if `checkAge(age)` returns `false`, then `showMovie` won't proceed to the `alert`.
-
 Yuqoridagi kodda, agar `checkAge(age)` `false` qiymatini qaytarsa, `showMovie` `alert` ga o'tmaydi.
 
 ````smart header="A function with an empty `return` or without it returns `undefined`" 
@@ -420,7 +417,7 @@ Va u biz kutgandek ishlaydi.
 
 ## Funksiyani nomlash [#function-naming]
 
-Funktsiyalar - bu harakatlar. Shuning uchun ularning nomi odatda fe'ldir. U qisqa, iloji boricha aniq bo'lishi va funksiya nima qilishini tasvirlab berishi kerak, shunda kodni o'qiyotgan kishi funksiya nima qilayotgani haqida ko'rsatma oladi.
+Funksiyalar - bu harakatlar. Shuning uchun ularning nomi odatda fe'ldir. U qisqa, iloji boricha aniq bo'lishi va funksiya nima qilishini tasvirlab berishi kerak, shunda kodni o'qiyotgan kishi funksiya nima qilayotgani haqida ko'rsatma oladi.
 
 Harakatni noaniq tasvirlaydigan og'zaki prefiks bilan funksiyani boshlash keng tarqalgan amaliyotdir. Prefikslarning ma'nosi bo'yicha jamoa ichida kelishuv bo'lishi kerak.
 
@@ -443,12 +440,12 @@ createForm(..)      // shakl yaratadi (va odatda uni qaytaradi)
 checkPermission(..) // ruxsatni tekshiradi, true/false ni qaytaradi
 ```
 
-Prefikslar o'rnatilgan bo'lsa, funktsiya nomiga qarash uning qanday ishni bajarishini va qanday qiymatni qaytarishini tushunish imkonini beradi.
+Prefikslar o'rnatilgan bo'lsa, funksiya nomiga qarash uning qanday ishni bajarishini va qanday qiymatni qaytarishini tushunish imkonini beradi.
 
 ```smart header="Bir funksiya -- bir harakat"
-Funktsiya o'z nomi bilan taklif qilingan narsani bajarishi kerak, boshqasini emas.
+Funksiya o'z nomi bilan taklif qilingan narsani bajarishi kerak, boshqasini emas.
 
-Ikki mustaqil harakat odatda ikkita funktsiyaga loyiqdir, hatto ular odatda birgalikda chaqirilsa ham (bu holda biz bu ikkalasini chaqiradigan uchinchi funksiyani yaratishimiz mumkin).
+Ikki mustaqil harakat odatda ikkita funksiyaga loyiqdir, hatto ular odatda birgalikda chaqirilsa ham (bu holda biz bu ikkalasini chaqiradigan uchinchi funksiyani yaratishimiz mumkin).
 
 Ushbu qoidani buzishning bir nechta misollari:
 
@@ -456,7 +453,7 @@ Ushbu qoidani buzishning bir nechta misollari:
 - `createForm` -- agar u hujjatni o'zgartirsa, unga shakl qo'shsa yomon bo'ladi (faqat uni yaratish va qaytarish kerak).
 - `checkPermission` -- `kirish ruxsat berilgan/rad etilgan` xabarini ko'rsatsa, yomon bo'lardi (faqat tekshirishni amalga oshirish va natijani qaytarish kerak).
 
-Ushbu misollar prefikslarning umumiy ma'nolarini nazarda tutadi. Siz va sizning jamoangiz boshqa ma'nolar bo'yicha kelisha olasiz, lekin odatda ular unchalik farq qilmaydi. Qanday bo'lmasin, siz prefiks nimani anglatishini, prefiksli funksiya nimani amalga oshirishi va nima qila olmasligini aniq tushunishingiz kerak. Barcha bir xil prefiksli funksiyalar qoidalarga bo'ysunishi kerak. Va jamoa bilimlarni baham ko'rishi kerak.
+Ushbu misollar prefikslarning umumiy ma'nolarini nazarda tutadi. Siz va sizning jamoangiz boshqa ma'nolar bo'yicha kelisha olasiz, lekin odatda ular unchalik farq qilmaydi. Qanday bo'lmasin, siz prefiks nimani anglatishini, prefiksli funksiya nimani amalga oshirishi va nima qila olmasligini aniq tushunishingiz lozim. Barcha bir xil prefiksli funksiyalar qoidalarga bo'ysunishi va jamoa bilimlarni baham ko'rishi kerak.
 ```
 
 ```smart header="Ultra qisqa funksiya nomlari"
@@ -464,14 +461,14 @@ Ushbu misollar prefikslarning umumiy ma'nolarini nazarda tutadi. Siz va sizning 
 
 Masalan, [jQuery](https://jquery.com/) ramkasi `$` bilan funksiyani belgilaydi. [Lodash](https://lodash.com/) kutubxonasi `_` nomli asosiy funksiyasiga ega.
 
-Bu istisnolar. Odatda funktsiya nomlari qisqa va tavsiflovchi bo'lishi kerak.
+Bu istisnolar. Odatda funksiya nomlari qisqa va tavsiflovchi bo'lishi kerak.
 ```
 
 ## Funksiyalar == Izohlar
 
-Funksiyalar qisqa bo'lishi va aniq bir ishni bajarishi kerak. Agar bu narsa katta bo'lsa, funksiyani bir nechta kichikroq funktsiyalarga bo'lish bunga arziydi. Ba'zan bu qoidaga rioya qilish unchalik oson bo'lmasligi mumkin, lekin bu, albatta, yaxshi narsa.
+Funksiyalar qisqa bo'lishi va aniq bir ishni bajarishi kerak. Agar bu narsa katta bo'lsa, funksiyani bir nechta kichikroq funksiyalarga bo'lish bunga arziydi. Ba'zan bu qoidaga rioya qilish unchalik oson bo'lmasligi mumkin, lekin bu, albatta, yaxshi narsa.
 
-Alohida funktsiyani sinab ko'rish va debug (disk raskadrovka) qilish oson emas -- uning mavjudligi ajoyib izohdir!
+Alohida funksiyani sinab ko'rish va debug (disk raskadrovka) qilish oson emas -- uning mavjudligi ajoyib izohdir!
 
 Misol uchun, quyidagi ikkita `showPrimes(n)` funksiyasini solishtiring. Har biri `n` gacha [tub sonlarni](https://en.wikipedia.org/wiki/Prime_number) chiqaradi.
 
@@ -515,7 +512,7 @@ Shunday qilib, biz ularni qayta ishlatish niyatimiz bo'lmasa ham, funksiyalar ya
 
 ## Xulosa
 
-Funktsiya deklaratsiyasi quyidagicha ko'rinadi:
+Funksiya deklaratsiyasi quyidagicha ko'rinadi:
 
 ```js
 function name(parameters, delimited, by, comma) {
@@ -529,12 +526,12 @@ function name(parameters, delimited, by, comma) {
 
 Kodni toza va tushunarli qilish uchun funksiyada tashqi o'zgaruvchilardan emas, asosan mahalliy o'zgaruvchilar va parametrlardan foydalanish tavsiya etiladi.
 
-Parametrlarni oladigan, ular bilan ishlaydigan va natija qaytaradigan funktsiyani tushunish har doim parametrlarga ega bo'lmagan, ammo tashqi o'zgaruvchilarni yon ta'sir sifatida o'zgartiradigan funksiyaga qaraganda osonroqdir.
+Parametrlarni oladigan, ular bilan ishlaydigan va natija qaytaradigan funksiyani tushunish har doim parametrlarga ega bo'lmagan, ammo tashqi o'zgaruvchilarni yon ta'sir sifatida o'zgartiradigan funksiyaga qaraganda osonroqdir.
 
 Funksiyani nomlash:
 
-- Nom funksiya nima qilishini aniq tasvirlab berishi kerak. Kodda funktsiya chaqiruvini ko'rganimizda, yaxshi nom bizga darhol nima qilishini va qaytib kelishini tushunish imkonini beradi.
-- Funksiya - bu harakat, shuning uchun funktsiya nomlari odatda og'zaki bo'ladi.
-- `create…`, `show…`, `get…`, `check…` va boshqalar kabi ko'plab taniqli funktsiya prefikslari mavjud. Funksiya nima qilishini ko'rsatish uchun ulardan foydalaning.
+- Nom funksiya nima qilishini aniq tasvirlab berishi kerak. Kodda funksiya chaqiruvini ko'rganimizda, yaxshi nom bizga darhol nima qilishini va qaytib kelishini tushunish imkonini beradi.
+- Funksiya - bu harakat, shuning uchun funksiya nomlari odatda og'zaki bo'ladi.
+- `create…`, `show…`, `get…`, `check…` va boshqalar kabi ko'plab taniqli funksiya prefikslari mavjud. Funksiya nima qilishini ko'rsatish uchun ulardan foydalaning.
 
-Funksiyalar skriptlarning asosiy qurilish bloklari hisoblanadi. Endi biz asoslarni ko'rib chiqdik, shuning uchun biz ularni yaratish va ishlatishni boshlashimiz mumkin. Ammo bu faqat yo'lning boshlanishi. Biz ularga ko'p marta qaytamiz, ularning ilg'or xususiyatlariga chuqurroq kirib boramiz.
+Funksiyalar skriptlarning asosiy qurilish bloklari hisoblanadi. Endi biz asoslarni ko'rib chiqdik, shuning uchun biz ularni yaratish va ishlatishni boshlashimiz mumkin. Ammo bu faqat yo'lning boshlanishi. Biz ularga ko'p marta qaytamiz va ularning ilg'or xususiyatlariga chuqurroq kirib boramiz.
