@@ -23,7 +23,7 @@ Ko'pchilik ninja yo'llarini kuzatishga harakat qiladi. Muvaffaqiyatli bo'lganlar
 
 Kodni iloji boricha qisqaroq qiling. Qanday aqlli ekanligingizni ko'rsating.
 
-Nozik til xususiyatlari sizga yoʻl koʻrsatsin.
+Nozik til xususiyatlari sizga yo'l ko'rsatsin.
 
 Masalan, ushbu uchlik operator `'?'`ga e'tibor bering:
 
@@ -38,8 +38,7 @@ Ularga qisqaroq har doim yaxshiroq ekanligini ayting. Ularni ninja yo'llariga bo
 ## Bir harfli o'zgaruvchilar
 
 ```quote author="Laozi (Tao Te Ching)"
-Dao so'zsizlikda yashirinadi. Faqat Dao yaxshi boshlangan va yaxshi
-yakunlandi.
+Dao so'zsizlikda yashirinadi. Faqat Dao yaxshi boshlangan va yaxshi yakunlandi.
 ```
 Qisqaroq kodlashning yana bir usuli - hamma joyda bitta harfli o'zgaruvchilar nomlaridan foydalanish. `a`, `b` yoki `c` kabi.
 
@@ -51,7 +50,7 @@ Loop hisoblagichi sifatida ekzotik o'zgaruvchi, agar pastgi tanasi 1-2 sahifani 
 
 ## Qisqartmalardan foydalaning
 
-Agar jamoa qoidalari bir harfli va noaniq ismlardan foydalanishni taqiqlasa -- ularni qisqartiring, qisqartmalar qiling.
+Agar jamoa qoidalari bir harfli va noaniq ismlardan foydalanishni ta'qiqlasa -- ularni qisqartiring, qisqartmalar qiling.
 
 Huddi quyidagi kabi:
 
@@ -70,7 +69,7 @@ Katta kema oxirgi marta qurib bitkazildi<br>
 Eng zo'r nota noyob tovush<br>
 Buyuk tasvirning shakli yo'q.
 ```
-Ism tanlashda eng mavhum so'zdan foydalanishga harakat qiling. `obj`, `data`, `value`, `item`, `elem` va boshqalar kabi.
+Ism tanlashda eng mavhum so'zdan foydalanishga harakat qiling, `obj`, `data`, `value`, `item`, `elem` va boshqalar kabi.
 
 - **O'zgaruvchining ideal nomi `data`dir.** Uni hamma joyda ishlating. Darhaqiqat, har bir o'zgaruvchida *data* mavjud, to'g'rimi?
 
@@ -94,9 +93,9 @@ Sizning kodingizni faqat chinakam diqqatli dasturchi tushunishi kerak. Lekin bun
 
 **Ushbu usullardan biri -- `date` va `data` kabi o'xshash o'zgaruvchilar nomlaridan foydalaning.**
 
-Mix them where you can.
+Ularni siz eplay oladigan joyda aralashtirib yuboring.
 
-Bunday kodni tezda o'qish imkonsiz bo'ladi. Qachonki matbaa xatosi bo'lsa... Ehh... Biz choy ichish uchun uzoq vaqt o'tirib qoldik.
+Qachonki matbaa xatosi bo'lsa, bunday kodni tezda o'qish imkonsiz bo'ladi... Ehh... Biz choy ichish uchun uzoq vaqt o'tirib qoldik.
 
 
 ## Aqlli sinonimlar
@@ -105,7 +104,7 @@ Bunday kodni tezda o'qish imkonsiz bo'ladi. Qachonki matbaa xatosi bo'lsa... Ehh
 Aytish mumkin bo'lgan Tao abadiy Tao emas. Nomlanishi mumkin bo'lgan ism abadiy ism emas.
 ```
 
-*Bir xil* narsalar uchun *o'xshash* nomlardan foydalanish hayotni yanada qiziqarli qiladi va sizning ijodingizni ommaga ko‘rsatadi.
+*Bir xil* narsalar uchun *o'xshash* nomlardan foydalanish hayotni yanada qiziqarli qiladi va sizning ijodingizni ommaga ko'rsatadi.
 
 Masalan, funksiya prefikslarini ko'rib chiqing. Agar funksiya ekranda xabarni ko'rsatsa -- uni `displayMessage` kabi `display...` bilan boshlang. Va agar boshqa funksiya ekranda foydalanuvchi nomi kabi boshqa narsani ko'rsatsa, uni `show...` (`showName` kabi) bilan boshlang.
 
@@ -127,13 +126,13 @@ ism kerak.<br>
 Nomlar allaqachon yetarli.<br>
 Qachon to'xtash kerakligini bilish kerak.
 ```
-Yangi o'zgaruvchini faqat juda zarur bo'lganda qo'shing.
+Yangi o'zgaruvchini faqat juda zarur bo'lgandagina qo'shing.
 
 Buning o'rniga, mavjud nomlarni qayta ishlating. Ularga faqat yangi qiymatlarni yozing.
 
 Funksiyada faqat parametr sifatida berilgan o'zgaruvchilardan foydalanishga harakat qiling.
 
-Bu *hozir* o'zgaruvchisida aniq nima borligini aniqlashni qiyinlashtiradi. Va shuningdek, u qayerdan keladi. Maqsad kodni o'qiyotgan odamning sezgi va xotirasini rivojlantirishdir. Sezgi zaif odam kodni satr bo'yicha tahlil qilishi va har bir kod bo'limi orqali o'zgarishlarni kuzatishi kerak.
+Bu *hozir* o'zgaruvchisida aniq nima borligini aniqlashni qiyinlashtiradi. Va shuningdek, u qayerdan keladi? Maqsad kodni o'qiyotgan odamning sezgi va xotirasini rivojlantirishdir. Sezgi zaif odam kodni satr bo'yicha tahlil qilishi va har bir kod bo'limi orqali o'zgarishlarni kuzatishi kerak.
 
 **Yondoshuvning ilg'or varianti bu qiymatni sikl yoki funksiya o'rtasida yashirincha (!) o'xshash narsa bilan almashtirishdir.**
 
@@ -154,9 +153,9 @@ Bu holat kodda muntazam ko'rinadi. Hatto tajribali ninjaga qarshi ham halokatli 
 
 ## O'yin-kulgi uchun pastki chiziq
 
-O'zgaruvchilar nomlari oldiga `_` va `__` pastki chiziqlarni qo'ying. `_name` yoki `__value` kabi. Agar ularning ma'nosini bilsangiz yaxshi bo'lardi. Yoki yaxshisi, ularni faqat o'yin-kulgi uchun qo'shing, ammo bu ish umuman ma'nosiz. Yoki turli joylarda turli ma'nolarnni anglatishi mumkin.
+O'zgaruvchilar nomlari oldiga `_` va `__` pastki chiziqlarni qo'ying. `_name` yoki `__value` kabi. Agar ularning ma'nosini bilsangiz yaxshi bo'lardi. Yoki yaxshisi, ularni faqat o'yin-kulgi uchun qo'shing, ammo bu ish umuman ma'nosiz. Yoki turli joylarda turli ma'nolarni anglatishi mumkin.
 
-Bir o'q bilan ikkita quyonni o'ldirasiz. Birinchidan, kod uzunroq va kamroq o'qilishi mumkin bo'ladi, ikkinchidan, boshqa dasturchi pastki chiziq nimani anglatishini tushunishga uzoq vaqt sarflashi mumkin.
+Bir o'q bilan ikkita quyonni o'ldirasiz. Birinchidan, kod uzunroq va kamroq o'qilishi mumkin bo'ladi, ikkinchidan, boshqa dasturchi pastki chiziq nimani anglatishini tushunishga uzoq vaqt sarflaydi.
 
 Aqlli ninja kodning bir joyiga pastki chiziq qo'yadi va boshqa joylarda ularni chetlab o'tadi. Bu kodni yanada nozik qiladi va kelajakda xatolar ehtimolini oshiradi.
 
@@ -173,7 +172,7 @@ Yorug'likda bo'lganingizda, zulmatda hech narsani ko'ra olmaysiz.<br>
 Qorong'ida bo'lsa, hamma narsani yorug'likda ko'rish mumkin.
 ```
 
-Funktsiya ichidagi va tashqarisidagi o'zgaruvchilar uchun bir xil nomlardan foydalaning. Bu juda oddiy. Yangi nomlarni ixtiro qilishga hojat yo'q.
+Funksiya ichidagi va tashqarisidagi o'zgaruvchilar uchun bir xil nomlardan foydalaning. Bu juda oddiy. Yangi nomlarni ixtiro qilishga hojat yo'q.
 
 ```js
 let *!*user*/!* = authenticateUser();
@@ -195,7 +194,7 @@ Keyin ular `user` bilan ishlashga urinib ko'radilar, bu tashqi o'zgaruvchi, ya'n
 
 ## Hamma joyda nojo'ya ta'sirlar!
 
-Hech narsani o'zgartirmaydigan kabi funktsiyalar mavjud. `isReady()`, `checkPermission()`, `findTags()` kabi... Ular hisob-kitoblarni amalga oshiradilar, ma'lumotlarni topadilar va qaytaradilar, ulardan tashqari hech narsani o'zgartirmaydilar. Boshqacha qilib aytganda, buni "nojo'ya ta'sirlarsiz" bajarishadi.
+Hech narsani o'zgartirmaydigan funksiyalar mavjud, masalan `isReady()`, `checkPermission()`, `findTags()`. Ular hisob-kitoblarni amalga oshiradilar, ma'lumotlarni topadilar va qaytaradilar, ulardan tashqari hech narsani o'zgartirmaydilar. Boshqacha qilib aytganda, buni "nojo'ya ta'sirlarsiz" bajarishadi.
 
 **Asosiy vazifadan tashqari ularga "foydali" harakatni qo'shish haqiqatdan ham chiroyli hiyladir.**
 
@@ -218,7 +217,7 @@ Funksiyani uning nomida yozilgani bilan cheklamang. Kengroq fikrlang.
 
 Masalan, `validateEmail(email)` funksiyasi (elektron pochtaning to'g'riligini tekshirishdan tashqari) xato xabarini ko'rsatishi va elektron pochtani qayta kiritishni so'rashi mumkin.
 
-Qo'shimcha harakatlar funktsiya nomidan aniq bo'lmasligi kerak. Haqiqiy ninja koder ularni koddan aniq ko'rsatmaydi.
+Qo'shimcha harakatlar funksiya nomidan aniq bo'lmasligi kerak. Haqiqiy ninja koder ularni koddan aniq ko'rsatmaydi.
 
 **Bir nechta amallarni birlashtirish kodingizni qayta ishlatishdan himoya qiladi.**
 
@@ -226,7 +225,7 @@ Tasavvur qiling, boshqa dasturchi faqat elektron pochtani tekshirishni xohlaydi 
 
 ## Xulosa
 
-Yuqoridagi barcha "maslahatlar" haqiqiy koddan... Ba'zan, tajribali ishlab chiquvchilar tomonidan yozilgan. Balki sizdan ham tajribaliroqdir;)
+Yuqoridagi barcha "maslahatlar" haqiqiy koddan... Ba'zan, tajribali ishlab chiquvchilar tomonidan yozilgan. Balki sizdan ham tajribaliroqdir:)
 
 - Ulardan ba'zilarini kuzatib boring va sizning kodingiz kutilmagan hodisalarga to'la bo'ladi.
 - Ularning ko'pchiligiga amal qiling, shunda sizning kodingiz haqiqatan ham sizniki bo'ladi, hech kim uni o'zgartirishni xohlamaydi.
