@@ -1,8 +1,8 @@
 # Brauzerda debug qilish 
 
- Murakkab kodlarni yozishdan avval, keling, debugging haqida gaplashib chiqamiz. 
+ Murakkab kodlarni yozishdan avval, keling, debugging haqida gaplashib olamiz. 
 
-[Debugging](https://en.wikipedia.org/wiki/Debugging) skriptdagi xatolarni topish va tuzatish jarayoni. Barcha brauzerlar va boshqa muhitlar debugging vositalarini qo'llab quvvatlaydi -- maxsus UI developer tool, ya'ni dasturlovchi vositalardagi debuggingni osonlashtiradi. U shuningdek, nima sodir bo'layotkanini ko'rish uchun bosqichma-bosqich kuzatish imkonini ham beradi. 
+[Debugging](https://en.wikipedia.org/wiki/Debugging) skriptdagi xatolarni topish va tuzatish jarayoni. Barcha brauzerlar va boshqa muhitlar debugging vositalarini qo'llab quvvatlaydi -- maxsus UI developer tool, ya'ni dasturlovchi vositalardagi debuggingni osonlashtiradi. U, shuningdek, nima sodir bo'layotganini ko'rish uchun bosqichma-bosqich kuzatish imkonini ham beradi. 
 
 Bu yerda Chrome dan foydalanamiz, chunki unda yetarlicha xususiyatlar mavjud. Boshqa ko'plab brauzerlareda ham o'xshash jarayon bor. 
 
@@ -14,7 +14,7 @@ Sizning Chrome versiyangiz biroz boshqacha ko'rinishda bo'lishi mumkin, lekin u 
 - `key:F12` (Mac: `key:Cmd+Opt+I`) tugmasi bilan developer toollarini yoqing.
 - `Sources` (manbalar) panelini tanlang.
 
-Agar siz buni birinchi marta bajarayotgan bo'lsangiz quyidagilar ko'rinadi: 
+Agar siz buni birinchi marta bajarayotgan bo'lsangiz, quyidagilar ko'rinadi: 
 
 ![](chrome-open-sources.svg)
 
@@ -26,9 +26,9 @@ Uning ustiga bosing va `hello.js` ni tanlang. Quyidagilar kelib chiqadi:
 
 Manbalar panelini 3 ta qismi bor:
 
-1. **File Navigator** oynasi HTML, JavaScript, CSS va boshqa fayllarni o'z ichiga oladi, jumladan sahifaga yopishtirilgan rasmlarni ham. Chrome kengaytmalari ham bu yerda ko'rinishi mumkin. 
+1. **File Navigator** oynasi HTML, JavaScript, CSS va boshqa fayllarni o'z ichiga oladi, jumladan, sahifaga yopishtirilgan rasmlarni ham. Chrome kengaytmalari ham bu yerda ko'rinishi mumkin. 
 2. **Code Editor** oynasi manba kodini ko'rsatadi.
-3. **JavaScript Debugging** oynasi debugging uchun. Uni tez orada o'rganib chiqamiz. 
+3. **JavaScript Debugging** oynasi debugging uchun mo'ljallangan. Uni tez orada o'rganib chiqamiz. 
 
 Endi yana  <span class="devtools" style="background-position:-172px -122px"></span> tugmasini bosib, manbalar ro'yxatini berkita olasiz va kodga biroz bo'sh joy berishingiz mumkin. 
 
@@ -36,9 +36,9 @@ Endi yana  <span class="devtools" style="background-position:-172px -122px"></sp
 
 Agar `key:Esc` tugmasini bossak, u quyidagini ochadi. U yerga buyruqlarni yozishimiz mumkin va `key:Enter` ni bosish orqali uni amalga oshira olamiz. 
 
-Statment amalga oshirilgandan so'ng, uning natijasi quyida ko'rsatiladi.
+Statement amalga oshirilgandan so'ng, uning natijasi quyida ko'rsatiladi.
 
-Misol uchun, bu yerda `1+2` natijasi `3` da va `hello("debugger")` hech narsa qaytarmaydi, shu tufayli, natija `undefined`, ya'ni aniqlanmagan:
+Misol uchun, bu yerda `1+2` natijasi `3` da va `hello("debugger")` hech narsa qaytarmaydi, shu tufayli, natija `undefined`, ya'ni aniqlanmagan bo'ladi:
 
 ![](chrome-sources-console.svg)
 
@@ -65,7 +65,7 @@ Har doim o'ng paneldan bir qator breakdownlarni topishimiz mumkin. Bu bizda har 
 ```smart header="Shartli breakpointlar"
 Qator raqamidagi *Right click*  *conditional* (shartli) breakdown yaratish imkonini beradi. U faqat berilgan ifoda to'g'ri bo'lgandagina ishga tushadi. 
 
-Bu biz aniq bir o'zgaruvchi qiymat yoki aniq funksiya parametrlai uchun to'xtaganimizda  juda qo'l keladi. 
+Bu biz aniq bir o'zgaruvchi qiymat yoki aniq funksiya parametrlari uchun to'xtaganimizda  juda qo'l keladi. 
 ```
 
 ## Debugger burug'i
@@ -84,7 +84,7 @@ function hello(name) {
 }
 ```
 
-Bu biz kod tahrirlovchida bo'ib, boshqa brauzerga o'tishni va breakdownni o'rnatish uchun developer toollaridagi skriptlarni ko'rib chiqishni istamagan hollarimizda qulay bo'ladi. 
+Bu biz kod tahrirlovchida bo'ib, boshqa brauzerga o'tishni va breakdownni o'rnatish uchun developer toollaridagi skriptlarni ko'rib chiqishni istamagan hollarimizda qulaylik yaratadi. 
 
 Bunday buyruq faqat ishlab chiqish vositalari ochiq bo'lganda ishlaydi, aks holda brauzer buni e'tiborsiz qoldiradi.
 
@@ -104,12 +104,12 @@ O'ng tomondagi ma'lumotlarni oching (strelka bilan belgilangan). U bizga joriy k
 
 2. **`Call Stack` -- ichki qo'ng'iroqlar zanjirini ko'rsatadi.**
 
-    Hozirgi vaziyatda debugger `index.html` da script tomonidan chaqirilgan `hello()` qo'ng'irog'ining ichida, (buyerda funksiy yo'q, shuning uchun u "anonymous" (anonim) deb ataladi).
+    Hozirgi vaziyatda debugger `index.html` da script tomonidan chaqirilgan `hello()` qo'ng'irog'ining ichida, (bu yerda funksiy yo'q, shuning uchun u "anonymous" (anonim) deb ataladi).
 
     Agar siz stack elementini (masalan, "anonim") bossangiz, tuzatuvchi mos keladigan kodga o'tadi va uning barcha o'zgaruvchilari ham tekshirilishi mumkin.
 3. **`Scope` -- joriy o'zgaruvchilar.** 
 
-    `Local` mahalliy funksiya o'zgaruvchilarini ko'rsatiadi. Ularning qiymatini manba ustida ta'kidlanganligini ham ko'rishingiz mumkin. 
+    `Local` mahalliy funksiya o'zgaruvchilarini ko'rsatadi. Ularning qiymatini manba ustida ta'kidlanganligini ham ko'rishingiz mumkin. 
 
     `Global` global o'zgaruvchilarga ega (har qanday funksiyadan tashqari). 
 
@@ -119,7 +119,7 @@ O'ng tomondagi ma'lumotlarni oching (strelka bilan belgilangan). U bizga joriy k
 
 Endi skriptni kuzatish payti keldi. 
 
-Buning uchun o'ng panelning tepasida tugmalar mavjud.  Ularni ishga tushiramiz.
+Buning uchun o'ng panelning tepasida tugmalar mavjud. Ularni ishga tushiramiz.
 <!-- https://github.com/ChromeDevTools/devtools-frontend/blob/master/front_end/Images/src/largeIcons.svg -->
 <span class="devtools" style="background-position:-146px -168px"></span> -- "Resume": amalni davom ettiradi, `key:F8` tugmasini bosing.
 : Amalni davom ettiring. Agar qo'shimcha breakpointlar mavjud bo'lmasa, amal davom etadi va debugger nazoratni yo'qotadi. 
@@ -133,7 +133,7 @@ Buning uchun o'ng panelning tepasida tugmalar mavjud.  Ularni ishga tushiramiz.
 <span class="devtools" style="background-position:-200px -190px"></span> -- "Step": keyingi buyruqni amalga oshiradi, `key:F9` tugmasi.
 : Keyingi statementni ishga tushiramiz. Agar hozir uning ustiga bossak, `alert` ko'rsatiladi.
 
-    Buni qayta va qayta bosish barcha skript statementlarini birma bir bosib o'tadi. 
+    Buni qayta va qayta bosish barcha skript statementlarini birma-bir bosib o'tadi. 
 
 <span class="devtools" style="background-position:-62px -192px"></span> -- "Step over": keyingi buyruqni amalga oshiradi, lekin *funksiya ichiga kirmaydi*,  `key:F10` tugmasi.
 : Bu avvalgi "Step" buyrug'iga o'xshaydi, ammo keyingi statement funksiya qo'n'girog'i bo'lsa, boshqacha ishlaydi. Bu alertga o'xshab ichki qurilma emas, ammo o'zimizga tegishli funksiya. 
@@ -145,22 +145,22 @@ Buning uchun o'ng panelning tepasida tugmalar mavjud.  Ularni ishga tushiramiz.
     Funksiya chaqiruvida nima sodir bo'lishini ko'rish bizni qiziqtirmasligi normal holat.
 
 <span class="devtools" style="background-position:-4px -194px"></span> -- "Step into", `key:F11` tugma.
-: Bu ham "Step" ga o'xshash, lekin asinxron funksiya chaqiruvida boshqacha ishlaydi. Agar siz endi JavaScriptni o'rganishni boshlayotgan bo'lsangiz, siz farqlarini e'tiborga olmasangiz bo'ladi, chunki bizda asinxron qo'ng'roqlari hali mavjud emas. 
+: Bu ham "Step" ga o'xshash, lekin asinxron funksiya chaqiruvida boshqacha ishlaydi. Agar siz endi JavaScriptni o'rganishni boshlayotgan bo'lsangiz, siz farqlarini e'tiborga olmasangiz bo'ladi, chunki bizda asinxron qo'ng'iroqlari hali mavjud emas. 
 
     Shuni yodda tutingki, "Step" buyrug'i keyinroq bajariladigan `setTimeout` (rejalashtirilgan funksiya chaqiruvi) kabi asinxron harakatlarni e'tiborsiz qoldiradi. "Step into" ularning kodiga kiradi va zarur bo'lsa ularni kutadi. Ko'proq ma'lumot uchun [DevTools manual](https://developers.google.com/web/updates/2018/01/devtools#async)ni ko'ring. 
 
-<span class="devtools" style="background-position:-32px -194px"></span> -- "Step out": amalni joriy funksiyaning oxirigacha davom ettiradi, tugmasi `key:Shift+F11`. 
+<span class="devtools" style="background-position:-32px -194px"></span> -- "Step out": amalni joriy funksiyaning oxirigacha davom ettiradi,`key:Shift+F11` tugmasi ishlatiladi. 
 
-: Amalni joriy funksiyanig oxirgi qatorigacha davom ettiradi. Bu biz tasodifan <span class="devtools" style="background-position:-200px -190px"></span> dan foydalanib, ichki qo'ng'iroqqa kirganimizda juda qulay, lekin bu bizni qiziqtirmaydi va oxirigacha borib imkoni boricha tezroq yakunlamoqchimiz. 
+: Amalni joriy funksiyanig oxirgi qatorigacha davom ettiradi. Bu biz tasodifan <span class="devtools" style="background-position:-200px -190px"></span> dan foydalanib, ichki qo'ng'iroqqa kirganimizda juda qulay, lekin bu bizni qiziqtirmaydi va oxirigacha borib, ishni imkoni boricha tezroq yakunlamoqchimiz. 
 
 <span class="devtools" style="background-position:-61px -74px"></span> -- hamma breakpointlarga imkon beradi/ishdan chiqaradi.
-: Bu tugma amalni harakatlantirmaydi, shunchaki breakdownlar uchun katta ommaviy on/off
+: Bu tugma amalni harakatlantirmaydi, shunchaki breakdownlar uchun katta ommaviy on/off hisoblanadi.
 
 <span class="devtools" style="background-position:-90px -146px"></span> -- xato mavjud vaziyatda avtomatik to'xtashni imkonini beradi/ishdan chiqaradi.
-: Imkon berilib   va developer toollar ochiq bo'lganda, skript xatosi avtomatik ravishda amalni to'xtatadi. Keyin nima xato ketkanligini ko'rish uchun o'zgaruvchilarni analiz qila olamiz. Shunday qilib, agar skriptimiz xatolik bilan buzilib qolsa, biz debuggerni ochishimiz, ushbu parametrni yoqishimiz va sahifani qayta yuklashimiz va uning qayerda buzilishini va o'sha paytdagi kontekstni ko'rishimiz mumkin.
+: Imkon berilib   va developer toollar ochiq bo'lganda, skript xatosi avtomatik ravishda amalni to'xtatadi. Keyin nima xato ketganligini ko'rish uchun o'zgaruvchilarni analiz qila olamiz. Shunday qilib, agar skriptimiz xatolik bilan buzilib qolsa, biz debuggerni ochishimiz, ushbu parametrni yoqishimiz, sahifani qayta yuklashimiz va uning qayerda buzilishini hamda o'sha paytdagi kontekstni ko'rishimiz mumkin.
 
 ```smart header="Continue to here"
-Kod satriga sichqonchaning o'ng tugmachasini bosish "Continue to here" (Bu yergacja davom eting) deb nomlangan ajoyib tanlov bilan kontekst menyusini ochadi. 
+Kod satriga sichqonchaning o'ng tugmachasini bosish "Continue to here" (Bu yergacha davom eting) deb nomlangan ajoyib tanlov bilan kontekst menyusini ochadi. 
 
 Bu biz chiziqqa bir necha qadam oldinga siljishni xohlaganimizda qulay bo'ladi, lekin breakpointni belgilashga juda dangasamiz.
 ```
