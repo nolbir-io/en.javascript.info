@@ -6,7 +6,7 @@ Bu aslida dasturlash san'ati -- murakkab vazifani olib, uni to'g'ri va inson o'q
 
 ## Sintaksis
 
-Ba'zi tavsiya etilgan qoidalarga ega qo'llanma varog'i (batafsil ma'lumot uchun quyidagilarni ko'ring):
+Ba'zi tavsiya etilgan qoidalarga ega qo'llanma varog'i (batafsil ma'lumot uchun quyidagilarni ko'rib chiqing):
 
 ![](code-style.svg)
 <!--
@@ -52,7 +52,7 @@ if (condition) {
 }
 ```
 
-Bir qatorli konstruksiya, masalan, `if (condition) doSomething()` muhim chekka hol hisoblanadi. Biz umuman olganda qavslardan foydalanishimiz kerakmi?
+Bir qatorli konstruksiya, masalan, `if (condition) doSomething()` muhim chekka hol hisoblanadi. Biz, umuman olganda, qavslardan foydalanishimiz kerakmi?
  
  Quyidagilar izohlangan variantlar, endi shunday qilib ularning o'qilishi mumkinligini o'zingiz baholay olasiz:
 
@@ -76,7 +76,7 @@ Bir qatorli konstruksiya, masalan, `if (condition) doSomething()` muhim chekka h
     }
     ```
 
-Juda qisqa kod uchun bitta qatorga ruxsat beriladi, masalan. `if (cond) return null`. Ammo kod bloki (oxirgi variant) odatda ko'proq o'qishga oson.
+Juda qisqa kod uchun bitta qatorga ruxsat beriladi, masalan, `if (cond) return null`. Ammo kod bloki (oxirgi variant) odatda ko'proq o'qishga oson.
 
 ### Qator uzunligi
 
@@ -116,7 +116,7 @@ Ikki turdagi indentlar mavjud:
 
     Bo'shliqlarning tablarga nisbatan afzalliklaridan biri shundaki, bo'shliqlar tab belgisiga qaraganda ko'proq moslashuvchan konfiguratsiyalarga imkon beradi.
 
-    Masalan, biz parametrlar ochilishini qavs bilan tenglashtira olamiz, masalan:
+    Parametrlar ochilishini qavs bilan tenglashtira olamiz, masalan:
 
     ```js no-beautify
     show(parameters,
@@ -131,7 +131,7 @@ Ikki turdagi indentlar mavjud:
 
 - **Vertikal chekinishlar: kodni mantiqiy bloklarga bo'lish uchun bo'sh qatorlar.**
 
-    Hatto bitta funktsiyani ham ko'pincha mantiqiy bloklarga bo'lish mumkin. Quyidagi misolda o'zgaruvchilarni ishga tushirish, asosiy qaytariluvchi amal va natijani qaytarish vertikal ravishda ajratiladi:
+    Hatto bitta funksiyani ham ko'pincha mantiqiy bloklarga bo'lish mumkin. Quyidagi misolda o'zgaruvchilarni ishga tushirish, asosiy qaytariluvchi amal va natijani qaytarish vertikal ravishda ajratiladi:
     ```js
     function pow(x, n) {
       let result = 1;
@@ -144,13 +144,13 @@ Ikki turdagi indentlar mavjud:
     }
     ```
 
-    Kodni o'qishga oson bo'lishiga yordam beruchi qo'shimcha yangi qator qo'shing. Vertikal chekinishsiz kodlar qatori to'qqiztadan oshishi kerak emas. 
+    Kodni o'qishga oson bo'lishiga yordam beruvchi qo'shimcha yangi qator qo'shing. Vertikal chekinishsiz kodlar qatori to'qqiztadan oshishi kerak emas. 
 
 ### Nuqtali vergullar
 
-Har bir ifodadan so'ng nuqtali vergul bo'lishi kerak, hatto uni tashlab ketish mumkin bo'lsa ham. 
+Har bir ifodadan so'ng nuqtali vergul bo'lishi lozim, hatto uni tashlab ketish mumkin bo'lsa ham. 
 
-Nuqtali vergul chindan ham ixtiyoriy bo'lgan va kamdan-kam qo'llaniladigan tillar mavjud. Lekin  JavaScriptda, ma'lum vaziyatlar bor, ularda qator uzilishi nuqtali vergul deb qaralmaydi, bu narsa kodni xatolikka moyil qiladi. Bu haqida <info:structure#semicolon> bo'limida ko'proq ko'rib chiqsangiz bo'ladi. 
+Nuqtali vergul chindan ham ixtiyoriy bo'lgan va kamdan-kam qo'llaniladigan tillar mavjud. Lekin JavaScriptda ma'lum vaziyatlar bor, ularda qator uzilishi nuqtali vergul deb qaralmaydi, bu narsa kodni xatolikka moyil qiladi. Bu haqida <info:structure#semicolon> bo'limida ko'proq ko'rib chiqsangiz bo'ladi. 
 
 Agar siz tajribali JavaScript dasturchisi bo'lsangiz, [StandardJS](https://standardjs.com/) kabi nuqtali vergulsiz kod uslubini tanlashingiz mumkin. Aks holda, yuzaga kelishi mumkin bo'lgan tuzoqlardan qochish uchun nuqtali verguldan foydalanish eng yaxshi yo'l. Aksariyat dasturchilar nuqtali vergul qo'yishadi.
 
@@ -170,7 +170,7 @@ for (let i = 0; i < 10; i++) {
 }
 ```
 
-Yozishimiz mumikin:
+quyidagicha yozishimiz mumikin:
 
 ```js
 for (let i = 0; i < 10; i++) {
@@ -224,9 +224,9 @@ Ikkinchisi o'qishga ancha oson, chunki `n < 01` ning "maxsus holati" ertaroq ko'
 
 ## Funksiyani joylashtirish
 
-Agar siz bir nechta "yordamchi" funktsiyalarni va ulardan foydalanadigan kodni yozayotgan bo'lsangiz, funksiyalarni tartibga solishning uchta usuli mavjud.
+Agar siz bir nechta "yordamchi" funksiyalarni va ulardan foydalanadigan kodni yozayotgan bo'lsangiz, funksiyalarni tartibga solishning uchta usuli mavjud.
 
-1. Funktsiyalarni ularni ishlatadigan kodning *yuqorisida* e'lon qilish:
+1. Funksiyalarni ularni ishlatadigan kodning *yuqorisida* e'lon qilish:
 
     ```js
     // *!*funksiya deklaratsiyasi*/!*
@@ -272,7 +272,7 @@ Agar siz bir nechta "yordamchi" funktsiyalarni va ulardan foydalanadigan kodni y
 
 Ko'pincha ikkinchi variantga afzal ko'riladi.
 
-Chunki, kodni o'qiyotganimizda birinchi bilmoqchi bo'lgan narsamiz uni *nima qilishi*dir. Agar kod birinchi kelsa, u boshidan aniq bo'lib qoladi. Shunda funksiyalarni umuman o'qishimiz shart bo'lmasligi ham mumkin, ayniqsa ularning nomlari ular aslida nima qilayotganini tavsiflab tursa.
+Chunki kodni o'qiyotganimizda birinchi bilmoqchi bo'lgan narsamiz uni *nima qilishi*dir. Agar kod birinchi kelsa, u boshidan aniq bo'lib qoladi. Shunda funksiyalarni umuman o'qishimiz shart bo'lmasligi ham mumkin, ayniqsa, ularning nomlari ular aslida nima qilayotganini tavsiflab tursa.
 
 ## Uslub bo'yicha qo'llanmalar
 
@@ -297,12 +297,12 @@ Agar siz yangi dasturchi bo'lsangiz, shu bo'limning boshidagi yordam beruvchi sa
 
 Linter - bu kodingiz uslubini avtomatik ravishda tekshiradigan va takomillashtirish uchun takliflar beradigan vositalar.
 
-Ularning ajoyib jihati shundaki, tekshirish jarayonida ular o'zgaruvchilar singari funksiyadagi imloviy xatolikalarni ham topib beradi. Shu jihati uchun ham, xatto ma'lum bir "kod uslubi"ga bog'lanib qolishni istamasangiz, bundan foydalanish tavsiya etiladi. 
+Ularning ajoyib jihati shundaki, tekshirish jarayonida ular o'zgaruvchilar singari funksiyadagi imloviy xatoliklarni ham topib beradi. Shu jihati uchun ham, xatto ma'lum bir "kod uslubi"ga bog'lanib qolishni istamasangiz, bundan foydalanish tavsiya etiladi. 
 
 Ba'zi mashhur linting vositalari:
 
 - [JSLint](https://www.jslint.com/) -- dastlabki linterlardan biri.
-- [JSHint](https://jshint.com/) -- JSLint-ga qaraganda ko'proq sozlamalar.
+- [JSHint](https://jshint.com/) -- JSLintga qaraganda ko'proq sozlamalar.
 - [ESLint](https://eslint.org/) -- ehtimol eng yangisi.
 
 Ularning barchasi vazifani bajara oladi. Muallif [ESLint](https://eslint.org/) dan foydalanadi.
@@ -312,7 +312,7 @@ Ko'p linterlar ko'plab mashhur muharrirlar bilan birlashtirilgan: shunchaki muha
 Masalan, ESLint uchun quyidagilarni bajarishingiz kerak bo'ladi:
 
 1.  [Node.js](https://nodejs.org/) ni o'rnating.
-2. ESLint-ni `npm install -g eslint` buyrug'i bilan o'rnating (npm bu JavaScript paketini o'rnatuvchidir).
+2. ESLintni `npm install -g eslint` buyrug'i bilan o'rnating (npm bu JavaScript paketini o'rnatuvchidir).
 3. JavaScript loyihangizning ildizida (barcha fayllaringiz joylashgan papkada) `.eslintrc` nomli konfiguratsiya faylini yarating.
 4. ESLint bilan integratsiyalashuvchi muharrir uchun plaginni o'rnating/yoqing. Ko'pchilik muharrirlarda bitta plagin bo'ladi.
 
@@ -333,9 +333,9 @@ Masalan, ESLint uchun quyidagilarni bajarishingiz kerak bo'ladi:
 }
 ```
  
-`"extends"` direktivi konfiguratsiya "eslint:recommended" sozlamalar to'plamiga asoslanganligini bildiradi. Shundan keyin, o'zimizning direktivimizni belgilaymiz.
+`"extends"` direktivi konfiguratsiya "eslint:recommended" sozlamalar to'plamiga asoslanganligini bildiradi. Shundan keyin o'zimizning direktivimizni belgilaymiz.
 
-Uslublar qoidalari to'plamini websitedan yuklab olib, ularni kengaytirish ham mumkin. O'rnatish haqida batafsil ma'lumot uchun <https://eslint.org/docs/user-guide/getting-started> ga qarang.
+Uslublar qoidalari to'plamini websitedan yuklab olib, ularni kengaytirish ham mumkin. O'rnatish haqida batafsil ma'lumot uchun <https://eslint.org/docs/user-guide/getting-started> ni ko'zdan kechiring.
 
 Bundan tashqari, ba'zi IDE-larda o'rnatilgan linting mavjud, bu qulay, ammo ESLint kabi moslashtirilmaydi.
 
