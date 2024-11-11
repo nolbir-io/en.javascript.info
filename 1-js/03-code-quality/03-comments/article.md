@@ -110,7 +110,7 @@ function addJuice(container) {
 }
 ```
 
-Yana bir bor ta'kidlab o'tilganda, funksiyani o'zi ham nima sodir bo'layotganini aytib turadi. Izoh berishga hojat yo'q. Bundan tashqari, kod tuzilishi ajratilganda yaxshiroq ishlaydi. Har bir funksiya nima vazifa bajarishi, nimani talab qilishi va nimani qaytarishi ma'lum bo'lib qoladi.
+Yana bir bor ta'kidlab o'tilganda, funksiyani o'zi ham nima sodir bo'layotganini aytib turadi. Izoh berishga hojat yo'q. Bundan tashqari, kod tuzilishi ajratilganda yaxshiroq ishlaydi. Har bir funksiyaning nima vazifa bajarishi, nimani talab qilishi va nimani qaytarishi ma'lum bo'lib qoladi.
 
  Aslida, "tushuntiruvchi" izohlardan butunlay qochib qutilishning iloji yo'q, chunki ba'zi murakkab algoritmlar mavjud. Optimallashtirish uchun aqlli "tweak"lar ham bor. Qisqa qilib aytganda, kodni iloji boricha sodda va o'zini o'zi tasvirlab turuvchi qilib saqlash kerak.  
 
@@ -145,14 +145,14 @@ Aytgancha, [WebStorm](https://www.jetbrains.com/webstorm/) kabi ko'plab muharrir
 Bundan tashqari, izohlardan HTML hujjatlarni yaratishi mumkin bo'lgan [JSDoc 3](https://github.com/jsdoc3/jsdoc) kabi vositalar ham mavjud. JSDoc haqida batafsil ma'lumotni <http://usejsdoc.org/> sahifasida o'qishingiz mumkin.
 
 Nima uchun vazifa bu tarzda hal qilinadi?
-: Yozilgan narsa muhim. Lekin, sodir bo'layotgan narsalarni tushunish uchun esa yozilmagan narsa undan ham muhim bo'lishi mumkin. Nima uchun vazifa aynan shu tarzda hal qilingan? Kod bunga javob bermaydi.
+: Yozilgan narsa muhim, lekin sodir bo'layotgan narsalarni tushunish uchun esa yozilmagan narsa undan ham muhim bo'lishi mumkin. Nima uchun vazifa aynan shu tarzda hal qilingan? Kod bunga javob bermaydi.
 
-    Agar vazifani hal qilishning ko'plab usullari mavjud bo'lsa, nima uchun bu? Ayniqsa, bu eng aniq bo'lmaganda.
+    Agar vazifani hal qilishning ko'plab usullari mavjud bo'lsa, nima uchun buni tanlashimiz kerak? Ayniqsa, bu eng aniq yo'l bo'lmasa ham.
 
     Bunday izohlarsiz quyidagi vaziyat yuzaga kelishi mumkin:
     1. Siz (yoki sizning hamkasbingiz) bir muncha vaqt oldin yozilgan kodni ochasiz va uning "suboptimal" ekanligini ko'rasiz.
     2. Siz: "O'sha paytda men qanchalik ahmoq edim va hozir qanchalik aqlliman" deb o'ylaysiz va "aniqroq va to'g'ri" variantidan foydalanib qayta yozasiz.
-    3. ...Qayta yozishga istak yaxshi edi. Lekin, jarayonni o'zida, "aniqroq" yechim yetishmayotganini ko'rasiz. Ancha avval harakat qilib ko'rganligingiz tufayli buni uncha eslolmaysiz ham. To'g'ri variantga qaytasiz, ammo orada vaqt behuda ketdi. 
+    3. ...Qayta yozishga istak yaxshi edi. Lekin, jarayonni o'zida, "aniqroq" yechim yetishmayotganini ko'rasiz. Ancha avval harakat qilib ko'rganligingiz tufayli buni uncha eslolmaysiz ham. To'g'ri variantga qaytasiz, ammo orada vaqt behuda ketadi. 
 
     Yechimni tushuntiruvchi izohlar juda muhim. Ular dasturlashni to'g'ri yo'lda davom ettirishga yordam beradi.
 
@@ -169,7 +169,7 @@ Yaxshi sharhlar kodni yaxshi saqlashga, kechikishdan so'ng unga qaytishga va und
 
 - Umumiy arxitektura, yuqori darajadagi ko'rinish.
 - Funksiyadan foydalanish.
-- Muhim yechimlar, ayniqsa darhol aniq bo'lmaganda.
+- Muhim yechimlar, ayniqsa, darhol aniq bo'lmaganda.
 
 **Fikr bildirishdan saqlaning:**
 
